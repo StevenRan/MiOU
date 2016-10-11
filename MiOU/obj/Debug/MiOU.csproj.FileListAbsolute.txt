@@ -1,0 +1,5 @@
+C:\Users\boling\Documents\GitHub\MiOU\MiOU\bin\Debug\MiOU.exe.config
+C:\Users\boling\Documents\GitHub\MiOU\MiOU\bin\Debug\MiOU.exe
+C:\Users\boling\Documents\GitHub\MiOU\MiOU\bin\Debug\MiOU.pdb
+C:\Users\boling\Documents\GitHub\MiOU\MiOU\obj\Debug\MiOU.exe
+C:\Users\boling\Documents\GitHub\MiOU\MiOU\obj\Debug\MiOU.pdb

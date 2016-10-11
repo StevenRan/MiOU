@@ -1,0 +1,5 @@
+C:\Users\boling\Documents\GitHub\MiOU\MiOU.Beans\bin\Debug\MiOU.Beans.dll
+C:\Users\boling\Documents\GitHub\MiOU\MiOU.Beans\bin\Debug\MiOU.Beans.pdb
+C:\Users\boling\Documents\GitHub\MiOU\MiOU.Beans\obj\Debug\MiOU.Beans.dll
+C:\Users\boling\Documents\GitHub\MiOU\MiOU.Beans\obj\Debug\MiOU.Beans.pdb
+C:\Users\boling\Documents\GitHub\MiOU\MiOU.Beans\obj\Debug\MiOU.Beans.csprojResolveAssemblyReference.cache

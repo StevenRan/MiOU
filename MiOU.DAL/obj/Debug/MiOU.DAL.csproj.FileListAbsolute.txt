@@ -1,0 +1,8 @@
+C:\Users\boling\Documents\GitHub\MiOU\MiOU.DAL\bin\Debug\MiOU.DAL.dll.config
+C:\Users\boling\Documents\GitHub\MiOU\MiOU.DAL\bin\Debug\MiOU.DAL.dll
+C:\Users\boling\Documents\GitHub\MiOU\MiOU.DAL\bin\Debug\MiOU.DAL.pdb
+C:\Users\boling\Documents\GitHub\MiOU\MiOU.DAL\bin\Debug\EntityFramework.dll
+C:\Users\boling\Documents\GitHub\MiOU\MiOU.DAL\bin\Debug\EntityFramework.xml
+C:\Users\boling\Documents\GitHub\MiOU\MiOU.DAL\obj\Debug\MiOU.DAL.csprojResolveAssemblyReference.cache
+C:\Users\boling\Documents\GitHub\MiOU\MiOU.DAL\obj\Debug\MiOU.DAL.dll
+C:\Users\boling\Documents\GitHub\MiOU\MiOU.DAL\obj\Debug\MiOU.DAL.pdb

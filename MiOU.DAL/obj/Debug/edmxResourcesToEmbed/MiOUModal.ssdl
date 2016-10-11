@@ -1,0 +1,277 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="MiOU.DAL.Store" Provider="MySql.Data.MySqlClient" ProviderManifestToken="5.5" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="Admin_Actions">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="varchar" MaxLength="45" Nullable="false" />
+    <Property Name="Category" Type="int" Nullable="false" />
+    <Property Name="Enabled" Type="bool" Nullable="false" />
+    <Property Name="Description" Type="varchar" MaxLength="200" />
+  </EntityType>
+  <EntityType Name="Admin_Categories">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" Nullable="false" />
+    <Property Name="Name" Type="varchar" MaxLength="100" Nullable="false" />
+    <Property Name="Description" Type="varchar" MaxLength="500" />
+  </EntityType>
+  <EntityType Name="Admin_Users">
+    <Key>
+      <PropertyRef Name="User_Id" />
+    </Key>
+    <Property Name="User_Id" Type="int" Nullable="false" />
+    <Property Name="IsWebMaster" Type="bool" Nullable="false" />
+    <Property Name="Description" Type="varchar" MaxLength="200" />
+    <Property Name="IsSuperAdmin" Type="bool" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Admin_Users_Actions">
+    <Key>
+      <PropertyRef Name="User_Id" />
+      <PropertyRef Name="Action_Id" />
+    </Key>
+    <Property Name="User_Id" Type="int" Nullable="false" />
+    <Property Name="Action_Id" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Area">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="umediumint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="char" MaxLength="255" Nullable="false" />
+    <Property Name="Level" Type="utinyint" Nullable="false" />
+    <Property Name="Upid" Type="umediumint" Nullable="false" />
+    <Property Name="List" Type="smallint" Nullable="false" />
+    <Property Name="Order" Type="utinyint" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Category">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="ParentId" Type="int" Nullable="false" />
+    <Property Name="Order" Type="int" />
+  </EntityType>
+  <EntityType Name="DeliveryType">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="varchar" MaxLength="45" Nullable="false" />
+    <Property Name="Created" Type="uint" Nullable="false" />
+  </EntityType>
+  <EntityType Name="EvaluatedPrice">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Price" Type="float" Nullable="false" />
+    <Property Name="PriceCategory" Type="int" Nullable="false" />
+    <Property Name="Created" Type="uint" Nullable="false" />
+    <Property Name="UserId" Type="int" Nullable="false" />
+    <Property Name="Updated" Type="uint" Nullable="false" />
+    <Property Name="UpdatedUserId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Image">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="varchar" MaxLength="150" Nullable="false" />
+    <Property Name="Path" Type="varchar" MaxLength="200" Nullable="false" />
+    <Property Name="Created" Type="uint" Nullable="false" />
+    <Property Name="UserId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="MaintenanceType">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="varchar" MaxLength="45" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Order">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ProductId" Type="int" Nullable="false" />
+    <Property Name="PriceCategory" Type="int" Nullable="false" />
+    <Property Name="Status" Type="int" Nullable="false" />
+    <Property Name="Created" Type="uint" Nullable="false" />
+    <Property Name="UserId" Type="int" Nullable="false" />
+    <Property Name="Updated" Type="uint" Nullable="false" />
+    <Property Name="UpdatedUserId" Type="int" Nullable="false" />
+    <Property Name="Description" Type="varchar" MaxLength="200" />
+    <Property Name="StartTime" Type="uint" Nullable="false" />
+    <Property Name="EndTime" Type="uint" Nullable="false" />
+    <Property Name="ContactName" Type="varchar" MaxLength="45" Nullable="false" />
+    <Property Name="ContactPhone" Type="varchar" MaxLength="45" Nullable="false" />
+    <Property Name="Extended" Type="int" Nullable="false" />
+    <Property Name="ExtendTime" Type="uint" Nullable="false" />
+    <Property Name="ExtendEndTime" Type="uint" Nullable="false" />
+    <Property Name="ExtendApproved" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="OrderPayment">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="OrderId" Type="int" Nullable="false" />
+    <Property Name="OrderNo" Type="varchar" MaxLength="45" Nullable="false" />
+    <Property Name="PayType" Type="int" Nullable="false" />
+    <Property Name="PayCategory" Type="int" Nullable="false" />
+    <Property Name="Payed" Type="int" Nullable="false" />
+    <Property Name="Created" Type="uint" Nullable="false" />
+    <Property Name="PayedTime" Type="uint" Nullable="false" />
+  </EntityType>
+  <EntityType Name="PayCategory">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="varchar" MaxLength="45" Nullable="false" />
+  </EntityType>
+  <EntityType Name="PayType">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="varchar" MaxLength="45" Nullable="false" />
+  </EntityType>
+  <EntityType Name="PriceCategory">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="varchar" MaxLength="45" Nullable="false" />
+    <Property Name="Order" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Product">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Description" Type="varchar" MaxLength="2000" Nullable="false" />
+    <Property Name="CategoryId" Type="int" Nullable="false" />
+    <Property Name="UserId" Type="int" Nullable="false" />
+    <Property Name="Created" Type="uint" Nullable="false" />
+    <Property Name="Updated" Type="uint" Nullable="false" />
+    <Property Name="Percentage" Type="float" Nullable="false" />
+    <Property Name="Pledge" Type="float" Nullable="false" />
+    <Property Name="Price" Type="float" Nullable="false" />
+    <Property Name="Status" Type="int" Nullable="false" />
+    <Property Name="AuditUserId" Type="int" Nullable="false" />
+    <Property Name="AuditTime" Type="uint" Nullable="false" />
+    <Property Name="AuditMessage" Type="varchar" MaxLength="100" />
+    <Property Name="DeliveryType" Type="int" Nullable="false" />
+    <Property Name="RentType" Type="int" Nullable="false" />
+    <Property Name="XPlot" Type="varchar" MaxLength="45" />
+    <Property Name="YPlot" Type="varchar" MaxLength="45" />
+    <Property Name="City" Type="int" Nullable="false" />
+    <Property Name="District" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="ProductImage">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" Nullable="false" />
+    <Property Name="ProductId" Type="int" Nullable="false" />
+    <Property Name="ImageId" Type="int" Nullable="false" />
+    <Property Name="IsMain" Type="bool" Nullable="false" />
+  </EntityType>
+  <EntityType Name="ProductMaintenance">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ProductId" Type="int" Nullable="false" />
+    <Property Name="MaintenanceType" Type="int" Nullable="false" />
+    <Property Name="Time" Type="uint" Nullable="false" />
+    <Property Name="Description" Type="varchar" MaxLength="500" />
+  </EntityType>
+  <EntityType Name="ProductPrice">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" Nullable="false" />
+    <Property Name="ProductId" Type="int" Nullable="false" />
+    <Property Name="ProductCategoryId" Type="int" Nullable="false" />
+    <Property Name="EvaluatedPriceId" Type="int" Nullable="false" />
+    <Property Name="Price" Type="float" Nullable="false" />
+    <Property Name="Created" Type="int" Nullable="false" />
+    <Property Name="UserId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="RentType">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="varchar" MaxLength="45" Nullable="false" />
+  </EntityType>
+  <EntityType Name="User">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="varchar" MaxLength="45" />
+    <Property Name="NickName" Type="varchar" MaxLength="45" Nullable="false" />
+    <Property Name="Email" Type="varchar" MaxLength="45" Nullable="false" />
+    <Property Name="ExternalUserType" Type="int" Nullable="false" />
+    <Property Name="ExternalUserId" Type="varchar" MaxLength="50" />
+    <Property Name="Password" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="Gendar" Type="int" Nullable="false" />
+    <Property Name="RegTime" Type="uint" Nullable="false" />
+    <Property Name="Updated" Type="uint" Nullable="false" />
+    <Property Name="UserType" Type="int" Nullable="false" />
+    <Property Name="VipLevel" Type="int" Nullable="false" />
+    <Property Name="Province" Type="int" Nullable="false" />
+    <Property Name="City" Type="int" Nullable="false" />
+    <Property Name="District" Type="int" Nullable="false" />
+    <Property Name="Location" Type="varchar" MaxLength="50" />
+    <Property Name="XPlot" Type="varchar" MaxLength="45" />
+    <Property Name="YPlot" Type="varchar" MaxLength="45" />
+  </EntityType>
+  <EntityType Name="UserType">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="varchar" MaxLength="45" Nullable="false" />
+    <Property Name="Description" Type="varchar" MaxLength="500" />
+  </EntityType>
+  <EntityType Name="VipLevel">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="varchar" MaxLength="45" Nullable="false" />
+  </EntityType>
+  <EntityContainer Name="MiOUDALStoreContainer">
+    <EntitySet Name="Admin_Actions" EntityType="Self.Admin_Actions" Schema="MiOU" store:Type="Tables" />
+    <EntitySet Name="Admin_Categories" EntityType="Self.Admin_Categories" Schema="MiOU" store:Type="Tables" />
+    <EntitySet Name="Admin_Users" EntityType="Self.Admin_Users" Schema="MiOU" store:Type="Tables" />
+    <EntitySet Name="Admin_Users_Actions" EntityType="Self.Admin_Users_Actions" Schema="MiOU" store:Type="Tables" />
+    <EntitySet Name="Area" EntityType="Self.Area" Schema="MiOU" store:Type="Tables" />
+    <EntitySet Name="Category" EntityType="Self.Category" Schema="MiOU" store:Type="Tables" />
+    <EntitySet Name="DeliveryType" EntityType="Self.DeliveryType" Schema="MiOU" store:Type="Tables" />
+    <EntitySet Name="EvaluatedPrice" EntityType="Self.EvaluatedPrice" Schema="MiOU" store:Type="Tables" />
+    <EntitySet Name="Image" EntityType="Self.Image" Schema="MiOU" store:Type="Tables" />
+    <EntitySet Name="MaintenanceType" EntityType="Self.MaintenanceType" Schema="MiOU" store:Type="Tables" />
+    <EntitySet Name="Order" EntityType="Self.Order" Schema="MiOU" store:Type="Tables" />
+    <EntitySet Name="OrderPayment" EntityType="Self.OrderPayment" Schema="MiOU" store:Type="Tables" />
+    <EntitySet Name="PayCategory" EntityType="Self.PayCategory" Schema="MiOU" store:Type="Tables" />
+    <EntitySet Name="PayType" EntityType="Self.PayType" Schema="MiOU" store:Type="Tables" />
+    <EntitySet Name="PriceCategory" EntityType="Self.PriceCategory" Schema="MiOU" store:Type="Tables" />
+    <EntitySet Name="Product" EntityType="Self.Product" Schema="MiOU" store:Type="Tables" />
+    <EntitySet Name="ProductImage" EntityType="Self.ProductImage" Schema="MiOU" store:Type="Tables" />
+    <EntitySet Name="ProductMaintenance" EntityType="Self.ProductMaintenance" Schema="MiOU" store:Type="Tables" />
+    <EntitySet Name="ProductPrice" EntityType="Self.ProductPrice" Schema="MiOU" store:Type="Tables" />
+    <EntitySet Name="RentType" EntityType="Self.RentType" Schema="MiOU" store:Type="Tables" />
+    <EntitySet Name="User" EntityType="Self.User" Schema="MiOU" store:Type="Tables" />
+    <EntitySet Name="UserType" EntityType="Self.UserType" Schema="MiOU" store:Type="Tables" />
+    <EntitySet Name="VipLevel" EntityType="Self.VipLevel" Schema="MiOU" store:Type="Tables" />
+  </EntityContainer>
+</Schema>
