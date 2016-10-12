@@ -83,15 +83,15 @@ namespace MiOU.BL
             try
             {
                 db = new MiOUEntities();
-                User dbUser = (from u in db.User where u.Id==user.User.Id select u).FirstOrDefault<User>();
-                if(dbUser!=null)
+                User dbUser = (from u in db.User where u.Id==user.User.Id select u).FirstOrDefault<User>();               
+                if(dbUser==null)
                 {
-                    dbUser.Status = status;
-                    db.SaveChanges();
-                    ret = true;
-                }
+                    throw new MiOUException(string.Format(MiOUConstants.USER_ID_NOT_EXIST, user.User.Id));
+                }                
 
-                throw new MiOUException(string.Format(MiOUConstants.USER_ID_NOT_EXIST, user.User.Id));
+                dbUser.Status = status;
+                db.SaveChanges();
+                ret = true;
             }
             catch(MiOUException mex)
             {
