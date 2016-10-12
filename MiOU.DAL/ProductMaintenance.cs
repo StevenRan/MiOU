@@ -17,7 +17,9 @@ namespace MiOU.DAL
         public int Id { get; set; }
         public int ProductId { get; set; }
         public int MaintenanceType { get; set; }
-        public long Time { get; set; }
+        public long Created { get; set; }
         public string Description { get; set; }
+        public long Finished { get; set; }
+        public long Updated { get; set; }
     }
 }

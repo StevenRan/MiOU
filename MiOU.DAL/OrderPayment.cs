@@ -19,7 +19,7 @@ namespace MiOU.DAL
         public string OrderNo { get; set; }
         public int PayType { get; set; }
         public int PayCategory { get; set; }
-        public int Payed { get; set; }
+        public bool Payed { get; set; }
         public long Created { get; set; }
         public long PayedTime { get; set; }
     }

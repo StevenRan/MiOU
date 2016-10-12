@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using log4net;
 using MiOU.Entities.Beans;
+using MiOU.Entities.Exceptions;
+using MiOU.Entities;
 using MiOU.DAL;
 namespace MiOU.BL
 {
@@ -48,18 +50,100 @@ namespace MiOU.BL
             }
         }
 
-        public BUser GetUserInfo(int userId)
+        public BUser GetUserInfoByNickName(string nickName)
         {
-            if (userId <= 0)
+            if (string.IsNullOrEmpty(nickName))
             {
-                return null;
+                throw new MiOU.Entities.Exceptions.MiOUException(MiOUConstants.USER_NICK_IS_EMPTY);
             }
             BUser user = null;
             using (MiOUEntities db = new MiOUEntities())
             {
-                user = new BUser();
-                user.User = (from u in db.User where u.Id == userId select u).FirstOrDefault<User>();
+                //user = new BUser();
+                //user.User = (from u in db.User
+                //             where u.Id == userId select u).FirstOrDefault<User>();
 
+
+                var u = from usr in db.User
+                        join city in db.Area on usr.City equals city.Id into lcity
+                        from llcity in lcity.DefaultIfEmpty()
+                        join province in db.Area on usr.Province equals province.Id into lprovince
+                        from llprovince in lprovince.DefaultIfEmpty()
+                        join district in db.Area on usr.Province equals district.Id into ldistrict
+                        from lldistrict in ldistrict.DefaultIfEmpty()
+                        where usr.NickName == nickName
+                        select new BUser
+                        {
+                            User = usr,
+                            Province = llprovince,
+                            City = llcity,
+                            District = lldistrict
+                        };
+                user = u.FirstOrDefault<BUser>();
+                if(user==null)
+                {
+                    logger.Warn(string.Format(MiOUConstants.USER_NICK_NOT_EXIST, nickName));
+                    return user;                    
+                }
+                Admin_Users au = (from ausr in db.Admin_Users where ausr.User_Id == user.User.Id select ausr).FirstOrDefault<Admin_Users>();
+                if (au != null)
+                {
+                    user.IsSuperAdmin = au.IsSuperAdmin;
+                    user.IsWebMaster = au.IsWebMaster;
+                    user.IsAdmin = true;
+                }
+                if (!user.IsSuperAdmin)
+                {
+                    user.Permission = PermissionManagement.GetUserPermissions(user.User.Id);
+                }
+                else
+                {
+                    user.Permission = new Permissions();
+                    System.Reflection.PropertyInfo[] fields = typeof(Permissions).GetProperties();
+                    foreach (System.Reflection.PropertyInfo field in fields)
+                    {
+                        field.SetValue(user.Permission, true);
+                    }
+                }
+            }
+            return user;
+        }
+
+        public BUser GetUserInfo(int userId)
+        {
+            if (userId <= 0)
+            {
+                throw new MiOUException(MiOUConstants.USER_ID_IS_EMPTY);
+            }
+            BUser user = null;
+            using (MiOUEntities db = new MiOUEntities())
+            {
+                //user = new BUser();
+                //user.User = (from u in db.User
+                //             where u.Id == userId select u).FirstOrDefault<User>();
+
+
+                var u = from usr in db.User
+                        join city in db.Area on usr.City equals city.Id into lcity
+                        from llcity in lcity.DefaultIfEmpty()
+                        join province in db.Area on usr.Province equals province.Id into lprovince
+                        from llprovince in lprovince.DefaultIfEmpty()
+                        join district in db.Area on usr.Province equals district.Id into ldistrict
+                        from lldistrict in ldistrict.DefaultIfEmpty()
+                        where usr.Id==userId
+                        select new BUser
+                        {
+                            User = usr,
+                            Province =llprovince,
+                            City=llcity,
+                            District= lldistrict
+                        };
+                user = u.FirstOrDefault<BUser>();
+                if (user == null)
+                {
+                    logger.Warn(string.Format(MiOUConstants.USER_ID_NOT_EXIST, userId));
+                    return null;
+                }
                 Admin_Users au = (from ausr in db.Admin_Users where ausr.User_Id == userId select ausr).FirstOrDefault<Admin_Users>();
                 if (au != null)
                 {
@@ -88,14 +172,34 @@ namespace MiOU.BL
         {
             if (string.IsNullOrEmpty(email))
             {
-                return null;
+                throw new MiOUException(MiOUConstants.USER_EMAIL_IS_EMPTY);
             }
             BUser user = null;
             using (MiOUEntities db = new MiOUEntities())
             {
-                user = new BUser();
-                user.User = (from u in db.User where u.Email == email select u).FirstOrDefault<User>();
-
+                //user = new BUser();
+                //user.User = (from u in db.User where u.Email == email select u).FirstOrDefault<User>();
+                var u = from usr in db.User
+                        join city in db.Area on usr.City equals city.Id into lcity
+                        from llcity in lcity.DefaultIfEmpty()
+                        join province in db.Area on usr.Province equals province.Id into lprovince
+                        from llprovince in lprovince.DefaultIfEmpty()
+                        join district in db.Area on usr.Province equals district.Id into ldistrict
+                        from lldistrict in ldistrict.DefaultIfEmpty()
+                        where usr.Email==email
+                        select new BUser
+                        {
+                            User = usr,
+                            Province = llprovince,
+                            City = llcity,
+                            District = lldistrict
+                        };
+                user = u.FirstOrDefault<BUser>();
+                if(user==null)
+                {
+                    logger.Warn(string.Format(MiOUConstants.USER_EMAIL_NOT_EXIST,email));
+                    return null;
+                }
                 Admin_Users au = (from ausr in db.Admin_Users where ausr.User_Id == user.User.Id select ausr).FirstOrDefault<Admin_Users>();
                 if (au != null)
                 {

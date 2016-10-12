@@ -8,6 +8,7 @@ namespace MiOU.Entities.Beans
 {
     public class BObject
     {
+        public string Name { get; set; }
         public int Id { get; set; }
         public long Created { get; set; }
         public long Updated { get; set; }

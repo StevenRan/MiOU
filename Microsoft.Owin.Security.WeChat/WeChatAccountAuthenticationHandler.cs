@@ -141,9 +141,10 @@ namespace Microsoft.Owin.Security.WeChat
 
                 var context = new WeChatAuthenticatedContext(Context, tokenResult.openid, userInfo, tokenResult.access_token);
                 context.Identity = new ClaimsIdentity(new[]{
-                    new Claim(ClaimTypes.NameIdentifier, context.Id,XmlSchemaString,Options.AuthenticationType),
+                    new Claim(ClaimTypes.NameIdentifier, context.UnionId,XmlSchemaString,Options.AuthenticationType),
                     new Claim(ClaimsIdentity.DefaultNameClaimType, context.Name,XmlSchemaString,Options.AuthenticationType),
-                    new Claim("urn:wechatconnect:id", context.Id,XmlSchemaString,Options.AuthenticationType),
+                    new Claim("urn:wechatconnect:id", context.UnionId,XmlSchemaString,Options.AuthenticationType),
+                     new Claim("urn:wechatconnect:openid", context.OpenId,XmlSchemaString,Options.AuthenticationType),
                     new Claim("urn:wechatconnect:name", context.Name,XmlSchemaString,Options.AuthenticationType),
                     new Claim("urn:wechatconnect:country", context.Country,XmlSchemaString,Options.AuthenticationType),
                     new Claim("urn:wechatconnect:province", context.Province,XmlSchemaString,Options.AuthenticationType),
@@ -238,6 +239,7 @@ namespace Microsoft.Owin.Security.WeChat
             public string refresh_token { get; set; }
 
             public string openid { get; set; }
+            public string unionid { get; set; }
 
             public string scope { get; set; }
         }

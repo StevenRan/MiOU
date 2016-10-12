@@ -29,8 +29,10 @@ namespace MiOU.DAL
         public int Province { get; set; }
         public int City { get; set; }
         public int District { get; set; }
-        public string Location { get; set; }
+        public string Address { get; set; }
         public string XPlot { get; set; }
         public string YPlot { get; set; }
+        public int Status { get; set; }
+        public string Phone { get; set; }
     }
 }

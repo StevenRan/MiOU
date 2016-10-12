@@ -15,8 +15,10 @@ namespace MiOU.DAL
     public partial class Order
     {
         public int Id { get; set; }
+        public string OrderNo { get; set; }
         public int ProductId { get; set; }
         public int PriceCategory { get; set; }
+        public int PriceId { get; set; }
         public int Status { get; set; }
         public long Created { get; set; }
         public int UserId { get; set; }

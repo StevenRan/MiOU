@@ -32,6 +32,10 @@ namespace MiOU.Entities.Beans
         [AdminActionAttribute(ID = 1, CategoryName = "用户管理", ActionDescription = "启用用户")]
         public bool ENABLE_USER { get; set; }
 
+        [Display(Name = "设置用户级别")]
+        [AdminActionAttribute(ID = 1, CategoryName = "用户管理", ActionDescription = "设置用户级别")]
+        public bool SET_USER_LEVEL { get; set; }
+
         [Display(Name = "更新用户")]
         [AdminActionAttribute(ID = 1, CategoryName = "用户管理", ActionDescription = "更新用户")]
         public bool UPDATE_USER { get; set; }
@@ -52,6 +56,7 @@ namespace MiOU.Entities.Beans
         [AdminActionAttribute(ID = 1, CategoryName = "用户管理", ActionDescription = "设置超级管理员")]
         public bool SET_USER_SUPER_ADMIN { get; set; }
 
+       
 
 
 

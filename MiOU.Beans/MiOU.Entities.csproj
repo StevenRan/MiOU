@@ -41,14 +41,29 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Beans\BArea.cs" />
     <Compile Include="Beans\BCategory.cs" />
+    <Compile Include="Beans\BEvaluatedPrice.cs" />
+    <Compile Include="Beans\BImage.cs" />
+    <Compile Include="Beans\BMaintenanceType.cs" />
     <Compile Include="Beans\BObject.cs" />
+    <Compile Include="Beans\BOrder.cs" />
+    <Compile Include="Beans\BOrderPayment.cs" />
+    <Compile Include="Beans\BPayCategory.cs" />
+    <Compile Include="Beans\BPayType.cs" />
+    <Compile Include="Beans\BPriceCategory.cs" />
     <Compile Include="Beans\BProduct.cs" />
+    <Compile Include="Beans\BProductImage.cs" />
+    <Compile Include="Beans\BProductMaintenance.cs" />
+    <Compile Include="Beans\BProductPrice.cs" />
     <Compile Include="Beans\BUser.cs" />
+    <Compile Include="Beans\BUserType.cs" />
+    <Compile Include="Beans\BVIPLevel.cs" />
     <Compile Include="Beans\Permission.cs" />
     <Compile Include="Beans\PermissionCategory.cs" />
     <Compile Include="Beans\UserAdminAction.cs" />
     <Compile Include="Exceptions\MiOUException.cs" />
+    <Compile Include="MiOUConstants.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

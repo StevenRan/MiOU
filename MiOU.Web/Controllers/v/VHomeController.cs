@@ -70,7 +70,7 @@ namespace MiOU.Web.Controllers.v
                 {
                     RedirectToAction("Error", MessageConstants.WECHAT_AUTH_ERROR);
                 }
-                return View("ExternalLoginConfirmation", new ExternalLoginConfirmationViewModel { Email = ""});
+                return View("ExternalLoginConfirmation", new ExternalLoginConfirmationViewModel { Email = "",ExternalUserType=1, ExternalUserId=userInfo.UnionId});
             }
 
             return View();            

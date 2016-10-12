@@ -20,7 +20,8 @@ namespace Microsoft.Owin.Security.WeChat
             User = user;
             AccessToken = accessToken;
 
-            Id = openId;
+            OpenId = openId;
+            UnionId = PropertyValueIfExists("unionid", userAsDictionary);
             Name = PropertyValueIfExists("nickname", userAsDictionary);
             City = PropertyValueIfExists("city", userAsDictionary);
             Province = PropertyValueIfExists("province", userAsDictionary);
@@ -31,7 +32,8 @@ namespace Microsoft.Owin.Security.WeChat
 
         public JObject User { get; private set; }
         public string AccessToken { get; private set; }
-        public string Id { get; private set; }
+        public string OpenId{ get; private set; }
+        public string UnionId { get; private set; }
         public string Name { get; private set; }
         public string City { get; private set; }
         public string Province { get; private set; }

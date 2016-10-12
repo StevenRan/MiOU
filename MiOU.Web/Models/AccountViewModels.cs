@@ -36,6 +36,9 @@ namespace MiOU.Web.Models
 
         [Display(Name = "区")]
         public int District { get; set; }
+
+        public int ExternalUserType { get; set; }
+        public string ExternalUserId { get; set; }
     }
 
     public class ExternalLoginListViewModel

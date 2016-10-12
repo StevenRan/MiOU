@@ -6,10 +6,8 @@ using System.Threading.Tasks;
 
 namespace MiOU.Entities.Beans
 {
-    public class BCategory:BObject
+    public class BPriceCategory:BObject
     {
         public int Order { get; set; }
-        public BCategory Parent { get; set; }
-        public BCategory Chindren { get; set; }
     }
 }
