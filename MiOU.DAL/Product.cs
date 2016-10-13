@@ -35,5 +35,6 @@ namespace MiOU.DAL
         public string Address { get; set; }
         public string XPlot { get; set; }
         public string YPlot { get; set; }
+        public int Type { get; set; }
     }
 }

@@ -30,17 +30,14 @@ namespace MiOU.DAL
         public DbSet<Admin_Users> Admin_Users { get; set; }
         public DbSet<Admin_Users_Actions> Admin_Users_Actions { get; set; }
         public DbSet<Area> Area { get; set; }
-        public DbSet<Category> Category { get; set; }
         public DbSet<DeliveryType> DeliveryType { get; set; }
         public DbSet<EvaluatedPrice> EvaluatedPrice { get; set; }
-        public DbSet<Image> Image { get; set; }
         public DbSet<MaintenanceType> MaintenanceType { get; set; }
         public DbSet<Order> Order { get; set; }
         public DbSet<OrderPayment> OrderPayment { get; set; }
         public DbSet<PayCategory> PayCategory { get; set; }
         public DbSet<PayType> PayType { get; set; }
         public DbSet<PriceCategory> PriceCategory { get; set; }
-        public DbSet<Product> Product { get; set; }
         public DbSet<ProductImage> ProductImage { get; set; }
         public DbSet<ProductMaintenance> ProductMaintenance { get; set; }
         public DbSet<ProductPrice> ProductPrice { get; set; }
@@ -48,5 +45,8 @@ namespace MiOU.DAL
         public DbSet<User> User { get; set; }
         public DbSet<UserType> UserType { get; set; }
         public DbSet<VipLevel> VipLevel { get; set; }
+        public DbSet<Category> Category { get; set; }
+        public DbSet<File> File { get; set; }
+        public DbSet<Product> Product { get; set; }
     }
 }

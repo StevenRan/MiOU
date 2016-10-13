@@ -9,7 +9,7 @@ namespace MiOU.Entities.Beans
     public class BProductImage:BObject
     {
         public BProduct Product { get; set; }
-        public BImage Image { get; set; }
+        public BFile Image { get; set; }
         public bool IsMain { get; set; }
     }
 }

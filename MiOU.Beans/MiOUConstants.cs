@@ -19,5 +19,8 @@ namespace MiOU.Entities
         public const string USER_DISABLE_ADMIN = "没有权限禁用管理员账户";
         public const string USER_DISABLE_ACCOUNT = "没有权限禁用用户账户";
         public const string USER_ENABLE_ACCOUNT = "没有权限启用用户账户";
+
+        public const string FILE_NOT_EXIST = "文件{0}不存在";
+        public const string FILE_NAME_IS_EMPTY = "文件名称不能为空";
     }
 }

@@ -6,8 +6,10 @@ using System.Threading.Tasks;
 
 namespace MiOU.Entities.Beans
 {
-    public class BImage:BObject
+    public class BFile:BObject
     {
         public string Path { get; set; }
+        public string Ext { get; set; }
+        public int UserId { get; set; }
     }
 }

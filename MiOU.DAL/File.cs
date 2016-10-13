@@ -12,12 +12,14 @@ namespace MiOU.DAL
     using System;
     using System.Collections.Generic;
     
-    public partial class Image
+    public partial class File
     {
         public int Id { get; set; }
         public string Name { get; set; }
         public string Path { get; set; }
         public long Created { get; set; }
         public int UserId { get; set; }
+        public bool Enabled { get; set; }
+        public string Ext { get; set; }
     }
 }

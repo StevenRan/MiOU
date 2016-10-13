@@ -59,6 +59,7 @@
           <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="ParentId" Type="int" Nullable="false" />
           <Property Name="Order" Type="int" />
+          <Property Name="ProductCount" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="DeliveryType">
           <Key>
@@ -80,7 +81,7 @@
           <Property Name="Updated" Type="uint" Nullable="false" />
           <Property Name="UpdatedUserId" Type="int" Nullable="false" />
         </EntityType>
-        <EntityType Name="Image">
+        <EntityType Name="File">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
@@ -89,6 +90,8 @@
           <Property Name="Path" Type="varchar" MaxLength="200" Nullable="false" />
           <Property Name="Created" Type="uint" Nullable="false" />
           <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="Enabled" Type="bool" Nullable="false" />
+          <Property Name="Ext" Type="varchar" MaxLength="10" Nullable="false" />
         </EntityType>
         <EntityType Name="MaintenanceType">
           <Key>
@@ -182,6 +185,7 @@
           <Property Name="Address" Type="varchar" MaxLength="150" Nullable="false" />
           <Property Name="XPlot" Type="varchar" MaxLength="45" />
           <Property Name="YPlot" Type="varchar" MaxLength="45" />
+          <Property Name="Type" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="ProductImage">
           <Key>
@@ -273,7 +277,7 @@
           <EntitySet Name="Category" EntityType="Self.Category" Schema="MiOU" store:Type="Tables" />
           <EntitySet Name="DeliveryType" EntityType="Self.DeliveryType" Schema="MiOU" store:Type="Tables" />
           <EntitySet Name="EvaluatedPrice" EntityType="Self.EvaluatedPrice" Schema="MiOU" store:Type="Tables" />
-          <EntitySet Name="Image" EntityType="Self.Image" Schema="MiOU" store:Type="Tables" />
+          <EntitySet Name="File" EntityType="Self.File" Schema="MiOU" store:Type="Tables" />
           <EntitySet Name="MaintenanceType" EntityType="Self.MaintenanceType" Schema="MiOU" store:Type="Tables" />
           <EntitySet Name="Order" EntityType="Self.Order" Schema="MiOU" store:Type="Tables" />
           <EntitySet Name="OrderPayment" EntityType="Self.OrderPayment" Schema="MiOU" store:Type="Tables" />
@@ -299,17 +303,14 @@
           <EntitySet Name="Admin_Users" EntityType="MiOU.DAL.Admin_Users" />
           <EntitySet Name="Admin_Users_Actions" EntityType="MiOU.DAL.Admin_Users_Actions" />
           <EntitySet Name="Area" EntityType="MiOU.DAL.Area" />
-          <EntitySet Name="Category" EntityType="MiOU.DAL.Category" />
           <EntitySet Name="DeliveryType" EntityType="MiOU.DAL.DeliveryType" />
           <EntitySet Name="EvaluatedPrice" EntityType="MiOU.DAL.EvaluatedPrice" />
-          <EntitySet Name="Image" EntityType="MiOU.DAL.Image" />
           <EntitySet Name="MaintenanceType" EntityType="MiOU.DAL.MaintenanceType" />
           <EntitySet Name="Order" EntityType="MiOU.DAL.Order" />
           <EntitySet Name="OrderPayment" EntityType="MiOU.DAL.OrderPayment" />
           <EntitySet Name="PayCategory" EntityType="MiOU.DAL.PayCategory" />
           <EntitySet Name="PayType" EntityType="MiOU.DAL.PayType" />
           <EntitySet Name="PriceCategory" EntityType="MiOU.DAL.PriceCategory" />
-          <EntitySet Name="Product" EntityType="MiOU.DAL.Product" />
           <EntitySet Name="ProductImage" EntityType="MiOU.DAL.ProductImage" />
           <EntitySet Name="ProductMaintenance" EntityType="MiOU.DAL.ProductMaintenance" />
           <EntitySet Name="ProductPrice" EntityType="MiOU.DAL.ProductPrice" />
@@ -317,6 +318,9 @@
           <EntitySet Name="User" EntityType="MiOU.DAL.User" />
           <EntitySet Name="UserType" EntityType="MiOU.DAL.UserType" />
           <EntitySet Name="VipLevel" EntityType="MiOU.DAL.VipLevel" />
+          <EntitySet Name="Category" EntityType="MiOU.DAL.Category" />
+          <EntitySet Name="File" EntityType="MiOU.DAL.File" />
+          <EntitySet Name="Product" EntityType="MiOU.DAL.Product" />
         </EntityContainer>
         <EntityType Name="Admin_Actions">
           <Key>
@@ -364,15 +368,6 @@
           <Property Name="List" Type="Int16" Nullable="false" />
           <Property Name="Order" Type="Byte" Nullable="false" />
         </EntityType>
-        <EntityType Name="Category">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="ParentId" Type="Int32" Nullable="false" />
-          <Property Name="Order" Type="Int32" />
-        </EntityType>
         <EntityType Name="DeliveryType">
           <Key>
             <PropertyRef Name="Id" />
@@ -392,16 +387,6 @@
           <Property Name="UserId" Type="Int32" Nullable="false" />
           <Property Name="Updated" Type="Int64" Nullable="false" />
           <Property Name="UpdatedUserId" Type="Int32" Nullable="false" />
-        </EntityType>
-        <EntityType Name="Image">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="false" />
-          <Property Name="Path" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
-          <Property Name="Created" Type="Int64" Nullable="false" />
-          <Property Name="UserId" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="MaintenanceType">
           <Key>
@@ -469,32 +454,6 @@
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Name" Type="String" Nullable="false" MaxLength="45" FixedLength="false" Unicode="false" />
           <Property Name="Order" Type="Int32" Nullable="false" />
-        </EntityType>
-        <EntityType Name="Product">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Description" Type="String" Nullable="false" MaxLength="2000" FixedLength="false" Unicode="false" />
-          <Property Name="CategoryId" Type="Int32" Nullable="false" />
-          <Property Name="UserId" Type="Int32" Nullable="false" />
-          <Property Name="Created" Type="Int64" Nullable="false" />
-          <Property Name="Updated" Type="Int64" Nullable="false" />
-          <Property Name="Percentage" Type="Single" Nullable="false" />
-          <Property Name="Pledge" Type="Single" Nullable="false" />
-          <Property Name="Price" Type="Single" Nullable="false" />
-          <Property Name="Status" Type="Int32" Nullable="false" />
-          <Property Name="AuditUserId" Type="Int32" Nullable="false" />
-          <Property Name="AuditTime" Type="Int64" Nullable="false" />
-          <Property Name="AuditMessage" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="DeliveryType" Type="Int32" Nullable="false" />
-          <Property Name="RentType" Type="Int32" Nullable="false" />
-          <Property Name="Province" Type="Int32" Nullable="false" />
-          <Property Name="City" Type="Int32" Nullable="false" />
-          <Property Name="District" Type="Int32" Nullable="false" />
-          <Property Name="Address" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="false" />
-          <Property Name="XPlot" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
-          <Property Name="YPlot" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="ProductImage">
           <Key>
@@ -577,6 +536,56 @@
           <Property Name="Name" Type="String" Nullable="false" MaxLength="45" FixedLength="false" Unicode="false" />
           <Property Name="Description" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="false" />
         </EntityType>
+        <EntityType Name="Category">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ParentId" Type="Int32" Nullable="false" />
+          <Property Name="Order" Type="Int32" />
+          <Property Name="ProductCount" Type="Int32" Nullable="false" />
+          <Property Name="Ext" Type="String" Nullable="false" MaxLength="45" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="File">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="Path" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="Created" Type="Int64" Nullable="false" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="Enabled" Type="Boolean" Nullable="false" />
+          <Property Name="Ext" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="Product">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Description" Type="String" Nullable="false" MaxLength="2000" FixedLength="false" Unicode="false" />
+          <Property Name="CategoryId" Type="Int32" Nullable="false" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="Created" Type="Int64" Nullable="false" />
+          <Property Name="Updated" Type="Int64" Nullable="false" />
+          <Property Name="Percentage" Type="Single" Nullable="false" />
+          <Property Name="Pledge" Type="Single" Nullable="false" />
+          <Property Name="Price" Type="Single" Nullable="false" />
+          <Property Name="Status" Type="Int32" Nullable="false" />
+          <Property Name="AuditUserId" Type="Int32" Nullable="false" />
+          <Property Name="AuditTime" Type="Int64" Nullable="false" />
+          <Property Name="AuditMessage" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="DeliveryType" Type="Int32" Nullable="false" />
+          <Property Name="RentType" Type="Int32" Nullable="false" />
+          <Property Name="Province" Type="Int32" Nullable="false" />
+          <Property Name="City" Type="Int32" Nullable="false" />
+          <Property Name="District" Type="Int32" Nullable="false" />
+          <Property Name="Address" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="XPlot" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+          <Property Name="YPlot" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+          <Property Name="Type" Type="Int32" Nullable="false" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -633,16 +642,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Category">
-            <EntityTypeMapping TypeName="MiOU.DAL.Category">
-              <MappingFragment StoreEntitySet="Category">
-                <ScalarProperty Name="Order" ColumnName="Order" />
-                <ScalarProperty Name="ParentId" ColumnName="ParentId" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="DeliveryType">
             <EntityTypeMapping TypeName="MiOU.DAL.DeliveryType">
               <MappingFragment StoreEntitySet="DeliveryType">
@@ -661,17 +660,6 @@
                 <ScalarProperty Name="Created" ColumnName="Created" />
                 <ScalarProperty Name="PriceCategory" ColumnName="PriceCategory" />
                 <ScalarProperty Name="Price" ColumnName="Price" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Image">
-            <EntityTypeMapping TypeName="MiOU.DAL.Image">
-              <MappingFragment StoreEntitySet="Image">
-                <ScalarProperty Name="UserId" ColumnName="UserId" />
-                <ScalarProperty Name="Created" ColumnName="Created" />
-                <ScalarProperty Name="Path" ColumnName="Path" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -745,33 +733,6 @@
               <MappingFragment StoreEntitySet="PriceCategory">
                 <ScalarProperty Name="Order" ColumnName="Order" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Product">
-            <EntityTypeMapping TypeName="MiOU.DAL.Product">
-              <MappingFragment StoreEntitySet="Product">
-                <ScalarProperty Name="YPlot" ColumnName="YPlot" />
-                <ScalarProperty Name="XPlot" ColumnName="XPlot" />
-                <ScalarProperty Name="Address" ColumnName="Address" />
-                <ScalarProperty Name="District" ColumnName="District" />
-                <ScalarProperty Name="City" ColumnName="City" />
-                <ScalarProperty Name="Province" ColumnName="Province" />
-                <ScalarProperty Name="RentType" ColumnName="RentType" />
-                <ScalarProperty Name="DeliveryType" ColumnName="DeliveryType" />
-                <ScalarProperty Name="AuditMessage" ColumnName="AuditMessage" />
-                <ScalarProperty Name="AuditTime" ColumnName="AuditTime" />
-                <ScalarProperty Name="AuditUserId" ColumnName="AuditUserId" />
-                <ScalarProperty Name="Status" ColumnName="Status" />
-                <ScalarProperty Name="Price" ColumnName="Price" />
-                <ScalarProperty Name="Pledge" ColumnName="Pledge" />
-                <ScalarProperty Name="Percentage" ColumnName="Percentage" />
-                <ScalarProperty Name="Updated" ColumnName="Updated" />
-                <ScalarProperty Name="Created" ColumnName="Created" />
-                <ScalarProperty Name="UserId" ColumnName="UserId" />
-                <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -860,6 +821,58 @@
               <MappingFragment StoreEntitySet="VipLevel">
                 <ScalarProperty Name="Description" ColumnName="Description" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Category">
+            <EntityTypeMapping TypeName="MiOU.DAL.Category">
+              <MappingFragment StoreEntitySet="Category">
+                <ScalarProperty Name="ProductCount" ColumnName="ProductCount" />
+                <ScalarProperty Name="Order" ColumnName="Order" />
+                <ScalarProperty Name="ParentId" ColumnName="ParentId" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="File">
+            <EntityTypeMapping TypeName="MiOU.DAL.File">
+              <MappingFragment StoreEntitySet="File">
+                <ScalarProperty Name="Ext" ColumnName="Ext" />
+                <ScalarProperty Name="Enabled" ColumnName="Enabled" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Created" ColumnName="Created" />
+                <ScalarProperty Name="Path" ColumnName="Path" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Product">
+            <EntityTypeMapping TypeName="MiOU.DAL.Product">
+              <MappingFragment StoreEntitySet="Product">
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="YPlot" ColumnName="YPlot" />
+                <ScalarProperty Name="XPlot" ColumnName="XPlot" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="District" ColumnName="District" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="Province" ColumnName="Province" />
+                <ScalarProperty Name="RentType" ColumnName="RentType" />
+                <ScalarProperty Name="DeliveryType" ColumnName="DeliveryType" />
+                <ScalarProperty Name="AuditMessage" ColumnName="AuditMessage" />
+                <ScalarProperty Name="AuditTime" ColumnName="AuditTime" />
+                <ScalarProperty Name="AuditUserId" ColumnName="AuditUserId" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
+                <ScalarProperty Name="Pledge" ColumnName="Pledge" />
+                <ScalarProperty Name="Percentage" ColumnName="Percentage" />
+                <ScalarProperty Name="Updated" ColumnName="Updated" />
+                <ScalarProperty Name="Created" ColumnName="Created" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

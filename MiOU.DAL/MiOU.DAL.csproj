@@ -72,7 +72,7 @@
     <Compile Include="EvaluatedPrice.cs">
       <DependentUpon>MiOUModal.tt</DependentUpon>
     </Compile>
-    <Compile Include="Image.cs">
+    <Compile Include="File.cs">
       <DependentUpon>MiOUModal.tt</DependentUpon>
     </Compile>
     <Compile Include="MaintenanceType.cs">

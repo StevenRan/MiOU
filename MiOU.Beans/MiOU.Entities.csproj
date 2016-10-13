@@ -43,8 +43,9 @@
   <ItemGroup>
     <Compile Include="Beans\BArea.cs" />
     <Compile Include="Beans\BCategory.cs" />
+    <Compile Include="Beans\BCategoryStatistic.cs" />
     <Compile Include="Beans\BEvaluatedPrice.cs" />
-    <Compile Include="Beans\BImage.cs" />
+    <Compile Include="Beans\BFile.cs" />
     <Compile Include="Beans\BMaintenanceType.cs" />
     <Compile Include="Beans\BObject.cs" />
     <Compile Include="Beans\BOrder.cs" />
