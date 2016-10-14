@@ -35,5 +35,6 @@ namespace MiOU.Entities.Beans
         public string XPlot { get; set; }
         public string YPlot { get; set; }
         public List<BProductImage> Images { get; set; }
+        public List<BProductPrice> ProductPrices { get; set; }
     }
 }

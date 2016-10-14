@@ -72,6 +72,9 @@
     <Compile Include="EvaluatedPrice.cs">
       <DependentUpon>MiOUModal.tt</DependentUpon>
     </Compile>
+    <Compile Include="EvaluatedPriceCategory.cs">
+      <DependentUpon>MiOUModal.tt</DependentUpon>
+    </Compile>
     <Compile Include="File.cs">
       <DependentUpon>MiOUModal.tt</DependentUpon>
     </Compile>
@@ -128,6 +131,9 @@
       <DependentUpon>MiOUModal.tt</DependentUpon>
     </Compile>
     <Compile Include="UserType.cs">
+      <DependentUpon>MiOUModal.tt</DependentUpon>
+    </Compile>
+    <Compile Include="UserVip.cs">
       <DependentUpon>MiOUModal.tt</DependentUpon>
     </Compile>
     <Compile Include="VipLevel.cs">

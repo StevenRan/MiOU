@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MiOU.Entities.Beans
 {
-    public class BEvaluatedPrice
+    public class BEvaluatedPrice:BObject
     {
         public float Price { get; set; }
         public BPriceCategory Catetegory { get; set; }

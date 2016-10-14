@@ -19,6 +19,5 @@ namespace MiOU.DAL
         public int ParentId { get; set; }
         public Nullable<int> Order { get; set; }
         public int ProductCount { get; set; }
-        public string Ext { get; set; }
     }
 }

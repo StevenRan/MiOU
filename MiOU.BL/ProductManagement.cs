@@ -57,7 +57,7 @@ namespace MiOU.BL
             }
         }
 
-        public bool AuditProduct(int productId, int status, string message)
+        public bool AuditProduct(int productId, int status, string message,float ePrice,float percentage)
         {
             bool ret = false;
             if (string.IsNullOrEmpty(message))
@@ -97,10 +97,46 @@ namespace MiOU.BL
                 product.AuditMessage = message;
                 product.AuditTime = DateTimeUtil.ConvertDateTimeToInt(DateTime.Now);
                 product.AuditUserId = CurrentLoginUser.User.Id;
+                product.EvaluatedPercentage = percentage;
+                product.EvaluatedPrice = ePrice;
                 db.SaveChanges();
+                GenerateProductPrice(product, db);
                 ret = true;
             }
             return ret;
+        }
+
+        /// <summary>
+        /// After the product is audited, the product prices should be automatically generated
+        /// </summary>
+        /// <param name="product"></param>
+        /// <param name="db"></param>
+        private void GenerateProductPrice(Product product,MiOUEntities db)
+        {
+            List<ProductPrice> prices = (from p in db.ProductPrice where p.EvaluatedPriceId==0 select p).ToList<ProductPrice>();
+            if(prices.Count==0)
+            {
+                return;
+            }
+
+            int[] priceCategories = (from cate in prices select cate.PriceCategory).ToArray<int>();
+            float rPrice = product.EvaluatedPrice * product.EvaluatedPercentage;
+            int ePriceCatge = (from epc in db.EvaluatedPriceCategory where epc.StartPrice <= rPrice && epc.EndPrice<rPrice select epc.Id).FirstOrDefault<int>();
+            if(ePriceCatge==0)
+            {
+                return;
+            }
+
+            List<EvaluatedPrice> eprices = (from eprice in db.EvaluatedPrice where eprice.EvaluatedPriceCategory==ePriceCatge && priceCategories.Contains(eprice.PriceCategory) select eprice).ToList<EvaluatedPrice>();
+            foreach(EvaluatedPrice eprice in eprices)
+            {
+                ProductPrice price = (from pdtPrice in prices where pdtPrice.ProductId == product.Id && pdtPrice.PriceCategory == eprice.PriceCategory select pdtPrice).FirstOrDefault<ProductPrice>();
+                if (price != null)
+                {
+                    price.EvaluatedPriceId = eprice.Id;
+                    price.Price = eprice.Price;                  
+                }
+            }
         }
 
         public void CreateProduct(BProduct model)
@@ -153,6 +189,10 @@ namespace MiOU.BL
             {
                 throw new MiOUException("产品图片至少三张");
             }
+            if(model.ProductPrices==null || model.ProductPrices.Count<=0)
+            {
+                throw new MiOUException("产品的租赁租价方式至少一种");
+            }
             MiOUEntities db = null;
             try
             {
@@ -202,6 +242,26 @@ namespace MiOU.BL
                         db.ProductImage.Add(file);
                     }
 
+                    //save product price options
+                    foreach(BProductPrice price in model.ProductPrices)
+                    {
+                        if (price.Category == null || price.Category.Id <= 0)
+                        {
+                            continue;
+                        }
+                        ProductPrice pPrice = new ProductPrice()
+                        {
+                            Created = DateTimeUtil.ConvertDateTimeToInt(DateTime.Now),
+                            EvaluatedPriceId = 0,
+                            Price = 0,
+                            ProductCategoryId = price.Category.Id,
+                            PriceCategory = price.Category.Id,
+                            ProductId = product.Id,
+                            UserId = CurrentLoginUser.User.Id
+
+                        };
+                        db.ProductPrice.Add(pPrice);
+                    }
                     db.SaveChanges();
                 }
                 return;
@@ -218,6 +278,94 @@ namespace MiOU.BL
                 }
             }
             return;
+        }
+
+        /// <summary>
+        /// Gets product price options
+        /// </summary>
+        /// <param name="productId"></param>
+        /// <returns></returns>
+        public List<BProductPrice> GetProductPrices(int productId)
+        {
+            List<BProductPrice> prices = null;
+            using (MiOUEntities db = new MiOUEntities())
+            {
+                var tmp = from price in db.ProductPrice
+                          join cate in db.PriceCategory on price.PriceCategory equals cate.Id into lcate
+                          from llcate in lcate.DefaultIfEmpty()
+                          join eprice in db.EvaluatedPrice on price.EvaluatedPriceId equals eprice.Id into leprice
+                          from lleprice in leprice.DefaultIfEmpty()
+                          where price.ProductId == productId
+                          orderby price.Id ascending
+                          select new BProductPrice
+                          {
+                              PriceCategory = new BPriceCategory() { Id = llcate.Id, Created = 0, Name = llcate.Name, Order = llcate.Order },
+                              Price = price.Price,
+                              EPrice = new BEvaluatedPrice() { Price = lleprice != null ? lleprice.Price : 0, Id= lleprice != null ? lleprice.Id : 0 }
+                          };
+
+                prices = tmp.ToList<BProductPrice>();
+            }
+            return prices;
+        }
+
+        /// <summary>
+        /// Adds new product price options
+        /// </summary>
+        /// <param name="prices"></param>
+        public void AddProductPrices(int productId,List<BProductPrice> prices)
+        {
+            MiOUEntities db = null;
+            try
+            {
+                db = new MiOUEntities();
+                Product dbProduct = (from p in db.Product where p.Id == productId select p).FirstOrDefault<Product>();
+                if (dbProduct == null)
+                {
+                    throw new MiOUException(string.Format("编号为{0}的产品不存在", productId));
+                }
+                List<BProductPrice> existedPrices = GetProductPrices(productId);               
+                foreach (BProductPrice p in prices)
+                {
+                    if (p.PriceCategory == null || p.PriceCategory.Id <= 0)
+                    {
+                        continue;
+                    }
+
+                    var ep = (from pp in existedPrices where pp.PriceCategory.Id == p.PriceCategory.Id select pp).FirstOrDefault<BProductPrice>();
+                    if (ep != null)
+                    {
+                        continue;
+                    }
+
+                    ProductPrice dbPrice = new ProductPrice()
+                    {
+                        Created = DateTimeUtil.ConvertDateTimeToInt(DateTime.Now),
+                        EvaluatedPriceId = 0,
+                        PriceCategory = p.PriceCategory.Id,
+                        ProductId = productId,
+                        UserId = CurrentLoginUser.User.Id
+                    };
+
+                    db.ProductPrice.Add(dbPrice);
+                }
+                db.SaveChanges();
+                if (dbProduct.Status==1)
+                {
+                    GenerateProductPrice(dbProduct, db);
+                }                
+            }
+            catch (Exception ex)
+            {
+                logger.Fatal(ex);
+            }
+            finally
+            {
+                if(db!=null)
+                {
+                    db.Dispose();
+                }
+            }
         }
 
         /// <summary>

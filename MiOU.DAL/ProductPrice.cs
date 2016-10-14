@@ -16,10 +16,11 @@ namespace MiOU.DAL
     {
         public int Id { get; set; }
         public int ProductId { get; set; }
+        public int PriceCategory { get; set; }
         public int ProductCategoryId { get; set; }
         public int EvaluatedPriceId { get; set; }
         public float Price { get; set; }
-        public int Created { get; set; }
+        public long Created { get; set; }
         public int UserId { get; set; }
     }
 }

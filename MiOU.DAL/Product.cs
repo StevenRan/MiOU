@@ -27,6 +27,8 @@ namespace MiOU.DAL
         public int AuditUserId { get; set; }
         public long AuditTime { get; set; }
         public string AuditMessage { get; set; }
+        public float EvaluatedPrice { get; set; }
+        public float EvaluatedPercentage { get; set; }
         public int DeliveryType { get; set; }
         public int RentType { get; set; }
         public int Province { get; set; }
