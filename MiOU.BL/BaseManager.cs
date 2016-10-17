@@ -12,6 +12,7 @@ namespace MiOU.BL
 {
     public class BaseManager
     {
+        public static object o = new object();
         protected log4net.ILog logger;
         public BUser CurrentLoginUser { get; private set; }
         public BaseManager()
@@ -224,36 +225,188 @@ namespace MiOU.BL
             return user;
         }
 
-        public List<Area> GetAreas(int parentId)
+        public List<BArea> GetAreas(int parentId)
         {
-            List<Area> areas = null;
+            List<BArea> areas = null;
             using (MiOUEntities db = new MiOUEntities())
             {
-                var tmp = from a in db.Area select a;
+                var tmp = from a in db.Area select new BArea { Name= a.Name, Id=a.Id,Parent= new BArea { Id= a.Upid } };
                 if (parentId > 0)
                 {
-                    tmp = tmp.Where(a => a.Upid == parentId);
+                    tmp = tmp.Where(a => a.Parent.Id == parentId);
                 }
                 else
                 {
                     tmp = tmp.Where(a => a.Level == 1);
                 }
 
-                areas = tmp.OrderBy(a => a.Id).ToList<Area>();
+                areas = tmp.OrderBy(a => a.Id).ToList<BArea>();
             }
             return areas;
         }
 
-        public List<UserType> GetUserTypes()
+        public List<BUserType> GetUserTypes()
         {
-            List<UserType> types = null;
+            List<BUserType> types = null;
             using (MiOUEntities db = new MiOUEntities())
             {
-                types = (from t in db.UserType orderby t.Id select t).ToList<UserType>();
+                types = (from t in db.UserType orderby t.Id select new BUserType { Id=t.Id, Name=t.Name }).ToList<BUserType>();
             }
             return types;
         }
 
+        public List<BCategory> GetCategories(int parentId)
+        {
+            if(parentId<0)
+            {
+                parentId = 0;
+            }
+            List<BCategory> categories = null;
+            using (MiOUEntities db = new MiOUEntities())
+            {
+                var tmp = from c in db.Category where c.ParentId==parentId orderby c.Order select new BCategory { Id = c.Id, Name = c.Name, Order = c.Order != null ? (int)c.Order : 0 };
+                categories = tmp.ToList<BCategory>();
+            }
+            return categories;
+        }
+        public List<BPriceCategory> GetPriceCategories()
+        {
+            List<BPriceCategory> categories = null;
+            using (MiOUEntities db = new MiOUEntities())
+            {
+                var tmp = from c in db.PriceCategory orderby c.Order select new BPriceCategory { Name=c.Name,Id=c.Id, Order=c.Order };
+                categories = tmp.ToList<BPriceCategory>();
+            }
+                return categories;
+        }
+
+        public List<BSelType> GetDeliveryTypes()
+        {
+            List<BSelType> dTypes = null;
+            using (MiOUEntities db = new MiOUEntities())
+            {
+                var tmp = from d in db.DeliveryType
+                          join cb in db.User on d.CreatedBy equals cb.Id into lcb
+                          from llcb in lcb.DefaultIfEmpty()
+                          join ub in db.User on d.UpdatedBy equals ub.Id into lub
+                          from llub in lub.DefaultIfEmpty()
+                          orderby d.Id ascending
+                          select new BSelType
+                          {
+                              Id=d.Id,
+                              Name=d.Name,
+                              Created=d.Created,
+                              Updated=d.Updated,
+                              CreatedBy = new BUser { User = llcb },
+                              UpdatedBy = new BUser { User = llub }
+                          };
+
+                dTypes = tmp.ToList<BSelType>();
+            }
+            return dTypes;
+        }
+
+        public List<BPayType> GetPayTypes()
+        {
+            List<BPayType> types = null;
+            using (MiOUEntities db = new MiOUEntities())
+            {
+                var tmp = from d in db.PayType
+                          select new BPayType
+                          {
+                              Id=d.Id,
+                              Name=d.Name
+                          };
+                types = tmp.ToList<BPayType>();
+            }
+            return types;
+        }
+
+        public List<BPayCategory> GetPayCategories()
+        {
+            List<BPayCategory> cates = null;
+            using (MiOUEntities db = new MiOUEntities())
+            {
+                var tmp = from d in db.PayCategory
+                          select new BPayCategory
+                          {
+                              Id = d.Id,
+                              Name = d.Name
+                          };
+
+                cates = tmp.ToList<BPayCategory>();
+            }
+            return cates;
+        }
+
+        public List<BObject> GetRentTypes()
+        {
+            List<BObject> types = null;
+            using (MiOUEntities db = new MiOUEntities())
+            {
+                var tmp = from d in db.RentType
+                          select new BObject
+                          {
+                              Id = d.Id,
+                              Name = d.Name
+                          };
+
+                types = tmp.ToList<BObject>();
+            }
+            return types;
+        }
+        public List<BMaintenanceType> GetMaintenanceTypes()
+        {
+            List<BMaintenanceType> dTypes = null;
+            using (MiOUEntities db = new MiOUEntities())
+            {
+                var tmp = from d in db.MaintenanceType
+                          join cb in db.User on d.CreatedBy equals cb.Id into lcb
+                          from llcb in lcb.DefaultIfEmpty()
+                          join ub in db.User on d.UpdatedBy equals ub.Id into lub
+                          from llub in lub.DefaultIfEmpty()
+                          orderby d.Id ascending
+                          select new BMaintenanceType
+                          {
+                              Id = d.Id,
+                              Name = d.Name,
+                              Description=d.Description,
+                              CreatedBy = new BUser { User = llcb },
+                              UpdatedBy = new BUser { User = llub }
+                          };
+
+                dTypes = tmp.ToList<BMaintenanceType>();
+            }
+            return dTypes;
+        }
+        public List<BVIPLevel> GetVipLevels()
+        {
+            List<BVIPLevel> vips = null;
+            using (MiOUEntities db = new MiOUEntities())
+            {
+                var tmp = from c in db.VipLevel
+                          join cb in db.User on c.CreatedBy equals cb.Id into lcb
+                          from llcb in lcb.DefaultIfEmpty()
+                          join ub in db.User on c.UpdatedBy equals ub.Id into lub
+                          from llub in lub.DefaultIfEmpty()
+                          orderby c.Start ascending
+                          select new BVIPLevel
+                          {
+                              Id = c.Id,
+                              Name = c.Name,
+                              Description = c.Description,
+                              Created = c.Created,
+                              Updated = c.Updated,
+                              CreatedBy = new BUser { User = llcb },
+                              UpdatedBy = new BUser { User = llub },
+                              CurrencyAmount = c.CurrencyAmount
+                          };
+
+                vips = tmp.ToList<BVIPLevel>();
+
+            }
+            return vips;
+        }
         protected void SyncObjectProperties(object o1, object o2)
         {
             if (o1 == null || o2 == null)

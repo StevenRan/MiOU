@@ -7,6 +7,7 @@ using MiOU.Entities.Beans;
 using MiOU.Entities.Exceptions;
 using MiOU.Entities;
 using MiOU.DAL;
+using MiOU.Util;
 namespace MiOU.BL
 {
     public class UserManagement:BaseManager
@@ -38,10 +39,78 @@ namespace MiOU.BL
             return true;
         }
 
-        public bool SetUserVIPLevel(int userId, BVIPLevel level)
+        public bool SetUserVIPLevel(int userId, int vipId)
         {
             bool ret = false;
-
+            using (MiOUEntities db = new MiOUEntities())
+            {
+                User dbUser = (from u in db.User where u.Id == userId select u).FirstOrDefault<User>();
+                if (dbUser == null)
+                {
+                    throw new MiOUException(string.Format("编号为{0}的用户不存在", userId));
+                }
+                if (CurrentLoginUser.IsAdmin)
+                {
+                    if (!CurrentLoginUser.Permission.SET_USER_LEVEL)
+                    {
+                        throw new MiOUException("没有权限设置用户的VIP等级");
+                    }
+                }
+                else
+                {
+                    if (CurrentLoginUser.User.Id != userId)
+                    {
+                        throw new MiOUException("没有权限执行此操作");
+                    }
+                }
+                VipLevel vip = (from v in db.VipLevel where v.Id == vipId select v).FirstOrDefault<VipLevel>();
+                if (vip == null)
+                {
+                    throw new MiOUException(string.Format("编号为{0}的VIP不存在", vipId));
+                }
+                if(dbUser.CurrencyAmount<vip.CurrencyAmount)
+                {
+                    throw new MiOUException("藕币不足，不能兑换");
+                }
+                int days = 30;
+                if (vip.Expired > 0)
+                {
+                    days = vip.Expired;
+                }
+                long dateTimeNow = DateTimeUtil.ConvertDateTimeToInt(DateTime.Now);
+                List<UserVip> allExistedVips = (from uvip in db.UserVip where uvip.UserId == userId select uvip).ToList<UserVip>();
+                List<UserVip> existedVips = (from uvip in allExistedVips where uvip.UserId==userId && uvip.VipLevelId==vipId && (vip.Expired> dateTimeNow || vip.Expired==0) select uvip).ToList<UserVip>();
+                if(existedVips.Count>0)
+                {
+                    throw new MiOUException("已经兑换过此等级VIP,不能再次兑换");
+                }
+                List<UserVip> l = (from v in existedVips where v.CurrencyAmount > vip.CurrencyAmount select v).ToList<UserVip>();
+                if(l.Count>0)
+                {
+                    throw new MiOUException("只能兑换比当前等级更高的VIP");
+                }
+                UserVip uVip = new UserVip() { Created = DateTimeUtil.ConvertDateTimeToInt(DateTime.Now), CurrencyAmount = vip.CurrencyAmount, UserId = userId, VipLevelId = vipId };
+                uVip.Expired =0 ;//uVip.Created + (days * 3600 * 24);
+                db.UserVip.Add(uVip);
+                db.SaveChanges();
+                lock(o)
+                {
+                    dbUser.CurrencyAmount -= vip.CurrencyAmount;
+                    db.SaveChanges();
+                    UseCurrencyHistory history = new UseCurrencyHistory();
+                    history.Amount = vip.CurrencyAmount;
+                    history.Category = 1;
+                    history.Created = DateTimeUtil.ConvertDateTimeToInt(DateTime.Now);
+                    history.CreatedBy = CurrentLoginUser.User.Id;
+                    history.Description = "兑换"+vip.Name+",使用了"+vip.CurrencyAmount+"藕币";
+                    history.Type = 1;
+                    history.Updated = 0;
+                    history.UpdatedBy = 0;
+                    db.UseCurrencyHistory.Add(history);
+                    db.SaveChanges();
+                    ret = true;
+                }
+            }
             return ret;
         }
 

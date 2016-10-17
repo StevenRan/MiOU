@@ -324,6 +324,10 @@ namespace MiOU.BL
                 {
                     throw new MiOUException(string.Format("编号为{0}的产品不存在", productId));
                 }
+                if(!CurrentLoginUser.IsAdmin && CurrentLoginUser.User.Id!=dbProduct.UserId)
+                {
+                    throw new MiOUException("只有管理员和藕主才可以添加藕品价格种类");
+                }
                 List<BProductPrice> existedPrices = GetProductPrices(productId);               
                 foreach (BProductPrice p in prices)
                 {

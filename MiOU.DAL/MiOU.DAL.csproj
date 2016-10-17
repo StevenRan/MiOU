@@ -127,6 +127,9 @@
     <Compile Include="RentType.cs">
       <DependentUpon>MiOUModal.tt</DependentUpon>
     </Compile>
+    <Compile Include="UseCurrencyHistory.cs">
+      <DependentUpon>MiOUModal.tt</DependentUpon>
+    </Compile>
     <Compile Include="User.cs">
       <DependentUpon>MiOUModal.tt</DependentUpon>
     </Compile>

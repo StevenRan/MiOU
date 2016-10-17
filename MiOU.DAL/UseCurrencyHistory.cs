@@ -12,18 +12,16 @@ namespace MiOU.DAL
     using System;
     using System.Collections.Generic;
     
-    public partial class VipLevel
+    public partial class UseCurrencyHistory
     {
         public int Id { get; set; }
-        public string Name { get; set; }
+        public float Amount { get; set; }
+        public int Type { get; set; }
+        public int Category { get; set; }
         public string Description { get; set; }
-        public float Start { get; set; }
-        public float End { get; set; }
         public long Created { get; set; }
         public int CreatedBy { get; set; }
         public int Updated { get; set; }
         public int UpdatedBy { get; set; }
-        public float CurrencyAmount { get; set; }
-        public int Expired { get; set; }
     }
 }

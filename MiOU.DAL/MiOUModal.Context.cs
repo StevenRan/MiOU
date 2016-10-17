@@ -31,10 +31,8 @@ namespace MiOU.DAL
         public DbSet<Admin_Users_Actions> Admin_Users_Actions { get; set; }
         public DbSet<Area> Area { get; set; }
         public DbSet<Category> Category { get; set; }
-        public DbSet<DeliveryType> DeliveryType { get; set; }
         public DbSet<EvaluatedPriceCategory> EvaluatedPriceCategory { get; set; }
         public DbSet<File> File { get; set; }
-        public DbSet<MaintenanceType> MaintenanceType { get; set; }
         public DbSet<Order> Order { get; set; }
         public DbSet<OrderPayment> OrderPayment { get; set; }
         public DbSet<PayCategory> PayCategory { get; set; }
@@ -44,11 +42,14 @@ namespace MiOU.DAL
         public DbSet<ProductImage> ProductImage { get; set; }
         public DbSet<ProductMaintenance> ProductMaintenance { get; set; }
         public DbSet<RentType> RentType { get; set; }
-        public DbSet<User> User { get; set; }
         public DbSet<UserType> UserType { get; set; }
         public DbSet<UserVip> UserVip { get; set; }
-        public DbSet<VipLevel> VipLevel { get; set; }
         public DbSet<EvaluatedPrice> EvaluatedPrice { get; set; }
         public DbSet<ProductPrice> ProductPrice { get; set; }
+        public DbSet<UseCurrencyHistory> UseCurrencyHistory { get; set; }
+        public DbSet<User> User { get; set; }
+        public DbSet<DeliveryType> DeliveryType { get; set; }
+        public DbSet<MaintenanceType> MaintenanceType { get; set; }
+        public DbSet<VipLevel> VipLevel { get; set; }
     }
 }

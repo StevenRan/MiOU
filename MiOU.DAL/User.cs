@@ -34,5 +34,6 @@ namespace MiOU.DAL
         public string YPlot { get; set; }
         public int Status { get; set; }
         public string Phone { get; set; }
+        public float CurrencyAmount { get; set; }
     }
 }

@@ -6,8 +6,10 @@ using System.Threading.Tasks;
 
 namespace MiOU.Entities.Beans
 {
-    public class BMaintenanceType
+    public class BMaintenanceType:BObject
     {
         public string Description { get; set; }
+        public BUser CreatedBy { get; set; }
+        public BUser UpdatedBy { get; set; }
     }
 }

@@ -10,5 +10,6 @@ namespace MiOU.Entities.Beans
     {
         public List<BArea> Chindren { get; set; }
         public BArea Parent { get; set; }
+        public int Level { get; set; }
     }
 }

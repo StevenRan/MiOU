@@ -6,13 +6,10 @@ using System.Threading.Tasks;
 
 namespace MiOU.Entities.Beans
 {
-    public class BVIPLevel:BObject
+    public class BSelType:BObject
     {
-        public string Description { get; set; }
         public BUser CreatedBy { get; set; }
         public BUser UpdatedBy { get; set; }
-        public float Start { get; set; }
-        public float End { get; set; }
-        public float CurrencyAmount { get; set; }
+        public string Description { get; set; }
     }
 }

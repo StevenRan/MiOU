@@ -17,5 +17,9 @@ namespace MiOU.DAL
         public int Id { get; set; }
         public string Name { get; set; }
         public long Created { get; set; }
+        public int CreatedBy { get; set; }
+        public long Updated { get; set; }
+        public int UpdatedBy { get; set; }
+        public string Description { get; set; }
     }
 }
