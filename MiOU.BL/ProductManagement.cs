@@ -12,6 +12,7 @@ namespace MiOU.BL
 {
     public class ProductManagement:BaseManager
     {
+        private static object obj = new object();
         public ProductManagement(int userId) : base(userId)
         {
         }
@@ -107,6 +108,70 @@ namespace MiOU.BL
         }
 
         /// <summary>
+        /// 租赁出去 count未负整数，归还count为正整数
+        /// </summary>
+        /// <param name="productId"></param>
+        /// <param name="orderId"></param>
+        /// <param name="count"></param>
+        public void UpadteProductRepertory(int productId,int orderId,int count)
+        {
+            MiOUEntities db = null;
+            try
+            {              
+
+                lock(obj)
+                {
+                    db = new MiOUEntities();
+                    Product dbProduct = (from p in db.Product where p.Id == productId select p).FirstOrDefault<Product>();
+                    if (dbProduct == null)
+                    {
+                        throw new MiOUException("产品不存在");
+                    }
+                    if (orderId>0)
+                    {
+                        Order order = (from o in db.Order where o.Id == orderId select o).FirstOrDefault<Order>();
+                        if (order.ProductId != productId)
+                        {
+                            throw new MiOUException("订单的产品和要更新库存的产品不匹配");
+                        }
+
+                        if (order.UserId != CurrentLoginUser.User.Id && dbProduct.UserId!=CurrentLoginUser.User.Id && (!CurrentLoginUser.IsAdmin))
+                        {
+                            throw new MiOUException("没有权限执行此操作");
+                        }
+                    }
+                    else
+                    {
+                        if(dbProduct.UserId!=CurrentLoginUser.User.Id)
+                        {
+                            throw new MiOUException("没有权限执行此操作");
+                        }
+                    }
+
+                   
+                    dbProduct.Repertory = dbProduct.Repertory + count;
+                    db.SaveChanges();   
+                }
+            }
+            catch(MiOUException mex)
+            {
+                logger.Error(mex);
+                throw mex;
+            }
+            catch(Exception ex)
+            {
+                logger.Fatal(ex);
+            }
+            finally
+            {
+                if(db!=null)
+                {
+                    db.Dispose();
+                }
+            }
+        }
+
+        /// <summary>
         /// After the product is audited, the product prices should be automatically generated
         /// </summary>
         /// <param name="product"></param>
@@ -193,6 +258,10 @@ namespace MiOU.BL
             {
                 throw new MiOUException("产品的租赁租价方式至少一种");
             }
+            if(CurrentLoginUser.User.UserType==1 && model.Repertory>1)
+            {
+                throw new MiOUException("个人用户的藕品库存必须等于1，如有同种产品请新添加一个藕品");
+            }
             MiOUEntities db = null;
             try
             {
@@ -218,7 +287,8 @@ namespace MiOU.BL
                     Price = 0,
                     Updated = 0,
                     XPlot = "",
-                    YPlot = ""
+                    YPlot = "",
+                    Repertory=model.Repertory
                 };
                 db.Product.Add(product);
                 db.SaveChanges();

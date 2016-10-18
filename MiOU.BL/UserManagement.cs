@@ -21,6 +21,120 @@ namespace MiOU.BL
 
         }
 
+        /// <summary>
+        /// 搜索注册用户
+        /// </summary>
+        /// <param name="page"></param>
+        /// <param name="pageSize"></param>
+        /// <param name="nickName"></param>
+        /// <param name="email"></param>
+        /// <param name="userType"></param>
+        /// <param name="openType"></param>
+        /// <param name="gendar"></param>
+        /// <param name="startRegTime"></param>
+        /// <param name="endRegTime"></param>
+        /// <param name="vip"></param>
+        /// <param name="province"></param>
+        /// <param name="city"></param>
+        /// <param name="district"></param>
+        /// <returns></returns>
+        public List<BUser> SearchUsers(int page,int pageSize,string nickName,string email, int userType,int openType,int gendar,int startRegTime,int endRegTime,int vip,int province,int city,int district)
+        {
+            List<BUser> bUsers = null;
+            MiOUEntities db = null;
+            try
+            {
+                db = new MiOUEntities();
+                var tmp = from usr in db.User
+                          join pro in db.Area on usr.Province equals pro.Id into lpro
+                          from llpro in lpro.DefaultIfEmpty()
+                          join cit in db.Area on usr.City equals cit.Id into lcit
+                          from llcit in lcit.DefaultIfEmpty()
+                          join distri in db.Area on usr.District equals distri.Id into ldistri
+                          from lldistri in ldistri.DefaultIfEmpty()
+                          join type in db.UserType on usr.UserType equals type.Id into ltype
+                          from lltype in ltype.DefaultIfEmpty()
+                          join vipl in db.VipLevel on usr.VipLevel equals vipl.Id into lvip
+                          from llvip in lvip.DefaultIfEmpty()
+                          select new BUser
+                          {
+                              User=usr,
+                              City= llcit!=null? new BArea { Id=llcit.Id, Name=llcit.Name }:null,
+                              Province = llpro != null ? new BArea { Id = llpro.Id, Name = llpro.Name } : null,
+                              District = lldistri != null ? new BArea { Id = lldistri.Id, Name = lldistri.Name } : null,
+                              UserType= new BUserType { Id=lltype.Id,Name=lltype.Name },
+                              VIPLevel= llvip!=null? new BVIPLevel { Id=usr.VipLevel, Name= llvip.Name }:null,
+                          };
+
+                if(!string.IsNullOrEmpty(nickName))
+                {
+                    tmp = tmp.Where(u=>u.User.NickName.Contains(nickName));
+                }
+                if (!string.IsNullOrEmpty(email))
+                {
+                    tmp = tmp.Where(u => u.User.Email.Contains(email));
+                }
+                if(userType>0)
+                {
+                    tmp = tmp.Where(u => u.User.UserType == userType);
+                }
+                if (openType > 0)
+                {
+                    tmp = tmp.Where(u => u.User.ExternalUserType == openType);
+                }
+                if (province > 0)
+                {
+                    tmp = tmp.Where(u => u.User.Province == province);
+                }
+                if (city > 0)
+                {
+                    tmp = tmp.Where(u => u.User.City == city);
+                }
+                if (district > 0)
+                {
+                    tmp = tmp.Where(u => u.User.District == district);
+                }
+                if (startRegTime > 0)
+                {
+                    tmp = tmp.Where(u => u.User.RegTime >= startRegTime);
+                }
+                if (endRegTime > 0)
+                {
+                    tmp = tmp.Where(u => u.User.RegTime <= endRegTime);
+                }
+                tmp = tmp.Where(u => u.User.Gendar == gendar);
+
+                tmp = tmp.OrderBy(u => u.User.RegTime);
+                if (page==0)
+                {
+                    page = 1;
+                }
+                bUsers = tmp.Skip((page - 1) * pageSize).Take(pageSize).ToList<BUser>();
+            }
+            catch(MiOUException mex)
+            {
+                logger.Error(mex);
+                throw mex;
+            }
+            catch(Exception ex)
+            {
+                logger.Fatal(ex);
+            }
+            finally
+            {
+                if(db!=null)
+                {
+                    db.Dispose();
+                }
+            }
+            return bUsers;
+        }
+
+        /// <summary>
+        /// 判断昵称是否被用过
+        /// </summary>
+        /// <param name="nickName"></param>
+        /// <returns></returns>
         public bool IsNickExist(string nickName)
         {
             if(!string.IsNullOrEmpty(nickName))
@@ -30,6 +144,11 @@ namespace MiOU.BL
             return true;
         }
 
+        /// <summary>
+        /// 判断邮箱是否注册过
+        /// </summary>
+        /// <param name="email"></param>
+        /// <returns></returns>
         public bool IsEmailExist(string email)
         {
             if (!string.IsNullOrEmpty(email))
@@ -39,7 +158,13 @@ namespace MiOU.BL
             return true;
         }
 
-        public bool SetUserVIPLevel(int userId, int vipId)
+        /// <summary>
+        /// 兑换VIP等级
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="vipId"></param>
+        /// <returns></returns>
+        public bool ExchangeUserVIPLevel(int userId, int vipId)
         {
             bool ret = false;
             using (MiOUEntities db = new MiOUEntities())
@@ -114,71 +239,6 @@ namespace MiOU.BL
             return ret;
         }
 
-        /// <summary>
-        /// Set user account status
-        /// </summary>
-        /// <param name="userId"></param>
-        /// <param name="status">0 means active, otherwrise means disabled</param>
-        /// <returns></returns>
-        public bool SetUserStatus(int userId,int status)
-        {
-            bool ret = false;
-            BUser user = GetUserInfo(userId);
-            if(user==null)
-            {
-                throw new MiOUException(string.Format(MiOUConstants.USER_ID_NOT_EXIST,userId));
-            }
-            if(user.IsWebMaster)
-            {
-                throw new MiOUException(MiOUConstants.USER_DISABLE_WEBMASTER);
-            }
-            if(user.IsSuperAdmin && !CurrentLoginUser.IsWebMaster)
-            {
-                throw new MiOUException(MiOUConstants.USER_DISABLE_SUPERADMIN);
-            }
-            if(user.IsAdmin && (!CurrentLoginUser.IsSuperAdmin && !CurrentLoginUser.IsWebMaster))
-            {
-                throw new MiOUException(MiOUConstants.USER_DISABLE_ADMIN);
-            }
-            if(status==1 && (CurrentLoginUser.Permission==null || !CurrentLoginUser.Permission.ENABLE_USER))
-            {
-                throw new MiOUException(MiOUConstants.USER_ENABLE_ACCOUNT);
-            }
-            if (status == 0 && (CurrentLoginUser.Permission == null || !CurrentLoginUser.Permission.DISABLE_USER))
-            {
-                throw new MiOUException(MiOUConstants.USER_DISABLE_ACCOUNT);
-            }
-            MiOUEntities db = null;
-            try
-            {
-                db = new MiOUEntities();
-                User dbUser = (from u in db.User where u.Id==user.User.Id select u).FirstOrDefault<User>();               
-                if(dbUser==null)
-                {
-                    throw new MiOUException(string.Format(MiOUConstants.USER_ID_NOT_EXIST, user.User.Id));
-                }                
-
-                dbUser.Status = status;
-                db.SaveChanges();
-                ret = true;
-            }
-            catch(MiOUException mex)
-            {
-                logger.Error(mex);
-                throw mex;
-            }
-            catch(Exception ex)
-            {
-                logger.Fatal(ex);
-            }
-            finally
-            {
-                if(db!=null)
-                {
-                    db.Dispose();
-                }
-            }
-            return ret;
-        }
+       
     }
 }

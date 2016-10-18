@@ -12,7 +12,7 @@ namespace MiOU.BL
 {
     public class BaseManager
     {
-        public static object o = new object();
+        protected static object o = new object();
         protected log4net.ILog logger;
         public BUser CurrentLoginUser { get; private set; }
         public BaseManager()

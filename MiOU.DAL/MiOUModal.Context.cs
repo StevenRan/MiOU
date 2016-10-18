@@ -38,7 +38,6 @@ namespace MiOU.DAL
         public DbSet<PayCategory> PayCategory { get; set; }
         public DbSet<PayType> PayType { get; set; }
         public DbSet<PriceCategory> PriceCategory { get; set; }
-        public DbSet<Product> Product { get; set; }
         public DbSet<ProductImage> ProductImage { get; set; }
         public DbSet<ProductMaintenance> ProductMaintenance { get; set; }
         public DbSet<RentType> RentType { get; set; }
@@ -51,5 +50,7 @@ namespace MiOU.DAL
         public DbSet<DeliveryType> DeliveryType { get; set; }
         public DbSet<MaintenanceType> MaintenanceType { get; set; }
         public DbSet<VipLevel> VipLevel { get; set; }
+        public DbSet<CurrencyTransferCategory> CurrencyTransferCategory { get; set; }
+        public DbSet<Product> Product { get; set; }
     }
 }

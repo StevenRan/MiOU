@@ -38,5 +38,6 @@ namespace MiOU.DAL
         public string XPlot { get; set; }
         public string YPlot { get; set; }
         public int Type { get; set; }
+        public int Repertory { get; set; }
     }
 }

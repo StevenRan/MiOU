@@ -66,6 +66,9 @@
     <Compile Include="Category.cs">
       <DependentUpon>MiOUModal.tt</DependentUpon>
     </Compile>
+    <Compile Include="CurrencyTransferCategory.cs">
+      <DependentUpon>MiOUModal.tt</DependentUpon>
+    </Compile>
     <Compile Include="DeliveryType.cs">
       <DependentUpon>MiOUModal.tt</DependentUpon>
     </Compile>

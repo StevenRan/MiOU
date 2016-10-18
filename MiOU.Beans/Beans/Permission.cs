@@ -56,7 +56,9 @@ namespace MiOU.Entities.Beans
         [AdminActionAttribute(ID = 1, CategoryName = "用户管理", ActionDescription = "设置超级管理员")]
         public bool SET_USER_SUPER_ADMIN { get; set; }
 
-       
+        [Display(Name = "设置管理员")]
+        [AdminActionAttribute(ID = 1, CategoryName = "用户管理", ActionDescription = "设置管理员")]
+        public bool SET_USER_ADMIN { get; set; }
 
 
 

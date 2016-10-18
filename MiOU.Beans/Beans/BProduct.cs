@@ -14,8 +14,6 @@ namespace MiOU.Entities.Beans
     }
     public class BProduct:BObject
     {
-
-
         public string Description { get; set; }
         public BCategory Category { get; set; }
         public BUser User { get; set; }
@@ -36,5 +34,6 @@ namespace MiOU.Entities.Beans
         public string YPlot { get; set; }
         public List<BProductImage> Images { get; set; }
         public List<BProductPrice> ProductPrices { get; set; }
+        public int Repertory { get; set; }
     }
 }

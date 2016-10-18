@@ -18,8 +18,11 @@ namespace MiOU.Entities.Beans
         public bool IsWebMaster { get; set; }
         public bool IsSuperAdmin { get; set; }
         public bool IsAdmin { get; set; }
-        public Area Province { get; set; }
-        public Area City { get; set; }
-        public Area District { get; set; }
+        public BArea Province { get; set; }
+        public BArea City { get; set; }
+        public BArea District { get; set; }
+        public BUserType UserType { get; set; }
+        public string Gendar { get; set; }
+        public BVIPLevel VIPLevel { get; set; }
     }
 }

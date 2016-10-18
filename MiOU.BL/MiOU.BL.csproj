@@ -79,8 +79,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Admin\AdminUserManagement.cs" />
     <Compile Include="BaseManager.cs" />
     <Compile Include="IdentityConfig.cs" />
+    <Compile Include="OrderManagement.cs" />
     <Compile Include="PermissionManagement.cs" />
     <Compile Include="PersistentValueManager.cs" />
     <Compile Include="ProductManagement.cs" />
