@@ -39,5 +39,6 @@ namespace MiOU.DAL
         public string YPlot { get; set; }
         public int Type { get; set; }
         public int Repertory { get; set; }
+        public bool Locked { get; set; }
     }
 }

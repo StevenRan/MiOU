@@ -14,6 +14,7 @@ namespace MiOU.BL
     {
         protected static object o = new object();
         protected log4net.ILog logger;
+        protected string WebSitePhysicalDirectory = System.AppDomain.CurrentDomain.BaseDirectory;
         public BUser CurrentLoginUser { get; private set; }
         public BaseManager()
         {

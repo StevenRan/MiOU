@@ -31,7 +31,7 @@
         <EntityTypeShape EntityType="MiOU.DAL.MaintenanceType" Width="1.5" PointX="15.375" PointY="4.75" />
         <EntityTypeShape EntityType="MiOU.DAL.VipLevel" Width="1.5" PointX="7.375" PointY="14.75" />
         <EntityTypeShape EntityType="MiOU.DAL.CurrencyTransferCategory" Width="1.5" PointX="0.75" PointY="13.75" />
-        <EntityTypeShape EntityType="MiOU.DAL.Product" Width="1.5" PointX="2.75" PointY="13.75" />
+        <EntityTypeShape EntityType="MiOU.DAL.Product" Width="1.5" PointX="15.375" PointY="8.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

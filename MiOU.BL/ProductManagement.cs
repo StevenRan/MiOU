@@ -24,6 +24,10 @@ namespace MiOU.BL
 
         public void DeleteProductImages(int productId,List<int> images)
         {
+            if(productId<=0 || images==null || images.Count<=0)
+            {
+                return;
+            }
             using (MiOUEntities db = new MiOUEntities())
             {
                 Product product = (from pdt in db.Product where pdt.Id == productId select pdt).FirstOrDefault<Product>();
@@ -34,13 +38,13 @@ namespace MiOU.BL
                 bool delete = false;
                 if(product.UserId!=CurrentLoginUser.User.Id)
                 {
-                    if(!CurrentLoginUser.IsAdmin)
+                    if(CurrentLoginUser.IsAdmin && CurrentLoginUser.Permission.DELETE_PRODUCT_IMAGES)
                     {
-                        throw new MiOUException("只有管理员和产品所有者才能删除产品图片");
+                        delete = true;
                     }
                     else
                     {
-                        delete = true;
+                        throw new MiOUException("只有管理员和产品所有者才能删除产品图片");
                     }
                 }
                 else
@@ -54,6 +58,26 @@ namespace MiOU.BL
                     int[] ids = images.ToArray<int>();
                     List<MiOU.DAL.File> files = (from a in db.File where ids.Contains(a.Id) select a).ToList<MiOU.DAL.File>();
                     List<ProductImage> productImages = (from p in db.ProductImage where ids.Contains(p.ImageId) && p.ProductId==productId select p).ToList<ProductImage>();
+                    int[] fileIds = (from pi in productImages select pi.ImageId).ToArray<int>();
+                    if(fileIds!=null && fileIds.Length>0)
+                    {
+                        List<MiOU.DAL.File> toDeletedFiles = (from f in files where fileIds.Contains(f.Id) select f).ToList<MiOU.DAL.File>();
+                        if(toDeletedFiles.Count>0)
+                        {
+                            foreach(MiOU.DAL.File f in toDeletedFiles)
+                            {
+                                string fullFilePath = System.IO.Path.Combine(WebSitePhysicalDirectory, f.Path.Replace("/", "\\"));
+                                if(System.IO.File.Exists(fullFilePath))
+                                {
+                                    System.IO.File.Delete(fullFilePath);
+                                    if (!System.IO.File.Exists(fullFilePath))
+                                    {
+                                        db.File.Remove(f);
+                                    }
+                                } 
+                            }                            
+                        }
+                    }
                 }
             }
         }
@@ -202,6 +226,7 @@ namespace MiOU.BL
                     price.Price = eprice.Price;                  
                 }
             }
+            db.SaveChanges();
         }
 
         public void CreateProduct(BProduct model)
