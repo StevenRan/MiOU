@@ -3,14 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using MiOU.Entities;
 namespace MiOU.Entities.Beans
 {
-    public enum OrderStatus
-    {
-        CREATED=0,
-
-    }
+   
     public class BOrder:BObject
     {
         public string OrderNo { get; set; }
@@ -30,5 +26,6 @@ namespace MiOU.Entities.Beans
         public long ExtendEndTime { get; set; }
         public bool ExtenedApproved { get; set; }
         public List<BOrderPayment> Payments { get; set; }
+        public BPayType PayType { get; set; }
     }
 }

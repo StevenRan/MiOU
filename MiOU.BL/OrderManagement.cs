@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using MiOU.DAL;
+using MiOU.Entities;
 using MiOU.Entities.Beans;
 using MiOU.Entities.Exceptions;
 using MiOU.Util;
@@ -48,11 +49,13 @@ namespace MiOU.BL
         /// <param name="city"></param>
         /// <param name="district"></param>
         /// <param name="address"></param>
+        /// <param name="payType">Payment type, online payment, offline payment etc...</param>
         /// <returns>New Order Number</returns>
-        public string CreateOrder(int productId,int priceCategory,string description,DateTime? startDate,DateTime? endDate,string contact,string phone,int deliveryType,int rentType,int province,int city,int district,string address)
+        public BOrder CreateOrder(int productId,int priceCategory,string description,DateTime? startDate,DateTime? endDate,string contact,string phone,int deliveryType,int rentType,int province,int city,int district,string address,int payType)
         {
             string orderNo = null;
-            if(productId<=0)
+            BOrder order = null;
+            if (productId<=0)
             {
                 throw new MiOUException("请选择产品");
             }
@@ -175,6 +178,30 @@ namespace MiOU.BL
                 else
                 {
                     orderNo = newOrder.OrderNo;
+                    //going to created order payment record
+                    order = new BOrder()
+                    {
+                         ContactName= contact,
+                         ContactPhone=phone,
+                         Created=newOrder.Created,
+                         CreatedBy= new BUser() { User= CurrentLoginUser.User },
+                         Id= newOrder.Id,
+                         Description=description,
+                         EndTime=order.EndTime,
+                          StartTime=order.StartTime,
+                         EPrice=new BEvaluatedPrice() { },
+                         Name= order.Name,
+                         OrderNo=newOrder.OrderNo,
+                         Payments=new List<BOrderPayment>(),
+                         PriceCategory= new BPriceCategory() {Id= priceCategory },
+                         Product= new BProduct() { Id= productId },
+                         Status=(OrderStatus)newOrder.Status,
+                         Updated=0,
+                         UpdatedBy=null
+                    };
+
+                    PaymentManagement payMgt = new PaymentManagement(CurrentLoginUser);
+                    payMgt.GeneratePaymentRecord(ref order);
                 }
             }
             catch(MiOUException mex)
@@ -194,7 +221,7 @@ namespace MiOU.BL
                 }
             }
 
-            return orderNo;
+            return order;
         }
     }
 }

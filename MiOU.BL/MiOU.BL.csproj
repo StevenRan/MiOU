@@ -83,6 +83,7 @@
     <Compile Include="BaseManager.cs" />
     <Compile Include="IdentityConfig.cs" />
     <Compile Include="OrderManagement.cs" />
+    <Compile Include="PaymentManagement.cs" />
     <Compile Include="PermissionManagement.cs" />
     <Compile Include="PersistentValueManager.cs" />
     <Compile Include="ProductManagement.cs" />

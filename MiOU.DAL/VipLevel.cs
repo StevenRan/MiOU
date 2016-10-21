@@ -25,5 +25,6 @@ namespace MiOU.DAL
         public int UpdatedBy { get; set; }
         public float CurrencyAmount { get; set; }
         public int Expired { get; set; }
+        public float YajinPercentage { get; set; }
     }
 }

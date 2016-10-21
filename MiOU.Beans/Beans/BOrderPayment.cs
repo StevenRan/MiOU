@@ -13,5 +13,6 @@ namespace MiOU.Entities.Beans
         public BPayCategory PayCategory { get; set; }
         public bool Payed { get; set; }
         public long PayedTime { get; set; }
+         
     }
 }

@@ -22,5 +22,7 @@ namespace MiOU.DAL
         public bool Payed { get; set; }
         public long Created { get; set; }
         public long PayedTime { get; set; }
+        public float Amount { get; set; }
+        public int Status { get; set; }
     }
 }

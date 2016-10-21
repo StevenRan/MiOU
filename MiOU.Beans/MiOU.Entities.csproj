@@ -66,6 +66,7 @@
     <Compile Include="Beans\UserAdminAction.cs" />
     <Compile Include="Exceptions\MiOUException.cs" />
     <Compile Include="MiOUConstants.cs" />
+    <Compile Include="MiOUEnum.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
