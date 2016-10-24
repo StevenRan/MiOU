@@ -12,7 +12,7 @@ namespace MiOU.DAL
     using System;
     using System.Collections.Generic;
     
-    public partial class OrderPayment
+    public partial class Payment
     {
         public int Id { get; set; }
         public int OrderId { get; set; }
@@ -24,5 +24,6 @@ namespace MiOU.DAL
         public long PayedTime { get; set; }
         public float Amount { get; set; }
         public int Status { get; set; }
+        public long UpdatedTime { get; set; }
     }
 }

@@ -24,8 +24,8 @@ namespace MiOU.Entities.Beans
         public bool Extended { get; set; }
         public long ExtendTime { get; set; }
         public long ExtendEndTime { get; set; }
-        public bool ExtenedApproved { get; set; }
-        public List<BOrderPayment> Payments { get; set; }
+        public OrderExtendStatus ExtenedStatus { get; set; }
+        public List<BPayment> Payments { get; set; }
         public BPayType PayType { get; set; }
     }
 }

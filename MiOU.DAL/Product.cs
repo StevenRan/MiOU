@@ -15,9 +15,10 @@ namespace MiOU.DAL
     public partial class Product
     {
         public int Id { get; set; }
-        public string Description { get; set; }
         public int CategoryId { get; set; }
         public int UserId { get; set; }
+        public string Description { get; set; }
+        public string Name { get; set; }
         public long Created { get; set; }
         public long Updated { get; set; }
         public float Percentage { get; set; }

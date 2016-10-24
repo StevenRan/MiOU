@@ -6,13 +6,25 @@ using System.Threading.Tasks;
 
 namespace MiOU.Entities
 {
+    public enum SearchOrderType
+    {
+        ALL,
+        IN,
+        OUT
+    }
+    public enum OrderExtendStatus
+    {
+        APPLIED=0,
+        APPROVED=1,
+        REJECTED=2
+    }
     public enum OrderStatus
     {
         CREATED = 0,
         PRE_BOOKED = 1,
         BOOKED = 2,
         RENTING = 3,
-        RETURNED = 4,
+        RETURN_APPLIED = 4,
         COMPLETED = 5,
         CANCELED = 9
     }

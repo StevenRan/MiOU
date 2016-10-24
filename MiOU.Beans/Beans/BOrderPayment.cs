@@ -6,13 +6,14 @@ using System.Threading.Tasks;
 
 namespace MiOU.Entities.Beans
 {
-    public class BOrderPayment
+    public class BPayment:BObject
     {
         public BOrder Order { get; set; }
         public BPayType PayType { get; set; }
         public BPayCategory PayCategory { get; set; }
         public bool Payed { get; set; }
         public long PayedTime { get; set; }
-         
+        public PaymentStatus Status { get; set; }
+        public float Amount { get; set; }
     }
 }

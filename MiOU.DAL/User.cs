@@ -35,5 +35,6 @@ namespace MiOU.DAL
         public int Status { get; set; }
         public string Phone { get; set; }
         public float CurrencyAmount { get; set; }
+        public float AccountAmount { get; set; }
     }
 }

@@ -19,6 +19,7 @@ namespace MiOU.DAL
         public int ProductId { get; set; }
         public int PriceCategory { get; set; }
         public int PriceId { get; set; }
+        public int PayType { get; set; }
         public int Status { get; set; }
         public long Created { get; set; }
         public int UserId { get; set; }
@@ -29,9 +30,10 @@ namespace MiOU.DAL
         public long EndTime { get; set; }
         public string ContactName { get; set; }
         public string ContactPhone { get; set; }
-        public int Extended { get; set; }
+        public bool ExtendApplied { get; set; }
         public long ExtendTime { get; set; }
         public long ExtendEndTime { get; set; }
         public int ExtendApproved { get; set; }
+        public string ExtendRejectedMessage { get; set; }
     }
 }

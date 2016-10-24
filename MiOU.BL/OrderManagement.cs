@@ -27,9 +27,191 @@ namespace MiOU.BL
             return value.ToString();
         }
 
-        public List<BOrder> SearchOrders()
+        /// <summary>
+        /// Update order status
+        /// </summary>
+        /// <param name="state"></param>
+        /// <param name="orderNo"></param>
+        public void ChangeOrderStatus(OrderStatus state, string orderNo)
+        {
+            MiOUEntities db = null;
+            
+            try
+            {
+                db = new MiOUEntities();
+                Order dbOrder = (from o in db.Order where o.OrderNo==orderNo select o).FirstOrDefault<Order>();
+                if(dbOrder==null)
+                {
+                    throw new MiOUException("订单不存在");
+                }
+                Product dbProduct = (from p in db.Product where p.Id==dbOrder.ProductId select p).FirstOrDefault<Product>();
+                if(dbProduct==null)
+                {
+                    throw new MiOUException("订单的产品信息丢失");
+                }
+                if (CurrentLoginUser.IsAdmin)
+                {
+                    if(!CurrentLoginUser.Permission.EDIT_ORDER)
+                    {
+                        throw new MiOUException("您没有权限修改执行此操作");
+                    }
+                }
+                else
+                {
+                    switch(state)
+                    {
+                        case OrderStatus.CANCELED:
+                            break;
+                        case OrderStatus.PRE_BOOKED://付完定金
+                        case OrderStatus.BOOKED://付完押金
+                        case OrderStatus.RENTING://起租开始
+                        case OrderStatus.RETURN_APPLIED: //申请归还
+                            if (CurrentLoginUser.User.Id!=dbOrder.UserId)
+                            {
+                                throw new MiOUException("您没有权限修改执行此操作");
+                            }
+                            break;
+                        case OrderStatus.COMPLETED:
+                            //确认归还，租赁结束
+                            if(dbProduct.UserId!=CurrentLoginUser.User.Id)
+                            {
+                                throw new MiOUException("您没有权限确认藕品归还申请");
+                            }
+                            break;
+                        default:
+                            break;
+                    }
+                }
+                dbOrder.Status = (int)state;
+                db.SaveChanges();
+            }
+            catch(MiOUException mex)
+            {              
+                logger.Error(mex);
+                throw mex;
+            }
+            catch(Exception ex)
+            {
+                logger.Fatal(ex);
+            }
+            finally
+            {
+                if(db!=null)
+                {
+                    db.Dispose();
+                }
+            }
+        }
+
+        /// <summary>
+        /// Search orders
+        /// </summary>
+        /// <param name="type"></param>
+        /// <param name="orderNo"></param>
+        /// <param name="payType"></param>
+        /// <param name="userId"></param>
+        /// <param name="productId"></param>
+        /// <param name="status"></param>
+        /// <param name="startTime"></param>
+        /// <param name="endTime"></param>
+        /// <param name="page"></param>
+        /// <param name="pageSize"></param>
+        /// <returns></returns>
+        public List<BOrder> SearchOrders(SearchOrderType type,string orderNo, int payType, int userId, int productId, List<OrderStatus> status, int startTime, int endTime,int page,int pageSize)
         {
             List<BOrder> orders = null;
+            using (MiOUEntities db = new MiOUEntities())
+            {
+                var tmp = from o in db.Order
+                          join ptype in db.PayType on o.PayType equals ptype.Id into lptype
+                          from llptype in lptype.DefaultIfEmpty()
+                          join pcate in db.PriceCategory on o.PriceCategory equals pcate.Id into lpcate
+                          from llpcate in lpcate.DefaultIfEmpty()
+                          join pdt in db.Product on o.ProductId equals pdt.Id into lproduct
+                          from llproduct in lproduct.DefaultIfEmpty()
+                          select new BOrder
+                          {
+                              ContactName = o.ContactName,
+                              ContactPhone = o.ContactPhone,
+                              Created = o.Created,
+                              CreatedBy = new BUser { },
+                              Description = o.Description,
+                              EndTime = o.EndTime,
+                              Extended = o.ExtendApplied,
+                              ExtendEndTime = o.ExtendEndTime,
+                              ExtendTime = o.ExtendTime,
+                              EPrice = new BEvaluatedPrice { },
+                              Id = o.Id,
+                              OrderNo = o.OrderNo,
+                              ExtenedStatus = (OrderExtendStatus)o.ExtendApproved,
+                              StartTime = o.StartTime,
+                              Status = (OrderStatus)o.Status,
+                              Updated = o.Updated,
+                              UpdatedBy = new BUser { },
+                              Payments = new List<BPayment>(),
+                              Product = new BProduct { Id=llproduct.Id,Name=llproduct.Name,Description=llproduct.Description},
+                              PayType = new BPayType { Id = llptype.Id, Name = llptype.Name },
+                              PriceCategory = new BPriceCategory { Id =llpcate.Id,Name=llpcate.Name },
+                          };
+
+                if(!string.IsNullOrEmpty(orderNo))
+                {
+                    tmp = tmp.Where(o=>o.OrderNo==orderNo);
+                }
+                if(payType>0)
+                {
+                    tmp = tmp.Where(o=>o.PayType.Id==payType);
+                }
+               
+                if(userId>0)
+                {
+                    switch(type)
+                    {
+                        case SearchOrderType.ALL:
+                        case SearchOrderType.IN:
+                            tmp = tmp.Where(o => o.CreatedBy.User.Id == userId);
+                            break;
+                        case SearchOrderType.OUT:
+                            int[] productIds = (from p in db.Product where p.UserId == userId select p.Id).ToArray<int>();
+                            if(productIds!=null && productIds.Length>0)
+                            {
+                                tmp = tmp.Where(o => productIds.Contains(o.Product.Id));
+                            }
+                            break;
+                    }
+                    
+                }
+               
+                if (productId > 0)
+                {
+                    tmp = tmp.Where(o => o.Product.Id == productId);
+                }
+                if (status!=null && status.Count>0)
+                {
+                    int[] states =new int[status.Count];
+                    for(int i=0;i<status.Count;i++)
+                    {
+                        states[i] =(int)status[i];
+                    }
+
+                    tmp = tmp.Where(o => states.Contains((int)o.Status));
+                }
+                if(startTime>0)
+                {
+                    tmp = tmp.Where(o=>o.StartTime>=startTime);
+                }
+                if (endTime > 0)
+                {
+                    tmp = tmp.Where(o => o.EndTime < endTime);
+                }
+
+                if(page<=0)
+                {
+                    page = 1;
+                }
+                
+                orders = tmp.OrderByDescending(o=>o.Created).Skip((page - 1) * pageSize).Take(pageSize).ToList<BOrder>();
+            }
             return orders;
         }
 
@@ -192,7 +374,7 @@ namespace MiOU.BL
                          EPrice=new BEvaluatedPrice() { },
                          Name= order.Name,
                          OrderNo=newOrder.OrderNo,
-                         Payments=new List<BOrderPayment>(),
+                         Payments=new List<BPayment>(),
                          PriceCategory= new BPriceCategory() {Id= priceCategory },
                          Product= new BProduct() { Id= productId },
                          Status=(OrderStatus)newOrder.Status,
@@ -201,7 +383,7 @@ namespace MiOU.BL
                     };
 
                     PaymentManagement payMgt = new PaymentManagement(CurrentLoginUser);
-                    payMgt.GeneratePaymentRecord(ref order);
+                    payMgt.GeneratePaymentRecord(ref order,1);
                 }
             }
             catch(MiOUException mex)
