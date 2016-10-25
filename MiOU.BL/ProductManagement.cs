@@ -231,6 +231,10 @@ namespace MiOU.BL
 
         public void CreateProduct(BProduct model)
         {
+            if(model==null)
+            {
+                throw new MiOUException("产品数据不正确");
+            }
             if(model.Category==null || model.Category.Id<=0)
             {
                 throw new MiOUException("产品类别不能为空");

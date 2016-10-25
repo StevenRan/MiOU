@@ -16,10 +16,8 @@ namespace Microsoft.Owin.Security.WeChat
             :base(context)
         {
             IDictionary<string, JToken> userAsDictionary = user;
-
             User = user;
             AccessToken = accessToken;
-
             OpenId = openId;
             UnionId = PropertyValueIfExists("unionid", userAsDictionary);
             Name = PropertyValueIfExists("nickname", userAsDictionary);

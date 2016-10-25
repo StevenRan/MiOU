@@ -1,6 +1,5 @@
 C:\Users\boling\Documents\GitHub\MiOU\MiOU.Util\bin\Debug\MiOU.Util.dll
 C:\Users\boling\Documents\GitHub\MiOU\MiOU.Util\bin\Debug\MiOU.Util.pdb
 C:\Users\boling\Documents\GitHub\MiOU\MiOU.Util\bin\Debug\ThoughtWorks.QRCode.dll
-C:\Users\boling\Documents\GitHub\MiOU\MiOU.Util\obj\Debug\MiOU.Util.csprojResolveAssemblyReference.cache
 C:\Users\boling\Documents\GitHub\MiOU\MiOU.Util\obj\Debug\MiOU.Util.dll
 C:\Users\boling\Documents\GitHub\MiOU\MiOU.Util\obj\Debug\MiOU.Util.pdb

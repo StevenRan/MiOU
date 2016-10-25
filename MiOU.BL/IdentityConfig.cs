@@ -88,6 +88,36 @@ namespace MiOU.BL
             PasswordVerificationResult ret = this.PasswordHasher.VerifyHashedPassword(hashedPassword, password);
             return ret != PasswordVerificationResult.Failed;
         }
+
+        public override Task<ApplicationUser> FindAsync(UserLoginInfo login)
+        {
+            IUserLoginStore<ApplicationUser,long> store = (IUserLoginStore<ApplicationUser,long>)this.Store;
+            return store.FindAsync(login);
+        }
+
+        public ApplicationUser FindExternalUser(string provider,string id)
+        {
+            ApplicationUser user = null;
+            int type = 0;
+            switch (provider)
+            {
+                case "WeChat":
+                    type = 1;
+                    break;
+                default:
+                    break;
+            }
+            if (type == 0)
+            {
+                return null;
+            }
+            using (MiOUEntities content = new MiOUEntities())
+            {
+                User dbUser = (from u in content.User where u.ExternalUserType == type && u.ExternalUserId == id select u).FirstOrDefault<User>();
+                user = ApplicationUser.DBUserToAppUser(dbUser);
+            }
+            return user;
+        }
     }
     public class ApplicationSignInManager : SignInManager<ApplicationUser, long>
     {
@@ -153,7 +183,7 @@ namespace MiOU.BL
         IUserLoginStore<ApplicationUser, long>,
         Microsoft.AspNet.Identity.IUserTwoFactorStore<ApplicationUser, long>
     {
-        MiOUEntities content;
+        public MiOUEntities content { get; private set; }
         UserStore<IdentityUser> userStore;
         public ApplicationUserStore(MiOUEntities _context)
         {

@@ -7,34 +7,36 @@ namespace MiOU.Web.Models
     // Models returned by AccountController actions.
     public class ExternalLoginConfirmationViewModel
     {
-        [Required]
+        [Required(ErrorMessage ="请输入正确的邮箱")]
         [Display(Name = "邮箱")]
         public string Email { get; set; }
 
-        [Required]
+        [Required(ErrorMessage ="请输入昵称")]
         [Display(Name = "昵称")]
         public string NickName { get; set; }
 
-        [Required]
+        [Required(ErrorMessage ="请输入姓名")]
         [Display(Name = "姓名")]
         public string Name { get; set; }
 
-        [Required]
-        [Display(Name = "用户类型")]
+        [Display(Name = "类型")]
+        [Range(1, Int32.MaxValue,ErrorMessage = "请选择用户类型")]
         public int UserType { get; set; }
 
         [Display(Name = "性别")]
         public int Gendar { get; set; }
 
-        [Required]
-        [Display(Name = "省份")]
+       [Display(Name = "省份")]
+        [Range(1,Int32.MaxValue,ErrorMessage = "请选择省份")]
         public int Province { get; set; }
 
-        [Required]
+        
         [Display(Name = "城市")]
+        [Range(1, Int32.MaxValue,ErrorMessage = "请选择城市")]
         public int City { get; set; }
 
         [Display(Name = "区")]
+        [Range(1, Int32.MaxValue,ErrorMessage = "请选择区")]
         public int District { get; set; }
 
         public int ExternalUserType { get; set; }

@@ -77,9 +77,9 @@ namespace MiOU.BL
                         select new BUser
                         {
                             User = usr,
-                            Province = llprovince,
-                            City = llcity,
-                            District = lldistrict
+                            Province = new BArea { Id=llprovince.Id,Name=llprovince.Name },
+                            City = new BArea { Id = llcity.Id, Name = llcity.Name },
+                            District = new BArea { Id = lldistrict.Id, Name = lldistrict.Name },
                         };
                 user = u.FirstOrDefault<BUser>();
                 if(user==null)
@@ -136,9 +136,9 @@ namespace MiOU.BL
                         select new BUser
                         {
                             User = usr,
-                            Province =llprovince,
-                            City=llcity,
-                            District= lldistrict
+                            Province = new BArea { Id = llprovince.Id, Name = llprovince.Name },
+                            City = new BArea { Id = llcity.Id, Name = llcity.Name },
+                            District = new BArea { Id = lldistrict.Id, Name = lldistrict.Name },
                         };
                 user = u.FirstOrDefault<BUser>();
                 if (user == null)
@@ -192,9 +192,9 @@ namespace MiOU.BL
                         select new BUser
                         {
                             User = usr,
-                            Province = llprovince,
-                            City = llcity,
-                            District = lldistrict
+                            Province = new BArea { Id = llprovince.Id, Name = llprovince.Name },
+                            City = new BArea { Id = llcity.Id, Name = llcity.Name },
+                            District = new BArea { Id = lldistrict.Id, Name = lldistrict.Name },
                         };
                 user = u.FirstOrDefault<BUser>();
                 if(user==null)
@@ -231,7 +231,7 @@ namespace MiOU.BL
             List<BArea> areas = null;
             using (MiOUEntities db = new MiOUEntities())
             {
-                var tmp = from a in db.Area select new BArea { Name= a.Name, Id=a.Id,Parent= new BArea { Id= a.Upid } };
+                var tmp = from a in db.Area select new BArea { Name= a.Name, Id=a.Id,Level=a.Level };
                 if (parentId > 0)
                 {
                     tmp = tmp.Where(a => a.Parent.Id == parentId);
@@ -254,6 +254,31 @@ namespace MiOU.BL
                 types = (from t in db.UserType orderby t.Id select new BUserType { Id=t.Id, Name=t.Name }).ToList<BUserType>();
             }
             return types;
+        }
+
+        public BArea GetAreaByName(string name)
+        {
+            BArea area = null;
+            using (MiOUEntities db = new MiOUEntities())
+            {
+                var tmp = from a in db.Area
+                          where a.Name.Contains(name) && a.Level == 1
+                          select new BArea
+                          {
+                              Id = a.Id,
+                              Name = a.Name,
+                              Level = a.Level,
+
+                          };
+
+                area = tmp.FirstOrDefault<BArea>();
+                if(area!=null)
+                {
+                    List<BArea> childRen = (from a in db.Area where a.Upid== area.Id select new BArea { Id=a.Id,Name=a.Name, Level=a.Level }).ToList<BArea>();
+                    area.Chindren = childRen;
+                }
+            }
+            return area;
         }
 
         public List<BCategory> GetCategories(int parentId)
