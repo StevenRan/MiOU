@@ -169,7 +169,7 @@ namespace MiOU.BL
             bool ret = false;
             using (MiOUEntities db = new MiOUEntities())
             {
-                User dbUser = (from u in db.User where u.Id == userId select u).FirstOrDefault<User>();
+                User dbUser = (from u in db.User where u.UserId == userId select u).FirstOrDefault<User>();
                 if (dbUser == null)
                 {
                     throw new MiOUException(string.Format("编号为{0}的用户不存在", userId));
@@ -183,7 +183,7 @@ namespace MiOU.BL
                 }
                 else
                 {
-                    if (CurrentLoginUser.User.Id != userId)
+                    if (CurrentLoginUser.User.UserId != userId)
                     {
                         throw new MiOUException("没有权限执行此操作");
                     }
@@ -226,7 +226,7 @@ namespace MiOU.BL
                     history.Amount = vip.CurrencyAmount;
                     history.Category = 1;
                     history.Created = DateTimeUtil.ConvertDateTimeToInt(DateTime.Now);
-                    history.CreatedBy = CurrentLoginUser.User.Id;
+                    history.CreatedBy = CurrentLoginUser.User.UserId;
                     history.Description = "兑换"+vip.Name+",使用了"+vip.CurrencyAmount+"藕币";
                     history.Type = 1;
                     history.Updated = 0;

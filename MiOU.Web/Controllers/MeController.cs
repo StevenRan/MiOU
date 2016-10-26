@@ -43,7 +43,7 @@ namespace MiOU.Web.Controllers
         // GET api/Me
         public GetViewModel Get()
         {
-            var user = UserManager.FindById(long.Parse(User.Identity.GetUserId()));
+            var user = UserManager.FindById(int.Parse(User.Identity.GetUserId()));
             return new GetViewModel() {  };
         }
     }

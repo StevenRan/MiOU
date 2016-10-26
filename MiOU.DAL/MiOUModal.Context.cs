@@ -48,9 +48,9 @@ namespace MiOU.DAL
         public DbSet<MaintenanceType> MaintenanceType { get; set; }
         public DbSet<CurrencyTransferCategory> CurrencyTransferCategory { get; set; }
         public DbSet<VipLevel> VipLevel { get; set; }
-        public DbSet<User> User { get; set; }
         public DbSet<Order> Order { get; set; }
         public DbSet<Product> Product { get; set; }
         public DbSet<Payment> Payment { get; set; }
+        public DbSet<User> User { get; set; }
     }
 }

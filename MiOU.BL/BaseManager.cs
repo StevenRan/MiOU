@@ -29,7 +29,7 @@ namespace MiOU.BL
         {
             if (user != null)
             {
-                this.CurrentLoginUser = this.GetUserInfo(user.Id);
+                this.CurrentLoginUser = this.GetUserInfo(user.UserId);
             }
             this.InitializeLoggger();
         }
@@ -87,7 +87,7 @@ namespace MiOU.BL
                     logger.Warn(string.Format(MiOUConstants.USER_NICK_NOT_EXIST, nickName));
                     return user;                    
                 }
-                Admin_Users au = (from ausr in db.Admin_Users where ausr.User_Id == user.User.Id select ausr).FirstOrDefault<Admin_Users>();
+                Admin_Users au = (from ausr in db.Admin_Users where ausr.User_Id == user.User.UserId select ausr).FirstOrDefault<Admin_Users>();
                 if (au != null)
                 {
                     user.IsSuperAdmin = au.IsSuperAdmin;
@@ -96,7 +96,7 @@ namespace MiOU.BL
                 }
                 if (!user.IsSuperAdmin)
                 {
-                    user.Permission = PermissionManagement.GetUserPermissions(user.User.Id);
+                    user.Permission = PermissionManagement.GetUserPermissions(user.User.UserId);
                 }
                 else
                 {
@@ -132,7 +132,7 @@ namespace MiOU.BL
                         from llprovince in lprovince.DefaultIfEmpty()
                         join district in db.Area on usr.Province equals district.Id into ldistrict
                         from lldistrict in ldistrict.DefaultIfEmpty()
-                        where usr.Id==userId
+                        where usr.UserId==userId
                         select new BUser
                         {
                             User = usr,
@@ -202,7 +202,7 @@ namespace MiOU.BL
                     logger.Warn(string.Format(MiOUConstants.USER_EMAIL_NOT_EXIST,email));
                     return null;
                 }
-                Admin_Users au = (from ausr in db.Admin_Users where ausr.User_Id == user.User.Id select ausr).FirstOrDefault<Admin_Users>();
+                Admin_Users au = (from ausr in db.Admin_Users where ausr.User_Id == user.User.UserId select ausr).FirstOrDefault<Admin_Users>();
                 if (au != null)
                 {
                     user.IsSuperAdmin = au.IsSuperAdmin;
@@ -211,7 +211,7 @@ namespace MiOU.BL
                 }
                 if (!user.IsSuperAdmin)
                 {
-                    user.Permission = PermissionManagement.GetUserPermissions(user.User.Id);
+                    user.Permission = PermissionManagement.GetUserPermissions(user.User.UserId);
                 }
                 else
                 {
@@ -231,10 +231,10 @@ namespace MiOU.BL
             List<BArea> areas = null;
             using (MiOUEntities db = new MiOUEntities())
             {
-                var tmp = from a in db.Area select new BArea { Name= a.Name, Id=a.Id,Level=a.Level };
+                var tmp = from a in db.Area select new BArea { Name= a.Name, Id=a.Id,Level=a.Level,UPID=a.Upid };
                 if (parentId > 0)
                 {
-                    tmp = tmp.Where(a => a.Parent.Id == parentId);
+                    tmp = tmp.Where(a => a.UPID == parentId);
                 }
                 else
                 {
@@ -312,9 +312,9 @@ namespace MiOU.BL
             using (MiOUEntities db = new MiOUEntities())
             {
                 var tmp = from d in db.DeliveryType
-                          join cb in db.User on d.CreatedBy equals cb.Id into lcb
+                          join cb in db.User on d.CreatedBy equals cb.UserId into lcb
                           from llcb in lcb.DefaultIfEmpty()
-                          join ub in db.User on d.UpdatedBy equals ub.Id into lub
+                          join ub in db.User on d.UpdatedBy equals ub.UserId into lub
                           from llub in lub.DefaultIfEmpty()
                           orderby d.Id ascending
                           select new BSelType
@@ -387,9 +387,9 @@ namespace MiOU.BL
             using (MiOUEntities db = new MiOUEntities())
             {
                 var tmp = from d in db.MaintenanceType
-                          join cb in db.User on d.CreatedBy equals cb.Id into lcb
+                          join cb in db.User on d.CreatedBy equals cb.UserId into lcb
                           from llcb in lcb.DefaultIfEmpty()
-                          join ub in db.User on d.UpdatedBy equals ub.Id into lub
+                          join ub in db.User on d.UpdatedBy equals ub.UserId into lub
                           from llub in lub.DefaultIfEmpty()
                           orderby d.Id ascending
                           select new BMaintenanceType
@@ -411,9 +411,9 @@ namespace MiOU.BL
             using (MiOUEntities db = new MiOUEntities())
             {
                 var tmp = from c in db.VipLevel
-                          join cb in db.User on c.CreatedBy equals cb.Id into lcb
+                          join cb in db.User on c.CreatedBy equals cb.UserId into lcb
                           from llcb in lcb.DefaultIfEmpty()
-                          join ub in db.User on c.UpdatedBy equals ub.Id into lub
+                          join ub in db.User on c.UpdatedBy equals ub.UserId into lub
                           from llub in lub.DefaultIfEmpty()
                           orderby c.Start ascending
                           select new BVIPLevel

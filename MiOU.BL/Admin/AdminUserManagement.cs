@@ -31,7 +31,7 @@ namespace MiOU.BL.Admin
             }
             using (MiOUEntities db = new MiOUEntities())
             {
-                User user = (from u in db.User where u.Id == userId select u).FirstOrDefault<User>();
+                User user = (from u in db.User where u.UserId == userId select u).FirstOrDefault<User>();
                 if (user == null)
                 {
                     throw new MiOUException("此用户不存在");
@@ -56,7 +56,7 @@ namespace MiOU.BL.Admin
             }
             using (MiOUEntities db = new MiOUEntities())
             {
-                User user = (from u in db.User where u.Id == userId select u).FirstOrDefault<User>();
+                User user = (from u in db.User where u.UserId == userId select u).FirstOrDefault<User>();
                 if (user == null)
                 {
                     throw new MiOUException("此用户不存在");
@@ -85,7 +85,7 @@ namespace MiOU.BL.Admin
             }
             using (MiOUEntities db = new MiOUEntities())
             {
-                User user = (from u in db.User where u.Id == userId select u).FirstOrDefault<User>();
+                User user = (from u in db.User where u.UserId == userId select u).FirstOrDefault<User>();
                 if(user==null)
                 {
                     throw new MiOUException("此用户不存在");
@@ -151,10 +151,10 @@ namespace MiOU.BL.Admin
             try
             {
                 db = new MiOUEntities();
-                User dbUser = (from u in db.User where u.Id == user.User.Id select u).FirstOrDefault<User>();
+                User dbUser = (from u in db.User where u.UserId == user.User.UserId select u).FirstOrDefault<User>();
                 if (dbUser == null)
                 {
-                    throw new MiOUException(string.Format(MiOUConstants.USER_ID_NOT_EXIST, user.User.Id));
+                    throw new MiOUException(string.Format(MiOUConstants.USER_ID_NOT_EXIST, user.User.UserId));
                 }
 
                 dbUser.Status = status;

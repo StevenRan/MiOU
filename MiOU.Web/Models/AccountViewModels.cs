@@ -7,34 +7,47 @@ namespace MiOU.Web.Models
     // Models returned by AccountController actions.
     public class ExternalLoginConfirmationViewModel
     {
-        [Required(ErrorMessage ="请输入正确的邮箱")]
+        [DataType(DataType.EmailAddress,ErrorMessage ="邮箱格式不正确")]
+        [Required(ErrorMessage ="请输入邮箱")]
         [Display(Name = "邮箱")]
         public string Email { get; set; }
 
-        [Required(ErrorMessage ="请输入昵称")]
+        [DataType(DataType.Password)]
+        [Required(ErrorMessage = "请输入密码")]
+        [Display(Name = "密码")]
+        public string Password { get; set; }
+
+        [DataType(DataType.Password)]
+        [Required(ErrorMessage = "请输入确认密码")]
+        [Display(Name = "确认密码")]
+        [Compare("Password",ErrorMessage ="两次密码输入不一致")]
+        public string Password2 { get; set; }
+
         [Display(Name = "昵称")]
         public string NickName { get; set; }
 
-        [Required(ErrorMessage ="请输入姓名")]
         [Display(Name = "姓名")]
         public string Name { get; set; }
 
-        [Display(Name = "类型")]
+        [Required(ErrorMessage = "请选在账户类型")]
+        [Display(Name = "账户类型")]
         [Range(1, Int32.MaxValue,ErrorMessage = "请选择用户类型")]
         public int UserType { get; set; }
 
         [Display(Name = "性别")]
         public int Gendar { get; set; }
 
-       [Display(Name = "省份")]
+        [Required(ErrorMessage = "请选择省份")]
+        [Display(Name = "省份")]
         [Range(1,Int32.MaxValue,ErrorMessage = "请选择省份")]
         public int Province { get; set; }
 
-        
+        [Required(ErrorMessage = "请选择城市")]
         [Display(Name = "城市")]
         [Range(1, Int32.MaxValue,ErrorMessage = "请选择城市")]
         public int City { get; set; }
 
+        [Required(ErrorMessage = "请选择区")]
         [Display(Name = "区")]
         [Range(1, Int32.MaxValue,ErrorMessage = "请选择区")]
         public int District { get; set; }

@@ -266,34 +266,6 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="User">
-      <EntityTypeMapping TypeName="MiOU.DAL.User">
-        <MappingFragment StoreEntitySet="User">
-          <ScalarProperty Name="AccountAmount" ColumnName="AccountAmount" />
-          <ScalarProperty Name="CurrencyAmount" ColumnName="CurrencyAmount" />
-          <ScalarProperty Name="Phone" ColumnName="Phone" />
-          <ScalarProperty Name="Status" ColumnName="Status" />
-          <ScalarProperty Name="YPlot" ColumnName="YPlot" />
-          <ScalarProperty Name="XPlot" ColumnName="XPlot" />
-          <ScalarProperty Name="Address" ColumnName="Address" />
-          <ScalarProperty Name="District" ColumnName="District" />
-          <ScalarProperty Name="City" ColumnName="City" />
-          <ScalarProperty Name="Province" ColumnName="Province" />
-          <ScalarProperty Name="VipLevel" ColumnName="VipLevel" />
-          <ScalarProperty Name="UserType" ColumnName="UserType" />
-          <ScalarProperty Name="Updated" ColumnName="Updated" />
-          <ScalarProperty Name="RegTime" ColumnName="RegTime" />
-          <ScalarProperty Name="Gendar" ColumnName="Gendar" />
-          <ScalarProperty Name="Password" ColumnName="Password" />
-          <ScalarProperty Name="ExternalUserId" ColumnName="ExternalUserId" />
-          <ScalarProperty Name="ExternalUserType" ColumnName="ExternalUserType" />
-          <ScalarProperty Name="Email" ColumnName="Email" />
-          <ScalarProperty Name="NickName" ColumnName="NickName" />
-          <ScalarProperty Name="Name" ColumnName="Name" />
-          <ScalarProperty Name="Id" ColumnName="Id" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
     <EntitySetMapping Name="Order">
       <EntityTypeMapping TypeName="MiOU.DAL.Order">
         <MappingFragment StoreEntitySet="Order">
@@ -368,6 +340,34 @@
           <ScalarProperty Name="OrderNo" ColumnName="OrderNo" />
           <ScalarProperty Name="OrderId" ColumnName="OrderId" />
           <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="User">
+      <EntityTypeMapping TypeName="MiOU.DAL.User">
+        <MappingFragment StoreEntitySet="User">
+          <ScalarProperty Name="AccountAmount" ColumnName="AccountAmount" />
+          <ScalarProperty Name="CurrencyAmount" ColumnName="CurrencyAmount" />
+          <ScalarProperty Name="Phone" ColumnName="Phone" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="YPlot" ColumnName="YPlot" />
+          <ScalarProperty Name="XPlot" ColumnName="XPlot" />
+          <ScalarProperty Name="Address" ColumnName="Address" />
+          <ScalarProperty Name="District" ColumnName="District" />
+          <ScalarProperty Name="City" ColumnName="City" />
+          <ScalarProperty Name="Province" ColumnName="Province" />
+          <ScalarProperty Name="VipLevel" ColumnName="VipLevel" />
+          <ScalarProperty Name="UserType" ColumnName="UserType" />
+          <ScalarProperty Name="Updated" ColumnName="Updated" />
+          <ScalarProperty Name="RegTime" ColumnName="RegTime" />
+          <ScalarProperty Name="Gendar" ColumnName="Gendar" />
+          <ScalarProperty Name="Password" ColumnName="Password" />
+          <ScalarProperty Name="ExternalUserId" ColumnName="ExternalUserId" />
+          <ScalarProperty Name="ExternalUserType" ColumnName="ExternalUserType" />
+          <ScalarProperty Name="Email" ColumnName="Email" />
+          <ScalarProperty Name="NickName" ColumnName="NickName" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="UserId" ColumnName="UserId" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

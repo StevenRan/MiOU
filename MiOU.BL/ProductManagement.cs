@@ -36,7 +36,7 @@ namespace MiOU.BL
                     throw new MiOUException("产品信息不存在");
                 }
                 bool delete = false;
-                if(product.UserId!=CurrentLoginUser.User.Id)
+                if(product.UserId!=CurrentLoginUser.User.UserId)
                 {
                     if(CurrentLoginUser.IsAdmin && CurrentLoginUser.Permission.DELETE_PRODUCT_IMAGES)
                     {
@@ -121,7 +121,7 @@ namespace MiOU.BL
                 product.Status = status;
                 product.AuditMessage = message;
                 product.AuditTime = DateTimeUtil.ConvertDateTimeToInt(DateTime.Now);
-                product.AuditUserId = CurrentLoginUser.User.Id;
+                product.AuditUserId = CurrentLoginUser.User.UserId;
                 product.EvaluatedPercentage = percentage;
                 product.EvaluatedPrice = ePrice;
                 db.SaveChanges();
@@ -159,14 +159,14 @@ namespace MiOU.BL
                             throw new MiOUException("订单的产品和要更新库存的产品不匹配");
                         }
 
-                        if (order.UserId != CurrentLoginUser.User.Id && dbProduct.UserId!=CurrentLoginUser.User.Id && (!CurrentLoginUser.IsAdmin))
+                        if (order.UserId != CurrentLoginUser.User.UserId && dbProduct.UserId!=CurrentLoginUser.User.UserId && (!CurrentLoginUser.IsAdmin))
                         {
                             throw new MiOUException("没有权限执行此操作");
                         }
                     }
                     else
                     {
-                        if(dbProduct.UserId!=CurrentLoginUser.User.Id)
+                        if(dbProduct.UserId!=CurrentLoginUser.User.UserId)
                         {
                             throw new MiOUException("没有权限执行此操作");
                         }
@@ -311,7 +311,7 @@ namespace MiOU.BL
                     Province = model.Province.Id,
                     RentType = model.RentType.Id,
                     Status = 0,
-                    UserId = CurrentLoginUser.User.Id,
+                    UserId = CurrentLoginUser.User.UserId,
                     Pledge = 0,
                     Price = 0,
                     Updated = 0,
@@ -356,7 +356,7 @@ namespace MiOU.BL
                             ProductCategoryId = price.Category.Id,
                             PriceCategory = price.Category.Id,
                             ProductId = product.Id,
-                            UserId = CurrentLoginUser.User.Id
+                            UserId = CurrentLoginUser.User.UserId
 
                         };
                         db.ProductPrice.Add(pPrice);
@@ -423,7 +423,7 @@ namespace MiOU.BL
                 {
                     throw new MiOUException(string.Format("编号为{0}的产品不存在", productId));
                 }
-                if(!CurrentLoginUser.IsAdmin && CurrentLoginUser.User.Id!=dbProduct.UserId)
+                if(!CurrentLoginUser.IsAdmin && CurrentLoginUser.User.UserId!=dbProduct.UserId)
                 {
                     throw new MiOUException("只有管理员和藕主才可以添加藕品价格种类");
                 }
@@ -447,7 +447,7 @@ namespace MiOU.BL
                         EvaluatedPriceId = 0,
                         PriceCategory = p.PriceCategory.Id,
                         ProductId = productId,
-                        UserId = CurrentLoginUser.User.Id
+                        UserId = CurrentLoginUser.User.UserId
                     };
 
                     db.ProductPrice.Add(dbPrice);

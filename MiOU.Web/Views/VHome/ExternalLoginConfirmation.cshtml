@@ -1,6 +1,6 @@
 ﻿@model MiOU.Web.Models.ExternalLoginConfirmationViewModel
 @{
-    Layout = "~/Views/Shared/_vLayout.cshtml";
+    Layout = "~/Views/Shared/_vStartLayout.cshtml";
 }
 
 @{
@@ -8,7 +8,7 @@
 }
 @Scripts.Render("~/bundles/jqueryval")
 
-<h3>绑定您的 @ViewBag.LoginProvider 账户.</h3>
+<h3>绑定您的 @ViewBag.LoginProvider 账户</h3>
 
 @using (Html.BeginForm("ExternalLoginConfirmation", "VHome", null, FormMethod.Post, new { role = "form" }))
 {
@@ -18,42 +18,60 @@
     
     <hr />
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-    <p class="text-info">
-        成功使用 <strong>@ViewBag.LoginProvider</strong> 账户登录米藕.
-        请完善下列个人信息
-    </p>
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <p class="text-info">
+                成功使用 <strong>@ViewBag.LoginProvider</strong> 账户登录米藕
+
+            </p>
+            <p class="text-info">
+                请完善下列个人信息
+            </p>
+            <p class="text-info">
+                下次可以直接使用下面的邮箱和密码登录
+            </p>
+        </div>
+   </div>
+   <div class="form-group" id="submit_message_warn" @if (ViewBag.Error == null || string.IsNullOrEmpty(ViewBag.Error.ToString())) { @Html.Raw("style=\"display:none;\""); }>
+            <div class="col-md-offset-2 col-md-10 alert alert-danger fade in" style="margin-left:15px;margin-right:15px;">
+                <p class="" id="message">@if (ViewBag.Error != null && !string.IsNullOrEmpty(ViewBag.Error.ToString())) { @ViewBag.Error; }</p>
+            </div>
+   </div>
+    
+
+
     <div class="form-group">
         @Html.LabelFor(m => m.Email, new { @class = "col-md-2 control-label" })
         <div class="col-md-10">
-            @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+            @Html.TextBoxFor(m => m.Email, new { @class = "form-control mobileInput" })
             @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
         </div>
     </div>
     <div class="form-group">
-        @Html.LabelFor(m => m.NickName, new { @class = "col-md-2 control-label" })
+        @Html.LabelFor(m => m.Password, new { @class = "col-md-2 control-label" })
         <div class="col-md-10">
-            @Html.TextBoxFor(m => m.NickName, new { @class = "form-control" })
-            @Html.ValidationMessageFor(m => m.NickName, "", new { @class = "text-danger" })
+            @Html.PasswordFor(m => m.Password, new { @class = "form-control mobileInput" })
+            @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
         </div>
     </div>
     <div class="form-group">
-        @Html.LabelFor(m => m.Name, new { @class = "col-md-2 control-label" })
+        @Html.LabelFor(m => m.Password2, new { @class = "col-md-2 control-label" })
         <div class="col-md-10">
-            @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
-            @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger" })
+            @Html.PasswordFor(m => m.Password2, new { @class = "form-control mobileInput" })
+            @Html.ValidationMessageFor(m => m.Password2, "", new { @class = "text-danger" })
         </div>
     </div>
     <div class="form-group">
         @Html.LabelFor(model => model.UserType, htmlAttributes: new { @class = "control-label col-md-3" })
         <div class="col-md-8">
-            @Html.DropDownListFor(model => model.UserType, (SelectList)ViewBag.Types, "--选择类型--", new { @class = "form-control" })
+            @Html.DropDownListFor(model => model.UserType, (SelectList)ViewBag.Types, "--选择类型--", new { @class = "form-control mobileInput" })
             @Html.ValidationMessageFor(model => model.UserType, "", new { @class = "text-danger" })
         </div>
     </div>
     <div class="form-group">
         @Html.LabelFor(model => model.Province, htmlAttributes: new { @class = "control-label col-md-3" })
         <div class="col-md-8">
-            @Html.DropDownListFor(model => model.Province, (SelectList)ViewBag.Provinces, "--选择省份--", new { @class = "form-control" })
+            @Html.DropDownListFor(model => model.Province, (SelectList)ViewBag.Provinces, "--选择省份--", new { @class = "form-control mobileInput" })
             @Html.ValidationMessageFor(model => model.Province, "", new { @class = "text-danger" })
         </div>
     </div>
@@ -61,17 +79,18 @@
     <div class="form-group">
             @Html.LabelFor(model => model.City, htmlAttributes: new { @class = "control-label col-md-3" })
             <div class="col-md-8">
-                @Html.DropDownListFor(model => model.City, (SelectList)ViewBag.Cities, "--选择城市--", new { @class = "form-control" })
+                @Html.DropDownListFor(model => model.City, (SelectList)ViewBag.Cities, "--选择城市--", new { @class = "form-control mobileInput" })
                 @Html.ValidationMessageFor(model => model.City, "", new { @class = "text-danger" })
             </div>
     </div>
     <div class="form-group">
         @Html.LabelFor(model => model.District, htmlAttributes: new { @class = "control-label col-md-3" })
         <div class="col-md-8">
-            @Html.DropDownListFor(model => model.District, (SelectList)ViewBag.Districts, "--选择区--", new { @class = "form-control" })
+            @Html.DropDownListFor(model => model.District, (SelectList)ViewBag.Districts, "--选择区--", new { @class = "form-control mobileInput" })
             @Html.ValidationMessageFor(model => model.District, "", new { @class = "text-danger" })
         </div>
     </div>
+
     <div class="form-group">
         <div class="col-md-offset-2 col-md-10">
             <input type="submit" class="btn btn-default btn-primary" value="保存" />

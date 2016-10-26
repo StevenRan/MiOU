@@ -66,14 +66,14 @@ namespace MiOU.BL
                         case OrderStatus.BOOKED://付完押金
                         case OrderStatus.RENTING://起租开始
                         case OrderStatus.RETURN_APPLIED: //申请归还
-                            if (CurrentLoginUser.User.Id!=dbOrder.UserId)
+                            if (CurrentLoginUser.User.UserId!=dbOrder.UserId)
                             {
                                 throw new MiOUException("您没有权限修改执行此操作");
                             }
                             break;
                         case OrderStatus.COMPLETED:
                             //确认归还，租赁结束
-                            if(dbProduct.UserId!=CurrentLoginUser.User.Id)
+                            if(dbProduct.UserId!=CurrentLoginUser.User.UserId)
                             {
                                 throw new MiOUException("您没有权限确认藕品归还申请");
                             }
@@ -169,7 +169,7 @@ namespace MiOU.BL
                     {
                         case SearchOrderType.ALL:
                         case SearchOrderType.IN:
-                            tmp = tmp.Where(o => o.CreatedBy.User.Id == userId);
+                            tmp = tmp.Where(o => o.CreatedBy.User.UserId == userId);
                             break;
                         case SearchOrderType.OUT:
                             int[] productIds = (from p in db.Product where p.UserId == userId select p.Id).ToArray<int>();
@@ -298,7 +298,7 @@ namespace MiOU.BL
                 {
                     throw new MiOUException("此产品库存不足不能租借");
                 }
-                User owner = (from u in db.User where u.Id == dbProduct.UserId select u).FirstOrDefault<User>();
+                User owner = (from u in db.User where u.UserId == dbProduct.UserId select u).FirstOrDefault<User>();
                 if(owner==null)
                 {
                     throw new MiOUException("此产品的所有人不存在");
@@ -347,7 +347,7 @@ namespace MiOU.BL
                     Status = 0,
                     Updated = 0,
                     UpdatedUserId = 0,
-                    UserId = CurrentLoginUser.User.Id,
+                    UserId = CurrentLoginUser.User.UserId,
                     OrderNo = DateTime.Now.ToString("yyyyMMddHHmmssfff") + GetOrderRandomNumber(),                    
                 };
 

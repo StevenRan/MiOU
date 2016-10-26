@@ -10,13 +10,13 @@ using Microsoft.Owin;
 using Microsoft.Owin.Security;
 using MiOU.DAL;
 using System.Security.Claims;
-
+using MiOU.Util;
 namespace MiOU.BL
 {
 
-    public class ApplicationUserManager : UserManager<ApplicationUser, long>
+    public class ApplicationUserManager : UserManager<ApplicationUser, int>
     {
-        public ApplicationUserManager(IUserStore<ApplicationUser, long> store)
+        public ApplicationUserManager(IUserStore<ApplicationUser, int> store)
             : base(store)
         {
 
@@ -76,13 +76,27 @@ namespace MiOU.BL
             return base.CheckPasswordAsync(user, password);
         }
 
+        public virtual Task<ApplicationUser> FindByNickNameAsync(string nickName)
+        {
+            
+            Task<ApplicationUser> user = null;
+            ApplicationUserStore store = (ApplicationUserStore)this.Store;
+            user = store.FindByNickAsync(nickName);
+            return user;
+        }
+        public override Task<ApplicationUser> FindByEmailAsync(string email)
+        {
+            Task<ApplicationUser> user = null;
+            ApplicationUserStore store = (ApplicationUserStore)this.Store;
+            user = store.FindByEmailAsync(email);
+            return user;
+        }
         public ApplicationUser FindUserByOpenId(string openId,string provider)
         {
             ApplicationUser user = null;
             return user;
         }
-
-        protected override async Task<bool> VerifyPasswordAsync(IUserPasswordStore<ApplicationUser, long> store, ApplicationUser user, string password)
+        protected override async Task<bool> VerifyPasswordAsync(IUserPasswordStore<ApplicationUser, int> store, ApplicationUser user, string password)
         {
             string hashedPassword = await store.GetPasswordHashAsync(user);
             PasswordVerificationResult ret = this.PasswordHasher.VerifyHashedPassword(hashedPassword, password);
@@ -91,7 +105,7 @@ namespace MiOU.BL
 
         public override Task<ApplicationUser> FindAsync(UserLoginInfo login)
         {
-            IUserLoginStore<ApplicationUser,long> store = (IUserLoginStore<ApplicationUser,long>)this.Store;
+            IUserLoginStore<ApplicationUser, int> store = (IUserLoginStore<ApplicationUser, int>)this.Store;
             return store.FindAsync(login);
         }
 
@@ -119,9 +133,9 @@ namespace MiOU.BL
             return user;
         }
     }
-    public class ApplicationSignInManager : SignInManager<ApplicationUser, long>
+    public class ApplicationSignInManager : SignInManager<ApplicationUser, int>
     {
-        public ApplicationSignInManager(UserManager<ApplicationUser, long> userManager, Microsoft.Owin.Security.IAuthenticationManager authenticationManager)
+        public ApplicationSignInManager(UserManager<ApplicationUser, int> userManager, Microsoft.Owin.Security.IAuthenticationManager authenticationManager)
             : base(userManager, authenticationManager)
         {
         }
@@ -151,9 +165,10 @@ namespace MiOU.BL
 
     public class MiOUPasswordHasher : IPasswordHasher
     {
+        private string passwordSalt = "5c149dc0-3a0f-438f-ae70-273575d2e66d";
         public string HashPassword(string password)
         {
-            return password;
+            return UrlSignUtil.GetMD5(UrlSignUtil.GetMD5(password)+passwordSalt);
         }
 
         public PasswordVerificationResult VerifyHashedPassword(string hashedPassword, string providedPassword)
@@ -166,7 +181,7 @@ namespace MiOU.BL
             {
                 return PasswordVerificationResult.Failed;
             }
-            if (hashedPassword.Trim() != providedPassword.Trim())
+            if (hashedPassword.Trim() != HashPassword(providedPassword).Trim())
             {
                 return PasswordVerificationResult.Failed;
             }
@@ -175,13 +190,13 @@ namespace MiOU.BL
         }
     }
 
-    public class ApplicationUserStore : IUserStore<ApplicationUser, long>,
-        IUserPasswordStore<ApplicationUser, long>,
-        IUserSecurityStampStore<ApplicationUser, long>,
-        IUserLockoutStore<ApplicationUser, long>,
-        IUserPhoneNumberStore<ApplicationUser, long>,
-        IUserLoginStore<ApplicationUser, long>,
-        Microsoft.AspNet.Identity.IUserTwoFactorStore<ApplicationUser, long>
+    public class ApplicationUserStore : IUserStore<ApplicationUser, int>,
+        IUserPasswordStore<ApplicationUser, int>,
+        IUserSecurityStampStore<ApplicationUser, int>,
+        IUserLockoutStore<ApplicationUser, int>,
+        IUserPhoneNumberStore<ApplicationUser, int>,
+        IUserLoginStore<ApplicationUser, int>,
+        Microsoft.AspNet.Identity.IUserTwoFactorStore<ApplicationUser, int>
     {
         public MiOUEntities content { get; private set; }
         UserStore<IdentityUser> userStore;
@@ -198,8 +213,7 @@ namespace MiOU.BL
         public Task CreateAsync(ApplicationUser user)
         {
             User dbUser = ApplicationUser.AppUserToDBUser(user);
-            content.User.Add(dbUser);
-            user.Id = dbUser.Id;
+            content.User.Add(dbUser);          
             return content.SaveChangesAsync();
         }
 
@@ -216,7 +230,7 @@ namespace MiOU.BL
             }
         }
 
-        public Task<ApplicationUser> FindByIdAsync(long userId)
+        public Task<ApplicationUser> FindByIdAsync(int userId)
         {
             User user = content.User.Find(userId);
             return Task.FromResult(ApplicationUser.DBUserToAppUser(user));
@@ -224,7 +238,7 @@ namespace MiOU.BL
 
         public Task<ApplicationUser> FindByNameAsync(string userName)
         {
-            var tmp = content.User.Where(us => us.NickName == userName);
+            var tmp = content.User.Where(us => us.Email == userName);
             User dbUser = tmp.FirstOrDefault<User>();
             return Task.FromResult(ApplicationUser.DBUserToAppUser(dbUser));
         }
@@ -232,6 +246,16 @@ namespace MiOU.BL
         public Task<ApplicationUser> FindByEmailAsync(string email)
         {
             var tmp = content.User.Where(us => us.Email == email);
+            User dbUser = tmp.FirstOrDefault<User>();
+            return Task.FromResult(ApplicationUser.DBUserToAppUser(dbUser));
+        }
+        public Task<ApplicationUser> FindByNickAsync(string nickName)
+        {
+            if(string.IsNullOrEmpty(nickName))
+            {
+                throw new ArgumentNullException("NickName cannot be empty");
+            }
+            var tmp = content.User.Where(us => us.NickName == nickName);
             User dbUser = tmp.FirstOrDefault<User>();
             return Task.FromResult(ApplicationUser.DBUserToAppUser(dbUser));
         }
@@ -266,7 +290,7 @@ namespace MiOU.BL
 
         public Task UpdateAsync(ApplicationUser user)
         {
-            User dbUser = (from u in content.User where u.Id == user.Id select u).FirstOrDefault<User>();
+            User dbUser = (from u in content.User where u.UserId == user.Id select u).FirstOrDefault<User>();
             if (dbUser != null)
             {
                 Task task = content.SaveChangesAsync();
@@ -450,30 +474,29 @@ namespace MiOU.BL
         }
     }
 
-    public class ApplicationUser : User, Microsoft.AspNet.Identity.IUser<long>
+    public class ApplicationUser : User, Microsoft.AspNet.Identity.IUser<int>
     {       
         public string UserName
         {
             get
             {
-                return this.NickName;
+                return this.Email;
             }
-
             set
             {
-                this.NickName = value;
+                this.Email = value;
             }
         }
 
-        public long Id
+        public int Id
         {
             get
             {
-                return this.Id;
+                return this.UserId;
             }
             set
             {
-                this.Id = value;
+                this.UserId = value;
             }
         }
 
@@ -494,7 +517,8 @@ namespace MiOU.BL
                     property.SetValue(appUser, p.GetValue(dbUser));
                 }
             }
-            appUser.Id = dbUser.Id;
+            appUser.Id = dbUser.UserId;
+            appUser.UserName = dbUser.Email;
             return appUser;
         }
 
@@ -506,7 +530,7 @@ namespace MiOU.BL
             }
 
             User dbUser = new User();
-            dbUser.Id = (int)appUser.Id;
+            dbUser.UserId = (int)appUser.Id;
             System.Reflection.PropertyInfo[] properties = dbUser.GetType().GetProperties();
             foreach (System.Reflection.PropertyInfo property in properties)
             {

@@ -38,7 +38,7 @@ namespace MiOU.BL
             }
             if(userId==0)
             {
-                userId = CurrentLoginUser.User.Id;
+                userId = CurrentLoginUser.User.UserId;
             }
             using (MiOUEntities db = new MiOUEntities())
             {

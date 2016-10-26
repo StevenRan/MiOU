@@ -11,6 +11,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using Microsoft.Owin;
+using log4net;
 using MiOU.Entities.Beans;
 using MiOU.Entities.Exceptions;
 using MiOU.Entities;
@@ -28,8 +29,10 @@ namespace MiOU.Web.Controllers.v
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
+        private ILog _logger=null;
         public VHomeController()
         {
+            Logger = log4net.LogManager.GetLogger(this.GetType().FullName);
         }
         public VHomeController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
         {
@@ -44,6 +47,11 @@ namespace MiOU.Web.Controllers.v
             }
         }
        
+        public ILog Logger
+        {
+            get { return _logger?? log4net.LogManager.GetLogger(this.GetType().FullName); }
+            set { _logger = value; }
+        }
         public ApplicationSignInManager SignInManager
         {
             get
@@ -102,69 +110,129 @@ namespace MiOU.Web.Controllers.v
 
         [HttpPost]
         [AllowAnonymous]
-        public async Task<ActionResult> ExternalLoginConfirmation(ExternalLoginConfirmationViewModel model)
-        {           
-
+        public async Task<ActionResult> ExternalLoginConfirmation(ExternalLoginConfirmationViewModel model, string returnURL = null)
+        {
+            string provider = string.Empty;
+            string errorMessage = null;
+            ViewBag.ReturnURL = returnURL;
             if (ModelState.IsValid)
-            {
-                // Get the information about the user from the external login provider
-                var info = await AuthenticationManager.GetExternalLoginInfoAsync();
-                if (info == null)
+            {                
+                if(model.ExternalUserType==1)
                 {
-                    return View("ExternalLoginFailure");
+                    provider = "WeChat";
                 }
-                int externalUserType = 0;
-                switch (info.Login.LoginProvider)
-                {
-                    case "WeChat":
-                        externalUserType = 1;
-                        break;
-                    default:
-                        break;
-                }
-                var user = new ApplicationUser
+                ApplicationUser newUser = new ApplicationUser();
+                newUser.Email = model.Email;
+                ApplicationUser user = new ApplicationUser()
                 {
                     Email = model.Email,
                     NickName = model.NickName,
-                    ExternalUserId = info.Login.ProviderKey,
-                    ExternalUserType = externalUserType,
+                    ExternalUserId = model.ExternalUserId,
+                    ExternalUserType = model.ExternalUserType,
+                    Password= model.Password,
                     City = model.City,
                     Province = model.Province,
                     District = model.District,
                     Name = model.Name,
+                    UserName =model.Email,
                     Gendar = model.Gendar,
                     RegTime = DateTimeUtil.ConvertDateTimeToInt(DateTime.Now),
+                    Updated=0,
+                    Status=1,
+                    Phone="",
+                    CurrencyAmount=0,
+                    AccountAmount=0,
+                    VipLevel=0,
                     UserType = model.UserType
                 };
-
-                var result = await UserManager.CreateAsync(user);
-                if (result.Succeeded)
+                UserLoginInfo login = new UserLoginInfo(provider, model.ExternalUserId);                
+                try
                 {
-                    result = await UserManager.AddLoginAsync(user.Id, info.Login);
-                    if (result.Succeeded)
+                    var emailExisted = await UserManager.FindByEmailAsync(user.Email);                   
+                    if (emailExisted==null)
                     {
-                        await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
-                        return RedirectToAction("Index");
+                        var result = await UserManager.CreateAsync(user, model.Password);
+                        if (result.Succeeded)
+                        {
+                            user = await UserManager.FindByEmailAsync(model.Email);                           
+                            if (result.Succeeded)
+                            {
+                                await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+                                return RedirectToAction("Index");
+                            }
+                            AddErrors(result);
+                        }
+                    }
+                    else
+                    {
+                        errorMessage = string.Format("邮箱{0}已经注册过，不能重复注册",model.Email);
                     }
                 }
-                AddErrors(result);
+                catch(MiOUException mex)
+                {
+                    Logger.Error(mex);
+                }
+                catch(Exception ex)
+                {
+                    Logger.Fatal(ex);
+                }                
             }
-           
+            ViewBag.Error = errorMessage;
+            BaseManager manager = new BaseManager();
+            List<BArea> provinces = manager.GetAreas(0);
+            List<BArea> cities = new List<BArea>();
+            List<BArea> districts = new List<BArea>();
+            List<BUserType> uTypes = manager.GetUserTypes();
+            ViewBag.LoginProvider = provider;
+            ViewBag.Provinces = new SelectList(provinces, "Id", "Name");
+            ViewBag.Types = new SelectList(uTypes, "Id", "Name");
+
+            if(model.Province>0)
+            {
+                BArea province = (from p in provinces where p.Id == model.Province select new BArea { Id=p.Id,Name=p.Name }).FirstOrDefault<BArea>();
+                if (province != null)
+                {
+                    cities = manager.GetAreas(model.Province);
+                    if (model.City>0)
+                    {
+                        if (model.City==1 || model.City==9 || model.City==22 || model.City==2)
+                        {
+                            BArea city = province;                           
+                            cities = new List<BArea>();
+                            cities.Add(new BArea() { Id = city.Id, Name = city.Name });
+                            districts = manager.GetAreas(model.Province);                          
+                        }
+                        else
+                        {
+                            BArea city = (from c in cities where c.Id==model.City select c).FirstOrDefault<BArea>();
+                            if (city != null)
+                            {
+                                districts = manager.GetAreas(city.Id);                                
+                            }
+                        }
+
+                    }
+                }
+            }
+            ViewBag.Cities = new SelectList(cities, "Id", "Name"); ;
+            ViewBag.Districts = new SelectList(districts, "Id", "Name");
             return View(model);
         }
 
         // GET: VHome
         [HttpGet]
         [AllowAnonymous]
-        public async Task<ActionResult> Login()
-        {         
-            WeChatUserInfo userInfo = LoginHelper.GetLoginInfo(Request);
+        public async Task<ActionResult> Login(string returnURL=null)
+        {
+            ViewBag.ReturnURL = returnURL;
+            var info = await AuthenticationManager.GetExternalLoginInfoAsync();          
+            WeChatUserInfo userInfo = LoginHelper.GetLoginInfo(Request,Session);
             if (userInfo == null)
             {
                 RedirectToAction("Error", MessageConstants.WECHAT_AUTH_ERROR);
             }
            
-            UserLoginInfo login = new UserLoginInfo("WeChat", userInfo.UnionId);
+            UserLoginInfo login = new UserLoginInfo("WeChat", userInfo.UnionId);           
             var user =await UserManager.FindAsync(login);
             if (user == null)
             {

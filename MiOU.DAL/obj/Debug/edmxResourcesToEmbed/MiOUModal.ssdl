@@ -283,11 +283,11 @@
   </EntityType>
   <EntityType Name="User">
     <Key>
-      <PropertyRef Name="Id" />
+      <PropertyRef Name="UserId" />
     </Key>
-    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="UserId" Type="int" Nullable="false" />
     <Property Name="Name" Type="varchar" MaxLength="45" />
-    <Property Name="NickName" Type="varchar" MaxLength="45" Nullable="false" />
+    <Property Name="NickName" Type="varchar" MaxLength="45" />
     <Property Name="Email" Type="varchar" MaxLength="45" Nullable="false" />
     <Property Name="ExternalUserType" Type="int" Nullable="false" />
     <Property Name="ExternalUserId" Type="varchar" MaxLength="50" />
@@ -300,7 +300,7 @@
     <Property Name="Province" Type="int" Nullable="false" />
     <Property Name="City" Type="int" Nullable="false" />
     <Property Name="District" Type="int" Nullable="false" />
-    <Property Name="Address" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="Address" Type="varchar" MaxLength="50" />
     <Property Name="XPlot" Type="varchar" MaxLength="45" />
     <Property Name="YPlot" Type="varchar" MaxLength="45" />
     <Property Name="Status" Type="int" Nullable="false" />
