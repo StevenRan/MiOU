@@ -255,9 +255,19 @@
     <Content Include="Config\WeChatPayConfigTest.xml" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\ct-navbar.css" />
+    <Content Include="Content\Images\bg.jpg" />
+    <Content Include="Content\Images\my_btn.png" />
+    <Content Include="Content\Images\my_click_btn.png" />
+    <Content Include="Content\Images\order_btn.png" />
+    <Content Include="Content\Images\order_click_btn.png" />
+    <Content Include="Content\Images\owner_btn.png" />
+    <Content Include="Content\Images\owner_click_btn.png" />
+    <Content Include="Content\Images\rent_btn.png" />
+    <Content Include="Content\Images\rent_click_btn.png" />
+    <Content Include="Content\pe-icon-7-stroke.css" />
     <Content Include="Content\Site.css" />
     <Content Include="favicon.ico" />
-    <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Scripts\bootstrap-datepicker.js" />
     <Content Include="Scripts\bootstrap-datepicker.min.js" />
@@ -283,6 +293,7 @@
     <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\ApiGroup.cshtml" />
     <Content Include="Areas\HelpPage\Views\Help\Api.cshtml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
+    <Content Include="Scripts\ct-navbar.js" />
     <Content Include="Scripts\gridmvc.js" />
     <Content Include="Scripts\gridmvc.lang.ru.js" />
     <Content Include="Scripts\gridmvc.min.js" />
@@ -339,7 +350,7 @@
     </Content>
     <Content Include="Views\Shared\_ExternalLoginsListPartial.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
-    <Content Include="Views\Shared\_vLayout.cshtml" />
+    <Content Include="Views\Shared\_vRentLayout.cshtml" />
     <Content Include="Views\VHome\Index.cshtml" />
     <Content Include="Views\VHome\ExternalLoginFailure.cshtml" />
     <Content Include="Views\VHome\ExternalLoginConfirmation.cshtml" />
@@ -349,9 +360,6 @@
     <Folder Include="App_Data\" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="fonts\glyphicons-halflings-regular.woff" />
-    <Content Include="fonts\glyphicons-halflings-regular.ttf" />
-    <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="packages.config" />
     <None Include="Project_Readme.html" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />

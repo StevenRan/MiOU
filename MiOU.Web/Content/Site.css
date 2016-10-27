@@ -12,7 +12,11 @@
 .dl-horizontal dt {
     white-space: normal;
 }
-
+/*.container {
+padding-left:0px;
+padding-right:0px;
+background-color:#F1F1F1;
+}*/
 /* Set width on the form input elements since they're 100% wide by default */
 /*
 input,
@@ -33,6 +37,12 @@ textarea {
     }
 }
 
+.mainBg {
+    background-color:#F1F1F1;
+}
+.fontColorS {
+color:#FFD03F;
+}
 .mobileInput {
 width:100%;
 }
@@ -51,7 +61,16 @@ width:100%;
     border-radius:8px;
     border-color:#FFD03F;
 }
-
+.ccaret {
+    border-top-color:#FFD03F;
+}
+.cityC {
+   border-color:#FFFFFF;
+}
+.bgW {
+    background-color:#FFFFFF;
+    border-color:#FFFFFF;
+}
 .btn-default:hover,
 .btn-default:focus,
 .btn-default:active,
