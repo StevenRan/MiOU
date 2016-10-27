@@ -1,0 +1,55 @@
+﻿
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>@ViewBag.Title - 米藕</title>
+    <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    <script type="text/javascript">
+    $(function () {
+        $('#payfeeRentMenu').click(function () {
+            var _this = this;
+            $('#vipFreeRentMenu').removeClass("active");
+            $(_this).addClass('active');
+        });
+        $('#vipFreeRentMenu').click(function () {
+            var _this = this;
+            $('#payfeeRentMenu').removeClass("active");
+            $(_this).addClass('active');
+        });
+    });
+    </script>
+</head>
+<body>
+    <div class="navbar navbar-inverse navbar-fixed-top bgW">
+        <div class="btn-group" style="position:absolute; top:10px;left:10px;">
+            <button class="btn btn-default btn-sm dropdown-toggle fontColorS cityC" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                上海 <span class="caret" style="border-top-color: #FFD03F;"></span>
+            </button>
+            <ul class="dropdown-menu"></ul>
+        </div>
+
+        <div style="padding-top:8px;padding-bottom:8px;background-color:#FFF; text-align:center;">
+            <div class="btn-group" role="group" aria-label="...">
+                <button id="payfeeRentMenu" type="button" class="btn btn-default topRentMenu active">付费租赁</button>
+                <button id="vipFreeRentMenu" type="button" class="btn btn-default topRentMenu">Vip借用</button>
+            </div>
+        </div>
+    </div>   
+    <div class="container" style="min-height:750px;">
+        @RenderBody()
+    </div>
+    
+    <div class="main_nav_bottom">
+        <nav class="navbar navbar-default navbar-fixed-bottom">
+           
+       </nav>
+    </div>
+    @RenderSection("scripts", required: false)
+</body>
+</html>
