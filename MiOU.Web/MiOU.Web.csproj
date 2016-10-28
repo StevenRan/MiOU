@@ -236,6 +236,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helper\HtmlHelper.cs" />
     <Compile Include="Helper\MessageConstants.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\MeViewModels.cs" />
@@ -257,6 +258,7 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\ct-navbar.css" />
     <Content Include="Content\Images\bg.jpg" />
+    <Content Include="Content\Images\logo.png" />
     <Content Include="Content\Images\my_btn.png" />
     <Content Include="Content\Images\my_click_btn.png" />
     <Content Include="Content\Images\order_btn.png" />
@@ -355,6 +357,9 @@
     <Content Include="Views\VHome\ExternalLoginFailure.cshtml" />
     <Content Include="Views\VHome\ExternalLoginConfirmation.cshtml" />
     <Content Include="Views\Shared\_vStartLayout.cshtml" />
+    <Content Include="Views\VHome\Owner.cshtml" />
+    <Content Include="Views\VHome\Order.cshtml" />
+    <Content Include="Views\VHome\My.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
