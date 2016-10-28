@@ -12,7 +12,7 @@
 
     <link href="http://netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
     <link href='http://fonts.googleapis.com/css?family=Grand+Hotel' rel='stylesheet' type='text/css'>
-    <script src="https://google-code-prettify.googlecode.com/svn/loader/run_prettify.js"></script>
+    
 </head>
 <body>
   
@@ -32,15 +32,28 @@
                             <span class="icon-bar"></span>
                             <span class="icon-bar"></span>
                         </button>
-                        <a class="navbar-brand navbar-brand-logo" href="http://www.creative-tim.com">
+                        <a class="navbar-brand navbar-brand-logo" href="http://www.meetold.com">
                             <div class="logo">
-                                <img src="https://s3.amazonaws.com/creativetim_bucket/new_logo.png">
+                                <img src="../Content/Images/logo.png" style="width:60px;height:60px;">
                             </div>
                             <div class="brand">米藕 </div>
                         </a>
                     </div>
+                  
                     <!-- Collect the nav links, forms, and other content for toggling -->
                     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                        <ul class="nav navbar-nav navbar-left">
+                            <li>
+                                <a data-toggle="" class="hidden-xs">
+                                    <p>藕主</p>
+                                </a>
+                            </li>
+                            <li>
+                                <a data-toggle="" class="hidden-xs">
+                                    <p>藕品</p>
+                                </a>
+                            </li>
+                        </ul>
                         <ul class="nav navbar-nav navbar-right">
                             <li>
                                 <a href="javascript:void(0);" data-toggle="search" class="hidden-xs">
@@ -63,13 +76,13 @@
                                     <p>账户 <b class="caret"></b></p>
                                 </a>
                                 <ul class="dropdown-menu">
-                                    <li><a href="#">Action</a></li>
-                                    <li><a href="#">Another action</a></li>
-                                    <li><a href="#">Something</a></li>
-                                    <li><a href="#">Another action</a></li>
-                                    <li><a href="#">Something</a></li>
+                                    <li><a href="#">我的藕品</a></li>
+                                    <li><a href="#">排期</a></li>
+                                    <li><a href="#">消毒保养</a></li>
+                                    <li><a href="#">Vip</a></li>
+                                    <li><a href="#">租单</a></li>
                                     <li class="divider"></li>
-                                    <li><a href="#">Separated link</a></li>
+                                    <li><a href="#">账户管理</a></li>
                                 </ul>
                             </li>
                         </ul>
@@ -92,9 +105,9 @@
     <div class="container">
         @RenderBody() 
 
-        <footer>
+        @*<footer>
             <p>&copy; @DateTime.Now.Year - Meet Old</p>
-        </footer>
+        </footer>*@
     </div>
    
     @RenderSection("scripts", required: false)

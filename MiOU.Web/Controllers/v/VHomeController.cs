@@ -25,6 +25,7 @@ using MiOU.Web.Helper;
 
 namespace MiOU.Web.Controllers.v
 {
+    [Authorize]
     public class VHomeController : Controller
     {
         private ApplicationSignInManager _signInManager;
@@ -107,6 +108,22 @@ namespace MiOU.Web.Controllers.v
             return View();
         }
 
+        [AllowAnonymous]
+        public ActionResult Owner()
+        {
+            return View();
+        }
+
+        [AllowAnonymous]
+        public ActionResult Order()
+        {
+            return View();
+        }
+        [AllowAnonymous]
+        public ActionResult My()
+        {
+            return View();
+        }
 
         [HttpPost]
         [AllowAnonymous]
