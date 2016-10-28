@@ -69,13 +69,12 @@ margin-left:2px;
 {
     position: fixed;
     bottom: 0;
-    left: 0;
-    width: 100%;
+    width:100%;
     border-top: 1px solid #ccc;
-    /* box-shadow: 0 -2px 5px #ccc; */
+    
     cursor: pointer;
     background-color: #f8f8f8;
-    font-size: 12px;
+    font-size: 14px;
 }
 
 .nav_bottom{
