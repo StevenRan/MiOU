@@ -1,0 +1,136 @@
+body {
+    padding-top: 50px;
+    padding-bottom: 50px;
+}
+.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+/* Override the default bootstrap behavior where horizontal description lists 
+   will truncate terms that are too long to fit in the left column 
+*/
+.dl-horizontal dt {
+    white-space: normal;
+}
+.rowR,.rowRL{
+margin-left:15px;
+margin-right:15px;
+margin-top:15px;
+border-radius: 2px;
+border:1px solid #ccc;
+background-color:#FFF;
+padding:5px 5px;
+}
+.rowRL{
+margin-bottom:15px;
+}
+.rowDiv,.rowDivTop
+{
+border-bottom:1px solid #ccc;
+}
+.rowDivTop{
+border-top:1px solid #ccc;
+background-color:#FFF;margin-top:15px;
+}
+.bgW{
+	background-color:#FFF;
+}
+.con{
+padding-left:0px;padding-right:0px;background-color:#F5F5F5;height:100%;
+padding-bottom:15px;
+}
+.rowDivText{
+text-align:center;
+height:30px;
+line-height:30px;
+}
+.rowDivPdt{
+overflow:hidden;padding:15px;
+}
+.rowDivPdtNotTop{
+	border-top:1px solid #ccc;
+	margin-top:15px;
+}
+.topMenuUl{
+list-style:none;overflow:hidden;padding-left:15px;padding-right:15px;margin:0px;padding-top:15px;padding-bottom:15px;
+}
+.topMenuM,.topMenu{
+
+ width:24.2%;height:50px;float:left;text-align:center;display:block;line-height:50px;background-color:#FFF;
+  border-radius: 6px;
+    border:1px solid #ccc;
+}
+.topMenuM{
+margin-left:2px;
+}
+
+.menuNav
+{
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    border-top: 1px solid #ccc;
+    /* box-shadow: 0 -2px 5px #ccc; */
+    cursor: pointer;
+    background-color: #f8f8f8;
+    font-size: 12px;
+}
+
+.nav_bottom{
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    font-size: 100%;
+    overflow:hidden;
+    text-align:center;
+}
+    .nav_bottom li {
+        width:50%;
+        float: left;
+        height: 50px;
+        text-align: center;
+        position: relative;
+        display: table;
+        padding:5px 10px 5px 10px;
+    }
+.nav_bottom li a{
+	display:block;
+}
+.nav_bottom .navcontent
+{
+    display: table-cell;
+    vertical-align: middle;
+}
+
+.nav_bottom .navcontent img {
+    display: block;
+    margin: 0 auto 2px;
+}
+.nav_bottom .navcontent .link,.nav_bottom .navcontent .linkA {
+    color:#6B6B6B;
+    width: 100%;
+    height: 45px;
+    line-height:45px;
+    float: left;
+    display:block;
+    border-radius: 6px;
+    border:1px solid #ccc;
+    
+}
+    .nav_bottom .navcontent .linkA {
+    
+    	 background-color:green;
+         color:#FFF;
+    } 
+    
+.arrow
+{
+width: 30px;
+height: 30px;
+-webkit-transform: rotate(90deg);
+-moz-transform: rotate(90deg);
+-ms-transform: rotate(90deg);
+transform: rotate(90deg);
+}
