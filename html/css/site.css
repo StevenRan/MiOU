@@ -52,6 +52,28 @@ overflow:hidden;padding:15px;
 	border-top:1px solid #ccc;
 	margin-top:15px;
 }
+.rowDiv .rleft{
+float:left;width:25%;
+}
+.rowDiv .rright
+{
+float:left;margin-left:15px;overflow:hidden;width:auto;word-wrap: break-word;width:70%;
+}
+.rowDiv .rright div{
+width:100%;
+}
+.rowDiv .rright .title{
+margin-bottom:2px;
+}
+.rowDiv .rright .desc{
+color:#666;
+}
+.rowDiv .rright .feeDesc{
+margin-bottom:0px;
+}
+.rowDiv .rright .yajin{
+color:#999;
+}
 .topMenuUl{
 list-style:none;overflow:hidden;padding-left:15px;padding-right:15px;margin:0px;padding-top:15px;padding-bottom:15px;
 }
@@ -132,4 +154,18 @@ height: 30px;
 -moz-transform: rotate(90deg);
 -ms-transform: rotate(90deg);
 transform: rotate(90deg);
+}
+
+
+.detail{
+  width:100%;overflow:hidden;
+}
+.detail ul{
+	list-style:none;padding:0px 2px 0px 2px;margin:0;width:100%;overflow:hidden;
+	background-color:#FFF;
+	text-align:center;
+}
+.detail ul li{
+text-align:center;padding-top:4px;padding-bottom:4px;width:14%;float:left;background-color:green;color:#FFF;
+
 }
