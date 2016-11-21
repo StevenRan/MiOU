@@ -39,6 +39,9 @@ namespace MiOU.Web
                 "~/Scripts/ct-navbar.js",
                 "~/Scripts/respond.js"));
 
+            bundles.Add(new ScriptBundle("~/bundles/miou").Include(
+               "~/Scripts/miou/vhome.js"));
+
             bundles.Add(new StyleBundle("~/Content/css").Include(
                  "~/Content/bootstrap.css",
                  "~/Content/pe-icon-7-stroke.css",

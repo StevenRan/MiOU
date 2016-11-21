@@ -5,17 +5,32 @@
 }
 
 <script>
+    
+    var pdtUtil=new ProductUtil();
     $(function () {
+       // alert('ready');
+        getData(1);
         $('#payfeeRentMenu').click(function () {
             var _this = this;
             $('#vipFreeRentMenu').removeClass("active");
             $(_this).addClass('active');
+            getData(1);
         });
         $('#vipFreeRentMenu').click(function () {
             var _this = this;
             $('#payfeeRentMenu').removeClass("active");
             $(_this).addClass('active');
+            getData(2);
         });
+
+        function getData(rentType) {
+            pdtUtil.GetTopCategoryStatistic(rentType, function (res) {
+                alert(res.message);
+                if (res.status == 'OK') {
+
+                }
+            });
+        }
     });
 </script>
 
@@ -35,6 +50,29 @@
         </div>
     </div>
 </div>   
+
+<div class="container" style="background-color:#F1F1F1;padding-left:0px;padding-right:0px;margin-top:66px;min-height:674px;">
+    <div id="banner"></div>
+    <div id="category_list" class="category_list">
+        <div class="item">
+            <div class="top">
+                <div class="clogo">
+                    <img src="~/Content/Images/category/出行代步icon.png" style="width:60px;height:60px;">
+                    <p style="display:inline-block;width:100px;margin-left:5px;">出行代步</p>
+                </div>
+                <div class="cChild">
+                    轮椅，代步车，助行器，拐杖
+                </div>
+            </div>
+            <div class="desc">
+                <div class="info">300位藕主，5000件偶品租赁</div>
+                <div class="infoRight">                    
+                    <p class="r">已出租300次</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 
     

@@ -475,7 +475,7 @@ namespace MiOU.BL
         /// Wechat public account home page
         /// </summary>
         /// <returns></returns>
-        public List<BCategoryStatistic> GetTopCategoryStatistic()
+        public List<BCategoryStatistic> GetTopCategoryStatistic(int rentType)
         {
             List<BCategoryStatistic> list = new List<BCategoryStatistic>();
             MiOUEntities db = null;
@@ -483,6 +483,7 @@ namespace MiOU.BL
             {
                 db = new MiOUEntities();
                 List<BCategory> categories = (from c in db.Category
+                                              where c.ParentId==0
                                               orderby c.Order
                                               select new BCategory
                                               {
@@ -499,8 +500,9 @@ namespace MiOU.BL
                     int[] cateIds = (from c in childCategories where c.ParentId==parentCategory.Id select c.Id).ToArray<int>();
                     if(cateIds!=null)
                     {
+                        parentCategory.Chindren = (from c in childCategories where c.ParentId == parentCategory.Id select new BCategory { Id=c.Id,Name=c.Name }).ToList<BCategory>();
                         //latter will use ProductCount field of database Product object, this field will be plus 1 when a product is created.
-                        List<Product> products = (from p in db.Product where cateIds.Contains(p.CategoryId) select p).ToList<Product>();
+                        List<Product> products = (from p in db.Product where cateIds.Contains(p.CategoryId) && p.RentType==rentType select p).ToList<Product>();
                         if(products!=null && products.Count>0)
                         {
                             statistic.ProductCount = products.Count;

@@ -10,6 +10,6 @@ namespace MiOU.Entities.Beans
     {
         public int Order { get; set; }
         public BCategory Parent { get; set; }
-        public BCategory Chindren { get; set; }
+        public List<BCategory> Chindren { get; set; }
     }
 }

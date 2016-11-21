@@ -6,6 +6,11 @@ using System.Threading.Tasks;
 
 namespace MiOU.Entities
 {
+    public enum ApiCallStatus
+    {
+        OK,
+        ERROR
+    }
     public enum SearchOrderType
     {
         ALL,

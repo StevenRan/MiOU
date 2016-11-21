@@ -41,6 +41,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ApiMessage.cs" />
     <Compile Include="Beans\BArea.cs" />
     <Compile Include="Beans\BCategory.cs" />
     <Compile Include="Beans\BCategoryStatistic.cs" />

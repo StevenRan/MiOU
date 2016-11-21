@@ -115,7 +115,8 @@ namespace MiOU.BL
         {
             if (userId <= 0)
             {
-                throw new MiOUException(MiOUConstants.USER_ID_IS_EMPTY);
+                return null;
+                //throw new MiOUException(MiOUConstants.USER_ID_IS_EMPTY);
             }
             BUser user = null;
             using (MiOUEntities db = new MiOUEntities())
