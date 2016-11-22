@@ -5,7 +5,7 @@
 }
 
 <script>
-    
+    var rentType = 1;
     var pdtUtil=new ProductUtil();
     $(function () {
        // alert('ready');
@@ -14,20 +14,51 @@
             var _this = this;
             $('#vipFreeRentMenu').removeClass("active");
             $(_this).addClass('active');
+            rentType = 1;
             getData(1);
         });
         $('#vipFreeRentMenu').click(function () {
             var _this = this;
             $('#payfeeRentMenu').removeClass("active");
             $(_this).addClass('active');
+            rentType = 2;
             getData(2);
         });
 
         function getData(rentType) {
             pdtUtil.GetTopCategoryStatistic(rentType, function (res) {
-                alert(res.message);
+                //alert(res.message);
                 if (res.status == 'OK') {
-
+                    var container = $('#category_list');
+                    $(container).html('');
+                    $(res.result).each(function (index, item) {
+                        //var linkHtml = '<a style="display:inline-block;" href="VProduct/GetProductsByCategory?categoryId='+item.category.id+'&rentType='+rentType+'"></a>';
+                        var c = null;
+                        if (res.result.length - 1 == index) {
+                            c = $('<div class="item last"></div>').appendTo($(container));
+                        } else {
+                            c = $('<div class="item"></div>').appendTo($(container));
+                        }
+                        
+                        var top = $('<div class="top"></div>').appendTo(c);
+                        var html = '<div class="clogo"><a style="display:inline-block;" href="/VProduct/GetProductsByCategory?categoryId=' + item.category.id + '&rentType=' + rentType + '"><img src="/Content/' + item.category.iconPhotoMobile + '" style="width:60px;height:60px;"><p style="display:inline-block;width:100px;margin-left:10px;">' + item.category.name + '</p></a></div>';
+                        html += '<div class="cChild">';
+                        var childrenStr = null;
+                        $(item.category.childRen).each(function (j, child) {
+                            if (childrenStr == null) {
+                                childrenStr = child.name;
+                            } else {
+                                childrenStr +=','+ child.name;
+                            }
+                        });
+                        html += childrenStr;
+                        html += '</div>';
+                        $(html).appendTo($(top));
+                        
+                        var bottom = $('<div class="desc"></div>').appendTo($(c));
+                        var bhtml = '<div class="info">' + item.supplierCount + '位藕主，'+item.productCount+'件偶品租赁</div><div class="infoRight"><p class="r">已出租'+item.finishedOrderCount+'次</p> </div>';
+                        $(bhtml).appendTo($(bottom));
+                    });
                 }
             });
         }
@@ -51,9 +82,10 @@
     </div>
 </div>   
 
-<div class="container" style="background-color:#F1F1F1;padding-left:0px;padding-right:0px;margin-top:66px;min-height:674px;">
+<div class="container" style="background-color:#F1F1F1;padding-left:0px;padding-right:0px;margin-top:66px;min-height:674px;margin-bottom:55px;">
     <div id="banner"></div>
     <div id="category_list" class="category_list">
+        <!--
         <div class="item">
             <div class="top">
                 <div class="clogo">
@@ -71,6 +103,7 @@
                 </div>
             </div>
         </div>
+        -->
     </div>
 </div>
 

@@ -6,7 +6,6 @@
     <EntitySet Name="Admin_Users" EntityType="MiOU.DAL.Admin_Users" />
     <EntitySet Name="Admin_Users_Actions" EntityType="MiOU.DAL.Admin_Users_Actions" />
     <EntitySet Name="Area" EntityType="MiOU.DAL.Area" />
-    <EntitySet Name="Category" EntityType="MiOU.DAL.Category" />
     <EntitySet Name="EvaluatedPriceCategory" EntityType="MiOU.DAL.EvaluatedPriceCategory" />
     <EntitySet Name="File" EntityType="MiOU.DAL.File" />
     <EntitySet Name="PayCategory" EntityType="MiOU.DAL.PayCategory" />
@@ -28,6 +27,7 @@
     <EntitySet Name="Product" EntityType="MiOU.DAL.Product" />
     <EntitySet Name="Payment" EntityType="MiOU.DAL.Payment" />
     <EntitySet Name="User" EntityType="MiOU.DAL.User" />
+    <EntitySet Name="Category" EntityType="MiOU.DAL.Category" />
   </EntityContainer>
   <EntityType Name="Admin_Actions">
     <Key>
@@ -74,16 +74,6 @@
     <Property Name="Upid" Type="Int32" Nullable="false" />
     <Property Name="List" Type="Int16" Nullable="false" />
     <Property Name="Order" Type="Byte" Nullable="false" />
-  </EntityType>
-  <EntityType Name="Category">
-    <Key>
-      <PropertyRef Name="Id" />
-    </Key>
-    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-    <Property Name="ParentId" Type="Int32" Nullable="false" />
-    <Property Name="Order" Type="Int32" />
-    <Property Name="ProductCount" Type="Int32" Nullable="false" />
   </EntityType>
   <EntityType Name="EvaluatedPriceCategory">
     <Key>
@@ -372,5 +362,17 @@
     <Property Name="Phone" Type="String" Nullable="false" MaxLength="45" FixedLength="false" Unicode="false" />
     <Property Name="CurrencyAmount" Type="Single" Nullable="false" />
     <Property Name="AccountAmount" Type="Single" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Category">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="ParentId" Type="Int32" Nullable="false" />
+    <Property Name="Order" Type="Int32" />
+    <Property Name="ProductCount" Type="Int32" Nullable="false" />
+    <Property Name="PhotoMobile" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="PhotoPC" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
   </EntityType>
 </Schema>

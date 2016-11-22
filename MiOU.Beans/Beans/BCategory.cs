@@ -10,6 +10,8 @@ namespace MiOU.Entities.Beans
     {
         public int Order { get; set; }
         public BCategory Parent { get; set; }
-        public List<BCategory> Chindren { get; set; }
+        public List<BCategory> ChildRen { get; set; }
+        public string IconPhotoMobile { get; set; }
+        public string IconPhotoPC { get; set; }
     }
 }

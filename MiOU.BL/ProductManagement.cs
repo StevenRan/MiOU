@@ -22,6 +22,95 @@ namespace MiOU.BL
 
         }
 
+        public List<BProduct> GetProducts(int pId,int cId,int rentType,int provinceId,int cityId,int districtId,string keyword,int pageSize,int page,bool notDetail,out int total)
+        {
+            List<BProduct> products = null;
+            MiOUEntities db = null;
+            total = 0;
+            try
+            {
+                db = new MiOUEntities();
+                var linq = from p in db.Product
+                           join cate in db.Category on p.CategoryId equals cate.Id into lcate
+                           from llcate in lcate.DefaultIfEmpty()
+                           join province in db.Area on p.Province equals province.Id into lprovince
+                           from llprovince in lprovince.DefaultIfEmpty()
+                           join city in db.Area on p.City equals city.Id into lcity
+                           from llcity in lcity.DefaultIfEmpty()
+                           join district in db.Area on p.District equals district.Id into ldistrict
+                           from lldistrict in ldistrict.DefaultIfEmpty()
+                           join shipping in db.DeliveryType on p.DeliveryType equals shipping.Id into lshipping
+                           from llshipping in lshipping.DefaultIfEmpty()
+                           join vip in db.VipLevel on p.VIPLevel equals vip.Id into lvip
+                           from llvip in lvip.DefaultIfEmpty()
+                           join rtype in db.RentType on p.RentType equals rtype.Id into lrtype
+                           from llrtype in lrtype.DefaultIfEmpty()
+                           select new BProduct
+                           {
+                               Id = p.Id,
+                               Name = p.Name,
+                               Category = new BCategory { Id = p.CategoryId, Name = llcate.Name },
+                               District = new BArea { Id = p.District, Name = lldistrict.Name },
+                               Province = new BArea { Id = p.Province, Name = llprovince.Name },
+                               City = new BArea { Id = p.City, Name = llcity.Name },
+                               Address = p.Address,
+                               Nearby = p.NearBy,
+                               Apartment = p.Apartment,
+                               DeliveryType = new BObject { Id = p.DeliveryType, Name = llshipping.Name },
+                               VIPRentLevel = new BVIPLevel { Id = p.VIPLevel, Name = llvip.Name },
+                               RentType = new BObject { Id= p.RentType,Name=llrtype.Name }
+                           };
+
+                if(rentType>0)
+                {
+                    linq = linq.Where(a=>a.RentType.Id==rentType);
+                }
+                if(pId>0)
+                {
+                    linq = linq.Where(a=>(from c in db.Category where c.ParentId==pId select c.Id).Contains(a.Category.Id));
+                }
+                if(cId>0)
+                {
+                    linq = linq.Where(a=>a.Category.Id==cId);
+                }
+                if (provinceId > 0)
+                {
+                    linq = linq.Where(a => a.Province.Id == provinceId);
+                }
+                if (cityId > 0)
+                {
+                    linq = linq.Where(a => a.City.Id == cityId);
+                }
+                if (districtId > 0)
+                {
+                    linq = linq.Where(a => a.District.Id == districtId);
+                }
+                if(!string.IsNullOrEmpty(keyword))
+                {
+                    linq = linq.Where(a=>(a.Name.Contains(keyword) || a.Address.Contains(keyword) || a.Nearby.Contains(keyword) || a.Apartment.Contains(keyword)));
+                }
+                linq = linq.OrderByDescending(a=>a.Created);
+                total = linq.Count();
+                if(page<=0)
+                {
+                    page = 1;
+                }
+
+                products = linq.Skip((page - 1) * pageSize).Take(pageSize).ToList<BProduct>();
+            }
+            catch (Exception ex)
+            {
+                logger.Fatal(ex);
+            }
+            finally
+            {
+                if (db != null)
+                    db.Dispose();
+            }
+
+            return products;
+        }
+
         public void DeleteProductImages(int productId,List<int> images)
         {
             if(productId<=0 || images==null || images.Count<=0)
@@ -303,21 +392,24 @@ namespace MiOU.BL
                     AuditUserId = 0,
                     CategoryId = model.Category.Id,
                     Created = DateTimeUtil.ConvertDateTimeToInt(DateTime.Now),
-                    City = model.City.Id,
+                    City = model.City!=null? model.City.Id:0,
                     DeliveryType = model.DeliveryType.Id,
                     Description = model.Description,
-                    District = model.District.Id,
+                    District = model.District!=null? model.District.Id:0,
                     Percentage = model.Percentage,
-                    Province = model.Province.Id,
+                    Province = model.Province!=null? model.Province.Id:0,
                     RentType = model.RentType.Id,
                     Status = 0,
-                    UserId = CurrentLoginUser.User.UserId,
+                    UserId = CurrentLoginUser.User!=null? CurrentLoginUser.User.UserId:0,
                     Pledge = 0,
                     Price = 0,
                     Updated = 0,
                     XPlot = "",
                     YPlot = "",
-                    Repertory=model.Repertory
+                    Repertory=model.Repertory,
+                    Apartment=model.Apartment,
+                    NearBy=model.Nearby,
+                    VIPLevel= model.VIPRentLevel!=null?model.VIPRentLevel.Id:0
                 };
                 db.Product.Add(product);
                 db.SaveChanges();
@@ -489,6 +581,8 @@ namespace MiOU.BL
                                               {
                                                   Id=c.Id,
                                                   Name=c.Name,
+                                                  IconPhotoMobile=c.PhotoMobile,
+                                                  IconPhotoPC=c.PhotoPC,
                                                   Order=c.Order!=null ? (int)c.Order:0
                                               }).ToList<BCategory>();
 
@@ -500,7 +594,7 @@ namespace MiOU.BL
                     int[] cateIds = (from c in childCategories where c.ParentId==parentCategory.Id select c.Id).ToArray<int>();
                     if(cateIds!=null)
                     {
-                        parentCategory.Chindren = (from c in childCategories where c.ParentId == parentCategory.Id select new BCategory { Id=c.Id,Name=c.Name }).ToList<BCategory>();
+                        parentCategory.ChildRen = (from c in childCategories where c.ParentId == parentCategory.Id select new BCategory { Id=c.Id,Name=c.Name }).ToList<BCategory>();
                         //latter will use ProductCount field of database Product object, this field will be plus 1 when a product is created.
                         List<Product> products = (from p in db.Product where cateIds.Contains(p.CategoryId) && p.RentType==rentType select p).ToList<Product>();
                         if(products!=null && products.Count>0)

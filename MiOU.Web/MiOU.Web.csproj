@@ -235,6 +235,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\MeController.cs" />
     <Compile Include="Controllers\v\VHomeController.cs" />
+    <Compile Include="Controllers\v\VProductController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -363,6 +364,7 @@
     <Content Include="Views\VHome\Owner.cshtml" />
     <Content Include="Views\VHome\Order.cshtml" />
     <Content Include="Views\VHome\My.cshtml" />
+    <Content Include="Views\VProduct\GetProductsByCategory.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

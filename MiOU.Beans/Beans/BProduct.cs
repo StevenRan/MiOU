@@ -30,10 +30,13 @@ namespace MiOU.Entities.Beans
         public BArea City { get; set; }
         public BArea District { get; set; }
         public string Address { get; set; }
+        public string Apartment { get; set; }
+        public string Nearby { get; set; }
         public string XPlot { get; set; }
         public string YPlot { get; set; }
         public List<BProductImage> Images { get; set; }
         public List<BProductPrice> ProductPrices { get; set; }
         public int Repertory { get; set; }
+        public BVIPLevel VIPRentLevel { get; set; }
     }
 }

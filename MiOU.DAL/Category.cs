@@ -19,5 +19,7 @@ namespace MiOU.DAL
         public int ParentId { get; set; }
         public Nullable<int> Order { get; set; }
         public int ProductCount { get; set; }
+        public string PhotoMobile { get; set; }
+        public string PhotoPC { get; set; }
     }
 }

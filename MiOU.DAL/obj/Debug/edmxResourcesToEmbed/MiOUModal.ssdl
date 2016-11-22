@@ -55,6 +55,8 @@
     <Property Name="ParentId" Type="int" Nullable="false" />
     <Property Name="Order" Type="int" />
     <Property Name="ProductCount" Type="int" Nullable="false" />
+    <Property Name="PhotoMobile" Type="varchar" MaxLength="100" />
+    <Property Name="PhotoPC" Type="varchar" MaxLength="100" />
   </EntityType>
   <EntityType Name="CurrencyTransferCategory">
     <Key>
@@ -285,7 +287,7 @@
     <Key>
       <PropertyRef Name="UserId" />
     </Key>
-    <Property Name="UserId" Type="int" Nullable="false" />
+    <Property Name="UserId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="Name" Type="varchar" MaxLength="45" />
     <Property Name="NickName" Type="varchar" MaxLength="45" />
     <Property Name="Email" Type="varchar" MaxLength="45" Nullable="false" />
@@ -304,7 +306,7 @@
     <Property Name="XPlot" Type="varchar" MaxLength="45" />
     <Property Name="YPlot" Type="varchar" MaxLength="45" />
     <Property Name="Status" Type="int" Nullable="false" />
-    <Property Name="Phone" Type="varchar" MaxLength="45" Nullable="false" />
+    <Property Name="Phone" Type="varchar" MaxLength="45" />
     <Property Name="CurrencyAmount" Type="float" Nullable="false" />
     <Property Name="AccountAmount" Type="float" Nullable="false" />
   </EntityType>

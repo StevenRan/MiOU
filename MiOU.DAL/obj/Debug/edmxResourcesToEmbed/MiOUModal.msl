@@ -51,17 +51,6 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="Category">
-      <EntityTypeMapping TypeName="MiOU.DAL.Category">
-        <MappingFragment StoreEntitySet="Category">
-          <ScalarProperty Name="ProductCount" ColumnName="ProductCount" />
-          <ScalarProperty Name="Order" ColumnName="Order" />
-          <ScalarProperty Name="ParentId" ColumnName="ParentId" />
-          <ScalarProperty Name="Name" ColumnName="Name" />
-          <ScalarProperty Name="Id" ColumnName="Id" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
     <EntitySetMapping Name="EvaluatedPriceCategory">
       <EntityTypeMapping TypeName="MiOU.DAL.EvaluatedPriceCategory">
         <MappingFragment StoreEntitySet="EvaluatedPriceCategory">
@@ -368,6 +357,19 @@
           <ScalarProperty Name="NickName" ColumnName="NickName" />
           <ScalarProperty Name="Name" ColumnName="Name" />
           <ScalarProperty Name="UserId" ColumnName="UserId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Category">
+      <EntityTypeMapping TypeName="MiOU.DAL.Category">
+        <MappingFragment StoreEntitySet="Category">
+          <ScalarProperty Name="PhotoPC" ColumnName="PhotoPC" />
+          <ScalarProperty Name="PhotoMobile" ColumnName="PhotoMobile" />
+          <ScalarProperty Name="ProductCount" ColumnName="ProductCount" />
+          <ScalarProperty Name="Order" ColumnName="Order" />
+          <ScalarProperty Name="ParentId" ColumnName="ParentId" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
