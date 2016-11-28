@@ -51,21 +51,6 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="EvaluatedPriceCategory">
-      <EntityTypeMapping TypeName="MiOU.DAL.EvaluatedPriceCategory">
-        <MappingFragment StoreEntitySet="EvaluatedPriceCategory">
-          <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
-          <ScalarProperty Name="Updated" ColumnName="Updated" />
-          <ScalarProperty Name="Description" ColumnName="Description" />
-          <ScalarProperty Name="Name" ColumnName="Name" />
-          <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
-          <ScalarProperty Name="Created" ColumnName="Created" />
-          <ScalarProperty Name="EndPrice" ColumnName="EndPrice" />
-          <ScalarProperty Name="StartPrice" ColumnName="StartPrice" />
-          <ScalarProperty Name="Id" ColumnName="Id" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
     <EntitySetMapping Name="File">
       <EntityTypeMapping TypeName="MiOU.DAL.File">
         <MappingFragment StoreEntitySet="File">
@@ -282,39 +267,6 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="Product">
-      <EntityTypeMapping TypeName="MiOU.DAL.Product">
-        <MappingFragment StoreEntitySet="Product">
-          <ScalarProperty Name="Locked" ColumnName="Locked" />
-          <ScalarProperty Name="Repertory" ColumnName="Repertory" />
-          <ScalarProperty Name="Type" ColumnName="Type" />
-          <ScalarProperty Name="YPlot" ColumnName="YPlot" />
-          <ScalarProperty Name="XPlot" ColumnName="XPlot" />
-          <ScalarProperty Name="Address" ColumnName="Address" />
-          <ScalarProperty Name="District" ColumnName="District" />
-          <ScalarProperty Name="City" ColumnName="City" />
-          <ScalarProperty Name="Province" ColumnName="Province" />
-          <ScalarProperty Name="RentType" ColumnName="RentType" />
-          <ScalarProperty Name="DeliveryType" ColumnName="DeliveryType" />
-          <ScalarProperty Name="EvaluatedPercentage" ColumnName="EvaluatedPercentage" />
-          <ScalarProperty Name="EvaluatedPrice" ColumnName="EvaluatedPrice" />
-          <ScalarProperty Name="AuditMessage" ColumnName="AuditMessage" />
-          <ScalarProperty Name="AuditTime" ColumnName="AuditTime" />
-          <ScalarProperty Name="AuditUserId" ColumnName="AuditUserId" />
-          <ScalarProperty Name="Status" ColumnName="Status" />
-          <ScalarProperty Name="Price" ColumnName="Price" />
-          <ScalarProperty Name="Pledge" ColumnName="Pledge" />
-          <ScalarProperty Name="Percentage" ColumnName="Percentage" />
-          <ScalarProperty Name="Updated" ColumnName="Updated" />
-          <ScalarProperty Name="Created" ColumnName="Created" />
-          <ScalarProperty Name="Name" ColumnName="Name" />
-          <ScalarProperty Name="Description" ColumnName="Description" />
-          <ScalarProperty Name="UserId" ColumnName="UserId" />
-          <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
-          <ScalarProperty Name="Id" ColumnName="Id" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
     <EntitySetMapping Name="Payment">
       <EntityTypeMapping TypeName="MiOU.DAL.Payment">
         <MappingFragment StoreEntitySet="Payment">
@@ -369,6 +321,58 @@
           <ScalarProperty Name="Order" ColumnName="Order" />
           <ScalarProperty Name="ParentId" ColumnName="ParentId" />
           <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="EvaluatedPriceCategory">
+      <EntityTypeMapping TypeName="MiOU.DAL.EvaluatedPriceCategory">
+        <MappingFragment StoreEntitySet="EvaluatedPriceCategory">
+          <ScalarProperty Name="VIPRentLevel" ColumnName="VIPRentLevel" />
+          <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
+          <ScalarProperty Name="Updated" ColumnName="Updated" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+          <ScalarProperty Name="Created" ColumnName="Created" />
+          <ScalarProperty Name="EndPrice" ColumnName="EndPrice" />
+          <ScalarProperty Name="StartPrice" ColumnName="StartPrice" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Product">
+      <EntityTypeMapping TypeName="MiOU.DAL.Product">
+        <MappingFragment StoreEntitySet="Product">
+          <ScalarProperty Name="VIPLevel" ColumnName="VIPLevel" />
+          <ScalarProperty Name="Locked" ColumnName="Locked" />
+          <ScalarProperty Name="Repertory" ColumnName="Repertory" />
+          <ScalarProperty Name="Type" ColumnName="Type" />
+          <ScalarProperty Name="YPlot" ColumnName="YPlot" />
+          <ScalarProperty Name="XPlot" ColumnName="XPlot" />
+          <ScalarProperty Name="Address" ColumnName="Address" />
+          <ScalarProperty Name="NearBy" ColumnName="NearBy" />
+          <ScalarProperty Name="Apartment" ColumnName="Apartment" />
+          <ScalarProperty Name="District" ColumnName="District" />
+          <ScalarProperty Name="City" ColumnName="City" />
+          <ScalarProperty Name="Province" ColumnName="Province" />
+          <ScalarProperty Name="RentType" ColumnName="RentType" />
+          <ScalarProperty Name="DeliveryType" ColumnName="DeliveryType" />
+          <ScalarProperty Name="EvaluatedPercentage" ColumnName="EvaluatedPercentage" />
+          <ScalarProperty Name="EvaluatedPrice" ColumnName="EvaluatedPrice" />
+          <ScalarProperty Name="AuditMessage" ColumnName="AuditMessage" />
+          <ScalarProperty Name="AuditTime" ColumnName="AuditTime" />
+          <ScalarProperty Name="AuditUserId" ColumnName="AuditUserId" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="Price" ColumnName="Price" />
+          <ScalarProperty Name="Pledge" ColumnName="Pledge" />
+          <ScalarProperty Name="Percentage" ColumnName="Percentage" />
+          <ScalarProperty Name="Updated" ColumnName="Updated" />
+          <ScalarProperty Name="Created" ColumnName="Created" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="UserId" ColumnName="UserId" />
+          <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
           <ScalarProperty Name="Id" ColumnName="Id" />
         </MappingFragment>
       </EntityTypeMapping>

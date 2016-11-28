@@ -107,6 +107,7 @@
     <Property Name="Description" Type="varchar" MaxLength="500" />
     <Property Name="Updated" Type="int" Nullable="false" />
     <Property Name="UpdatedBy" Type="int" Nullable="false" />
+    <Property Name="VIPRentLevel" Type="int" Nullable="false" />
   </EntityType>
   <EntityType Name="File">
     <Key>
@@ -221,12 +222,15 @@
     <Property Name="Province" Type="int" Nullable="false" />
     <Property Name="City" Type="int" Nullable="false" />
     <Property Name="District" Type="int" Nullable="false" />
+    <Property Name="Apartment" Type="varchar" MaxLength="100" />
+    <Property Name="NearBy" Type="varchar" MaxLength="200" />
     <Property Name="Address" Type="varchar" MaxLength="150" Nullable="false" />
     <Property Name="XPlot" Type="varchar" MaxLength="45" />
     <Property Name="YPlot" Type="varchar" MaxLength="45" />
     <Property Name="Type" Type="int" Nullable="false" />
     <Property Name="Repertory" Type="int" Nullable="false" />
     <Property Name="Locked" Type="bool" Nullable="false" />
+    <Property Name="VIPLevel" Type="int" Nullable="false" />
   </EntityType>
   <EntityType Name="ProductImage">
     <Key>
