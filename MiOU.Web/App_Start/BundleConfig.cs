@@ -36,7 +36,7 @@ namespace MiOU.Web
 
             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
                 "~/Scripts/bootstrap.js",
-                "~/Scripts/ct-navbar.js",
+                //"~/Scripts/ct-navbar.js",
                 "~/Scripts/respond.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/miou").Include(
@@ -44,8 +44,8 @@ namespace MiOU.Web
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                  "~/Content/bootstrap.css",
-                 "~/Content/pe-icon-7-stroke.css",
-                 "~/Content/ct-navbar.css",
+                 //"~/Content/pe-icon-7-stroke.css",
+                 //"~/Content/ct-navbar.css",
                  "~/Content/Site.css"));
         }
     }

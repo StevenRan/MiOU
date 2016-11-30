@@ -7,16 +7,22 @@
     }
     else {
         using (Html.BeginForm("ExternalLogin", "Account", new { ReturnUrl = Model.ReturnUrl })) {
-            @Html.AntiForgeryToken()
-
-            <ul class="nav navbar-nav navbar-right">
-                    <li>
-                        @foreach (AuthenticationDescription p in loginProviders)
-                        {
-                            <a href="/Account/ExternalLogin?provider=@p.AuthenticationType&ReturnUrl=@System.Web.HttpUtility.UrlEncode(Model.ReturnUrl)" id="@p.AuthenticationType" name="provider" value="@p.AuthenticationType" title="Log in using your @p.Caption account">@p.AuthenticationType</a>
-                        }
+            @Html.AntiForgeryToken()            
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">登录 <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            @foreach (AuthenticationDescription p in loginProviders)
+                            {
+                                <li><a href="/Account/ExternalLogin?provider=@p.AuthenticationType&ReturnUrl=@System.Web.HttpUtility.UrlEncode(Model.ReturnUrl)" id="@p.AuthenticationType" name="provider" value="@p.AuthenticationType" title="Log in using your @p.Caption account">@Html.Raw(p.AuthenticationType)登录</a></li>
+                            }
+                            <li><a href="/Account/Login">米藕登录</a></li>
+                        </ul>
                     </li>
-            </ul>
-        }
+                    <li>
+                        <a href="/Account/Register">注册</a>
+                    </li>
+                </ul>                
+              }
+          }
     }
-}

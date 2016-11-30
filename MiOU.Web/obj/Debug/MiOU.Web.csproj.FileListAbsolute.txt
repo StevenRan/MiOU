@@ -94,3 +94,10 @@ C:\Users\boling\Documents\GitHub\MiOU\MiOU.Web\bin\log4net.xml
 C:\Users\boling\Documents\GitHub\MiOU\MiOU.Web\bin\WeChatPayConfig.xml
 C:\Users\boling\Documents\GitHub\MiOU\MiOU.Web\bin\WeChat.Adapter.dll
 C:\Users\boling\Documents\GitHub\MiOU\MiOU.Web\bin\WeChat.Adapter.pdb
+C:\Users\boling\Documents\GitHub\MiOU\MiOU.Web\bin\GridMvc.dll
+C:\Users\boling\Documents\GitHub\MiOU\MiOU.Web\bin\GridMvc.pdb
+C:\Users\boling\Documents\GitHub\MiOU\MiOU.Web\bin\de\GridMvc.resources.dll
+C:\Users\boling\Documents\GitHub\MiOU\MiOU.Web\bin\es\GridMvc.resources.dll
+C:\Users\boling\Documents\GitHub\MiOU\MiOU.Web\bin\fr\GridMvc.resources.dll
+C:\Users\boling\Documents\GitHub\MiOU\MiOU.Web\bin\it\GridMvc.resources.dll
+C:\Users\boling\Documents\GitHub\MiOU\MiOU.Web\bin\ru\GridMvc.resources.dll

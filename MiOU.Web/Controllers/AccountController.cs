@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Globalization;
+using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -13,6 +14,8 @@ using Microsoft.Owin;
 using MiOU.BL;
 using MiOU.DAL;
 using MiOU.Util;
+using MiOU.Entities.Beans;
+
 namespace MiOU.Web.Controllers
 {
     [Authorize]
@@ -111,6 +114,13 @@ namespace MiOU.Web.Controllers
         [AllowAnonymous]
         public ActionResult Register()
         {
+            BaseManager bMgr = new BaseManager();
+            List<BArea> ares = bMgr.GetAreas(0);
+            ViewBag.Provinces = new SelectList(ares, "Id", "Name");
+            List<BUserType> uTypes = bMgr.GetUserTypes();
+            ViewBag.Cities = new SelectList(new List<BArea>(), "Id", "Name");
+            ViewBag.Districts = new SelectList(new List<BArea>(), "Id", "Name");
+            ViewBag.Types = new SelectList(uTypes, "Id", "Name");
             return View();
         }
 
@@ -119,22 +129,15 @@ namespace MiOU.Web.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Register(RegisterViewModel model)
+        public async Task<ActionResult> Register(ExternalLoginConfirmationViewModel model)
         {
             if (ModelState.IsValid)
             {
-                var user = new MiOU.BL.ApplicationUser { UserName = model.Email };
+                var user = new MiOU.BL.ApplicationUser { UserName = model.Email, Province=model.Province,City=model.City,District=model.District, Name= model.Name,NickName=model.NickName,Phone="",Status=1,RegTime=DateTimeUtil.ConvertDateTimeToInt(DateTime.Now),UserType= model.UserType};
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
                     await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
-
-                    // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
-                    // Send an email with this link
-                    // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
-                    // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
-                    // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
-
                     return RedirectToAction("Index", "Home");
                 }
                 AddErrors(result);

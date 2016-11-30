@@ -1,47 +1,125 @@
-﻿@model MiOU.Web.Models.RegisterViewModel
+﻿@model MiOU.Web.Models.ExternalLoginConfirmationViewModel
+
 @{
-    ViewBag.Title = "Register";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "注册账户";
 }
 
-<h2>@ViewBag.Title.</h2>
+<script>
+    var BASE_URL = '@Url.Content("~/")';
+    $(function () {
 
-@using (Html.BeginForm("Register", "Account", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
-{
-    @Html.AntiForgeryToken()
-    <h4>Create a new account.</h4>
-    <hr />
-    @Html.ValidationSummary("", new { @class = "text-danger" })
-    <div class="form-group">
-        @Html.LabelFor(m => m.Email, new { @class = "col-md-2 control-label" })
-        <div class="col-md-10">
-            @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
-        </div>
-    </div>
-    <div class="form-group">
-        @Html.LabelFor(m => m.Hometown, new { @class = "col-md-2 control-label" })
-        <div class="col-md-10">
-            @Html.TextBoxFor(m => m.Hometown, new { @class = "form-control" })
-        </div>
-    </div>    
-    <div class="form-group">
-        @Html.LabelFor(m => m.Password, new { @class = "col-md-2 control-label" })
-        <div class="col-md-10">
-            @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
-        </div>
-    </div>
-    <div class="form-group">
-        @Html.LabelFor(m => m.ConfirmPassword, new { @class = "col-md-2 control-label" })
-        <div class="col-md-10">
-            @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control" })
-        </div>
-    </div>
-    <div class="form-group">
-        <div class="col-md-offset-2 col-md-10">
-            <input type="submit" class="btn btn-default" value="Register" />
-        </div>
-    </div>
-}
+        $('#Province').change(function () {
+            var parentId = $('#Province').val();
+            var parentName = $('#Province option:selected').text();
+            $.post(
+                BASE_URL + 'api/Common/GetAreaByParent',
+                { pId: parentId },
+                function (res, status) {
+                    if (res.status == "OK") {
+                        $('#City').empty();
+                        $('#District').empty();
+                        $('#District').append("<option value=\"\">--选择区--</option>");
+                        if (parentId == "1" || parentId == "9" || parentId == "2" || parentId == "22") {
+                            $('#City').append("<option value=\"" + parentId + "\">" + parentName + "</option>");
+                            $('#District').empty();
+                            $('#District').append("<option value=\"\">--选择区--</option>");
+                            $(res.result).each(function (index, item) {
+                                $('#District').append("<option value=\"" + item.id + "\">" + item.name + "</option>");
+                            });
+                        } else {
+                            $('#City').append("<option value=\"\">--选择城市--</option>");
+                            $(res.result).each(function (index, item) {
+                                $('#City').append("<option value=\"" + item.id + "\">" + item.name + "</option>");
+                            });
+                        }
+                    }                  
+                }
+            );
+        });
 
-@section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
-}
+        $('#City').change(function () {
+            $.post(
+               BASE_URL + 'api/Common/GetAreaByParent',
+               { pId: $('#City').val() },
+               function (res, status) {
+                   if (res.status == "OK") {
+                       $('#District').empty();
+                       $('#District').append("<option value=\"\">--选择区--</option>");
+                       $(res.result).each(function (index, item) {
+                           $('#District').append("<option value=\"" + item.id + "\">" + item.name + "</option>");
+                       });
+                   }                  
+               }
+           );
+        });
+    });
+
+</script>
+<div class="body-content">
+    <h2>@ViewBag.Title</h2>
+
+    @using (Html.BeginForm("Register", "Account", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+    {
+        @Html.AntiForgeryToken()
+        <div class="form-group">
+            @Html.LabelFor(m => m.Email, new { @class = "col-md-2 control-label " })
+            <div class="col-md-10">
+                @Html.TextBoxFor(m => m.Email, new { @class = "form-control input_reg" })
+                @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.Password, new { @class = "col-md-2 control-label " })
+            <div class="col-md-10">
+                @Html.PasswordFor(m => m.Password, new { @class = "form-control input_reg" })
+                @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.Password2, new { @class = "col-md-2 control-label " })
+            <div class="col-md-10">
+                @Html.PasswordFor(m => m.Password2, new { @class = "form-control input_reg" })
+                @Html.ValidationMessageFor(m => m.Password2, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.UserType, htmlAttributes: new { @class = "control-label col-md-2 " })
+            <div class="col-md-8">
+                @Html.DropDownListFor(model => model.UserType, (SelectList)ViewBag.Types, "--选择类型--", new { @class = "form-control input_reg" })
+                @Html.ValidationMessageFor(model => model.UserType, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.Province, htmlAttributes: new { @class = "control-label col-md-2 " })
+            <div class="col-md-8">
+                @Html.DropDownListFor(model => model.Province, (SelectList)ViewBag.Provinces, "--选择省份--", new { @class = "form-control input_reg" })
+                @Html.ValidationMessageFor(model => model.Province, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.City, htmlAttributes: new { @class = "control-label col-md-2 " })
+            <div class="col-md-8">
+                @Html.DropDownListFor(model => model.City, (SelectList)ViewBag.Cities, "--选择城市--", new { @class = "form-control input_reg" })
+                @Html.ValidationMessageFor(model => model.City, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.District, htmlAttributes: new { @class = "control-label col-md-2 " })
+            <div class="col-md-8">
+                @Html.DropDownListFor(model => model.District, (SelectList)ViewBag.Districts, "--选择区--", new { @class = "form-control input_reg" })
+                @Html.ValidationMessageFor(model => model.District, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" class="btn btn-default btn-primary" value="快速注册" />
+            </div>
+        </div>
+    }
+</div>
+    @section Scripts {
+        @Scripts.Render("~/bundles/jqueryval")
+    }

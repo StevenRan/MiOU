@@ -39,18 +39,6 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="Area">
-      <EntityTypeMapping TypeName="MiOU.DAL.Area">
-        <MappingFragment StoreEntitySet="Area">
-          <ScalarProperty Name="Order" ColumnName="Order" />
-          <ScalarProperty Name="List" ColumnName="List" />
-          <ScalarProperty Name="Upid" ColumnName="Upid" />
-          <ScalarProperty Name="Level" ColumnName="Level" />
-          <ScalarProperty Name="Name" ColumnName="Name" />
-          <ScalarProperty Name="Id" ColumnName="Id" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
     <EntitySetMapping Name="File">
       <EntityTypeMapping TypeName="MiOU.DAL.File">
         <MappingFragment StoreEntitySet="File">
@@ -373,6 +361,19 @@
           <ScalarProperty Name="Description" ColumnName="Description" />
           <ScalarProperty Name="UserId" ColumnName="UserId" />
           <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Area">
+      <EntityTypeMapping TypeName="MiOU.DAL.Area">
+        <MappingFragment StoreEntitySet="Area">
+          <ScalarProperty Name="IsDirect" ColumnName="IsDirect" />
+          <ScalarProperty Name="Order" ColumnName="Order" />
+          <ScalarProperty Name="List" ColumnName="List" />
+          <ScalarProperty Name="Upid" ColumnName="Upid" />
+          <ScalarProperty Name="Level" ColumnName="Level" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
           <ScalarProperty Name="Id" ColumnName="Id" />
         </MappingFragment>
       </EntityTypeMapping>

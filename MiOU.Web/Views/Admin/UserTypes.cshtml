@@ -1,0 +1,25 @@
+﻿@using GridMvc.Html
+@model GridMvc.DBGrid.DBGrid<MiOU.Entities.Beans.BUserType>
+@{
+    ViewBag.Title = "用户类型管理";
+    Layout = "~/Views/Shared/_adminLayout.cshtml";
+}
+
+<h2>@ViewBag.Title</h2>
+<hr />
+
+@Html.Grid(Model).Columns(columns =>
+{
+    columns.Add(c => c.Id).Titled("编号").Filterable(true).SetWidth("5%");
+    columns.Add(c => c.Name).Titled("名称").Filterable(true).SetWidth("15%");
+    columns.Add(c => c.Description).Titled("描述").Filterable(true);
+
+    columns.Add()
+          .Encoded(false)
+          .Sanitized(false)
+          .SetWidth("10%")
+          //.RenderValueAs(o => Html.ActionLink("编辑", "EditResource", new { resourceId = o.Resource.Id }));
+          .RenderValueAs(o => Html.Raw("<a href=\"javascript:void(0);\" onclick=\"openModalDialog('/Admin/UpdateUserTypes',{id:" + o.Id + "})\">编辑</a>"));
+
+}).Sortable(true)
+

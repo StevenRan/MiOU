@@ -56,7 +56,7 @@
                         $(html).appendTo($(top));
                         
                         var bottom = $('<div class="desc"></div>').appendTo($(c));
-                        var bhtml = '<div class="info">' + item.supplierCount + '位藕主，'+item.productCount+'件偶品租赁</div><div class="infoRight"><p class="r">已出租'+item.finishedOrderCount+'次</p> </div>';
+                        var bhtml = '<div class="info">' + item.supplierCount + '位藕主，' + item.productCount + '件偶品租赁</div><div class="infoRight"><a class="r"><img src="/Content/Images/category/已出租icon.png" /><p>已出租' + item.finishedOrderCount + '次 </p></a></div>';
                         $(bhtml).appendTo($(bottom));
                     });
                 }

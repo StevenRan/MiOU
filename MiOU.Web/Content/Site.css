@@ -1,5 +1,7 @@
 ﻿
-
+body{
+    padding-top: 51px;
+}
 /* Set padding to keep content from hitting the edges */
 .body-content {
     padding-left: 15px;
@@ -35,6 +37,13 @@ textarea {
         float: none;
         padding: 10px 15px;
     }
+}
+
+.input_reg {
+    width:40%;
+}
+.input_reg_drp {
+    width:30x;
 }
 
 .mainBg {
@@ -165,23 +174,27 @@ width:100%;
         }
         .category_list .item .desc {            
             padding-left:10px;
-            padding-right:10px;
-             height:70px;
-                line-height:70px;
+            padding-right:10px;   
+            height:60px;      
             overflow:hidden;
         }
             .category_list .item .desc .info {
-                color:#999;
-                height:70px;
-                line-height:70px;
+                color:#999;              
                 float:left;
+                line-height:60px;
             }
-            .category_list .item .desc .infoRight {
-                height:70px;
-                line-height:70px;
-                float:right;
-                
+            .category_list .item .desc .infoRight {             
+                float:right;              
+                height:60px;
+                padding-top:12.5px;
+               
             }
 .category_list .item .desc .infoRight .r {
-    display:inline-block;padding:5px 5px 5px 5px;border:1px solid #FF6F5E;color:#FF6F5E;border-radius:5px;
+    display:inline-block;border:1px solid #FF6F5E;color:#FF6F5E;border-radius:5px;padding:4px 4px 4px 4px;
+}
+.category_list .item .desc .infoRight .r img{
+    margin:0;padding:0;width:25px;height:25px;
+}
+.category_list .item .desc .infoRight .r p{
+    padding-left:4px;display:inline-block;margin:0;vertical-align:middle;
 }

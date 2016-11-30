@@ -39,12 +39,13 @@
     <Key>
       <PropertyRef Name="Id" />
     </Key>
-    <Property Name="Id" Type="umediumint" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="Name" Type="char" MaxLength="255" Nullable="false" />
-    <Property Name="Level" Type="utinyint" Nullable="false" />
-    <Property Name="Upid" Type="umediumint" Nullable="false" />
+    <Property Name="Id" Type="int" Nullable="false" />
+    <Property Name="Name" Type="varchar" MaxLength="100" Nullable="false" />
+    <Property Name="Level" Type="tinyint" Nullable="false" />
+    <Property Name="Upid" Type="mediumint" Nullable="false" />
     <Property Name="List" Type="smallint" Nullable="false" />
-    <Property Name="Order" Type="utinyint" Nullable="false" />
+    <Property Name="Order" Type="int" Nullable="false" />
+    <Property Name="IsDirect" Type="bool" Nullable="false" />
   </EntityType>
   <EntityType Name="Category">
     <Key>

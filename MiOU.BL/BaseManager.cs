@@ -8,6 +8,7 @@ using MiOU.Entities.Beans;
 using MiOU.Entities.Exceptions;
 using MiOU.Entities;
 using MiOU.DAL;
+using MiOU.Util;
 namespace MiOU.BL
 {
     public class BaseManager
@@ -232,7 +233,7 @@ namespace MiOU.BL
             List<BArea> areas = null;
             using (MiOUEntities db = new MiOUEntities())
             {
-                var tmp = from a in db.Area select new BArea { Name= a.Name, Id=a.Id,Level=a.Level,UPID=a.Upid };
+                var tmp = from a in db.Area select new BArea { Name= a.Name, Id=a.Id,Level=a.Level,UPID=a.Upid,IsDirect=a.IsDirect,Order=a.Order };
                 if (parentId > 0)
                 {
                     tmp = tmp.Where(a => a.UPID == parentId);
@@ -247,15 +248,7 @@ namespace MiOU.BL
             return areas;
         }
 
-        public List<BUserType> GetUserTypes()
-        {
-            List<BUserType> types = null;
-            using (MiOUEntities db = new MiOUEntities())
-            {
-                types = (from t in db.UserType orderby t.Id select new BUserType { Id=t.Id, Name=t.Name }).ToList<BUserType>();
-            }
-            return types;
-        }
+     
 
         public BArea GetAreaByName(string name)
         {
@@ -307,6 +300,7 @@ namespace MiOU.BL
                 return categories;
         }
 
+        #region delivery type related functions
         public List<BSelType> GetDeliveryTypes()
         {
             List<BSelType> dTypes = null;
@@ -333,6 +327,104 @@ namespace MiOU.BL
             return dTypes;
         }
 
+        public BSelType GetDeliveryTypeDetail(int id)
+        {
+            BSelType t = null;
+            if (id <= 0)
+            {
+                throw new MiOUException("交付类型编号不合法");
+            }
+            using (MiOUEntities db = new MiOUEntities())
+            {
+                t = (from type in db.DeliveryType
+                     join u in db.User on type.CreatedBy equals u.UserId into lu
+                     from llu in lu.DefaultIfEmpty()
+                     join u1 in db.User on type.UpdatedBy equals u1.UserId into lu1
+                     from llu1 in lu1.DefaultIfEmpty()
+                     where type.Id == id
+                     select new BSelType
+                     {
+                         Id = type.Id,
+                         Name = type.Name,
+                         Description = type.Description,
+                         Created = type.Created,
+                         CreatedBy = llu!=null? new BUser { User=llu }:null,
+                         Updated = type.Updated,
+                         UpdatedBy = llu1!=null? new BUser {User=llu1 }:null
+
+                     }).FirstOrDefault<BSelType>();
+            }
+            return t;
+        }
+
+        public bool CreateDeliveryType(BSelType type)
+        {
+            bool ret = false;
+            if (type == null)
+            {
+                throw new MiOUException("参数不正确");
+            }
+            if (string.IsNullOrEmpty(type.Name))
+            {
+                throw new MiOUException("交付类型名称不能为空");
+            }
+            using (MiOUEntities db = new MiOUEntities())
+            {
+                DeliveryType et = (from t in db.DeliveryType where t.Name == type.Name select t).FirstOrDefault<DeliveryType>();
+                if (et != null)
+                {
+                    throw new MiOUException(string.Format("名称为{0}的交付类型已经存在", type.Name));
+                }
+                DeliveryType d = new DeliveryType();
+                d.Name = type.Name;
+                d.Created = DateTimeUtil.ConvertDateTimeToInt(DateTime.Now);
+                d.CreatedBy = type.CreatedBy != null ? type.CreatedBy.User.UserId : CurrentLoginUser.User.UserId;
+                d.Updated = 0;
+                d.UpdatedBy = 0;
+                d.Description = type.Description;
+                db.DeliveryType.Add(d);
+                db.SaveChanges();
+            }
+            return ret;
+        }
+
+        public bool UpdateDeliveryType(BSelType type)
+        {
+            bool ret = false;
+            if (type.Id <= 0)
+            {
+                throw new MiOUException("账户类型编号必须传入");
+            }
+            if (string.IsNullOrEmpty(type.Name))
+            {
+                throw new MiOUException("账户类型名称必须传入");
+            }
+
+            using (MiOUEntities db = new MiOUEntities())
+            {
+                DeliveryType tp = (from t in db.DeliveryType where t.Id == type.Id select t).FirstOrDefault<DeliveryType>();
+                if (tp != null)
+                {
+                    if (tp.Name != type.Name)
+                    {
+                        DeliveryType tmp = (from t in db.DeliveryType where t.Name == type.Name select t).FirstOrDefault<DeliveryType>();
+                        if (tmp != null)
+                        {
+                            throw new MiOUException(string.Format("名称为{0}的支付类型已经存在", type.Name));
+                        }
+                        tp.Name = type.Name;
+                        tp.Description = type.Description;
+                        tp.Updated = DateTimeUtil.ConvertDateTimeToInt(DateTime.Now);
+                        tp.UpdatedBy = CurrentLoginUser.User.UserId;
+                        db.SaveChanges();
+                        ret = true;
+                    }
+                }
+            }
+            return ret;
+        }
+
+        #endregion
         public List<BPayType> GetPayTypes()
         {
             List<BPayType> types = null;
@@ -456,5 +548,94 @@ namespace MiOU.BL
                 property.SetValue(o1, property.GetValue(o2));
             }
         }
+
+        #region UserTypes related functions
+        public List<BUserType> GetUserTypes()
+        {
+            List<BUserType> types = null;
+            using (MiOUEntities db = new MiOUEntities())
+            {
+                types = (from t in db.UserType orderby t.Id select new BUserType { Id = t.Id, Name = t.Name }).ToList<BUserType>();
+            }
+            return types;
+        }
+
+        public BUserType GetUserTypeDetail(int id)
+        {
+            BUserType type = null;
+            using (MiOUEntities db = new MiOUEntities())
+            {
+                type = (from t in db.UserType where t.Id==id select new BUserType { Id=t.Id,Name=t.Name,Description=t.Description }).FirstOrDefault<BUserType>();
+            }
+            return type;
+        }
+
+        public bool CreateUserType(BUserType type)
+        {
+            bool ret = false;
+            if (type.Id > 0)
+            {
+                throw new MiOUException("账户类型编号必须为0");
+            }
+            if (string.IsNullOrEmpty(type.Name))
+            {
+                throw new MiOUException("账户类型名称必须传入");
+            }
+
+            using (MiOUEntities db = new MiOUEntities())
+            {
+                UserType tp = (from t in db.UserType where t.Name == type.Name select t).FirstOrDefault<UserType>();
+                if (tp == null)
+                {
+                    tp = new UserType();
+                    tp.Name = type.Name;
+                    tp.Description = type.Description;
+                    db.SaveChanges();
+                    ret = true;                  
+                }
+                else
+                {
+                    throw new MiOUException(string.Format("名称为{0}的账户类型已经存在",type.Name));
+                }
+            }
+            return ret;
+        }
+    
+
+        public bool UpdateUserType(BUserType type)
+        {
+            bool ret = false;
+            if(type.Id<=0)
+            {
+                throw new MiOUException("账户类型编号必须传入");
+            }
+            if(string.IsNullOrEmpty(type.Name))
+            {
+                throw new MiOUException("账户类型名称必须传入");
+            }
+           
+            using (MiOUEntities db = new MiOUEntities())
+            {
+                UserType tp = (from t in db.UserType where t.Id == type.Id select t).FirstOrDefault<UserType>();
+                if(tp!=null)
+                {
+                    if(tp.Name!=type.Name)
+                    {
+                        UserType tmp = (from t in db.UserType where t.Name == type.Name select t).FirstOrDefault<UserType>();
+                        if(tmp!=null)
+                        {
+                            throw new MiOUException(string.Format("名称为{0}的账户类型已经存在",type.Name));
+                        }
+                        tp.Name = type.Name;
+                        tp.Description = type.Description;
+                        db.SaveChanges();
+                        ret = true;
+                    }
+                }
+            }
+            return ret;
+        }
+        #endregion
+
     }
 }

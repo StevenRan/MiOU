@@ -12,5 +12,7 @@ namespace MiOU.Entities.Beans
         public BArea Parent { get; set; }
         public int Level { get; set; }
         public int UPID { get; set; }
+        public bool IsDirect { get; set; }
+        public int Order { get; set; }
     }
 }

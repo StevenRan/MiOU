@@ -5,7 +5,6 @@
     <EntitySet Name="Admin_Categories" EntityType="MiOU.DAL.Admin_Categories" />
     <EntitySet Name="Admin_Users" EntityType="MiOU.DAL.Admin_Users" />
     <EntitySet Name="Admin_Users_Actions" EntityType="MiOU.DAL.Admin_Users_Actions" />
-    <EntitySet Name="Area" EntityType="MiOU.DAL.Area" />
     <EntitySet Name="File" EntityType="MiOU.DAL.File" />
     <EntitySet Name="PayCategory" EntityType="MiOU.DAL.PayCategory" />
     <EntitySet Name="PayType" EntityType="MiOU.DAL.PayType" />
@@ -28,6 +27,7 @@
     <EntitySet Name="Category" EntityType="MiOU.DAL.Category" />
     <EntitySet Name="EvaluatedPriceCategory" EntityType="MiOU.DAL.EvaluatedPriceCategory" />
     <EntitySet Name="Product" EntityType="MiOU.DAL.Product" />
+    <EntitySet Name="Area" EntityType="MiOU.DAL.Area" />
   </EntityContainer>
   <EntityType Name="Admin_Actions">
     <Key>
@@ -63,17 +63,6 @@
     </Key>
     <Property Name="User_Id" Type="Int32" Nullable="false" />
     <Property Name="Action_Id" Type="Int32" Nullable="false" />
-  </EntityType>
-  <EntityType Name="Area">
-    <Key>
-      <PropertyRef Name="Id" />
-    </Key>
-    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="Name" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
-    <Property Name="Level" Type="Byte" Nullable="false" />
-    <Property Name="Upid" Type="Int32" Nullable="false" />
-    <Property Name="List" Type="Int16" Nullable="false" />
-    <Property Name="Order" Type="Byte" Nullable="false" />
   </EntityType>
   <EntityType Name="File">
     <Key>
@@ -378,5 +367,17 @@
     <Property Name="Repertory" Type="Int32" Nullable="false" />
     <Property Name="Locked" Type="Boolean" Nullable="false" />
     <Property Name="VIPLevel" Type="Int32" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Area">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" />
+    <Property Name="Name" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="Level" Type="SByte" Nullable="false" />
+    <Property Name="Upid" Type="Int32" Nullable="false" />
+    <Property Name="List" Type="Int16" Nullable="false" />
+    <Property Name="Order" Type="Int32" Nullable="false" />
+    <Property Name="IsDirect" Type="Boolean" Nullable="false" />
   </EntityType>
 </Schema>

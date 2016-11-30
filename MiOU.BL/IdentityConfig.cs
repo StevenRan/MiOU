@@ -213,8 +213,10 @@ namespace MiOU.BL
         public Task CreateAsync(ApplicationUser user)
         {
             User dbUser = ApplicationUser.AppUserToDBUser(user);
-            content.User.Add(dbUser);          
-            return content.SaveChangesAsync();
+            content.User.Add(dbUser);
+            Task<int> t = content.SaveChangesAsync(); ;
+            user.UserId = dbUser.UserId;
+            return t;
         }
 
         public Task DeleteAsync(ApplicationUser user)

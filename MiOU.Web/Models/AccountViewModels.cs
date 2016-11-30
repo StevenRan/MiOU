@@ -4,6 +4,37 @@ using System.ComponentModel.DataAnnotations;
 
 namespace MiOU.Web.Models
 {
+
+    public class SearchUserModel
+    {
+        [Display(Name = "姓名")]
+        public string Name { get; set; }
+        [Display(Name = "昵称")]
+        public string Nick { get; set; }
+        [Display(Name = "省份")]
+        public int Province { get; set; }
+        [Display(Name = "城市")]
+        public int City { get; set; }
+        [Display(Name = "区域")]
+        public int District { get; set; }
+        [Display(Name = "性别")]
+        public int Gender { get; set; }
+        [Display(Name = "VIP级别")]
+        public int VipLevel { get; set; }
+        [Display(Name = "类型")]
+        public int Type { get; set; }
+        [Display(Name = "绑定微信")]
+        public int BindingWeChat { get; set; }
+        [Display(Name = "开始时间")]
+        public long RegStartTime { get; set; }
+        [Display(Name = "结束时间")]
+        public long RegEndTime { get; set; } 
+        [Display(Name = "地址")]
+        public string Address { get; set; }
+        [Display(Name = "手机")]
+        public string Phone { get; set; }
+    }
+
     // Models returned by AccountController actions.
     public class ExternalLoginConfirmationViewModel
     {
@@ -30,7 +61,7 @@ namespace MiOU.Web.Models
         public string Name { get; set; }
 
         [Required(ErrorMessage = "请选在账户类型")]
-        [Display(Name = "账户类型")]
+        [Display(Name = "类型")]
         [Range(1, Int32.MaxValue,ErrorMessage = "请选择用户类型")]
         public int UserType { get; set; }
 
@@ -47,9 +78,9 @@ namespace MiOU.Web.Models
         [Range(1, Int32.MaxValue,ErrorMessage = "请选择城市")]
         public int City { get; set; }
 
-        [Required(ErrorMessage = "请选择区")]
-        [Display(Name = "区")]
-        [Range(1, Int32.MaxValue,ErrorMessage = "请选择区")]
+        [Required(ErrorMessage = "请选择所在区")]
+        [Display(Name = "所在区")]
+        [Range(1, Int32.MaxValue,ErrorMessage = "请选择所在区")]
         public int District { get; set; }
 
         public int ExternalUserType { get; set; }
@@ -95,16 +126,16 @@ namespace MiOU.Web.Models
     public class LoginViewModel
     {
         [Required]
-        [Display(Name = "Email")]
+        [Display(Name = "邮箱")]
         [EmailAddress]
         public string Email { get; set; }
 
         [Required]
         [DataType(DataType.Password)]
-        [Display(Name = "Password")]
+        [Display(Name = "密码")]
         public string Password { get; set; }
 
-        [Display(Name = "Remember me?")]
+        [Display(Name = "记住我?")]
         public bool RememberMe { get; set; }
     }
 
