@@ -1,0 +1,120 @@
+﻿@model MiOU.Web.Models.MiOuSearchUserModel
+@{
+    ViewBag.Title = "搜索用户";
+    Layout = "~/Views/Shared/_adminLayout.cshtml";
+}
+
+<h2>@ViewBag.Title</h2>
+<hr />
+
+@using (Html.BeginForm("SearchUsers", "Admin", FormMethod.Get, new { @class = "form-horizontal", role = "form" }))
+{
+    @Html.AntiForgeryToken()
+    <div style="overflow:hidden;width:100%;">
+        <div style="width:33%;float:left;">
+            <div class="form-group">
+                @Html.LabelFor(model => model.SearchModel.Type, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-8">
+                    @Html.DropDownListFor(model => model.SearchModel.Type, (SelectList)ViewBag.UserTypes, "--选择用户类型--", new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.SearchModel.Type, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.SearchModel.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-8">
+                    @Html.EditorFor(model => model.SearchModel.Name, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.SearchModel.Name, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.SearchModel.Nick, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-8">
+                    @Html.EditorFor(model => model.SearchModel.Nick, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.SearchModel.Nick, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.SearchModel.Gender, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-8">
+                    @Html.DropDownListFor(model => model.SearchModel.Gender, (SelectList)ViewBag.Genders, null, new { @class = "form-control" } )
+                    @Html.ValidationMessageFor(model => model.SearchModel.Gender, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+        <div style="width:33%;float:left;">
+            <div class="form-group">
+                @Html.LabelFor(model => model.SearchModel.Province, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-8">
+                    @Html.DropDownListFor(model => model.SearchModel.Province, (SelectList)ViewBag.Provinces, "--选择省份--", new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.SearchModel.Province, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.SearchModel.City, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-8">
+                    @Html.DropDownListFor(model => model.SearchModel.City, (SelectList)ViewBag.Cities, "--选择省份--", new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.SearchModel.City, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.SearchModel.District, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-8">
+                    @Html.DropDownListFor(model => model.SearchModel.District, (SelectList)ViewBag.Districts, "--选择区域--", new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.SearchModel.District, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.SearchModel.Address, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-8">
+                    @Html.EditorFor(model => model.SearchModel.Address, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.SearchModel.Address, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+        <div style="width:33%;float:left;">
+            <div class="form-group">
+                @Html.LabelFor(model => model.SearchModel.VipLevel, htmlAttributes: new { @class = "control-label col-md-3" })
+                <div class="col-md-8">
+                    @Html.DropDownListFor(model => model.SearchModel.VipLevel, (SelectList)ViewBag.Vips, "--选择VIP级别--", new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.SearchModel.VipLevel, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group">
+                
+                    @Html.LabelFor(model => model.SearchModel.BindingWeChat, htmlAttributes: new { @class = "control-label col-md-3" })
+                    <div class="col-md-8">
+                        <div class="checkbox">
+                            @Html.EditorFor(model => model.SearchModel.BindingWeChat)                          
+                            @Html.ValidationMessageFor(model => model.SearchModel.BindingWeChat, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.SearchModel.RegStartTime, htmlAttributes: new { @class = "control-label col-md-3" })
+                <div class="col-md-8">
+                    @Html.EditorFor(model => model.SearchModel.RegStartTime, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.SearchModel.RegStartTime, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.SearchModel.RegEndTime, htmlAttributes: new { @class = "control-label col-md-3" })
+                <div class="col-md-8">
+                    @Html.EditorFor(model => model.SearchModel.RegEndTime, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.SearchModel.RegEndTime, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+    </div>
+    <div style="width:33%;">
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-8">
+                <button id="btn_save_taocan" type="submit" class="btn btn-warning">
+                    <span class="glyphicon glyphicon-search"></span> 搜索
+                </button>                
+            </div>
+        </div>
+    </div>
+
+}
+
+

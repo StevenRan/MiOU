@@ -53,6 +53,14 @@ namespace MiOU.BL
             }
         }
 
+        public List<BObject> GetGenders()
+        {
+            List<BObject> os = new List<BObject>();
+            os.Add(new BObject { Id = 0, Name = "不限" });
+            os.Add(new BObject { Id = 1, Name = "男" });
+            os.Add(new BObject { Id = 2, Name = "女" });
+            return os;
+        }
         public BUser GetUserInfoByNickName(string nickName)
         {
             if (string.IsNullOrEmpty(nickName))

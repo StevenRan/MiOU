@@ -28,9 +28,45 @@ namespace MiOU.Web.Controllers
         }
 
         #region account related
-        public ActionResult SearchUsers(SearchUserModel model)
+        [HttpGet]
+        public ActionResult SearchUsers(SearchUserModel searchModel)
         {
-
+            UserManagement userMgr = new UserManagement(User.Identity.GetUserId<int>());
+            ViewBag.UserTypes = new SelectList(userMgr.GetUserTypes(), "Id","Name");
+            List<BArea> provinces = userMgr.GetAreas(0);
+            List<BArea> cities = new List<BArea>();
+            List<BArea> districts = new List<BArea>();
+            ViewBag.Provinces= new SelectList(provinces, "Id", "Name");           
+            ViewBag.Genders= new SelectList(userMgr.GetGenders(), "Id", "Name");
+            ViewBag.Vips = new SelectList(userMgr.GetVipLevels(), "Id", "Name");
+            if (searchModel.Province!=null && (int)searchModel.Province>0)
+            {
+                BArea province = (from p in provinces where p.Id==searchModel.Province select p).FirstOrDefault<BArea>();
+                if(province!=null)
+                {
+                    if(province.IsDirect)
+                    {
+                        cities = new List<BArea>();
+                        cities.Add(province);
+                        searchModel.City = province.Id;
+                        districts = userMgr.GetAreas((int)searchModel.Province);
+                    }
+                    else
+                    {
+                        cities = userMgr.GetAreas((int)searchModel.Province);
+                        if (searchModel.City == null)
+                        {
+                            districts = new List<BArea>();
+                        }
+                        else
+                        {
+                            districts = userMgr.GetAreas((int)searchModel.City);
+                        }                        
+                    }
+                }
+            }
+            ViewBag.Cities = new SelectList(cities, "Id", "Name");
+            ViewBag.Districts = new SelectList(districts, "Id", "Name");
             return View();
         }
         #endregion

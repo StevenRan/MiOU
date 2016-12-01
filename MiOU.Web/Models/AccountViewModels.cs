@@ -1,9 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-
+using GridMvc;
+using GridMvc.DBGrid;
+using MiOU.Entities.Beans;
 namespace MiOU.Web.Models
 {
+    public class MiOuSearchUserModel
+    {
+        public SearchUserModel SearchModel { get; set; }
+
+        public DBGrid<BUser> UserGrid { get; set; }
+    }
 
     public class SearchUserModel
     {
@@ -12,23 +20,23 @@ namespace MiOU.Web.Models
         [Display(Name = "昵称")]
         public string Nick { get; set; }
         [Display(Name = "省份")]
-        public int Province { get; set; }
+        public int? Province { get; set; }
         [Display(Name = "城市")]
-        public int City { get; set; }
+        public int? City { get; set; }
         [Display(Name = "区域")]
-        public int District { get; set; }
+        public int? District { get; set; }
         [Display(Name = "性别")]
         public int Gender { get; set; }
         [Display(Name = "VIP级别")]
-        public int VipLevel { get; set; }
+        public int? VipLevel { get; set; }
         [Display(Name = "类型")]
-        public int Type { get; set; }
-        [Display(Name = "绑定微信")]
-        public int BindingWeChat { get; set; }
+        public int? Type { get; set; }
+        [Display(Name = "绑定微信?")]
+        public bool BindingWeChat { get; set; }
         [Display(Name = "开始时间")]
-        public long RegStartTime { get; set; }
+        public string RegStartTime { get; set; }
         [Display(Name = "结束时间")]
-        public long RegEndTime { get; set; } 
+        public string RegEndTime { get; set; } 
         [Display(Name = "地址")]
         public string Address { get; set; }
         [Display(Name = "手机")]
