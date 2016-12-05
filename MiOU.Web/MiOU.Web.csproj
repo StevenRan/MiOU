@@ -381,6 +381,11 @@
     <Content Include="Views\Admin\MaintanenceTypes.cshtml" />
     <Content Include="Views\Admin\DeliveryTypes.cshtml" />
     <Content Include="Views\Admin\SearchUsers.cshtml" />
+    <Content Include="Views\Admin\Vips.cshtml" />
+    <Content Include="Views\Admin\NewVip.cshtml" />
+    <Content Include="Views\Admin\Error.cshtml" />
+    <Content Include="Views\Admin\Administrators.cshtml" />
+    <Content Include="Views\Admin\AdminPermission.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

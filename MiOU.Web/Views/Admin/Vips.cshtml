@@ -1,0 +1,44 @@
+﻿@using GridMvc.Html
+@model GridMvc.DBGrid.DBGrid<MiOU.Entities.Beans.BVIPLevel>
+@{
+    ViewBag.Title = "VIP 等级管理";
+    Layout = "~/Views/Shared/_adminLayout.cshtml";
+}
+
+<script>
+    $(document).ready(function () {
+        $('#add_new_vip').click(function () {
+            openModalDialog('/Admin/NewVip',null);
+        });
+    });
+</script>
+<div style="overflow:hidden;height:65px;line-height:65px;">
+    <div style="float:left;">
+        <h2>@ViewBag.Title</h2>
+    </div>
+    <div style="float:right;">
+        <button id="add_new_vip" class="btn btn-warning">
+            <span class="glyphicon glyphicon-plus">
+                添加新等级
+            </span>
+        </button>
+    </div>
+</div>
+<hr/>
+
+@Html.Grid(Model).Columns(columns =>
+{
+    columns.Add(c => c.Name).Titled("名称").SetWidth("10%");
+    columns.Add(c => c.CurrencyAmount).Titled("兑换积分").SetWidth("10%");
+    columns.Add(c => c.Created).Titled("创建日期").SetWidth("15%").RenderValueAs(o => o.Created > 0 ? MiOU.Util.DateTimeUtil.ConvertToDateTime(o.Created).ToString("yyyy-MM-dd HH:ss") : "");
+    columns.Add(c => c.CreatedBy.User.Email).Titled("创建人").SetWidth("15%").RenderValueAs(c=> c.CreatedBy!=null? c.CreatedBy.User.Email:"");
+    columns.Add(c => c.Updated).Titled("更新日期").SetWidth("15%").RenderValueAs(o => o.Updated > 0 ? MiOU.Util.DateTimeUtil.ConvertToDateTime(o.Updated).ToString("yyyy-MM-dd HH:ss") : "");
+    columns.Add(c => c.UpdatedBy.User.Email).Titled("更新人").SetWidth("15%").RenderValueAs(c => (c.UpdatedBy != null && c.UpdatedBy.User!=null) ? c.UpdatedBy.User.Email : "");
+    columns.Add()
+          .Encoded(false)
+          .Sanitized(false)
+          .SetWidth("10%")
+          //.RenderValueAs(o => Html.ActionLink("编辑", "EditResource", new { resourceId = o.Resource.Id }));
+          .RenderValueAs(o => Html.Raw("<a href=\"javascript:void(0);\" onclick=\"openModalDialog('/Admin/UpdateVip',{id:" + o.Id + "})\">编辑</a>"));
+
+})

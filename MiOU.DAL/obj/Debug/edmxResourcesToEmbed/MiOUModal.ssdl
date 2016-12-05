@@ -26,6 +26,10 @@
     <Property Name="IsWebMaster" Type="bool" Nullable="false" />
     <Property Name="Description" Type="varchar" MaxLength="200" />
     <Property Name="IsSuperAdmin" Type="bool" Nullable="false" />
+    <Property Name="Created" Type="uint" Nullable="false" />
+    <Property Name="CreayedBy" Type="int" Nullable="false" />
+    <Property Name="Updated" Type="uint" Nullable="false" />
+    <Property Name="UpdatedBy" Type="int" Nullable="false" />
   </EntityType>
   <EntityType Name="Admin_Users_Actions">
     <Key>
@@ -345,7 +349,7 @@
     <Property Name="End" Type="float" Nullable="false" />
     <Property Name="Created" Type="uint" Nullable="false" />
     <Property Name="CreatedBy" Type="int" Nullable="false" />
-    <Property Name="Updated" Type="int" Nullable="false" />
+    <Property Name="Updated" Type="uint" Nullable="false" />
     <Property Name="UpdatedBy" Type="int" Nullable="false" />
     <Property Name="CurrencyAmount" Type="float" Nullable="false" />
     <Property Name="Expired" Type="int" Nullable="false" />

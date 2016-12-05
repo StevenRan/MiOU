@@ -18,5 +18,9 @@ namespace MiOU.DAL
         public bool IsWebMaster { get; set; }
         public string Description { get; set; }
         public bool IsSuperAdmin { get; set; }
+        public long Created { get; set; }
+        public int CreayedBy { get; set; }
+        public long Updated { get; set; }
+        public int UpdatedBy { get; set; }
     }
 }

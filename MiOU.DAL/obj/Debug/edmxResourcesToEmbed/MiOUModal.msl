@@ -21,16 +21,6 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="Admin_Users">
-      <EntityTypeMapping TypeName="MiOU.DAL.Admin_Users">
-        <MappingFragment StoreEntitySet="Admin_Users">
-          <ScalarProperty Name="IsSuperAdmin" ColumnName="IsSuperAdmin" />
-          <ScalarProperty Name="Description" ColumnName="Description" />
-          <ScalarProperty Name="IsWebMaster" ColumnName="IsWebMaster" />
-          <ScalarProperty Name="User_Id" ColumnName="User_Id" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
     <EntitySetMapping Name="Admin_Users_Actions">
       <EntityTypeMapping TypeName="MiOU.DAL.Admin_Users_Actions">
         <MappingFragment StoreEntitySet="Admin_Users_Actions">
@@ -210,24 +200,6 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="VipLevel">
-      <EntityTypeMapping TypeName="MiOU.DAL.VipLevel">
-        <MappingFragment StoreEntitySet="VipLevel">
-          <ScalarProperty Name="YajinPercentage" ColumnName="YajinPercentage" />
-          <ScalarProperty Name="Expired" ColumnName="Expired" />
-          <ScalarProperty Name="CurrencyAmount" ColumnName="CurrencyAmount" />
-          <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
-          <ScalarProperty Name="Updated" ColumnName="Updated" />
-          <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
-          <ScalarProperty Name="Created" ColumnName="Created" />
-          <ScalarProperty Name="End" ColumnName="End" />
-          <ScalarProperty Name="Start" ColumnName="Start" />
-          <ScalarProperty Name="Description" ColumnName="Description" />
-          <ScalarProperty Name="Name" ColumnName="Name" />
-          <ScalarProperty Name="Id" ColumnName="Id" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
     <EntitySetMapping Name="Order">
       <EntityTypeMapping TypeName="MiOU.DAL.Order">
         <MappingFragment StoreEntitySet="Order">
@@ -375,6 +347,38 @@
           <ScalarProperty Name="Level" ColumnName="Level" />
           <ScalarProperty Name="Name" ColumnName="Name" />
           <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="VipLevel">
+      <EntityTypeMapping TypeName="MiOU.DAL.VipLevel">
+        <MappingFragment StoreEntitySet="VipLevel">
+          <ScalarProperty Name="YajinPercentage" ColumnName="YajinPercentage" />
+          <ScalarProperty Name="Expired" ColumnName="Expired" />
+          <ScalarProperty Name="CurrencyAmount" ColumnName="CurrencyAmount" />
+          <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
+          <ScalarProperty Name="Updated" ColumnName="Updated" />
+          <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+          <ScalarProperty Name="Created" ColumnName="Created" />
+          <ScalarProperty Name="End" ColumnName="End" />
+          <ScalarProperty Name="Start" ColumnName="Start" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Admin_Users">
+      <EntityTypeMapping TypeName="MiOU.DAL.Admin_Users">
+        <MappingFragment StoreEntitySet="Admin_Users">
+          <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
+          <ScalarProperty Name="Updated" ColumnName="Updated" />
+          <ScalarProperty Name="CreayedBy" ColumnName="CreayedBy" />
+          <ScalarProperty Name="Created" ColumnName="Created" />
+          <ScalarProperty Name="IsSuperAdmin" ColumnName="IsSuperAdmin" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="IsWebMaster" ColumnName="IsWebMaster" />
+          <ScalarProperty Name="User_Id" ColumnName="User_Id" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

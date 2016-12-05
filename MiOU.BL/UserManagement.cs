@@ -38,10 +38,11 @@ namespace MiOU.BL
         /// <param name="city"></param>
         /// <param name="district"></param>
         /// <returns></returns>
-        public List<BUser> SearchUsers(int page,int pageSize,string nickName,string email, int userType,int openType,int gendar,int startRegTime,int endRegTime,int vip,int province,int city,int district)
+        public List<BUser> SearchUsers(int page,int pageSize,string nickName,string email, int userType,int openType,int gendar,long startRegTime, long endRegTime,int vip,int province,int city,int district,out int total)
         {
             List<BUser> bUsers = null;
             MiOUEntities db = null;
+            total = 0;
             try
             {
                 db = new MiOUEntities();
@@ -62,8 +63,9 @@ namespace MiOU.BL
                               City= llcit!=null? new BArea { Id=llcit.Id, Name=llcit.Name }:null,
                               Province = llpro != null ? new BArea { Id = llpro.Id, Name = llpro.Name } : null,
                               District = lldistri != null ? new BArea { Id = lldistri.Id, Name = lldistri.Name } : null,
-                              UserType= new BUserType { Id=lltype.Id,Name=lltype.Name },
+                              UserType= lltype!=null? new BUserType { Id=lltype.Id,Name=lltype.Name }:null,
                               VIPLevel= llvip!=null? new BVIPLevel { Id=usr.VipLevel, Name= llvip.Name }:null,
+                              Gendar= (usr.Gendar==3? new BObject { Id=3,Name ="保密"}:usr.Gendar==1?new BObject { Id=usr.Gendar,Name="男" }: usr.Gendar == 2 ? new BObject { Id = usr.Gendar, Name = "女" }:null)
                           };
 
                 if(!string.IsNullOrEmpty(nickName))
@@ -102,13 +104,17 @@ namespace MiOU.BL
                 {
                     tmp = tmp.Where(u => u.User.RegTime <= endRegTime);
                 }
-                tmp = tmp.Where(u => u.User.Gendar == gendar);
+                if(gendar>0)
+                {
+                    tmp = tmp.Where(u => u.User.Gendar == gendar);
+                }                
 
                 tmp = tmp.OrderBy(u => u.User.RegTime);
                 if (page==0)
                 {
                     page = 1;
                 }
+                total = tmp.Count();
                 bUsers = tmp.Skip((page - 1) * pageSize).Take(pageSize).ToList<BUser>();
             }
             catch(MiOUException mex)
@@ -128,6 +134,40 @@ namespace MiOU.BL
                 }
             }
             return bUsers;
+        }
+
+        public List<BAdmin> GetAdministrators()
+        {
+            if(!CurrentLoginUser.IsWebMaster && !CurrentLoginUser.IsSuperAdmin)
+            {
+                throw new MiOUException("您没有权限查看管理员列表");
+            }
+
+            List<BAdmin> admins = null;
+            using (MiOUEntities db = new MiOUEntities())
+            {
+                var tmp = from u in db.Admin_Users
+                          join ud in db.User on u.User_Id equals ud.UserId into lud
+                          from llud in lud.DefaultIfEmpty()
+                          join cd in db.User on u.CreayedBy equals cd.UserId into lcd
+                          from llcd in lcd.DefaultIfEmpty()
+                          join uud in db.User on u.UpdatedBy equals uud.UserId into luud
+                          from lluud in luud.DefaultIfEmpty()
+                          orderby u.Created ascending
+                          select new BAdmin
+                          {
+                              User= llud,
+                              Created= u.Created,
+                              CreatedBy= new BUser { User=llcd },
+                              UpdatedBy = new BUser { User = lluud },
+                              IsWebMaster= u.IsWebMaster,
+                              IsSuperAdmin=u.IsSuperAdmin
+                          };
+
+               
+                admins = tmp.ToList<BAdmin>();
+            }
+            return admins;
         }
 
         /// <summary>
@@ -239,6 +279,95 @@ namespace MiOU.BL
             return ret;
         }
 
-       
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public BVIPLevel GetVipDetail(int id)
+        {
+            BVIPLevel vip = null;
+            using (MiOUEntities db = new MiOUEntities())
+            {
+                vip = (from v in db.VipLevel
+                       join cu in db.User on v.CreatedBy equals cu.UserId into lcu
+                       from llcu in lcu.DefaultIfEmpty()
+                       join uu in db.User on v.UpdatedBy equals uu.UserId into luu
+                       from luuu in luu.DefaultIfEmpty()
+                       where v.Id == id
+                       select new BVIPLevel
+                       {
+                           Id = v.Id,
+                           Name = v.Name,
+                           CurrencyAmount = v.CurrencyAmount,
+                           Created = v.Created,
+                           CreatedBy = new BUser { User = llcu },
+                           Updated = v.Updated,
+                           UpdatedBy = new BUser { User = luuu },
+                           Description = v.Description,
+                           YajinPercentage=v.YajinPercentage
+                       }).FirstOrDefault<BVIPLevel>();
+            }
+            return vip;
+        }
+
+        public void SaveVip(BVIPLevel vip)
+        {
+            if(vip==null)
+            {
+                logger.Error("vip instance cannot be null.");
+                throw new MiOUException("数据错误，不能执行此操作");
+            }
+            VipLevel dbVip = null;
+            using (MiOUEntities db = new MiOUEntities())
+            {
+                if (vip.Id > 0)
+                {
+
+                    dbVip = (from v in db.VipLevel where v.Id == vip.Id select v).FirstOrDefault<VipLevel>();
+                    if (dbVip == null)
+                    {
+                        logger.Error(string.Format("编号为{0}的VIP不存在", vip.Id));
+                        throw new MiOUException("数据错误，不能执行此操作");
+                    }
+
+                    dbVip.Name = vip.Name;
+                    dbVip.Description = vip.Description;
+                    dbVip.Updated = vip.Updated > 0 ? vip.Updated : DateTimeUtil.ConvertDateTimeToInt(DateTime.Now);
+                    if (vip.UpdatedBy != null && vip.UpdatedBy.User != null)
+                    {
+                        dbVip.UpdatedBy = vip.UpdatedBy.User.UserId;
+                    }
+                    else
+                    {
+                        dbVip.UpdatedBy = CurrentLoginUser.User.UserId;
+                    }
+                    dbVip.CurrencyAmount = vip.CurrencyAmount;
+                    dbVip.YajinPercentage = vip.YajinPercentage;
+                }
+                else
+                {
+                    dbVip = new VipLevel()
+                    {
+                        Name = vip.Name,
+                        Description = vip.Description,
+                        Created = vip.Created > 0 ? vip.Created : DateTimeUtil.ConvertDateTimeToInt(DateTime.Now),
+                        CreatedBy = (vip.CreatedBy != null && vip.CreatedBy.User != null) ? vip.CreatedBy.User.UserId : CurrentLoginUser.User.UserId,
+                        Updated = 0,
+                        UpdatedBy = 0,
+                        YajinPercentage=vip.YajinPercentage,
+                        CurrencyAmount = vip.CurrencyAmount
+                    };
+                    db.VipLevel.Add(dbVip);                   
+                }
+
+                VipLevel tmp = (from v in db.VipLevel where v.CurrencyAmount == dbVip.CurrencyAmount select v).FirstOrDefault<VipLevel>();
+                if (tmp != null)
+                {
+                    throw new MiOUException(string.Format("兑换积分为{0}的VIP等级已经存在，请重新输入不一样的积分和名称",dbVip.CurrencyAmount));
+                }
+                db.SaveChanges();
+            }
+        }
     }
 }

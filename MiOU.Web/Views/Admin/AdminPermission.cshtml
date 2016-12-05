@@ -1,0 +1,64 @@
+﻿@model MiOU.Entities.Beans.Permissions
+@{
+    ViewBag.Title = "修改管理员权限";
+    Layout = "~/Views/Shared/_adminLayout.cshtml";
+
+    List<MiOU.Entities.Beans.UserAdminAction> actions = null;
+    if(ViewBag.actions!=null)
+    {
+        actions = ViewBag.actions as List<MiOU.Entities.Beans.UserAdminAction>;
+    }
+    List<MiOU.DAL.Admin_Categories> cates = new List<MiOU.DAL.Admin_Categories>();
+    if(actions!=null && actions.Count>0)
+    {
+        foreach(MiOU.Entities.Beans.UserAdminAction action in actions)
+        {
+            if(cates==null)
+            {
+                cates = new List<MiOU.DAL.Admin_Categories>();
+            }
+
+            MiOU.DAL.Admin_Categories tmp = (from c in cates where c.Id==action.Category.Id select c).FirstOrDefault<MiOU.DAL.Admin_Categories>();
+            if(tmp==null)
+            {
+                cates.Add(action.Category);
+            }
+        }
+    }
+
+    int cateCount = cates.Count;
+    float singDivPer = 0;
+    if(cateCount>0)
+    {
+        singDivPer = 100 / cateCount;
+    }
+}
+
+
+<div style="overflow:hidden;height:65px;line-height:65px;">
+    <div style="float:left;">
+        <h2>@ViewBag.Title</h2>
+    </div>
+    <div style="float:right;">
+        <button id="add_new_vip" class="btn btn-warning">
+            <span class="glyphicon glyphicon-asterisk">
+                设为超管
+            </span>
+        </button>
+    </div>
+</div>
+<hr/>
+
+@using (Html.BeginForm("NewVip", "Admin", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+{
+    <div style="overflow:hidden">
+        @foreach(MiOU.DAL.Admin_Categories cate in cates)
+        {
+            <div style="float:left;">
+                <div>@Html.Raw(cate.Name)</div>
+            </div>
+        }
+    </div>
+}
+
+

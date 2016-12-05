@@ -21,7 +21,7 @@ namespace MiOU.DAL
         public float End { get; set; }
         public long Created { get; set; }
         public int CreatedBy { get; set; }
-        public int Updated { get; set; }
+        public long Updated { get; set; }
         public int UpdatedBy { get; set; }
         public float CurrencyAmount { get; set; }
         public int Expired { get; set; }

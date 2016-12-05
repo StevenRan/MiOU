@@ -31,6 +31,10 @@
           <Property Name="IsWebMaster" Type="bool" Nullable="false" />
           <Property Name="Description" Type="varchar" MaxLength="200" />
           <Property Name="IsSuperAdmin" Type="bool" Nullable="false" />
+          <Property Name="Created" Type="uint" Nullable="false" />
+          <Property Name="CreayedBy" Type="int" Nullable="false" />
+          <Property Name="Updated" Type="uint" Nullable="false" />
+          <Property Name="UpdatedBy" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Admin_Users_Actions">
           <Key>
@@ -350,7 +354,7 @@
           <Property Name="End" Type="float" Nullable="false" />
           <Property Name="Created" Type="uint" Nullable="false" />
           <Property Name="CreatedBy" Type="int" Nullable="false" />
-          <Property Name="Updated" Type="int" Nullable="false" />
+          <Property Name="Updated" Type="uint" Nullable="false" />
           <Property Name="UpdatedBy" Type="int" Nullable="false" />
           <Property Name="CurrencyAmount" Type="float" Nullable="false" />
           <Property Name="Expired" Type="int" Nullable="false" />
@@ -392,7 +396,6 @@
         <EntityContainer Name="MiOUEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Admin_Actions" EntityType="MiOU.DAL.Admin_Actions" />
           <EntitySet Name="Admin_Categories" EntityType="MiOU.DAL.Admin_Categories" />
-          <EntitySet Name="Admin_Users" EntityType="MiOU.DAL.Admin_Users" />
           <EntitySet Name="Admin_Users_Actions" EntityType="MiOU.DAL.Admin_Users_Actions" />
           <EntitySet Name="File" EntityType="MiOU.DAL.File" />
           <EntitySet Name="PayCategory" EntityType="MiOU.DAL.PayCategory" />
@@ -409,7 +412,6 @@
           <EntitySet Name="DeliveryType" EntityType="MiOU.DAL.DeliveryType" />
           <EntitySet Name="MaintenanceType" EntityType="MiOU.DAL.MaintenanceType" />
           <EntitySet Name="CurrencyTransferCategory" EntityType="MiOU.DAL.CurrencyTransferCategory" />
-          <EntitySet Name="VipLevel" EntityType="MiOU.DAL.VipLevel" />
           <EntitySet Name="Order" EntityType="MiOU.DAL.Order" />
           <EntitySet Name="Payment" EntityType="MiOU.DAL.Payment" />
           <EntitySet Name="User" EntityType="MiOU.DAL.User" />
@@ -417,6 +419,8 @@
           <EntitySet Name="EvaluatedPriceCategory" EntityType="MiOU.DAL.EvaluatedPriceCategory" />
           <EntitySet Name="Product" EntityType="MiOU.DAL.Product" />
           <EntitySet Name="Area" EntityType="MiOU.DAL.Area" />
+          <EntitySet Name="VipLevel" EntityType="MiOU.DAL.VipLevel" />
+          <EntitySet Name="Admin_Users" EntityType="MiOU.DAL.Admin_Users" />
         </EntityContainer>
         <EntityType Name="Admin_Actions">
           <Key>
@@ -435,15 +439,6 @@
           <Property Name="Id" Type="Int32" Nullable="false" />
           <Property Name="Name" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="Description" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-        </EntityType>
-        <EntityType Name="Admin_Users">
-          <Key>
-            <PropertyRef Name="User_Id" />
-          </Key>
-          <Property Name="User_Id" Type="Int32" Nullable="false" />
-          <Property Name="IsWebMaster" Type="Boolean" Nullable="false" />
-          <Property Name="Description" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
-          <Property Name="IsSuperAdmin" Type="Boolean" Nullable="false" />
         </EntityType>
         <EntityType Name="Admin_Users_Actions">
           <Key>
@@ -609,23 +604,6 @@
           <Property Name="Updated" Type="Int64" Nullable="false" />
           <Property Name="UpdatedBy" Type="Int32" Nullable="false" />
         </EntityType>
-        <EntityType Name="VipLevel">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" Nullable="false" MaxLength="45" FixedLength="false" Unicode="false" />
-          <Property Name="Description" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Name="Start" Type="Single" Nullable="false" />
-          <Property Name="End" Type="Single" Nullable="false" />
-          <Property Name="Created" Type="Int64" Nullable="false" />
-          <Property Name="CreatedBy" Type="Int32" Nullable="false" />
-          <Property Name="Updated" Type="Int32" Nullable="false" />
-          <Property Name="UpdatedBy" Type="Int32" Nullable="false" />
-          <Property Name="CurrencyAmount" Type="Single" Nullable="false" />
-          <Property Name="Expired" Type="Int32" Nullable="false" />
-          <Property Name="YajinPercentage" Type="Single" Nullable="false" />
-        </EntityType>
         <EntityType Name="Order">
           <Key>
             <PropertyRef Name="Id" />
@@ -769,6 +747,36 @@
           <Property Name="Order" Type="Int32" Nullable="false" />
           <Property Name="IsDirect" Type="Boolean" Nullable="false" />
         </EntityType>
+        <EntityType Name="VipLevel">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="45" FixedLength="false" Unicode="false" />
+          <Property Name="Description" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="Start" Type="Single" Nullable="false" />
+          <Property Name="End" Type="Single" Nullable="false" />
+          <Property Name="Created" Type="Int64" Nullable="false" />
+          <Property Name="CreatedBy" Type="Int32" Nullable="false" />
+          <Property Name="Updated" Type="Int64" Nullable="false" />
+          <Property Name="UpdatedBy" Type="Int32" Nullable="false" />
+          <Property Name="CurrencyAmount" Type="Single" Nullable="false" />
+          <Property Name="Expired" Type="Int32" Nullable="false" />
+          <Property Name="YajinPercentage" Type="Single" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Admin_Users">
+          <Key>
+            <PropertyRef Name="User_Id" />
+          </Key>
+          <Property Name="User_Id" Type="Int32" Nullable="false" />
+          <Property Name="IsWebMaster" Type="Boolean" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="IsSuperAdmin" Type="Boolean" Nullable="false" />
+          <Property Name="Created" Type="Int64" Nullable="false" />
+          <Property Name="CreayedBy" Type="Int32" Nullable="false" />
+          <Property Name="Updated" Type="Int64" Nullable="false" />
+          <Property Name="UpdatedBy" Type="Int32" Nullable="false" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -792,16 +800,6 @@
                 <ScalarProperty Name="Description" ColumnName="Description" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Admin_Users">
-            <EntityTypeMapping TypeName="MiOU.DAL.Admin_Users">
-              <MappingFragment StoreEntitySet="Admin_Users">
-                <ScalarProperty Name="IsSuperAdmin" ColumnName="IsSuperAdmin" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="IsWebMaster" ColumnName="IsWebMaster" />
-                <ScalarProperty Name="User_Id" ColumnName="User_Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -984,24 +982,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="VipLevel">
-            <EntityTypeMapping TypeName="MiOU.DAL.VipLevel">
-              <MappingFragment StoreEntitySet="VipLevel">
-                <ScalarProperty Name="YajinPercentage" ColumnName="YajinPercentage" />
-                <ScalarProperty Name="Expired" ColumnName="Expired" />
-                <ScalarProperty Name="CurrencyAmount" ColumnName="CurrencyAmount" />
-                <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
-                <ScalarProperty Name="Updated" ColumnName="Updated" />
-                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
-                <ScalarProperty Name="Created" ColumnName="Created" />
-                <ScalarProperty Name="End" ColumnName="End" />
-                <ScalarProperty Name="Start" ColumnName="Start" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="Order">
             <EntityTypeMapping TypeName="MiOU.DAL.Order">
               <MappingFragment StoreEntitySet="Order">
@@ -1149,6 +1129,38 @@
                 <ScalarProperty Name="Level" ColumnName="Level" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="VipLevel">
+            <EntityTypeMapping TypeName="MiOU.DAL.VipLevel">
+              <MappingFragment StoreEntitySet="VipLevel">
+                <ScalarProperty Name="YajinPercentage" ColumnName="YajinPercentage" />
+                <ScalarProperty Name="Expired" ColumnName="Expired" />
+                <ScalarProperty Name="CurrencyAmount" ColumnName="CurrencyAmount" />
+                <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
+                <ScalarProperty Name="Updated" ColumnName="Updated" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="Created" ColumnName="Created" />
+                <ScalarProperty Name="End" ColumnName="End" />
+                <ScalarProperty Name="Start" ColumnName="Start" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Admin_Users">
+            <EntityTypeMapping TypeName="MiOU.DAL.Admin_Users">
+              <MappingFragment StoreEntitySet="Admin_Users">
+                <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
+                <ScalarProperty Name="Updated" ColumnName="Updated" />
+                <ScalarProperty Name="CreayedBy" ColumnName="CreayedBy" />
+                <ScalarProperty Name="Created" ColumnName="Created" />
+                <ScalarProperty Name="IsSuperAdmin" ColumnName="IsSuperAdmin" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="IsWebMaster" ColumnName="IsWebMaster" />
+                <ScalarProperty Name="User_Id" ColumnName="User_Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

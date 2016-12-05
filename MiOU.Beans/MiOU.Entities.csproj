@@ -42,6 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApiMessage.cs" />
+    <Compile Include="Beans\BAdmin.cs" />
     <Compile Include="Beans\BArea.cs" />
     <Compile Include="Beans\BCategory.cs" />
     <Compile Include="Beans\BCategoryStatistic.cs" />

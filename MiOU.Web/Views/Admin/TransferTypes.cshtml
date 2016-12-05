@@ -2,7 +2,7 @@
 @model GridMvc.DBGrid.DBGrid<MiOU.Entities.Beans.BPayType>
 @{
     ViewBag.Title = "支付类型管理";
-    Layout = "~/Views/Shared/_adminLayout.cshtml";
+    Layout = Request.IsAjaxRequest() ? null : "~/Views/Shared/_adminLayout.cshtml";
 }
 
 <h2>@ViewBag.Title</h2>

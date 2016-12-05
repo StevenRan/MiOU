@@ -10,11 +10,19 @@ using MiOU.Entities.Exceptions;
 using GridMvc;
 using GridMvc.DBGrid;
 using MiOU.Web.Models;
+using MiOU.Util;
+using log4net;
 namespace MiOU.Web.Controllers
 {
     [Authorize]
     public class AdminController : Controller
     {
+        ILog logger = null;
+
+        public AdminController()
+        {
+            logger= log4net.LogManager.GetLogger(this.GetType().FullName);
+        }
         // GET: Admin
         public ActionResult Index()
         {
@@ -28,6 +36,46 @@ namespace MiOU.Web.Controllers
         }
 
         #region account related
+        public ActionResult SetAdminStatus(int? id)
+        {
+            return View();
+        }
+        public ActionResult AdminPermission(int? id)
+        {           
+            if (id == null)
+            {
+                return RedirectToAction("Error","Admin", new System.Web.Routing.RouteValueDictionary(new {controller="Admin",action="Error", message= "请不要随意修改URL链接里的参数" }));
+            }
+            int userId = 0;
+            int.TryParse(id.ToString(),out userId);
+            if(userId<=0)
+            {
+                return RedirectToAction("Error", "Admin", "请不要随意修改URL链接里的参数");
+            }
+
+            PermissionManagement perMgr = new PermissionManagement(User.Identity.GetUserId<int>());
+            if(!perMgr.CurrentLoginUser.Permission.SET_USER_ADMIN && perMgr.CurrentLoginUser.Permission.SET_USER_SUPER_ADMIN)
+            {
+                return RedirectToAction("Error", "Admin", "您没有权限执行此操作");
+            }
+            List<UserAdminAction> actions = perMgr.GetAllAdminActions();
+            ViewBag.actions = actions;
+            return View(perMgr.CurrentLoginUser.Permission);
+        }
+        public ActionResult Administrators()
+        {
+            UserManagement userMgr = new UserManagement(User.Identity.GetUserId<int>());
+            List<BAdmin> admins = userMgr.GetAdministrators();
+            int pagesize = admins.Count;
+            if(pagesize==0)
+            {
+                pagesize = 30;
+            }
+            PageItemsResult<BAdmin> result = new PageItemsResult<BAdmin> { CurrentPage = 1, EnablePaging = true, Items = admins, PageSize = pagesize, TotalRecords = admins.Count() };
+            DBGrid<BAdmin> grid = new DBGrid<BAdmin>(result);
+            return View(grid);
+        }
+
         [HttpGet]
         public ActionResult SearchUsers(SearchUserModel searchModel)
         {
@@ -67,11 +115,104 @@ namespace MiOU.Web.Controllers
             }
             ViewBag.Cities = new SelectList(cities, "Id", "Name");
             ViewBag.Districts = new SelectList(districts, "Id", "Name");
-            return View();
+
+            long startRegTime = 0;
+            long endRegTime = 0;
+            if(!string.IsNullOrEmpty(searchModel.RegStartTime))
+            {
+                startRegTime = DateTimeUtil.ConvertDateTimeToInt(DateTime.Parse(searchModel.RegStartTime));
+            }
+            if (!string.IsNullOrEmpty(searchModel.RegEndTime))
+            {
+                endRegTime = DateTimeUtil.ConvertDateTimeToInt(DateTime.Parse(searchModel.RegEndTime));
+            }
+            int page = 1;
+            int pageSize = 40;
+            if(!string.IsNullOrEmpty(Request["page"]))
+            {
+                int.TryParse(Request["page"],out page);
+            }
+            if (!string.IsNullOrEmpty(Request["pageSize"]))
+            {
+                int.TryParse(Request["pageSize"], out pageSize);
+            }
+            int total = 0;
+            List<BUser> users = userMgr.SearchUsers(page, pageSize, searchModel.Nick,null,searchModel.Type!=null?(int)searchModel.Type:0,
+                                                    searchModel.BindingWeChat?1:0,searchModel.Gender,startRegTime,endRegTime,searchModel.VipLevel!=null?(int)searchModel.VipLevel:0,
+                                                    searchModel.Province!=null?(int)searchModel.Province:0,
+                                                    searchModel.City!=null?(int)searchModel.City:0,
+                                                    searchModel.District!=null?(int)searchModel.District:0,out total);
+
+            MiOuSearchUserModel model = new MiOuSearchUserModel();
+            model.SearchModel = searchModel;
+            model.UserGrid = new DBGrid<BUser>(new PageItemsResult<BUser>() { CurrentPage=page, EnablePaging=true, Items=users!=null?users:new List<BUser>(), PageSize=pageSize, TotalRecords=total });
+            return View(model);
         }
         #endregion
 
         #region common data
+
+        [HttpGet]
+        public ActionResult NewVip()
+        {
+            BVIPLevel newVip = new BVIPLevel();
+            return View(newVip);
+        }
+
+        [HttpPost]
+        public ActionResult NewVip(BVIPLevel vip)
+        {
+            UserManagement userMgr = null;
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    userMgr = new UserManagement(User.Identity.GetUserId<int>());
+                    vip.Created = DateTimeUtil.ConvertDateTimeToInt(DateTime.Now);
+                    vip.CreatedBy = userMgr.CurrentLoginUser;
+                    vip.Updated = 0;
+                    vip.UpdatedBy = null;
+                    userMgr.SaveVip(vip);
+                    return RedirectToAction("Vips");
+                }               
+            }
+            catch (MiOUException mex)
+            {
+                logger.Info(mex);
+                ViewBag.Message = mex.Message;
+            }
+            catch (Exception ex)
+            {
+                logger.Fatal(ex);
+                ViewBag.Message = "服务暂时不可用";
+            }
+            return View(vip);
+        }
+        public ActionResult UpdateVip(int? id)
+        {
+            if(id==null)
+            {
+                return RedirectToAction("Error","Admin", "参数输入有误");
+            }
+            UserManagement userMgr = new UserManagement(User.Identity.GetUserId<int>());
+            BVIPLevel vip = userMgr.GetVipDetail((int)id);
+            return View("NewVip", vip);
+        }
+
+        public ActionResult Vips()
+        {
+            int pageSize = 20;
+            int requestPage = 1;
+            int.TryParse(Request["page"], out requestPage);
+            requestPage = requestPage == 0 ? 1 : requestPage;
+            List<BVIPLevel> types = null;
+            BaseManager baseMgr = new BaseManager(User.Identity.GetUserId<int>());
+            types = baseMgr.GetVipLevels();
+            PageItemsResult<BVIPLevel> result = new PageItemsResult<BVIPLevel>() { CurrentPage = 1, Items = types, PageSize = pageSize, TotalRecords = types.Count, EnablePaging = true };
+            DBGrid<BVIPLevel> model = new DBGrid<BVIPLevel>(result);
+            return View(model);
+        }
+
         public ActionResult UserTypes()
         {
             int pageSize = 20;
@@ -155,5 +296,10 @@ namespace MiOU.Web.Controllers
             return View("DeliveryTypes", model);
         }
         #endregion
+
+        public ActionResult Error(string message)
+        {
+            return View("Error", message);
+        }
     }
 }

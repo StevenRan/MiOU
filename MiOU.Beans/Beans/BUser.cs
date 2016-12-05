@@ -11,7 +11,7 @@ namespace MiOU.Entities.Beans
         ACTIVE=0,
         DISABLED=1
     }
-    public class BUser
+    public class BUser:BObject
     {
         public User User { get; set; }
         public Permissions Permission { get; set; }
@@ -22,7 +22,7 @@ namespace MiOU.Entities.Beans
         public BArea City { get; set; }
         public BArea District { get; set; }
         public BUserType UserType { get; set; }
-        public string Gendar { get; set; }
+        public BObject Gendar { get; set; }
         public BVIPLevel VIPLevel { get; set; }
     }
 }

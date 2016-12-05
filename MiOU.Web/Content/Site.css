@@ -198,3 +198,8 @@ width:100%;
 .category_list .item .desc .infoRight .r p{
     padding-left:4px;display:inline-block;margin:0;vertical-align:middle;
 }
+
+textarea.mTA1{
+    width:70%;
+    height:80px;
+}

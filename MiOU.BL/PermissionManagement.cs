@@ -158,6 +158,25 @@ namespace MiOU.BL
             return ret;
         }
 
+        public List<UserAdminAction> GetAllAdminActions()
+        {
+            List<UserAdminAction> actions = null;
+            using (MiOUEntities db = new MiOUEntities())
+            {
+                actions = (from a in db.Admin_Actions
+                           join c in db.Admin_Categories on a.Category equals c.Id into lc
+                           from llc in lc.DefaultIfEmpty()
+                           orderby a.Category ascending
+                           orderby a.Name ascending
+                           select new UserAdminAction
+                           {
+                               Action = a,
+                               Category =llc
+                           }).ToList<UserAdminAction>();
+            }
+            return actions;
+        }
+
         /// <summary>
         /// Gets user actions list
         /// </summary>
@@ -165,7 +184,7 @@ namespace MiOU.BL
         /// <param name="categoryId"></param>
         /// <param name="categoryName"></param>
         /// <returns></returns>
-        public List<UserAdminAction> GetUserPermissionActions(int userId, int categoryId, string categoryName)
+        public List<UserAdminAction> GetPermissionActions(int userId, int categoryId, string categoryName)
         {
             List<UserAdminAction> actions = new List<UserAdminAction>();
             using (MiOUEntities db = new MiOUEntities())

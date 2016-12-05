@@ -1,0 +1,13 @@
+﻿@model string
+@{
+    ViewBag.Title = "操作失败";
+    Layout = "~/Views/Shared/_adminLayout.cshtml";
+}
+
+<h2>@ViewBag.Title</h2>
+<hr/>
+
+@if (Model != null) {
+    Html.Raw(Model);
+}
+

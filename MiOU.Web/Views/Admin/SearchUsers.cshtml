@@ -3,6 +3,58 @@
     ViewBag.Title = "搜索用户";
     Layout = "~/Views/Shared/_adminLayout.cshtml";
 }
+@using GridMvc.Html
+<script>
+    var BASE_URL = '@Url.Content("~/")';
+    $(function () {
+
+        $('#SearchModel_Province').change(function () {
+            var parentId = $('#SearchModel_Province').val();
+            var parentName = $('#SearchModel_Province option:selected').text();
+            $.post(
+                BASE_URL + 'api/Common/GetAreaByParent',
+                { pId: parentId },
+                function (res, status) {
+                    if (res.status == "OK") {
+                        $('#SearchModel_City').empty();
+                        $('#SearchModel_District').empty();
+                        $('#SearchModel_District').append("<option value=\"\">--选择区--</option>");
+                        if (parentId == "1" || parentId == "9" || parentId == "2" || parentId == "22") {
+                            $('#SearchModel_City').append("<option value=\"" + parentId + "\">" + parentName + "</option>");
+                            $('#SearchModel_District').empty();
+                            $('#SearchModel_District').append("<option value=\"\">--选择区--</option>");
+                            $(res.result).each(function (index, item) {
+                                $('#SearchModel_District').append("<option value=\"" + item.id + "\">" + item.name + "</option>");
+                            });
+                        } else {
+                            $('#SearchModel_City').append("<option value=\"\">--选择城市--</option>");
+                            $(res.result).each(function (index, item) {
+                                $('#SearchModel_City').append("<option value=\"" + item.id + "\">" + item.name + "</option>");
+                            });
+                        }
+                    }
+                }
+            );
+        });
+
+        $('#SearchModel_City').change(function () {
+            $.post(
+               BASE_URL + 'api/Common/GetAreaByParent',
+               { pId: $('#SearchModel_City').val() },
+               function (res, status) {
+                   if (res.status == "OK") {
+                       $('#SearchModel_District').empty();
+                       $('#SearchModel_District').append("<option value=\"\">--选择区--</option>");
+                       $(res.result).each(function (index, item) {
+                           $('#SearchModel_District').append("<option value=\"" + item.id + "\">" + item.name + "</option>");
+                       });
+                   }
+               }
+           );
+        });
+    });
+
+</script>
 
 <h2>@ViewBag.Title</h2>
 <hr />
@@ -116,5 +168,17 @@
     </div>
 
 }
+
+@Html.Grid(Model.UserGrid).Columns(columns =>
+{
+    columns.Add(c => c.User.Email).Titled("邮箱").SetWidth("5%");
+    columns.Add(c => c.User.NickName).Titled("昵称").SetWidth("15%");
+    columns.Add(c => c.User.Name).Titled("姓名");
+    columns.Add(c => c.Province.Name).Titled("省份");
+    columns.Add(c => c.City.Name).Titled("城市");
+    columns.Add(c => c.Gendar.Name).Titled("性别");
+    columns.Add(c => c.User.RegTime).Titled("注册日期").RenderValueAs(o=>o.User.RegTime>0?MiOU.Util.DateTimeUtil.ConvertToDateTime(o.User.RegTime).ToString("yyyy-MM-dd hh:mm"):"");
+})
+
 
 
