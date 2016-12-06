@@ -1,0 +1,67 @@
+﻿@model MiOU.Web.Models.MiOuSearchUserModel
+@using GridMvc.Html
+@{
+    ViewBag.Title = "添加管理员";
+    Layout = "~/Views/Shared/_adminLayout.cshtml";
+}
+<script>
+    $(function () {
+        $('#btn_save_user').click(function () {
+            $('#SaveUserForm').submit();
+        });
+    });
+</script>>
+<h2>@ViewBag.Title</h2>
+<hr/>
+
+@using (Html.BeginForm("AddAdmin", "Admin", FormMethod.Get, new { @class = "form-horizontal", role = "form", id="SearchUserForm" }))
+{
+    @Html.AntiForgeryToken()
+    <div class="form-group">
+        @Html.LabelFor(model => model.SearchModel.Name, htmlAttributes: new { @class = "control-label col-md-1" })
+        <div class="col-md-8">
+            @Html.EditorFor(model => model.SearchModel.Name, new { htmlAttributes = new { @class = "form-control input_reg" } })
+            @Html.ValidationMessageFor(model => model.SearchModel.Name, "", new { @class = "text-danger" })
+        </div>
+    </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.SearchModel.Nick, htmlAttributes: new { @class = "control-label col-md-1" })
+                <div class="col-md-8">
+                    @Html.EditorFor(model => model.SearchModel.Nick, new { htmlAttributes = new { @class = "form-control input_reg" } })
+                    @Html.ValidationMessageFor(model => model.SearchModel.Nick, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.SearchModel.Email, htmlAttributes: new { @class = "control-label col-md-1" })
+                <div class="col-md-8">
+                    @Html.EditorFor(model => model.SearchModel.Email, new { htmlAttributes = new { @class = "form-control input_reg" } })
+                    @Html.ValidationMessageFor(model => model.SearchModel.Email, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-offset-1 col-md-8">
+                    <button id="btn_search_user" type="submit" class="btn btn-warning">
+                        <span class="glyphicon glyphicon-search"></span> 搜索用户
+                    </button>
+                    <button id="btn_save_user" type="button" class="btn btn-warning">
+                        <span class="glyphicon glyphicon-save"></span> 保存设置
+                    </button>
+                </div>
+            </div>
+}
+@using (Html.BeginForm("AddAdmin", "Admin", FormMethod.Post, new { @class = "form-horizontal", role = "form" ,id="SaveUserForm" }))
+{
+
+@Html.Grid(Model.UserGrid).Columns(columns =>
+{
+    columns.Add().Titled("").Encoded(false)
+         .Sanitized(false).RenderValueAs(o => (Html.Raw("<input type=\"checkbox\" id=\"UserId\" name=\"UserId\" value=\"" + o.User.UserId + "\"/>")));
+    columns.Add(c => c.User.Email).Titled("邮箱").SetWidth("5%");
+    columns.Add(c => c.User.NickName).Titled("昵称").SetWidth("15%");
+    columns.Add(c => c.User.Name).Titled("姓名");
+    columns.Add(c => c.Province.Name).Titled("省份");
+    columns.Add(c => c.City.Name).Titled("城市");
+    columns.Add(c => c.Gendar.Name).Titled("性别");
+    columns.Add(c => c.User.RegTime).Titled("注册日期").RenderValueAs(o => o.User.RegTime > 0 ? MiOU.Util.DateTimeUtil.ConvertToDateTime(o.User.RegTime).ToString("yyyy-MM-dd hh:mm") : "");
+})
+}

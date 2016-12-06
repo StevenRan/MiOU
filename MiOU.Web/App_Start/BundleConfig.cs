@@ -27,7 +27,10 @@ namespace MiOU.Web
                 "~/Scripts/app/app.datamodel.js",
                 "~/Scripts/app/app.viewmodel.js",
                 "~/Scripts/app/home.viewmodel.js",
-                "~/Scripts/app/_run.js"));
+                "~/Scripts/app/_run.js"
+               
+
+                ));
 
             // Use the development version of Modernizr to develop with and learn from. Then, when you're
             // ready for production, use the build tool at http://modernizr.com to pick only the tests you need.
@@ -35,16 +38,17 @@ namespace MiOU.Web
                 "~/Scripts/modernizr-*"));
 
             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
-                "~/Scripts/bootstrap.js",
-                //"~/Scripts/ct-navbar.js",
-                "~/Scripts/respond.js"));
+                "~/Scripts/bootstrap.js",                
+                "~/Scripts/respond.js",
+                 "~/Scripts/gridmvc.js"
+                ));
 
             bundles.Add(new ScriptBundle("~/bundles/miou").Include(
                "~/Scripts/miou/vhome.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                  "~/Content/bootstrap.css",
-                 //"~/Content/pe-icon-7-stroke.css",
+                 "~/Content/Gridmvc.css",
                  //"~/Content/ct-navbar.css",
                  "~/Content/Site.css"));
         }

@@ -19,6 +19,10 @@ namespace MiOU.Web.Models
         public string Name { get; set; }
         [Display(Name = "昵称")]
         public string Nick { get; set; }
+
+        [Display(Name = "邮箱")]
+        public string Email { get; set; }
+
         [Display(Name = "省份")]
         public int? Province { get; set; }
         [Display(Name = "城市")]

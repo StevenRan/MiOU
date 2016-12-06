@@ -4,17 +4,26 @@
     ViewBag.Title = "管理员管理";
     Layout = "~/Views/Shared/_adminLayout.cshtml";
 }
-
+<script>
+    $(document).ready(function () {
+        $('#add_new_vip').click(function () {
+            window.location.href = "/Admin/AddAdmin";
+        });
+    });
+</script>
 <div style="overflow:hidden;height:65px;line-height:65px;">
     <div style="float:left;">
         <h2>@ViewBag.Title</h2>
     </div>
     <div style="float:right;">
+        
         <button id="add_new_vip" class="btn btn-warning">
-            <span class="glyphicon glyphicon-plus">
-                添加管理员
-            </span>
+           
+                <span class="glyphicon glyphicon-plus">
+                    添加管理员
+                </span>
         </button>
+        
     </div>
 </div>
 <hr />
@@ -27,7 +36,7 @@
     columns.Add(c => c.Created).Titled("创建时间").SetWidth("10%").RenderValueAs(o => o.Created > 0 ? MiOU.Util.DateTimeUtil.ConvertToDateTime(o.Created).ToString("yyyy-MM-dd HH:ss") : "");
     columns.Add(c => c.CreatedBy.User.Email).Titled("创建人").SetWidth("10%").RenderValueAs(c => (c.CreatedBy != null && c.CreatedBy.User!=null) ? c.CreatedBy.User.Email : "");
     columns.Add(c => c.Updated).Titled("更新时间").SetWidth("10%").RenderValueAs(o => o.Updated > 0 ? MiOU.Util.DateTimeUtil.ConvertToDateTime(o.Updated).ToString("yyyy-MM-dd HH:ss") : "");
-    columns.Add(c => c.UpdatedBy.User.Email).Titled("创建人").SetWidth("10%").RenderValueAs(c => (c.UpdatedBy != null && c.UpdatedBy.User!=null) ? c.UpdatedBy.User.Email : "");
+    columns.Add(c => c.UpdatedBy.User.Email).Titled("更新人").SetWidth("10%").RenderValueAs(c => (c.UpdatedBy != null && c.UpdatedBy.User!=null) ? c.UpdatedBy.User.Email : "");
     columns.Add()
          .Encoded(false)
          .Sanitized(false)

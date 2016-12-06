@@ -1,6 +1,13 @@
 ﻿@model MiOU.Entities.Beans.Permissions
 @{
+    MiOU.Entities.Beans.BUser reqUser=null;
+    if (ViewBag.reqUser != null) {
+        reqUser = ViewBag.reqUser as MiOU.Entities.Beans.BUser;
+    }
     ViewBag.Title = "修改管理员权限";
+    if (reqUser != null) {
+        ViewBag.Title += " - "+reqUser.User.Email;
+    }
     Layout = "~/Views/Shared/_adminLayout.cshtml";
 
     List<MiOU.Entities.Beans.UserAdminAction> actions = null;
@@ -32,33 +39,59 @@
     {
         singDivPer = 100 / cateCount;
     }
+
+    System.Reflection.PropertyInfo[] props = typeof(MiOU.Entities.Beans.Permissions).GetProperties();
 }
 
 
-<div style="overflow:hidden;height:65px;line-height:65px;">
-    <div style="float:left;">
-        <h2>@ViewBag.Title</h2>
-    </div>
-    <div style="float:right;">
-        <button id="add_new_vip" class="btn btn-warning">
-            <span class="glyphicon glyphicon-asterisk">
-                设为超管
-            </span>
-        </button>
-    </div>
-</div>
-<hr/>
+
 
 @using (Html.BeginForm("NewVip", "Admin", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
 {
+    <div style="overflow:hidden;height:65px;line-height:65px;">
+        <div style="float:left;">
+            <h2>@ViewBag.Title</h2>
+        </div>
+        <div style="float:right;">
+            <button id="btn_set_super" class="btn btn-warning">
+                <span class="glyphicon glyphicon-asterisk">
+                    设为超管
+                </span>
+            </button>
+            <button id="btn_save_changes" class="btn btn-warning">
+                <span class="glyphicon glyphicon-save">
+                    保存修改
+                </span>
+            </button>
+        </div>
+    </div>
+    <hr />
+
     <div style="overflow:hidden">
-        @foreach(MiOU.DAL.Admin_Categories cate in cates)
-        {
-            <div style="float:left;">
-                <div>@Html.Raw(cate.Name)</div>
+        @foreach (MiOU.DAL.Admin_Categories cate in cates)
+        {             
+            List<MiOU.Entities.Beans.UserAdminAction> cActions = (from a in actions where a.Category.Id==cate.Id select a).ToList<MiOU.Entities.Beans.UserAdminAction>();
+            <div style="float:left;width:@Html.Raw(singDivPer + "%");text-align:left;">
+                <div><label class="control-label">@Html.Raw(cate.Name)</label></div>
+                    @foreach (MiOU.Entities.Beans.UserAdminAction action in cActions)
+                    {
+                        System.Reflection.PropertyInfo pro = (from p in props.ToList<System.Reflection.PropertyInfo>() where p.Name==action.Action.Name select p).FirstOrDefault<System.Reflection.PropertyInfo>();
+                        bool chk = false;
+                        if (pro != null) {
+                            chk=(bool)pro.GetValue(Model);
+                        }
+                        <div class="form-group" style="margin-bottom:5px;">                            
+                            <div class="col-md-1">
+                                <div class="checkbox">
+                                    <input @if (chk) {@Html.Raw("checked") } class="check-box" id="@Html.Raw(action.Action.Name)" name="@Html.Raw(action.Action.Name)" type="checkbox" value="true">
+                                </div>
+                            </div>
+                            <label class="control-label perLabel">@Html.Raw(action.Action.Description)</label>
+                        </div>
+                    }
             </div>
         }
-    </div>
+</div>
 }
 
 

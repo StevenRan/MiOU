@@ -122,7 +122,7 @@ namespace MiOU.BL.Admin
         public bool SetUserStatus(int userId, int status)
         {
             bool ret = false;
-            BUser user = GetUserInfo(userId);
+            BUser user = GetUserInfoWithPermissionInfo(userId);
             if (user == null)
             {
                 throw new MiOUException(string.Format(MiOUConstants.USER_ID_NOT_EXIST, userId));

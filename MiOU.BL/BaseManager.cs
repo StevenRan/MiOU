@@ -30,13 +30,13 @@ namespace MiOU.BL
         {
             if (user != null)
             {
-                this.CurrentLoginUser = this.GetUserInfo(user.UserId);
+                this.CurrentLoginUser = this.GetUserInfoWithPermissionInfo(user.UserId);
             }
             this.InitializeLoggger();
         }
         public BaseManager(int userId)
         {
-            this.CurrentLoginUser = this.GetUserInfo(userId);
+            this.CurrentLoginUser = this.GetUserInfoWithPermissionInfo(userId);
             this.InitializeLoggger();
         }
         public BaseManager(string email)
@@ -120,7 +120,7 @@ namespace MiOU.BL
             return user;
         }
 
-        public BUser GetUserInfo(int userId)
+        public BUser GetUserInfoWithPermissionInfo(int userId)
         {
             if (userId <= 0)
             {

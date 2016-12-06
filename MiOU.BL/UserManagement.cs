@@ -21,6 +21,39 @@ namespace MiOU.BL
 
         }
 
+        public bool AddUserToAdmin(string[] ids)
+        {
+            bool ret = false;
+            if(ids==null || ids.Length<=0)
+            {
+                throw new MiOUException("请选择用户，然后保存为管理员");
+            }
+            if(!CurrentLoginUser.Permission.SET_USER_ADMIN)
+            {
+                throw new MiOUException("没有权限添加管理员");
+            }
+            using (MiOUEntities db = new MiOUEntities())
+            {
+                List<Admin_Users> eAdmins = (from au in db.Admin_Users orderby au.User_Id ascending select au).ToList<Admin_Users>();
+                foreach(string id in ids)
+                {
+                    int uid = 0;
+                    int.TryParse(id,out uid);
+                    Admin_Users tmp = (from t in db.Admin_Users where t.User_Id==uid select t).FirstOrDefault<Admin_Users>();
+                    if(tmp!=null)
+                    {
+                        continue;
+                    }
+
+                    tmp = new Admin_Users() { User_Id=uid, Created=DateTimeUtil.ConvertDateTimeToInt(DateTime.Now), CreayedBy=CurrentLoginUser.User.UserId, Description="管理员", IsSuperAdmin=false, IsWebMaster=false,Updated=0,UpdatedBy=0 };
+                    db.Admin_Users.Add(tmp);
+                }
+                db.SaveChanges();
+                ret = true;
+            }
+            return ret;
+        }
+
         /// <summary>
         /// 搜索注册用户
         /// </summary>
@@ -38,7 +71,7 @@ namespace MiOU.BL
         /// <param name="city"></param>
         /// <param name="district"></param>
         /// <returns></returns>
-        public List<BUser> SearchUsers(int page,int pageSize,string nickName,string email, int userType,int openType,int gendar,long startRegTime, long endRegTime,int vip,int province,int city,int district,out int total)
+        public List<BUser> SearchUsers(int page,int pageSize,string name,string nickName,string email, int userType,int openType,int gendar,long startRegTime, long endRegTime,int vip,int province,int city,int district,out int total)
         {
             List<BUser> bUsers = null;
             MiOUEntities db = null;

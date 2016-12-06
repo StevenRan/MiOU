@@ -40,27 +40,33 @@ namespace MiOU.Web.Controllers
         {
             return View();
         }
+
+        #region admin related functions
+
         public ActionResult AdminPermission(int? id)
         {           
             if (id == null)
             {
-                return RedirectToAction("Error","Admin", new System.Web.Routing.RouteValueDictionary(new {controller="Admin",action="Error", message= "请不要随意修改URL链接里的参数" }));
+                return ShowError("请不要随意修改URL链接里的参数");               
             }
             int userId = 0;
             int.TryParse(id.ToString(),out userId);
             if(userId<=0)
             {
-                return RedirectToAction("Error", "Admin", "请不要随意修改URL链接里的参数");
+                return ShowError("请不要随意修改URL链接里的参数");
             }
 
             PermissionManagement perMgr = new PermissionManagement(User.Identity.GetUserId<int>());
+            UserManagement userMgr = new UserManagement(perMgr.CurrentLoginUser);
             if(!perMgr.CurrentLoginUser.Permission.SET_USER_ADMIN && perMgr.CurrentLoginUser.Permission.SET_USER_SUPER_ADMIN)
             {
-                return RedirectToAction("Error", "Admin", "您没有权限执行此操作");
+                return ShowError("您没有权限执行此操作");
             }
             List<UserAdminAction> actions = perMgr.GetAllAdminActions();
             ViewBag.actions = actions;
-            return View(perMgr.CurrentLoginUser.Permission);
+            BUser reqUser = perMgr.GetUserInfoWithPermissionInfo(userId);
+            ViewBag.reqUser = reqUser;            
+            return View(reqUser.Permission);
         }
         public ActionResult Administrators()
         {
@@ -75,6 +81,65 @@ namespace MiOU.Web.Controllers
             DBGrid<BAdmin> grid = new DBGrid<BAdmin>(result);
             return View(grid);
         }
+       
+        [HttpGet]
+        public ActionResult AddAdmin(SearchUserModel searchModel)
+        {
+            UserManagement userMgr = new UserManagement(User.Identity.GetUserId<int>());
+            int page = 1;
+            int pageSize = 40;
+            if (!string.IsNullOrEmpty(Request["page"]))
+            {
+                int.TryParse(Request["page"], out page);
+            }
+            if (!string.IsNullOrEmpty(Request["pageSize"]))
+            {
+                int.TryParse(Request["pageSize"], out pageSize);
+            }
+            int total = 0;
+            List<BUser> users = userMgr.SearchUsers(page, pageSize,searchModel.Name, searchModel.Nick, searchModel.Email, searchModel.Type != null ? (int)searchModel.Type : 0,
+                                                    searchModel.BindingWeChat ? 1 : 0, searchModel.Gender, 0, 0, searchModel.VipLevel != null ? (int)searchModel.VipLevel : 0,
+                                                    searchModel.Province != null ? (int)searchModel.Province : 0,
+                                                    searchModel.City != null ? (int)searchModel.City : 0,
+                                                    searchModel.District != null ? (int)searchModel.District : 0, out total);
+
+            MiOuSearchUserModel model = new MiOuSearchUserModel();
+            model.SearchModel = searchModel;
+            model.UserGrid = new DBGrid<BUser>(new PageItemsResult<BUser>() { CurrentPage = page, EnablePaging = true, Items = users != null ? users : new List<BUser>(), PageSize = pageSize, TotalRecords = total });
+            return View(model);
+        }
+        [HttpPost]
+        public ActionResult AddAdmin()
+        {
+            MiOuSearchUserModel model = new MiOuSearchUserModel();
+
+            string s = Request["UserId"];
+            string[] ids = null;
+            if (!string.IsNullOrEmpty(s))
+            {
+                ids = s.Split(',');
+
+            }
+            UserManagement userMgr = new UserManagement(User.Identity.GetUserId<int>());
+            try
+            {
+                if(userMgr.AddUserToAdmin(ids))
+                {
+                    return Redirect("/Admin/Administrators");
+                }
+            }
+            catch(MiOUException mex)
+            {
+                return ShowError(mex.Message);
+            }
+            catch(Exception ex)
+            {
+                logger.Fatal(ex);
+                return ShowError("系统错误，请联系系统管理员");
+            }
+            return Redirect("/Admin/AddAdmin");
+        }
+        #endregion
 
         [HttpGet]
         public ActionResult SearchUsers(SearchUserModel searchModel)
@@ -137,7 +202,7 @@ namespace MiOU.Web.Controllers
                 int.TryParse(Request["pageSize"], out pageSize);
             }
             int total = 0;
-            List<BUser> users = userMgr.SearchUsers(page, pageSize, searchModel.Nick,null,searchModel.Type!=null?(int)searchModel.Type:0,
+            List<BUser> users = userMgr.SearchUsers(page, pageSize,searchModel.Name, searchModel.Nick,null,searchModel.Type!=null?(int)searchModel.Type:0,
                                                     searchModel.BindingWeChat?1:0,searchModel.Gender,startRegTime,endRegTime,searchModel.VipLevel!=null?(int)searchModel.VipLevel:0,
                                                     searchModel.Province!=null?(int)searchModel.Province:0,
                                                     searchModel.City!=null?(int)searchModel.City:0,
@@ -192,7 +257,7 @@ namespace MiOU.Web.Controllers
         {
             if(id==null)
             {
-                return RedirectToAction("Error","Admin", "参数输入有误");
+                return ShowError("参数输入有误");
             }
             UserManagement userMgr = new UserManagement(User.Identity.GetUserId<int>());
             BVIPLevel vip = userMgr.GetVipDetail((int)id);
@@ -297,9 +362,14 @@ namespace MiOU.Web.Controllers
         }
         #endregion
 
-        public ActionResult Error(string message)
+        public ActionResult ShowError(string message)
         {
-            return View("Error", message);
+            return RedirectToAction("Error", "Admin", new System.Web.Routing.RouteValueDictionary(new { controller = "Admin", action = "Error", message =message }));
+        }
+
+        public ActionResult Error(object message)
+        {
+            return View("Error",message);
         }
     }
 }

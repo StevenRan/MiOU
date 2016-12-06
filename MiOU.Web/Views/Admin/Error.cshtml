@@ -1,13 +1,18 @@
-﻿@model string
+﻿@model object
 @{
     ViewBag.Title = "操作失败";
     Layout = "~/Views/Shared/_adminLayout.cshtml";
+    string message = "";
+    if(Model!=null)
+    {
+        string[] strs = (string[])Model;
+        message = strs[0];
+    }
 }
 
-<h2>@ViewBag.Title</h2>
-<hr/>
 
-@if (Model != null) {
-    Html.Raw(Model);
-}
+<div style="min-height:500px;text-align:center;line-height:500px;">
+    <h2>@Html.Raw(message)</h2>
+</div>    
+
 

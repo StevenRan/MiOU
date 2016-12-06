@@ -263,6 +263,7 @@
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\ct-navbar.css" />
+    <Content Include="Content\Gridmvc.css" />
     <Content Include="Content\Images\bg.jpg" />
     <Content Include="Content\Images\logo.png" />
     <Content Include="Content\Images\my_btn.png" />
@@ -300,6 +301,7 @@
     <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\CollectionModelDescription.cshtml" />
     <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\ApiGroup.cshtml" />
     <Content Include="Areas\HelpPage\Views\Help\Api.cshtml" />
+    <Content Include="Grid.mvc.readme" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\ct-navbar.js" />
     <Content Include="Scripts\gridmvc.js" />
@@ -386,6 +388,7 @@
     <Content Include="Views\Admin\Error.cshtml" />
     <Content Include="Views\Admin\Administrators.cshtml" />
     <Content Include="Views\Admin\AdminPermission.cshtml" />
+    <Content Include="Views\Admin\AddAdmin.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
