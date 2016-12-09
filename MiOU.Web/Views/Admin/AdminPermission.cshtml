@@ -46,7 +46,7 @@
 
 
 
-@using (Html.BeginForm("NewVip", "Admin", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+@using (Html.BeginForm(Request.Url.AbsoluteUri,FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
 {
     <div style="overflow:hidden;height:65px;line-height:65px;">
         <div style="float:left;">

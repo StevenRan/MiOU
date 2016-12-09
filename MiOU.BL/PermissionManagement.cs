@@ -117,6 +117,7 @@ namespace MiOU.BL
             GrantUserPermissions(userId, actions);
         }
 
+
         /// <summary>
         /// 
         /// </summary>

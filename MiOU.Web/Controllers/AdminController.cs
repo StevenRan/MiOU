@@ -43,6 +43,7 @@ namespace MiOU.Web.Controllers
 
         #region admin related functions
 
+        [HttpGet]
         public ActionResult AdminPermission(int? id)
         {           
             if (id == null)
@@ -68,6 +69,32 @@ namespace MiOU.Web.Controllers
             ViewBag.reqUser = reqUser;            
             return View(reqUser.Permission);
         }
+        [HttpPost]
+        public ActionResult AdminPermission(Permissions permission)
+        {
+            PermissionManagement perMgr = new PermissionManagement(User.Identity.GetUserId<int>());
+            try
+            {
+                int userId = 0;
+                int.TryParse(Request["id"], out userId);
+                if(userId<=0)
+                {
+                    return ShowError("参数错误，请不要随意修改URL参数");
+                }
+                perMgr.GrantUserPermissions(userId,permission);
+                return Redirect("/Admin/AdminPermission?id="+userId);
+            }
+            catch (MiOUException mex)
+            {
+                return ShowError(mex.Message);
+            }
+            catch (Exception ex)
+            {
+                logger.Fatal(ex);
+                return ShowError("系统错误，请联系系统管理员");
+            }
+        }
+
         public ActionResult Administrators()
         {
             UserManagement userMgr = new UserManagement(User.Identity.GetUserId<int>());
@@ -139,6 +166,8 @@ namespace MiOU.Web.Controllers
             }
             return Redirect("/Admin/AddAdmin");
         }
+
+       
         #endregion
 
         [HttpGet]
