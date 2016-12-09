@@ -46,9 +46,9 @@
 
 
 
-@using (Html.BeginForm(Request.Url.AbsoluteUri,FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+@using (Html.BeginForm())
 {
-    <div style="overflow:hidden;height:65px;line-height:65px;">
+    <div  style="overflow:hidden;height:65px;line-height:65px;">
         <div style="float:left;">
             <h2>@ViewBag.Title</h2>
         </div>
@@ -67,7 +67,7 @@
     </div>
     <hr />
 
-    <div style="overflow:hidden">
+    <div class="form-horizontal" style="overflow:hidden">
         @foreach (MiOU.DAL.Admin_Categories cate in cates)
         {             
             List<MiOU.Entities.Beans.UserAdminAction> cActions = (from a in actions where a.Category.Id==cate.Id select a).ToList<MiOU.Entities.Beans.UserAdminAction>();

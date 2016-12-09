@@ -22,5 +22,6 @@ namespace MiOU.DAL
         public int CreayedBy { get; set; }
         public long Updated { get; set; }
         public int UpdatedBy { get; set; }
+        public bool Enabled { get; set; }
     }
 }

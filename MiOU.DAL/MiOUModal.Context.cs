@@ -47,10 +47,10 @@ namespace MiOU.DAL
         public DbSet<Payment> Payment { get; set; }
         public DbSet<User> User { get; set; }
         public DbSet<Category> Category { get; set; }
-        public DbSet<EvaluatedPriceCategory> EvaluatedPriceCategory { get; set; }
         public DbSet<Product> Product { get; set; }
         public DbSet<Area> Area { get; set; }
         public DbSet<VipLevel> VipLevel { get; set; }
         public DbSet<Admin_Users> Admin_Users { get; set; }
+        public DbSet<EvaluatedPriceCategory> EvaluatedPriceCategory { get; set; }
     }
 }

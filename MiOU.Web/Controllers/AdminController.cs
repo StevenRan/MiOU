@@ -35,6 +35,13 @@ namespace MiOU.Web.Controllers
             return View();
         }
 
+        #region Product Level Related
+        public ActionResult SearchProductLevels()
+        {
+            return View();
+        }
+        #endregion
+
         #region account related
         public ActionResult SetAdminStatus(int? id)
         {

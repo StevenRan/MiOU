@@ -389,6 +389,8 @@
     <Content Include="Views\Admin\Administrators.cshtml" />
     <Content Include="Views\Admin\AdminPermission.cshtml" />
     <Content Include="Views\Admin\AddAdmin.cshtml" />
+    <Content Include="Views\Admin\UpdateProductLevel.cshtml" />
+    <Content Include="Views\Admin\SearchProductLevels.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

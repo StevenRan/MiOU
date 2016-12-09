@@ -23,6 +23,6 @@ namespace MiOU.DAL
         public string Description { get; set; }
         public int Updated { get; set; }
         public int UpdatedBy { get; set; }
-        public int VIPRentLevel { get; set; }
+        public string VIPRentLevel { get; set; }
     }
 }

@@ -57,6 +57,7 @@
     <Compile Include="Beans\BPriceCategory.cs" />
     <Compile Include="Beans\BProduct.cs" />
     <Compile Include="Beans\BProductImage.cs" />
+    <Compile Include="Beans\BProductLevel.cs" />
     <Compile Include="Beans\BProductMaintenance.cs" />
     <Compile Include="Beans\BProductPrice.cs" />
     <Compile Include="Beans\BSelType.cs" />

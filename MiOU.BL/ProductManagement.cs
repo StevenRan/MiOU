@@ -22,6 +22,94 @@ namespace MiOU.BL
 
         }
 
+        public bool CreateNewProductLevel(BProductLevel level)
+        {
+            bool ret = false;
+            return ret;
+        }
+
+        private bool SaveProductLevel(BProductLevel level)
+        {
+            bool ret = false;
+            using (MiOUEntities db = new MiOUEntities())
+            {
+                List<BProductLevel> all = GetProductLevels();
+                EvaluatedPriceCategory dbLevel = null;
+                if(level.Id>0)
+                {
+                    dbLevel = (from l in db.EvaluatedPriceCategory where l.Id == level.Id select l).FirstOrDefault<EvaluatedPriceCategory>();
+                    if(dbLevel==null)
+                    {
+                        throw new MiOUException("产品等级不存在");
+                    }
+                }
+                else
+                {
+                    dbLevel = new EvaluatedPriceCategory()
+                    {
+                        Name = level.Name,
+                        Description = level.Description,
+                        Created = DateTimeUtil.ConvertDateTimeToInt(DateTime.Now),
+                        CreatedBy = (level.CreatedBy != null && level.CreatedBy.User != null) ? level.CreatedBy.User.UserId : CurrentLoginUser.User.UserId,
+                        Updated = 0,
+                        UpdatedBy=0,
+                        VIPRentLevel= level.RentableVipLevels,
+                        StartPrice= level.StartPrice,
+                        EndPrice=level.EndPrice
+                    };
+
+                    List<BProductLevel> tmpLevels = (from t in all where (t.StartPrice==dbLevel.StartPrice && t.EndPrice== dbLevel.EndPrice) || t.Name.Contains(dbLevel.Name) select t).ToList<BProductLevel>();
+                    if(tmpLevels.Count>0)
+                    {
+                        throw new MiOUException("");
+                    }
+                }
+            }
+                return ret;
+        }
+
+        public List<BProductLevel> GetProductLevels()
+        {
+            List<BProductLevel> levels = new List<BProductLevel>();
+            using (MiOUEntities db = new MiOUEntities())
+            {
+                var tmp = from l in db.EvaluatedPriceCategory
+                          join cu in db.User on l.CreatedBy equals cu.UserId into lcu
+                          from llcu in lcu.DefaultIfEmpty()
+                          join uu in db.User on l.UpdatedBy equals uu.UserId into luu
+                          from lluu in luu.DefaultIfEmpty()
+                          orderby l.StartPrice ascending
+                          select new BProductLevel
+                          {
+                              StartPrice = l.StartPrice,
+                              EndPrice = l.EndPrice,
+                              Created = l.Created,
+                              Updated = l.Updated,
+                              CreatedBy = llcu != null ? new BUser { User = llcu } : null,
+                              UpdatedBy = lluu != null ? new BUser { User = lluu } : null,
+                              Name = l.Name,
+                              Description = l.Description,
+                              RentableVipLevels = l.VIPRentLevel
+                          };
+
+
+                List<BVIPLevel> vips = GetVipLevels();
+                levels = tmp.ToList<BProductLevel>();
+                foreach(BProductLevel plevel in levels)
+                {
+                    string rentVips = plevel.RentableVipLevels;
+                    if(!string.IsNullOrEmpty(rentVips))
+                    {
+                        string[] vipsAarry = rentVips.Split(',');
+                        List<BVIPLevel> tmpVips = (from v in vips where vipsAarry.Contains(v.Id.ToString()) select v).ToList<BVIPLevel>();
+                        plevel.RentableVips = tmpVips;
+                    }
+                    
+                }
+            }
+            return levels;
+        }
+
         public List<BProduct> GetProducts(int pId,int cId,int rentType,int provinceId,int cityId,int districtId,string keyword,int pageSize,int page,bool notDetail,out int total)
         {
             List<BProduct> products = null;
