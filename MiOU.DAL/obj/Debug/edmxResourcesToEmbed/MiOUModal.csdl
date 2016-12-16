@@ -23,11 +23,11 @@
     <EntitySet Name="Payment" EntityType="MiOU.DAL.Payment" />
     <EntitySet Name="User" EntityType="MiOU.DAL.User" />
     <EntitySet Name="Category" EntityType="MiOU.DAL.Category" />
-    <EntitySet Name="EvaluatedPriceCategory" EntityType="MiOU.DAL.EvaluatedPriceCategory" />
     <EntitySet Name="Product" EntityType="MiOU.DAL.Product" />
     <EntitySet Name="Area" EntityType="MiOU.DAL.Area" />
     <EntitySet Name="VipLevel" EntityType="MiOU.DAL.VipLevel" />
     <EntitySet Name="Admin_Users" EntityType="MiOU.DAL.Admin_Users" />
+    <EntitySet Name="EvaluatedPriceCategory" EntityType="MiOU.DAL.EvaluatedPriceCategory" />
   </EntityContainer>
   <EntityType Name="Admin_Actions">
     <Key>
@@ -292,21 +292,6 @@
     <Property Name="PhotoMobile" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
     <Property Name="PhotoPC" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
   </EntityType>
-  <EntityType Name="EvaluatedPriceCategory">
-    <Key>
-      <PropertyRef Name="Id" />
-    </Key>
-    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="StartPrice" Type="Single" Nullable="false" />
-    <Property Name="EndPrice" Type="Single" Nullable="false" />
-    <Property Name="Created" Type="Int64" Nullable="false" />
-    <Property Name="CreatedBy" Type="Int32" Nullable="false" />
-    <Property Name="Name" Type="String" Nullable="false" MaxLength="45" FixedLength="false" Unicode="false" />
-    <Property Name="Description" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-    <Property Name="Updated" Type="Int32" Nullable="false" />
-    <Property Name="UpdatedBy" Type="Int32" Nullable="false" />
-    <Property Name="VIPRentLevel" Type="Int32" Nullable="false" />
-  </EntityType>
   <EntityType Name="Product">
     <Key>
       <PropertyRef Name="Id" />
@@ -383,5 +368,21 @@
     <Property Name="CreayedBy" Type="Int32" Nullable="false" />
     <Property Name="Updated" Type="Int64" Nullable="false" />
     <Property Name="UpdatedBy" Type="Int32" Nullable="false" />
+    <Property Name="Enabled" Type="Boolean" Nullable="false" />
+  </EntityType>
+  <EntityType Name="EvaluatedPriceCategory">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="StartPrice" Type="Single" Nullable="false" />
+    <Property Name="EndPrice" Type="Single" Nullable="false" />
+    <Property Name="Created" Type="Int64" Nullable="false" />
+    <Property Name="CreatedBy" Type="Int32" Nullable="false" />
+    <Property Name="Name" Type="String" Nullable="false" MaxLength="45" FixedLength="false" Unicode="false" />
+    <Property Name="Description" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+    <Property Name="Updated" Type="Int64" Nullable="false" />
+    <Property Name="UpdatedBy" Type="Int32" Nullable="false" />
+    <Property Name="VIPRentLevel" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
   </EntityType>
 </Schema>

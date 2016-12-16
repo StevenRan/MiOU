@@ -22,29 +22,86 @@ namespace MiOU.BL
 
         }
 
-        public bool CreateNewProductLevel(BProductLevel level)
+        public bool UpdateProductLevel(BProductLevel level)
         {
-            bool ret = false;
-            return ret;
+            if(level.Id<=0)
+            {
+                throw new MiOUException("修改产品等级时，等级编号不能为0");
+            }
+
+            return SaveProductLevel(level);
+        }
+
+        public bool CreateNewProductLevel(BProductLevel level)
+        {           
+            if (string.IsNullOrEmpty(level.Name))
+            {
+                throw new MiOUException("产品等级名称不能为空");
+            }
+            if (string.IsNullOrEmpty(level.RentableVipLevels))
+            {
+                throw new MiOUException("产品等级对应的可借用VIP级别不能为空");
+            }
+            if(level.StartPrice<=0 && level.EndPrice<=0)
+            {
+                throw new MiOUException("产品等级价格区间的起始价格和终止价格不能同时为0");
+            }
+            if (level.StartPrice >0 && level.EndPrice <= 0)
+            {
+                throw new MiOUException("产品等级价格区间的起始价格不为0时的终止价格不能为0");
+            }
+            if(level.StartPrice>level.EndPrice)
+            {
+                throw new MiOUException("产品等级起始价格不能大于终止价格");
+            }
+            
+            return SaveProductLevel(level);
         }
 
         private bool SaveProductLevel(BProductLevel level)
         {
+            if (!CurrentLoginUser.IsAdmin)
+            {
+                throw new MiOUException("没有权限创建或修改产品物资等级");
+            }
             bool ret = false;
+            bool newLevel = false;
+            bool checkPrice = false;
             using (MiOUEntities db = new MiOUEntities())
             {
-                List<BProductLevel> all = GetProductLevels();
+                List<BProductLevel> all = GetProductLevels(0,0,0,null);
                 EvaluatedPriceCategory dbLevel = null;
-                if(level.Id>0)
+                if (level.Id > 0)
                 {
                     dbLevel = (from l in db.EvaluatedPriceCategory where l.Id == level.Id select l).FirstOrDefault<EvaluatedPriceCategory>();
-                    if(dbLevel==null)
+                    if (dbLevel == null)
                     {
                         throw new MiOUException("产品等级不存在");
                     }
+                    if(!string.IsNullOrEmpty(level.Name))
+                    dbLevel.Name = level.Name;
+
+                    if (level.StartPrice != dbLevel.StartPrice)
+                    {
+                        checkPrice = true;
+                        dbLevel.StartPrice = level.StartPrice;
+                    }
+
+
+                    if (dbLevel.EndPrice != level.EndPrice)
+                    {
+                        checkPrice = true;
+                        dbLevel.EndPrice = level.EndPrice;
+                    }
+                   
+                    dbLevel.Updated = DateTimeUtil.ConvertDateTimeToInt(DateTime.Now);
+                    dbLevel.UpdatedBy = CurrentLoginUser.User.UserId;
+                    dbLevel.VIPRentLevel = level.RentableVipLevels;
                 }
                 else
                 {
+                    newLevel = true;
+                    checkPrice = true;
                     dbLevel = new EvaluatedPriceCategory()
                     {
                         Name = level.Name,
@@ -52,23 +109,34 @@ namespace MiOU.BL
                         Created = DateTimeUtil.ConvertDateTimeToInt(DateTime.Now),
                         CreatedBy = (level.CreatedBy != null && level.CreatedBy.User != null) ? level.CreatedBy.User.UserId : CurrentLoginUser.User.UserId,
                         Updated = 0,
-                        UpdatedBy=0,
-                        VIPRentLevel= level.RentableVipLevels,
-                        StartPrice= level.StartPrice,
-                        EndPrice=level.EndPrice
+                        UpdatedBy = 0,
+                        VIPRentLevel = level.RentableVipLevels,
+                        StartPrice = level.StartPrice,
+                        EndPrice = level.EndPrice
                     };
+                }
 
-                    List<BProductLevel> tmpLevels = (from t in all where (t.StartPrice==dbLevel.StartPrice && t.EndPrice== dbLevel.EndPrice) || t.Name.Contains(dbLevel.Name) select t).ToList<BProductLevel>();
-                    if(tmpLevels.Count>0)
+                if (checkPrice)
+                {
+                    List<BProductLevel> tmpLevels = (from t in all where (t.StartPrice == dbLevel.StartPrice && t.EndPrice == dbLevel.EndPrice) || t.Name.Contains(dbLevel.Name) select t).ToList<BProductLevel>();
+                    if (tmpLevels.Count > 0)
                     {
-                        throw new MiOUException("");
+                        throw new MiOUException(string.Format("价个区间为{0} - {1}的等级已经存在", dbLevel.StartPrice, dbLevel.EndPrice));
                     }
                 }
+               
+                if(newLevel)
+                {
+                    db.EvaluatedPriceCategory.Add(dbLevel);
+                }
+
+                db.SaveChanges();
+                ret = true;
             }
-                return ret;
+            return ret;
         }
 
-        public List<BProductLevel> GetProductLevels()
+        public List<BProductLevel> GetProductLevels(int id,float start,float end,string vipstrs)
         {
             List<BProductLevel> levels = new List<BProductLevel>();
             using (MiOUEntities db = new MiOUEntities())
@@ -81,6 +149,7 @@ namespace MiOU.BL
                           orderby l.StartPrice ascending
                           select new BProductLevel
                           {
+                              Id=l.Id,
                               StartPrice = l.StartPrice,
                               EndPrice = l.EndPrice,
                               Created = l.Created,
@@ -92,7 +161,22 @@ namespace MiOU.BL
                               RentableVipLevels = l.VIPRentLevel
                           };
 
-
+                if(id>0)
+                {
+                    tmp = tmp.Where(t=>t.Id == id);
+                }
+                if(start>0)
+                {
+                    tmp = tmp.Where(t => t.StartPrice>= start);
+                }
+                if (end > 0)
+                {
+                    tmp = tmp.Where(t => t.EndPrice >= end);
+                }
+                if(!string.IsNullOrEmpty(vipstrs))
+                {
+                    tmp = tmp.Where(t => t.RentableVipLevels.Contains(vipstrs));
+                }
                 List<BVIPLevel> vips = GetVipLevels();
                 levels = tmp.ToList<BProductLevel>();
                 foreach(BProductLevel plevel in levels)

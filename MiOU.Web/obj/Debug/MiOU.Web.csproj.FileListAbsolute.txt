@@ -101,3 +101,4 @@ C:\Users\boling\Documents\GitHub\MiOU\MiOU.Web\bin\es\GridMvc.resources.dll
 C:\Users\boling\Documents\GitHub\MiOU\MiOU.Web\bin\fr\GridMvc.resources.dll
 C:\Users\boling\Documents\GitHub\MiOU\MiOU.Web\bin\it\GridMvc.resources.dll
 C:\Users\boling\Documents\GitHub\MiOU\MiOU.Web\bin\ru\GridMvc.resources.dll
+C:\Users\boling\Documents\GitHub\MiOU\MiOU.Web\bin\FoolproofValidation.dll

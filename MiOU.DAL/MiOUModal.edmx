@@ -116,7 +116,7 @@
           <Property Name="CreatedBy" Type="int" Nullable="false" />
           <Property Name="Name" Type="varchar" MaxLength="45" Nullable="false" />
           <Property Name="Description" Type="varchar" MaxLength="500" />
-          <Property Name="Updated" Type="int" Nullable="false" />
+          <Property Name="Updated" Type="uint" Nullable="false" />
           <Property Name="UpdatedBy" Type="int" Nullable="false" />
           <Property Name="VIPRentLevel" Type="varchar" MaxLength="200" />
         </EntityType>
@@ -775,7 +775,7 @@
           <Property Name="CreatedBy" Type="Int32" Nullable="false" />
           <Property Name="Name" Type="String" Nullable="false" MaxLength="45" FixedLength="false" Unicode="false" />
           <Property Name="Description" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Name="Updated" Type="Int32" Nullable="false" />
+          <Property Name="Updated" Type="Int64" Nullable="false" />
           <Property Name="UpdatedBy" Type="Int32" Nullable="false" />
           <Property Name="VIPRentLevel" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
         </EntityType>

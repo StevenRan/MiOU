@@ -38,7 +38,72 @@ namespace MiOU.Web.Controllers
         #region Product Level Related
         public ActionResult SearchProductLevels()
         {
-            return View();
+            ProductManagement pdtMgr = new ProductManagement(User.Identity.GetUserId<int>());
+            List<BProductLevel> levels = pdtMgr.GetProductLevels(0,0,0,null);
+            PageItemsResult<BProductLevel> result = new PageItemsResult<BProductLevel>() { CurrentPage=1,EnablePaging=true, Items=levels, PageSize=levels.Count,TotalRecords=levels.Count };
+            DBGrid<BProductLevel> grid = new DBGrid<BProductLevel>(result);
+            return View(grid);
+        }
+        public ActionResult NewProductLevel()
+        {
+            ViewBag.Error = null;
+            ProductManagement pdtMgr = new ProductManagement(User.Identity.GetUserId<int>());
+            List<BVIPLevel> vips = pdtMgr.GetVipLevels();
+            ViewBag.AllVips = vips;
+            return View("UpdateProductLevel");
+        }
+        public ActionResult SaveProductLevel(BProductLevel level)
+        {
+            ViewBag.Error = null;
+            ProductManagement pdtMgr = new ProductManagement(User.Identity.GetUserId<int>());
+            if(level!=null)
+            {
+                level.RentableVipLevels = Request["RentableVipLevels"];
+                bool ret = false;
+                try
+                {
+                    ret = pdtMgr.CreateNewProductLevel(level);
+                    if (ret)
+                    {
+                        return RedirectToAction("SearchProductLevels");
+                    }
+                }
+                catch (MiOUException mex)
+                {
+                    ViewBag.Error = mex.Message;
+                    logger.Error(mex);
+                }
+                catch (Exception ex)
+                {
+                    ViewBag.Error = "系统错误，请联系系统管理员";
+                    logger.Fatal(ex);
+                }
+            }
+            else
+            {
+                ViewBag.Error = "系统错误，请联系系统管理员";
+            }            
+            List<BVIPLevel> vips = pdtMgr.GetVipLevels();
+            ViewBag.AllVips = vips;
+            return View("UpdateProductLevel");
+        }
+        public ActionResult UpdateProductLevel(int id)
+        {
+            ViewBag.Error = null;
+            ProductManagement pdtMgr = new ProductManagement(User.Identity.GetUserId<int>());
+            List<BVIPLevel> vips = pdtMgr.GetVipLevels();
+            ViewBag.AllVips = vips;
+            List<BProductLevel> levels= pdtMgr.GetProductLevels(id, 0, 0, null);
+            BProductLevel level = null;
+            if(levels.Count==1)
+            {
+                level = levels[0];
+            }
+            else
+            {
+                ShowError("输入的等级编号不正确");
+            }
+            return View("UpdateProductLevel",level);
         }
         #endregion
 

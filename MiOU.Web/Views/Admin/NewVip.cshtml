@@ -6,6 +6,9 @@
     }
     Layout = Request.IsAjaxRequest() ? null : "~/Views/Shared/_adminLayout.cshtml";
 }
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
 <h2>@ViewBag.Title</h2>
 
 <hr/>
@@ -37,10 +40,18 @@
     <div class="form-group">
         @Html.LabelFor(m => m.Description, new { @class = "col-md-2 control-label" })
         <div class="col-md-10">
-            @Html.TextAreaFor(m => m.Description, new { @class = "form-control mTA1" })
+            @Html.TextAreaFor(m => m.Description, new { @class = "form-control" })
             @Html.ValidationMessageFor(m => m.Description, "", new { @class = "text-danger " })
         </div>
     </div>
+    if(ViewBag.Error != null)
+    {
+        <div class="form-group" id="submit_message_warn" style="display:none;">
+            <div class="col-md-offset-2 col-md-10 alert alert-danger fade in" style="margin-left:15px;margin-right:15px;">
+                <p class="" id="message">@Html.Raw((string)ViewBag.Error)</p>
+            </div>
+        </div>
+    }
     <div class="form-group">
         <div class="col-md-offset-2 col-md-10">
             <button type="submit" class="btn btn-warning">
