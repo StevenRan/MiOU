@@ -35,6 +35,32 @@ namespace MiOU.Web.Controllers
             return View();
         }
 
+        #region Product related
+        public ActionResult NewProductCategory()
+        {
+            return View("UpdateProductCategory");
+        }
+
+        public ActionResult UpdateProductCategory(int parent)
+        {
+            return View("UpdateProductCategory");
+        }
+
+        public ActionResult SaveProductCategory(BCategory model)
+        {
+            return View("UpdateProductCategory");
+        }
+
+        public ActionResult ProductCates(int? parent)
+        {
+            ProductManagement pdtMgr = new ProductManagement(User.Identity.GetUserId<int>());
+            List<BCategory> cates = pdtMgr.GetCategories(0, true);
+            PageItemsResult<BCategory> result = new PageItemsResult<BCategory>() { CurrentPage = 1, EnablePaging = true, Items = cates, PageSize = cates.Count };
+            DBGrid<BCategory> grid = new DBGrid<BCategory>(result);
+            return View(grid);
+        }
+        #endregion
+
         #region Product Level Related
         public ActionResult SearchProductLevels()
         {
@@ -108,9 +134,27 @@ namespace MiOU.Web.Controllers
         #endregion
 
         #region account related
-        public ActionResult SetAdminStatus(int? id)
+        public ActionResult SetAdminStatus()
         {
-            return View();
+            PermissionManagement perMgr = new PermissionManagement(User.Identity.GetUserId<int>());
+            int id = 0;
+            int.TryParse(Request["id"],out id);
+            int status = 0;
+            int.TryParse(Request["state"],out status);
+            try
+            {
+                perMgr.SetAdminStatus(id, status);
+            }
+            catch(MiOUException mex)
+            {
+                logger.Error(mex);
+                return ShowError(mex.Message);
+            }
+            catch(Exception ex)
+            {
+                logger.Fatal(ex);
+            }
+            return RedirectToAction("Administrators");
         }
 
         #region admin related functions

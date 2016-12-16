@@ -123,6 +123,11 @@ namespace MiOU.BL
                     {
                         throw new MiOUException(string.Format("价个区间为{0} - {1}的等级已经存在", dbLevel.StartPrice, dbLevel.EndPrice));
                     }
+                    tmpLevels = (from t in all where ((t.StartPrice<=dbLevel.StartPrice && t.EndPrice>=dbLevel.StartPrice) || (t.StartPrice<=dbLevel.EndPrice && t.EndPrice>=dbLevel.EndPrice))select t).ToList<BProductLevel>();
+                    if (tmpLevels.Count > 0)
+                    {
+                        throw new MiOUException(string.Format("价个区间为{0} - {1}的价格区间不唯一，与其他等级有重叠", dbLevel.StartPrice, dbLevel.EndPrice));
+                    }
                 }
                
                 if(newLevel)

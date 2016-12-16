@@ -1,0 +1,40 @@
+﻿@using MiOU.Entities.Beans
+@model BCategory
+@{
+    ViewBag.Title = "新建产品类别";
+    Layout = Request.IsAjaxRequest() ? null : "~/Views/Shared/_adminLayout.cshtml";
+}
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+<h2>NewProductCategory</h2>
+
+@using (Html.BeginForm("SaveProductLevel", "Admin", FormMethod.Post, new { @class = "form-horizontal", role = "form", id = "ProductLevelForm" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.AntiForgeryToken()
+    if (ViewBag.Error != null)
+    {
+        <div class="form-group" id="submit_message_warn">
+            <div class="col-md-offset-1 col-md-7 alert alert-danger fade in">
+                <p class="" id="message">@Html.Raw((string)ViewBag.Error)</p>
+            </div>
+        </div>
+    }
+    @Html.HiddenFor(model => model.Id)
+    <div class="form-group">
+        @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-8">
+            @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control input_reg" } })
+            @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-8">
+            <button id="btn_save_cate" type="submit" class="btn btn-warning">
+                <span class="glyphicon glyphicon-save"></span> 保存
+            </button>
+        </div>
+    </div>
+}

@@ -1,7 +1,10 @@
 ﻿@using MiOU.Entities.Beans
 @model MiOU.Entities.Beans.BProductLevel
 @{
-    ViewBag.Title = "新建产品等级";    
+    ViewBag.Title = "新建产品等级";
+    if (Model != null && Model.Id>0) {
+        ViewBag.Title = "更新产品等级";
+    }
     Layout = Request.IsAjaxRequest()?null: "~/Views/Shared/_adminLayout.cshtml";
     List<BVIPLevel> allVips = null;
     if (ViewBag.AllVips != null) {
@@ -86,8 +89,8 @@
 
     <div class="form-group">
         <div class="col-md-offset-2 col-md-8">
-            <button id="btn_save_user" type="submit" class="btn btn-warning">
-                <span class="glyphicon glyphicon-search"></span> 保存
+            <button id="btn_save_pdtlevel" type="submit" class="btn btn-warning">
+                <span class="glyphicon glyphicon-save"></span> 保存
             </button>           
         </div>
     </div>

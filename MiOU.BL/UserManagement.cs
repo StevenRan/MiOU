@@ -194,7 +194,8 @@ namespace MiOU.BL
                               CreatedBy= new BUser { User=llcd },
                               UpdatedBy = new BUser { User = lluud },
                               IsWebMaster= u.IsWebMaster,
-                              IsSuperAdmin=u.IsSuperAdmin
+                              IsSuperAdmin=u.IsSuperAdmin,
+                              Enabled=u.Enabled
                           };
 
                

@@ -1,0 +1,44 @@
+﻿@using MiOU.Entities.Beans
+@using GridMvc.Html
+@model GridMvc.DBGrid.DBGrid<MiOU.Entities.Beans.BCategory>
+@{
+    ViewBag.Title = "产品类别管理";
+    Layout = Request.IsAjaxRequest() ? null : "~/Views/Shared/_adminLayout.cshtml";
+}
+<style>
+    .table tbody > tr > td {
+        vertical-align: middle;
+    }
+</style>
+<script>
+    $(function () {
+        $('#add_new_product_category').click(function () {
+            openModalDialog("/Admin/NewProductCategory", null);
+            //window.location.href = "/Admin/NewProductLevel";
+        });
+    });
+
+</script>
+<div style="overflow:hidden;height:65px;line-height:65px;">
+    <div style="float:left;">
+        <h2>@ViewBag.Title</h2>
+    </div>
+    <div style="float:right;">
+        <button id="add_new_product_category" class="btn btn-warning">
+            <span class="glyphicon glyphicon-plus">
+                添加产品类别
+            </span>
+        </button>
+    </div>
+</div>
+<hr />
+
+@Html.Grid(Model).Columns(columns =>
+{
+    columns.Add().Titled("图标")
+     .Encoded(false)
+     .Sanitized(false)
+     .SetWidth("10%").RenderValueAs(o=>@Html.Raw("<img style=\"width:132px;height:132px;\" src=\"/Content/" + o.IconPhotoMobile+"\"/>"));
+    columns.Add(c => c.Name).Titled("名称");
+})
+

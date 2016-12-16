@@ -117,6 +117,47 @@ namespace MiOU.BL
             GrantUserPermissions(userId, actions);
         }
 
+        public void SetAdminStatus(int adminId,int status)
+        {
+            UserManagement userMgr = new UserManagement(CurrentLoginUser);
+            BUser admin = userMgr.GetUserInfoWithPermissionInfo(adminId);
+            if(admin==null)
+            {
+                throw new MiOUException("管理员账户不存在");
+            }
+            if(!admin.IsAdmin)
+            {
+                throw new MiOUException("不能操作非管理员账户");
+            }
+            if(admin.IsSuperAdmin && !CurrentLoginUser.IsWebMaster)
+            {
+                throw new MiOUException("只有系统管理员可以操作超级管理员用户");
+            }
+            if (admin.IsAdmin && !CurrentLoginUser.IsWebMaster && !CurrentLoginUser.IsSuperAdmin)
+            {
+                throw new MiOUException("没有权限修改管理员账户状态");
+            }
+            if(adminId==CurrentLoginUser.User.UserId)
+            {
+                throw new MiOUException("管理员账户不能修改自己账户");
+            }
+            using (MiOUEntities db = new MiOUEntities())
+            {
+                Admin_Users adminUser = (from u in db.Admin_Users where u.User_Id==adminId select u).FirstOrDefault<Admin_Users>();
+                if(adminUser==null)
+                {
+                    throw new MiOUException("管理员账户不存在");
+                }
+                if(status==1)
+                {
+                    adminUser.Enabled = true;
+                }else if (status == 0)
+                {
+                    adminUser.Enabled = false;
+                }
+                db.SaveChanges();
+            }
+        }
 
         /// <summary>
         /// 
@@ -133,7 +174,10 @@ namespace MiOU.BL
                     throw new MiOUException("没有权限修改管理员权限");
                 }
             }
-
+            if(userId== CurrentLoginUser.User.UserId)
+            {
+                throw new MiOUException("不能自己修改自己的权限");
+            }
             bool ret = false;
             using (MiOUEntities db = new MiOUEntities())
             {

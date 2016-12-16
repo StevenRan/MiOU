@@ -7,8 +7,8 @@
 <script>
     $(function () {
         $('#add_new_product_level').click(function () {
-            //openModalDialog("/Admin/NewProductLevel", null);
-            window.location.href = "/Admin/NewProductLevel";
+            openModalDialog("/Admin/NewProductLevel", null);
+            //window.location.href = "/Admin/NewProductLevel";
         });
     });
 
@@ -30,7 +30,7 @@
 @Html.Grid(Model).Columns(columns =>
 {
     columns.Add(c => c.Name).Titled("等级名称").SetWidth("10%");
-   
+
     columns.Add(c => c.StartPrice).Titled("起始价格").SetWidth("5%");
     columns.Add(c => c.EndPrice).Titled("终止价格").SetWidth("5%");
     columns.Add(c => c.Created).Titled("创建时间").SetWidth("10%").RenderValueAs(o => o.Created > 0 ? MiOU.Util.DateTimeUtil.ConvertToDateTime(o.Created).ToString("yyyy-MM-dd HH:ss") : "");
@@ -41,7 +41,7 @@
          .Encoded(false)
          .Sanitized(false)
          .SetWidth("6%")
-         .RenderValueAs(o => Html.Raw("<a href=\"/Admin/UpdateProductLevel/"+o.Id+"\">编辑</a>"));
-    
+         .RenderValueAs(o => Html.Raw("<a href=\"#\" onclick=\"openModalDialog('/Admin/UpdateProductLevel/"+o.Id+"',null)\">编辑</a>"));
+
 })
 

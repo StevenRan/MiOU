@@ -30,22 +30,22 @@
 
 @Html.Grid(Model).Columns(columns =>
 {
-    columns.Add(c => c.User.Email).Titled("邮箱").SetWidth("10%");
-    columns.Add(c => c.User.NickName).Titled("昵称").SetWidth("5%");
-    columns.Add().Titled("头衔").SetWidth("6%").RenderValueAs(o=>(o.IsWebMaster?"系统管理员":o.IsSuperAdmin?"超级管理员":"普通管理员"));
-    columns.Add(c => c.Created).Titled("创建时间").SetWidth("10%").RenderValueAs(o => o.Created > 0 ? MiOU.Util.DateTimeUtil.ConvertToDateTime(o.Created).ToString("yyyy-MM-dd HH:ss") : "");
-    columns.Add(c => c.CreatedBy.User.Email).Titled("创建人").SetWidth("10%").RenderValueAs(c => (c.CreatedBy != null && c.CreatedBy.User!=null) ? c.CreatedBy.User.Email : "");
-    columns.Add(c => c.Updated).Titled("更新时间").SetWidth("10%").RenderValueAs(o => o.Updated > 0 ? MiOU.Util.DateTimeUtil.ConvertToDateTime(o.Updated).ToString("yyyy-MM-dd HH:ss") : "");
-    columns.Add(c => c.UpdatedBy.User.Email).Titled("更新人").SetWidth("10%").RenderValueAs(c => (c.UpdatedBy != null && c.UpdatedBy.User!=null) ? c.UpdatedBy.User.Email : "");
+    columns.Add(c => c.User.Email).Titled("邮箱").SetWidth("20%");
+    columns.Add(c => c.User.NickName).Titled("昵称").SetWidth("10%");
+    columns.Add().Titled("头衔").SetWidth("10%").RenderValueAs(o=>(o.IsWebMaster?"系统管理员":o.IsSuperAdmin?"超级管理员":"普通管理员"));
+    columns.Add(c => c.Created).Titled("创建时间").SetWidth("15%").RenderValueAs(o => o.Created > 0 ? MiOU.Util.DateTimeUtil.ConvertToDateTime(o.Created).ToString("yyyy-MM-dd HH:ss") : "");
+    columns.Add(c => c.CreatedBy.User.Email).Titled("创建人").SetWidth("20%").RenderValueAs(c => (c.CreatedBy != null && c.CreatedBy.User!=null) ? c.CreatedBy.User.Email : "");
+   
+    columns.Add().Titled("状态").SetWidth("5%").RenderValueAs(o=>o.Enabled?"已启用":"已禁用");
     columns.Add()
          .Encoded(false)
          .Sanitized(false)
-         .SetWidth("6%")
+         .SetWidth("8%")
          //.RenderValueAs(o => Html.ActionLink("编辑", "EditResource", new { resourceId = o.Resource.Id }));
          .RenderValueAs(o => Html.Raw("<a href=\"/Admin/AdminPermission?id="+o.User.UserId+"\">编辑权限</a>"));
     columns.Add()
          .Encoded(false)
          .Sanitized(false)
-         .SetWidth("3%")
+        
          .RenderValueAs(o => Html.Raw( o.Enabled? "<a href=\"/Admin/SetAdminStatus?id=" + o.User.UserId + "&state=0\">禁用</a>": "<a href=\"/Admin/SetAdminStatus?id=" + o.User.UserId + "&state=1\">启用</a>"));
 })
