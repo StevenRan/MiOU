@@ -46,10 +46,17 @@ namespace MiOU.Web
             bundles.Add(new ScriptBundle("~/bundles/miou").Include(
                "~/Scripts/miou/vhome.js"));
 
+            bundles.Add(new ScriptBundle("~/bundles/fileInput").Include(
+              "~/Scripts/plugins/canvas-to-blob.min.js",
+              "~/Scripts/plugins/sortable.min.js",
+              "~/Scripts/plugins/purify.min.js",
+              "~/Scripts/plugins/fileinput.min.js"
+              ));
+
             bundles.Add(new StyleBundle("~/Content/css").Include(
                  "~/Content/bootstrap.css",
                  "~/Content/Gridmvc.css",
-                 //"~/Content/ct-navbar.css",
+                 "~/Content/bootstrap-fileinput/css/fileinput.min.css",
                  "~/Content/Site.css"));
         }
     }

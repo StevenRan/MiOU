@@ -1,0 +1,29 @@
+﻿@using MiOU.BL
+@using MiOU.Entities.Beans
+@using MiOU.Util
+@using GridMvc.Html
+@using GridMvc.DBGrid
+@using GridMvc
+@model DBGrid<BPriceCategory>
+@{
+    ViewBag.Title = "产品价格类别";
+    Layout = "~/Views/Shared/_adminLayout.cshtml";
+}
+
+<div style="overflow:hidden;height:65px;line-height:65px;">
+    <div style="float:left;">
+        <h2>@ViewBag.Title</h2>
+    </div>
+    @*<div style="float:right;">
+        <button id="add_new_product_category" class="btn btn-warning">
+            <span class="glyphicon glyphicon-plus">
+                添加产品价格类别
+            </span>
+        </button>
+    </div>*@
+</div>
+
+@Html.Grid(Model).Columns(columns =>
+{   
+    columns.Add(c => c.Name).Titled("名称");
+})

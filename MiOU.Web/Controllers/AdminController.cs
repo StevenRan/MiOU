@@ -51,6 +51,15 @@ namespace MiOU.Web.Controllers
             return View("UpdateProductCategory");
         }
 
+
+        public ActionResult ProductPriceCates()
+        {
+            ProductManagement pdtMgr = new ProductManagement(User.Identity.GetUserId<int>());
+            List<BPriceCategory> pcates = pdtMgr.GetPriceCategories();
+            PageItemsResult<BPriceCategory> result = new PageItemsResult<BPriceCategory>() { CurrentPage = 1, EnablePaging = true, Items = pcates, PageSize = pcates.Count };
+            DBGrid<BPriceCategory> grid = new DBGrid<BPriceCategory>(result);
+            return View(grid);
+        }
         public ActionResult ProductCates(int? parent)
         {
             ProductManagement pdtMgr = new ProductManagement(User.Identity.GetUserId<int>());
@@ -58,6 +67,15 @@ namespace MiOU.Web.Controllers
             PageItemsResult<BCategory> result = new PageItemsResult<BCategory>() { CurrentPage = 1, EnablePaging = true, Items = cates, PageSize = cates.Count };
             DBGrid<BCategory> grid = new DBGrid<BCategory>(result);
             return View(grid);
+        }
+        public ActionResult NewProduct()
+        {
+            ProductManagement pdtMgr = new ProductManagement(User.Identity.GetUserId<int>());
+            List<BObject> rentTypes = pdtMgr.GetRentTypes();
+            List<BSelType> shippingTypes = pdtMgr.GetDeliveryTypes();
+            ViewBag.rTypes = new SelectList(rentTypes, "Id", "Name");
+            ViewBag.sTypes = new SelectList(shippingTypes, "Id", "Name");
+            return View("UpdateProduct");
         }
         #endregion
 

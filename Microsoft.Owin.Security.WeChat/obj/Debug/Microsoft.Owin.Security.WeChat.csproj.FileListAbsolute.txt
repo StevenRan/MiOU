@@ -22,3 +22,15 @@ C:\Users\boling\Documents\GitHub\MiOU\Microsoft.Owin.Security.WeChat\bin\Debug\N
 C:\Users\boling\Documents\GitHub\MiOU\Microsoft.Owin.Security.WeChat\obj\Debug\Microsoft.Owin.Security.WeChat.csprojResolveAssemblyReference.cache
 C:\Users\boling\Documents\GitHub\MiOU\Microsoft.Owin.Security.WeChat\obj\Debug\Microsoft.Owin.Security.WeChat.dll
 C:\Users\boling\Documents\GitHub\MiOU\Microsoft.Owin.Security.WeChat\obj\Debug\Microsoft.Owin.Security.WeChat.pdb
+C:\Users\Danny\Documents\GitHub\MiOU\Microsoft.Owin.Security.WeChat\bin\Debug\Microsoft.Owin.Security.WeChat.dll
+C:\Users\Danny\Documents\GitHub\MiOU\Microsoft.Owin.Security.WeChat\bin\Debug\Microsoft.Owin.Security.WeChat.pdb
+C:\Users\Danny\Documents\GitHub\MiOU\Microsoft.Owin.Security.WeChat\bin\Debug\Microsoft.Owin.dll
+C:\Users\Danny\Documents\GitHub\MiOU\Microsoft.Owin.Security.WeChat\bin\Debug\Microsoft.Owin.Security.dll
+C:\Users\Danny\Documents\GitHub\MiOU\Microsoft.Owin.Security.WeChat\bin\Debug\Newtonsoft.Json.dll
+C:\Users\Danny\Documents\GitHub\MiOU\Microsoft.Owin.Security.WeChat\bin\Debug\Owin.dll
+C:\Users\Danny\Documents\GitHub\MiOU\Microsoft.Owin.Security.WeChat\bin\Debug\Microsoft.Owin.xml
+C:\Users\Danny\Documents\GitHub\MiOU\Microsoft.Owin.Security.WeChat\bin\Debug\Microsoft.Owin.Security.xml
+C:\Users\Danny\Documents\GitHub\MiOU\Microsoft.Owin.Security.WeChat\bin\Debug\Newtonsoft.Json.xml
+C:\Users\Danny\Documents\GitHub\MiOU\Microsoft.Owin.Security.WeChat\obj\Debug\Microsoft.Owin.Security.WeChat.csprojResolveAssemblyReference.cache
+C:\Users\Danny\Documents\GitHub\MiOU\Microsoft.Owin.Security.WeChat\obj\Debug\Microsoft.Owin.Security.WeChat.dll
+C:\Users\Danny\Documents\GitHub\MiOU\Microsoft.Owin.Security.WeChat\obj\Debug\Microsoft.Owin.Security.WeChat.pdb

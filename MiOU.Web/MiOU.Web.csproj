@@ -452,6 +452,8 @@
     <Content Include="Views\Admin\SearchProductLevels.cshtml" />
     <Content Include="Views\Admin\ProductCates.cshtml" />
     <Content Include="Views\Admin\UpdateProductCategory.cshtml" />
+    <Content Include="Views\Admin\ProductPriceCates.cshtml" />
+    <Content Include="Views\Admin\UpdateProduct.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

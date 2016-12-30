@@ -79,9 +79,12 @@
                         }
                     }
                 }
-                <div class="checkbox">
-                    <input @if (chked) {@Html.Raw("checked") } type="checkbox" class="check-box" id="RentableVipLevels" name="RentableVipLevels" value="@vip.Id" /><label class="control-label perLabel">@Html.Raw(vip.Name)</label>
-                </div>              
+                <div style="margin-bottom:5px;overflow:hidden;">  
+                    <div class="checkbox" style="float:left;">
+                        <input @if (chked) {@Html.Raw("checked") } type="checkbox" class="check-box" style="margin-left:0px;" id="RentableVipLevels" name="RentableVipLevels" value="@vip.Id" />
+                    </div> 
+                    <label class="control-label perLabel" style="margin-left:20px;">@Html.Raw(vip.Name)</label>
+                </div>             
             }
         </div>
     </div>

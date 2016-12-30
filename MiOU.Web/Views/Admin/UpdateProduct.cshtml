@@ -1,0 +1,75 @@
+﻿@using MiOU.Entities.Beans
+@using MiOU.Entities.Models
+@model MProduct
+@{
+    ViewBag.Title = "新建产品";
+    Layout = "~/Views/Shared/_adminLayout.cshtml";
+}
+
+<h2>@ViewBag.Title</h2>
+<script>
+    $(function () {
+        $("#input-42").fileinput({
+            maxFileCount: 10,
+            allowedFileExtensions: ["jpg", "gif", "png", "txt"]
+        });
+    });
+
+</script>
+@using (Html.BeginForm("SaveProduct", "Admin", FormMethod.Post, new { @class = "form-horizontal", role = "form", id = "ProductLevelForm" }))
+{    
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(m => m.Id)
+    @Html.HiddenFor(m => m.Photos)
+    @Html.HiddenFor(m => m.PriceCotegories)
+    if (ViewBag.Error != null)
+    {
+        <div class="form-group" id="submit_message_warn">
+            <div class="col-md-offset-1 col-md-7 alert alert-danger fade in">
+                <p class="" id="message">@Html.Raw((string)ViewBag.Error)</p>
+            </div>
+        </div>
+    }
+    @Html.HiddenFor(model => model.Id)
+    <div class="form-group">
+        @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-8">
+            @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control input_reg" } })
+            @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.RentType, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-8">
+            @Html.DropDownListFor(model => model.RentType,(SelectList)ViewBag.rTypes, new { htmlAttributes = new { @class = "form-control input_reg" } })
+            @Html.ValidationMessageFor(model => model.RentType, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.DeliveryType, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-8">
+            @Html.DropDownListFor(model => model.DeliveryType,(SelectList)ViewBag.sTypes, new { htmlAttributes = new { @class = "form-control input_reg" } })
+            @Html.ValidationMessageFor(model => model.DeliveryType, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-md-2" for="图片">照片</label>
+        <div class="col-md-8">
+            <input id="input-42" name="input42[]" type="file" multiple class="file-loading"/>
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-8">
+            @Html.TextAreaFor(model => model.Description, htmlAttributes: new { @class = "form-control mTA1" })
+            @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-8">
+            <button id="btn_save_pdtlevel" type="submit" class="btn btn-warning">
+                <span class="glyphicon glyphicon-save"></span> 保存
+            </button>
+        </div>
+    </div>
+}

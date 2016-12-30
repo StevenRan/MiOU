@@ -8,3 +8,13 @@ C:\Users\boling\Documents\GitHub\MiOU\MiOU.Beans\bin\Debug\EntityFramework.dll
 C:\Users\boling\Documents\GitHub\MiOU\MiOU.Beans\bin\Debug\MiOU.DAL.pdb
 C:\Users\boling\Documents\GitHub\MiOU\MiOU.Beans\bin\Debug\EntityFramework.xml
 C:\Users\boling\Documents\GitHub\MiOU\MiOU.Beans\bin\Debug\FoolproofValidation.dll
+C:\Users\Danny\Documents\GitHub\MiOU\MiOU.Beans\bin\Debug\MiOU.Beans.dll
+C:\Users\Danny\Documents\GitHub\MiOU\MiOU.Beans\bin\Debug\MiOU.Beans.pdb
+C:\Users\Danny\Documents\GitHub\MiOU\MiOU.Beans\bin\Debug\FoolproofValidation.dll
+C:\Users\Danny\Documents\GitHub\MiOU\MiOU.Beans\bin\Debug\MiOU.DAL.dll
+C:\Users\Danny\Documents\GitHub\MiOU\MiOU.Beans\bin\Debug\EntityFramework.dll
+C:\Users\Danny\Documents\GitHub\MiOU\MiOU.Beans\bin\Debug\MiOU.DAL.pdb
+C:\Users\Danny\Documents\GitHub\MiOU\MiOU.Beans\bin\Debug\EntityFramework.xml
+C:\Users\Danny\Documents\GitHub\MiOU\MiOU.Beans\obj\Debug\MiOU.Entities.csprojResolveAssemblyReference.cache
+C:\Users\Danny\Documents\GitHub\MiOU\MiOU.Beans\obj\Debug\MiOU.Beans.dll
+C:\Users\Danny\Documents\GitHub\MiOU\MiOU.Beans\obj\Debug\MiOU.Beans.pdb

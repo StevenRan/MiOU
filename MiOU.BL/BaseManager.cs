@@ -479,7 +479,7 @@ namespace MiOU.BL
             return cates;
         }
 
-        public List<BObject> GetRentTypes()
+        public List<BObject> GetRentTypes(int id=0)
         {
             List<BObject> types = null;
             using (MiOUEntities db = new MiOUEntities())
@@ -490,6 +490,11 @@ namespace MiOU.BL
                               Id = d.Id,
                               Name = d.Name
                           };
+
+                if(id>0)
+                {
+                    tmp = tmp.Where(t=>t.Id==id);
+                }
 
                 types = tmp.ToList<BObject>();
             }

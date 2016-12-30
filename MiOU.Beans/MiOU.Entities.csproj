@@ -73,11 +73,10 @@
     <Compile Include="Exceptions\MiOUException.cs" />
     <Compile Include="MiOUConstants.cs" />
     <Compile Include="MiOUEnum.cs" />
+    <Compile Include="Models\MProduct.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Models\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\MiOU.DAL\MiOU.DAL.csproj">
       <Project>{35baa98a-038d-4368-b202-f17d5c89d712}</Project>

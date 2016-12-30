@@ -7,11 +7,10 @@
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 }
-<h2>NewProductCategory</h2>
+<h2>@ViewBag.Title</h2>
 
 @using (Html.BeginForm("SaveProductLevel", "Admin", FormMethod.Post, new { @class = "form-horizontal", role = "form", id = "ProductLevelForm" }))
 {
-    @Html.AntiForgeryToken()
     @Html.AntiForgeryToken()
     if (ViewBag.Error != null)
     {
