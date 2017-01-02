@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using System.Web;
 namespace MiOU.Entities.Models
 {
     public class MProduct
@@ -23,6 +23,9 @@ namespace MiOU.Entities.Models
         [Required(ErrorMessage = "照片不能为空")]
         [Display(Name = "照片")]
         public string Photos { get; set; }
+        public HttpPostedFileBase FilesInput { get; set; }
+        public string PhotoIds { get; set; }
+
         [Required(ErrorMessage = "租赁类别不能为空")]
         [Display(Name = "租赁")]
         public int RentType { get; set; }

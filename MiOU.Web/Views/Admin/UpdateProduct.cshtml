@@ -8,19 +8,54 @@
 
 <h2>@ViewBag.Title</h2>
 <script>
+    var gg = [];
+    function setPhoto(id) {
+        found=false;
+        $(gg).each(function (i, g) {
+            if (g == id) {
+                found = true;
+                return false;
+            }
+        });
+        if (!found) {
+            gg.push(id);
+        }
+    }
+    $('#btn_save_pdtlevel').click(function () {
+
+    });
     $(function () {
-        $("#input-42").fileinput({
-            maxFileCount: 10,
-            allowedFileExtensions: ["jpg", "gif", "png", "txt"]
+        $("#FilesInput").fileinput({
+            maxFileCount: 1,
+            allowedFileExtensions: ["jpg", "png"],
+            showRemove: false,
+            showUpload: false,
+            uploadAsync: false,
+            uploadUrl: '/FileUploader/Upload',
+            deleteUrl: '/FileUploader/Delete',
+            previewSettings: { image: { width: "auto", height: "160px" }}
+        }).on('fileuploaded', function (event, data, previewId, index) {
+            var form = data.form, files = data.files, extra = data.extra,
+                response = data.response, reader = data.reader;
+            if (response.Status == 'OK') {
+                //
+                if (response.Item != 'undefined' && response.Item != null && $.trim(response.Item) != '') {
+                    setPhoto($.trim(response.Item));
+                }
+            } else {
+                alert(response.Message);
+            }
+        }).on('fileloaded', function (event, file, previewId, index, reader) {
+            $('#FilesInput').fileinput("upload");
         });
     });
-
 </script>
-@using (Html.BeginForm("SaveProduct", "Admin", FormMethod.Post, new { @class = "form-horizontal", role = "form", id = "ProductLevelForm" }))
-{    
+
+@using (Html.BeginForm("SaveProduct", "Admin", FormMethod.Post, new { @class = "form-horizontal", role = "form", id = "ProductForm" }))
+{
     @Html.AntiForgeryToken()
     @Html.HiddenFor(m => m.Id)
-    @Html.HiddenFor(m => m.Photos)
+    @Html.HiddenFor(m => m.PhotoIds)
     @Html.HiddenFor(m => m.PriceCotegories)
     if (ViewBag.Error != null)
     {
@@ -39,23 +74,34 @@
         </div>
     </div>
     <div class="form-group">
+        @Html.LabelFor(model => model.CategoryId, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-8">
+            @Html.DropDownListFor(model => model.CategoryId, (SelectList)ViewBag.Cates, htmlAttributes: new { @class = "form-control input_reg" }) 
+           
+            @Html.DropDownListFor(model => model.ChildCategoryId, (SelectList)ViewBag.cCates, new { @class = "form-control input_reg", @style = "margin-top:2px;" })
+            @Html.ValidationMessageFor(model => model.CategoryId, "", new { @class = "text-danger" })
+           
+          
+        </div>
+    </div>
+    <div class="form-group">
         @Html.LabelFor(model => model.RentType, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-8">
-            @Html.DropDownListFor(model => model.RentType,(SelectList)ViewBag.rTypes, new { htmlAttributes = new { @class = "form-control input_reg" } })
+            @Html.DropDownListFor(model => model.RentType,(SelectList)ViewBag.rTypes, new { @class = "form-control input_reg" })
             @Html.ValidationMessageFor(model => model.RentType, "", new { @class = "text-danger" })
         </div>
     </div>
     <div class="form-group">
         @Html.LabelFor(model => model.DeliveryType, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-8">
-            @Html.DropDownListFor(model => model.DeliveryType,(SelectList)ViewBag.sTypes, new { htmlAttributes = new { @class = "form-control input_reg" } })
+            @Html.DropDownListFor(model => model.DeliveryType,(SelectList)ViewBag.sTypes, new { @class = "form-control input_reg" })
             @Html.ValidationMessageFor(model => model.DeliveryType, "", new { @class = "text-danger" })
         </div>
     </div>
     <div class="form-group">
         <label class="control-label col-md-2" for="图片">照片</label>
-        <div class="col-md-8">
-            <input id="input-42" name="input42[]" type="file" multiple class="file-loading"/>
+        <div class="col-md-9">
+            <input id="FilesInput" name="FilesInput" type="file" multiple class="file-loading"/>
         </div>
     </div>
     <div class="form-group">
@@ -65,9 +111,10 @@
             @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
         </div>
     </div>
+    
     <div class="form-group">
         <div class="col-md-offset-2 col-md-8">
-            <button id="btn_save_pdtlevel" type="submit" class="btn btn-warning">
+            <button id="btn_save_pdtlevel" type="button" class="btn btn-warning">
                 <span class="glyphicon glyphicon-save"></span> 保存
             </button>
         </div>

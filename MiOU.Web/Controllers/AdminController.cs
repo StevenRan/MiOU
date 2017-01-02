@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using MiOU.BL;
 using MiOU.Entities.Beans;
+using MiOU.Entities.Models;
 using MiOU.Entities.Exceptions;
 using GridMvc;
 using GridMvc.DBGrid;
@@ -21,7 +22,7 @@ namespace MiOU.Web.Controllers
 
         public AdminController()
         {
-            logger= log4net.LogManager.GetLogger(this.GetType().FullName);
+            logger = log4net.LogManager.GetLogger(this.GetType().FullName);
         }
         // GET: Admin
         public ActionResult Index()
@@ -73,9 +74,27 @@ namespace MiOU.Web.Controllers
             ProductManagement pdtMgr = new ProductManagement(User.Identity.GetUserId<int>());
             List<BObject> rentTypes = pdtMgr.GetRentTypes();
             List<BSelType> shippingTypes = pdtMgr.GetDeliveryTypes();
+            List<BCategory> cates = pdtMgr.GetCategories(0,false);
             ViewBag.rTypes = new SelectList(rentTypes, "Id", "Name");
             ViewBag.sTypes = new SelectList(shippingTypes, "Id", "Name");
+            ViewBag.Cates = new SelectList(cates, "Id", "Name");
+            ViewBag.cCates = new SelectList(pdtMgr.GetCategories(cates[0].Id), "Id", "Name");
             return View("UpdateProduct");
+        }
+        [HttpPost]
+        public ActionResult SaveProduct(MProduct product)
+        {
+            int a = Request.Files.Count;
+            //if (ModelState.IsValid)
+            //{
+            //    if(string.IsNullOrEmpty(product.PhotoIds))
+            //    {
+            //        //upoload images now
+            //        //IEnumerable<HttpPostedFileBase> FilesInput;
+            //        //int a = Request.Files["FilesInput"].ContentLength;
+            //    }
+            //}
+            return View("MyProducts");
         }
         #endregion
 
@@ -150,7 +169,7 @@ namespace MiOU.Web.Controllers
             return View("UpdateProductLevel",level);
         }
         #endregion
-
+        
         #region account related
         public ActionResult SetAdminStatus()
         {

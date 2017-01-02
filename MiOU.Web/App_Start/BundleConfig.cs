@@ -50,7 +50,7 @@ namespace MiOU.Web
               "~/Scripts/plugins/canvas-to-blob.min.js",
               "~/Scripts/plugins/sortable.min.js",
               "~/Scripts/plugins/purify.min.js",
-              "~/Scripts/plugins/fileinput.min.js"
+              "~/Scripts/fileinput.min.js"
               ));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(

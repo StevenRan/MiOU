@@ -47,6 +47,8 @@
   <ItemGroup>
     <Compile Include="DateTimeUtil.cs" />
     <Compile Include="Encoder.cs" />
+    <Compile Include="FileUtil.cs" />
+    <Compile Include="ImageUtil.cs" />
     <Compile Include="PasswordUtil.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="QRCodeUtil.cs" />
