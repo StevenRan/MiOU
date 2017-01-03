@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using MiOU.DAL;
 using MiOU.Entities.Beans;
+using MiOU.Entities.Models;
 using MiOU.Entities.Exceptions;
 using MiOU.Util;
 using MiOU.Entities;
@@ -199,7 +200,7 @@ namespace MiOU.BL
             return levels;
         }
 
-        public List<BProduct> GetProducts(int pId,int cId,int rentType,int provinceId,int cityId,int districtId,string keyword,int pageSize,int page,bool notDetail,out int total)
+        public List<BProduct> SearchProducts(int[] productIds,int[] states,int userId,int auditUserId, int pId,int cId,int rentType,int provinceId,int cityId,int districtId,string keyword,int pageSize,int page,bool getDetail,out int total)
         {
             List<BProduct> products = null;
             MiOUEntities db = null;
@@ -222,22 +223,59 @@ namespace MiOU.BL
                            from llvip in lvip.DefaultIfEmpty()
                            join rtype in db.RentType on p.RentType equals rtype.Id into lrtype
                            from llrtype in lrtype.DefaultIfEmpty()
+                           join owner in db.User on p.UserId equals owner.UserId into lowner
+                           from llowner in lowner.DefaultIfEmpty()                         
+                           join auser in db.User on p.AuditUserId equals auser.UserId into lauser
+                           from llauser in lauser.DefaultIfEmpty()
+                           join level in db.EvaluatedPriceCategory on p.EvaluatedPriceCategoryId equals level.Id into llevel
+                           from lllevel in llevel.DefaultIfEmpty()
                            select new BProduct
                            {
                                Id = p.Id,
-                               Name = p.Name,
-                               Category = new BCategory { Id = p.CategoryId, Name = llcate.Name },
+                               Name = p.Name,                             
+                               Category = new BCategory { Id = p.CategoryId, Name = llcate.Name, ParentId=llcate.ParentId },
                                District = new BArea { Id = p.District, Name = lldistrict.Name },
                                Province = new BArea { Id = p.Province, Name = llprovince.Name },
                                City = new BArea { Id = p.City, Name = llcity.Name },
                                Address = p.Address,
                                Nearby = p.NearBy,
                                Apartment = p.Apartment,
+                               Contact = p.Contact,
+                               Phone = p.Phone,
+                               Price = p.Price,
+                               Percentage = p.Percentage,
                                DeliveryType = new BObject { Id = p.DeliveryType, Name = llshipping.Name },
                                VIPRentLevel = new BVIPLevel { Id = p.VIPLevel, Name = llvip.Name },
-                               RentType = new BObject { Id= p.RentType,Name=llrtype.Name }
+                               RentType = new BObject { Id = p.RentType, Name = llrtype.Name },
+                               Status = (ProductStatus)p.Status,
+                               Created = p.Created,
+                               Updated = p.Updated,
+                               AuditTime = p.AuditTime,
+                               AuditMessage = p.AuditMessage,
+                               AuditUser = new BUser { User= llauser },
+                               Description = p.Description,
+                               Repertory = p.Repertory,
+                               User = llowner != null ? new BUser() { User = llowner } : null,
+                               XPlot = p.XPlot,
+                               YPlot = p.YPlot,
+                               ProductLevel= lllevel!=null?new BProductLevel { Name= lllevel.Name,Id= lllevel.Id,StartPrice= lllevel.StartPrice,EndPrice= lllevel.EndPrice } :null
                            };
-
+                if(productIds!=null && productIds.Length>0)
+                {
+                    linq = linq.Where(o=>productIds.Contains(o.Id));
+                }
+                if(userId>0)
+                {
+                    linq = linq.Where(a=>a.User.User.UserId==userId);
+                }
+                if (auditUserId > 0)
+                {
+                    linq = linq.Where(a => a.AuditUser.User.UserId == auditUserId);
+                }
+                if (states!=null && states.Length>0)
+                {
+                    linq = linq.Where(a =>states.Contains((int)a.Status));
+                }
                 if(rentType>0)
                 {
                     linq = linq.Where(a=>a.RentType.Id==rentType);
@@ -272,8 +310,54 @@ namespace MiOU.BL
                 {
                     page = 1;
                 }
-
                 products = linq.Skip((page - 1) * pageSize).Take(pageSize).ToList<BProduct>();
+                List<Category> parentCategories = (from c in db.Category where c.ParentId == 0 select c).ToList<Category>();
+                foreach(BProduct p in products)
+                {
+                    p.PCategory = (from pc in parentCategories where pc.Id == p.Category.ParentId select new BCategory() { Id= pc.Id,Name=pc.Name }).FirstOrDefault<BCategory>();
+                }
+
+                if(getDetail)
+                {
+                    int[] ids = (from p in products select p.Id).ToArray<int>();
+                    List<BProductPrice> prices;                        
+                    var tmpPrices=from price in db.ProductPrice where ids.Contains(price.ProductId) 
+                                  join pcate in db.PriceCategory on price.PriceCategory equals pcate.Id into lpcate
+                                  from llcate in lpcate.DefaultIfEmpty()
+                                  join eprice in db.EvaluatedPrice on price.EvaluatedPriceId equals eprice.Id into leprice
+                                  from lleprice in leprice.DefaultIfEmpty()
+                                  select new BProductPrice
+                                  {
+                                     Price= price.Price,
+                                     Product= new BProduct { Id= price.ProductId },
+                                     PriceCategory= llcate!=null? new BPriceCategory { Id= llcate.Id, Name= llcate.Name }:null,
+                                     EPrice= lleprice!=null? new BEvaluatedPrice { Price= lleprice.Price }:null
+                                  };
+
+                    prices = tmpPrices.ToList<BProductPrice>();
+
+                    List<BProductImage> images;
+                    var tmpImages = from image in db.ProductImage
+                                    join file in db.File on image.ImageId equals file.Id into lfile
+                                    from llfile in lfile.DefaultIfEmpty()
+                                    where ids.Contains(image.ProductId)
+                                    orderby image.IsMain
+                                    select new BProductImage
+                                    {
+                                        Id = image.Id,
+                                        Image = llfile != null ? new BFile { Created = llfile.Created, Id = llfile.Id, Name = llfile.Name, UserId = llfile.UserId, Path = llfile.Path, Ext = llfile.Ext } : null,
+                                        IsMain = image.IsMain,
+                                        Product = new BProduct { Id = image.ProductId }
+                                    };
+                    images = tmpImages.ToList<BProductImage>();
+
+
+                    foreach (BProduct p in products)
+                    {
+                        p.ProductPrices = (from price in prices where price.Product.Id== p.Id select price).ToList<BProductPrice>();
+                        p.Images = (from image in images where image.Product.Id == p.Id select image).ToList<BProductImage>();
+                    }
+                }
             }
             catch (Exception ex)
             {
@@ -495,6 +579,90 @@ namespace MiOU.BL
             db.SaveChanges();
         }
 
+        public void CreateProduct(MProduct product)
+        {
+            if (product == null)
+            {
+                throw new MiOUException("产品数据不正确");
+            }
+            
+            BProduct model = new BProduct();
+            model.Name = product.Name;
+            model.DeliveryType = new BObject() { Id= product.DeliveryType };
+            model.RentType = new BObject() { Id = product.RentType };
+            model.Repertory = product.Repertory;
+            model.Description = product.Description;
+            model.Created = DateTimeUtil.ConvertDateTimeToInt(DateTime.Now);
+            model.Percentage = product.Percentage;
+            model.Price = product.Price;
+            model.Category = new BCategory() { Id = product.ChildCategoryId };
+            model.PCategory = new BCategory() { Id = product.CategoryId };
+            if(!string.IsNullOrEmpty(product.PhotoIds))
+            {
+                string[] files = product.PhotoIds.Split(',');
+                if(files.Length>0)
+                {
+                    int count = 0;
+                    bool isMain = false;
+                    foreach(string file in files)
+                    {
+                        if(count==0)
+                        {
+                            isMain = true;
+                        }else
+                        {
+                            isMain = false;
+                        }
+                        count++;
+                        if(model.Images==null)
+                        {
+                            model.Images = new List<BProductImage>();
+                        }
+                        int fileId = 0;
+                        int.TryParse(file,out fileId);
+                        if(fileId<=0)
+                        {
+                            continue;
+                        }
+                        model.Images.Add(new BProductImage() { Image=new BFile() { Id=fileId }, IsMain=isMain });
+                    }
+                }
+            }
+
+            if(!string.IsNullOrEmpty(product.PriceCotegories))
+            {
+                string[] pcs = product.PriceCotegories.Split(',');
+                if(pcs.Length>0)
+                {
+                    foreach(string cate in pcs)
+                    {
+                        if(model.ProductPrices==null)
+                        {
+                            model.ProductPrices = new List<BProductPrice>();
+                        }
+                        if(string.IsNullOrEmpty(cate))
+                        {
+                            continue;
+                        }
+                        int cateId = 0;
+                        int.TryParse(cate, out cateId);
+                        if (cateId <= 0)
+                        {
+                            continue;
+                        }
+                        model.ProductPrices.Add(new BProductPrice() { Category = new BCategory() { Id= product.ChildCategoryId }, CreatedBy = CurrentLoginUser, PriceCategory = new BPriceCategory() { Id= cateId } } );
+                    }
+                }
+            }
+            model.Province = new BArea() { Id= CurrentLoginUser.User.Province };
+            model.City = new BArea() { Id = CurrentLoginUser.User.City };
+            model.District = new BArea() { Id = CurrentLoginUser.User.District };
+            model.Address = !string.IsNullOrEmpty(product.Address)?product.Address: CurrentLoginUser.User.Address;
+            model.Contact = !string.IsNullOrEmpty(product.Contact) ? product.Contact : CurrentLoginUser.User.Name;
+            model.Phone = !string.IsNullOrEmpty(product.Phone) ? product.Phone : CurrentLoginUser.User.Phone;
+            CreateProduct(model);
+        }
+
         public void CreateProduct(BProduct model)
         {
             if(model==null)
@@ -513,10 +681,10 @@ namespace MiOU.BL
             {
                 throw new MiOUException("产品描述不能为空");
             }
-            if(string.IsNullOrEmpty(model.Address))
-            {
-                throw new MiOUException("产品地址不能为空");
-            }
+            //if(string.IsNullOrEmpty(model.Address))
+            //{
+            //    throw new MiOUException("产品地址不能为空");
+            //}
             if(model.DeliveryType==null || model.DeliveryType.Id<=0)
             {
                 throw new MiOUException("产品交付方式不能为空");
@@ -533,10 +701,10 @@ namespace MiOU.BL
             {
                 throw new MiOUException("城市份不能为空");
             }
-            if (model.District== null || model.District.Id <= 0)
-            {
-                throw new MiOUException("区县不能为空");
-            }
+            //if (model.District== null || model.District.Id <= 0)
+            //{
+            //    throw new MiOUException("区县不能为空");
+            //}
             if(model.Percentage==0)
             {
                 throw new MiOUException("产品成色不能为空");
@@ -563,7 +731,8 @@ namespace MiOU.BL
                 db = new MiOUEntities();
                 Product product = new Product()
                 {
-                    Address = model.Address,
+                    Name=model.Name,
+                    Address = model.Address!=null?model.Address:"",
                     AuditMessage = "",
                     AuditTime = 0,
                     AuditUserId = 0,
@@ -573,20 +742,22 @@ namespace MiOU.BL
                     DeliveryType = model.DeliveryType.Id,
                     Description = model.Description,
                     District = model.District!=null? model.District.Id:0,
-                    Percentage = model.Percentage,
+                    Percentage = model.Percentage,                   
                     Province = model.Province!=null? model.Province.Id:0,
                     RentType = model.RentType.Id,
                     Status = 0,
                     UserId = CurrentLoginUser.User!=null? CurrentLoginUser.User.UserId:0,
                     Pledge = 0,
-                    Price = 0,
+                    Price = model.Price,
                     Updated = 0,
                     XPlot = "",
                     YPlot = "",
                     Repertory=model.Repertory,
                     Apartment=model.Apartment,
                     NearBy=model.Nearby,
-                    VIPLevel= model.VIPRentLevel!=null?model.VIPRentLevel.Id:0
+                    VIPLevel= model.VIPRentLevel!=null?model.VIPRentLevel.Id:0,
+                    Contact= model.Contact!=null?model.Contact:"",
+                    Phone= model.Phone!=null?model.Phone:""
                 };
                 db.Product.Add(product);
                 db.SaveChanges();
@@ -623,7 +794,7 @@ namespace MiOU.BL
                             EvaluatedPriceId = 0,
                             Price = 0,
                             ProductCategoryId = price.Category.Id,
-                            PriceCategory = price.Category.Id,
+                            PriceCategory = price.PriceCategory.Id,
                             ProductId = product.Id,
                             UserId = CurrentLoginUser.User.UserId
 

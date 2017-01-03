@@ -79,22 +79,115 @@ namespace MiOU.Web.Controllers
             ViewBag.sTypes = new SelectList(shippingTypes, "Id", "Name");
             ViewBag.Cates = new SelectList(cates, "Id", "Name");
             ViewBag.cCates = new SelectList(pdtMgr.GetCategories(cates[0].Id), "Id", "Name");
-            return View("UpdateProduct");
+            ViewBag.cPriceCates = pdtMgr.GetPriceCategories();
+            ViewBag.Percentages = new SelectList(pdtMgr.GetPercentages(),"Id","Name");
+            MProduct model = new MProduct() { Phone= pdtMgr.CurrentLoginUser.User.Phone,Contact= pdtMgr.CurrentLoginUser.User.Phone };
+            return View("UpdateProduct", model);
         }
         [HttpPost]
         public ActionResult SaveProduct(MProduct product)
         {
-            int a = Request.Files.Count;
-            //if (ModelState.IsValid)
-            //{
-            //    if(string.IsNullOrEmpty(product.PhotoIds))
-            //    {
-            //        //upoload images now
-            //        //IEnumerable<HttpPostedFileBase> FilesInput;
-            //        //int a = Request.Files["FilesInput"].ContentLength;
-            //    }
-            //}
+            try
+            {
+                ProductManagement pdtMgr = new ProductManagement(User.Identity.GetUserId<int>());
+                product.Percentage = product.Percentage / 100;
+                product.PriceCotegories = Request["PriceCotegories"];
+                pdtMgr.CreateProduct(product);
+            }
+            catch(MiOUException mex)
+            {
+                return ShowError(mex.Message);
+            }
+            catch(Exception ex)
+            {
+                logger.Fatal(ex);
+            }
             return View("MyProducts");
+        }
+
+        public ActionResult MyProducts()
+        {
+            ProductManagement pdtMgr = new ProductManagement(User.Identity.GetUserId<int>());
+            int total = 0;
+            int page = 1;
+            int pageSize = 20;
+            int.TryParse(Request["page"], out page);
+            int.TryParse(Request["pageSize"], out pageSize);
+            if(page==0)
+            {
+                page = 1;
+            }
+            if(pageSize==0)
+            {
+                pageSize = 20;
+            }
+            List<BProduct> products = pdtMgr.SearchProducts(null,null, User.Identity.GetUserId<int>(),0, 0, 0, 0, 0, 0, 0, null, pageSize, page, false, out total);
+            PageItemsResult<BProduct> result = new PageItemsResult<BProduct>() { CurrentPage=page,PageSize= pageSize, EnablePaging=true, Items=products, TotalRecords=total };
+            DBGrid<BProduct> grid = new DBGrid<BProduct>(result);
+            return View("MyProducts",grid);
+        }
+        public ActionResult MyAuditProducts()
+        {
+            ProductManagement pdtMgr = new ProductManagement(User.Identity.GetUserId<int>());
+            int total = 0;
+            int page = 1;
+            int pageSize = 20;
+            int.TryParse(Request["page"], out page);
+            int.TryParse(Request["pageSize"], out pageSize);
+            if (page == 0)
+            {
+                page = 1;
+            }
+            if (pageSize == 0)
+            {
+                pageSize = 20;
+            }
+            List<BProduct> products = pdtMgr.SearchProducts(null,null,0, User.Identity.GetUserId<int>(), 0, 0, 0, 0, 0, 0, null, pageSize, page, false, out total);
+            PageItemsResult<BProduct> result = new PageItemsResult<BProduct>() { CurrentPage = page, PageSize = pageSize, EnablePaging = true, Items = products, TotalRecords = total };
+            DBGrid<BProduct> grid = new DBGrid<BProduct>(result);
+            return View("MyProducts", grid);
+        }
+
+        public ActionResult PendingAuditProducts()
+        {
+            ProductManagement pdtMgr = new ProductManagement(User.Identity.GetUserId<int>());
+            int total = 0;
+            int page = 1;
+            int pageSize = 20;
+            int.TryParse(Request["page"], out page);
+            int.TryParse(Request["pageSize"], out pageSize);
+            if (page == 0)
+            {
+                page = 1;
+            }
+            if (pageSize == 0)
+            {
+                pageSize = 20;
+            }
+            List<BProduct> products = pdtMgr.SearchProducts(null,new int[] { 0}, 0, 0, 0, 0, 0, 0, 0, 0, null, pageSize, page, false, out total);
+            PageItemsResult<BProduct> result = new PageItemsResult<BProduct>() { CurrentPage = page, PageSize = pageSize, EnablePaging = true, Items = products, TotalRecords = total };
+            DBGrid<BProduct> grid = new DBGrid<BProduct>(result);
+            return View("PendingAuditProducts", grid);
+        }
+        public ActionResult AuditProduct()
+        {
+            int productId = 0;
+            int.TryParse(Request["productId"],out productId);
+            if(productId<=0)
+            {
+                return ShowError("请不要随意修改URL参数");
+            }
+            ProductManagement pdtMgr = new ProductManagement(User.Identity.GetUserId<int>());
+            int total = 0;
+            List<BProduct> products = pdtMgr.SearchProducts(new int[] { productId}, null, User.Identity.GetUserId<int>(), 0, 0, 0, 0, 0, 0, 0, null, 1, 1, true, out total);
+            if(products.Count==0)
+            {
+                return ShowError(string.Format("编号为{0}的产品不存在",productId));
+            }
+            BProduct product = products[0];
+            ViewBag.Product = product;
+            return View(product);
+            //return ShowError("");               
         }
         #endregion
 

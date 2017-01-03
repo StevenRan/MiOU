@@ -67,16 +67,6 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="ProductImage">
-      <EntityTypeMapping TypeName="MiOU.DAL.ProductImage">
-        <MappingFragment StoreEntitySet="ProductImage">
-          <ScalarProperty Name="IsMain" ColumnName="IsMain" />
-          <ScalarProperty Name="ImageId" ColumnName="ImageId" />
-          <ScalarProperty Name="ProductId" ColumnName="ProductId" />
-          <ScalarProperty Name="Id" ColumnName="Id" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
     <EntitySetMapping Name="ProductMaintenance">
       <EntityTypeMapping TypeName="MiOU.DAL.ProductMaintenance">
         <MappingFragment StoreEntitySet="ProductMaintenance">
@@ -133,20 +123,6 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="ProductPrice">
-      <EntityTypeMapping TypeName="MiOU.DAL.ProductPrice">
-        <MappingFragment StoreEntitySet="ProductPrice">
-          <ScalarProperty Name="UserId" ColumnName="UserId" />
-          <ScalarProperty Name="Created" ColumnName="Created" />
-          <ScalarProperty Name="Price" ColumnName="Price" />
-          <ScalarProperty Name="EvaluatedPriceId" ColumnName="EvaluatedPriceId" />
-          <ScalarProperty Name="ProductCategoryId" ColumnName="ProductCategoryId" />
-          <ScalarProperty Name="PriceCategory" ColumnName="PriceCategory" />
-          <ScalarProperty Name="ProductId" ColumnName="ProductId" />
-          <ScalarProperty Name="Id" ColumnName="Id" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
     <EntitySetMapping Name="UseCurrencyHistory">
       <EntityTypeMapping TypeName="MiOU.DAL.UseCurrencyHistory">
         <MappingFragment StoreEntitySet="UseCurrencyHistory">
@@ -196,33 +172,6 @@
           <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
           <ScalarProperty Name="Created" ColumnName="Created" />
           <ScalarProperty Name="Name" ColumnName="Name" />
-          <ScalarProperty Name="Id" ColumnName="Id" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="Order">
-      <EntityTypeMapping TypeName="MiOU.DAL.Order">
-        <MappingFragment StoreEntitySet="Order">
-          <ScalarProperty Name="ExtendRejectedMessage" ColumnName="ExtendRejectedMessage" />
-          <ScalarProperty Name="ExtendApproved" ColumnName="ExtendApproved" />
-          <ScalarProperty Name="ExtendEndTime" ColumnName="ExtendEndTime" />
-          <ScalarProperty Name="ExtendTime" ColumnName="ExtendTime" />
-          <ScalarProperty Name="ExtendApplied" ColumnName="ExtendApplied" />
-          <ScalarProperty Name="ContactPhone" ColumnName="ContactPhone" />
-          <ScalarProperty Name="ContactName" ColumnName="ContactName" />
-          <ScalarProperty Name="EndTime" ColumnName="EndTime" />
-          <ScalarProperty Name="StartTime" ColumnName="StartTime" />
-          <ScalarProperty Name="Description" ColumnName="Description" />
-          <ScalarProperty Name="UpdatedUserId" ColumnName="UpdatedUserId" />
-          <ScalarProperty Name="Updated" ColumnName="Updated" />
-          <ScalarProperty Name="UserId" ColumnName="UserId" />
-          <ScalarProperty Name="Created" ColumnName="Created" />
-          <ScalarProperty Name="Status" ColumnName="Status" />
-          <ScalarProperty Name="PayType" ColumnName="PayType" />
-          <ScalarProperty Name="PriceId" ColumnName="PriceId" />
-          <ScalarProperty Name="PriceCategory" ColumnName="PriceCategory" />
-          <ScalarProperty Name="ProductId" ColumnName="ProductId" />
-          <ScalarProperty Name="OrderNo" ColumnName="OrderNo" />
           <ScalarProperty Name="Id" ColumnName="Id" />
         </MappingFragment>
       </EntityTypeMapping>
@@ -285,42 +234,6 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="Product">
-      <EntityTypeMapping TypeName="MiOU.DAL.Product">
-        <MappingFragment StoreEntitySet="Product">
-          <ScalarProperty Name="VIPLevel" ColumnName="VIPLevel" />
-          <ScalarProperty Name="Locked" ColumnName="Locked" />
-          <ScalarProperty Name="Repertory" ColumnName="Repertory" />
-          <ScalarProperty Name="Type" ColumnName="Type" />
-          <ScalarProperty Name="YPlot" ColumnName="YPlot" />
-          <ScalarProperty Name="XPlot" ColumnName="XPlot" />
-          <ScalarProperty Name="Address" ColumnName="Address" />
-          <ScalarProperty Name="NearBy" ColumnName="NearBy" />
-          <ScalarProperty Name="Apartment" ColumnName="Apartment" />
-          <ScalarProperty Name="District" ColumnName="District" />
-          <ScalarProperty Name="City" ColumnName="City" />
-          <ScalarProperty Name="Province" ColumnName="Province" />
-          <ScalarProperty Name="RentType" ColumnName="RentType" />
-          <ScalarProperty Name="DeliveryType" ColumnName="DeliveryType" />
-          <ScalarProperty Name="EvaluatedPercentage" ColumnName="EvaluatedPercentage" />
-          <ScalarProperty Name="EvaluatedPrice" ColumnName="EvaluatedPrice" />
-          <ScalarProperty Name="AuditMessage" ColumnName="AuditMessage" />
-          <ScalarProperty Name="AuditTime" ColumnName="AuditTime" />
-          <ScalarProperty Name="AuditUserId" ColumnName="AuditUserId" />
-          <ScalarProperty Name="Status" ColumnName="Status" />
-          <ScalarProperty Name="Price" ColumnName="Price" />
-          <ScalarProperty Name="Pledge" ColumnName="Pledge" />
-          <ScalarProperty Name="Percentage" ColumnName="Percentage" />
-          <ScalarProperty Name="Updated" ColumnName="Updated" />
-          <ScalarProperty Name="Created" ColumnName="Created" />
-          <ScalarProperty Name="Name" ColumnName="Name" />
-          <ScalarProperty Name="Description" ColumnName="Description" />
-          <ScalarProperty Name="UserId" ColumnName="UserId" />
-          <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
-          <ScalarProperty Name="Id" ColumnName="Id" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
     <EntitySetMapping Name="Area">
       <EntityTypeMapping TypeName="MiOU.DAL.Area">
         <MappingFragment StoreEntitySet="Area">
@@ -379,6 +292,96 @@
           <ScalarProperty Name="Created" ColumnName="Created" />
           <ScalarProperty Name="EndPrice" ColumnName="EndPrice" />
           <ScalarProperty Name="StartPrice" ColumnName="StartPrice" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Order">
+      <EntityTypeMapping TypeName="MiOU.DAL.Order">
+        <MappingFragment StoreEntitySet="Order">
+          <ScalarProperty Name="ExtendRejectedMessage" ColumnName="ExtendRejectedMessage" />
+          <ScalarProperty Name="ExtendApproved" ColumnName="ExtendApproved" />
+          <ScalarProperty Name="ExtendEndTime" ColumnName="ExtendEndTime" />
+          <ScalarProperty Name="ExtendTime" ColumnName="ExtendTime" />
+          <ScalarProperty Name="ExtendApplied" ColumnName="ExtendApplied" />
+          <ScalarProperty Name="ContactPhone" ColumnName="ContactPhone" />
+          <ScalarProperty Name="ContactName" ColumnName="ContactName" />
+          <ScalarProperty Name="EndTime" ColumnName="EndTime" />
+          <ScalarProperty Name="StartTime" ColumnName="StartTime" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="UpdatedUserId" ColumnName="UpdatedUserId" />
+          <ScalarProperty Name="Updated" ColumnName="Updated" />
+          <ScalarProperty Name="UserId" ColumnName="UserId" />
+          <ScalarProperty Name="Created" ColumnName="Created" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="PayType" ColumnName="PayType" />
+          <ScalarProperty Name="PriceId" ColumnName="PriceId" />
+          <ScalarProperty Name="PriceCategory" ColumnName="PriceCategory" />
+          <ScalarProperty Name="ProductId" ColumnName="ProductId" />
+          <ScalarProperty Name="OrderNo" ColumnName="OrderNo" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ProductImage">
+      <EntityTypeMapping TypeName="MiOU.DAL.ProductImage">
+        <MappingFragment StoreEntitySet="ProductImage">
+          <ScalarProperty Name="IsMain" ColumnName="IsMain" />
+          <ScalarProperty Name="ImageId" ColumnName="ImageId" />
+          <ScalarProperty Name="ProductId" ColumnName="ProductId" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ProductPrice">
+      <EntityTypeMapping TypeName="MiOU.DAL.ProductPrice">
+        <MappingFragment StoreEntitySet="ProductPrice">
+          <ScalarProperty Name="UserId" ColumnName="UserId" />
+          <ScalarProperty Name="Created" ColumnName="Created" />
+          <ScalarProperty Name="Price" ColumnName="Price" />
+          <ScalarProperty Name="EvaluatedPriceId" ColumnName="EvaluatedPriceId" />
+          <ScalarProperty Name="ProductCategoryId" ColumnName="ProductCategoryId" />
+          <ScalarProperty Name="PriceCategory" ColumnName="PriceCategory" />
+          <ScalarProperty Name="ProductId" ColumnName="ProductId" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Product">
+      <EntityTypeMapping TypeName="MiOU.DAL.Product">
+        <MappingFragment StoreEntitySet="Product">
+          <ScalarProperty Name="EvaluatedPriceCategoryId" ColumnName="EvaluatedPriceCategoryId" />
+          <ScalarProperty Name="Phone" ColumnName="Phone" />
+          <ScalarProperty Name="Contact" ColumnName="Contact" />
+          <ScalarProperty Name="VIPLevel" ColumnName="VIPLevel" />
+          <ScalarProperty Name="Locked" ColumnName="Locked" />
+          <ScalarProperty Name="Repertory" ColumnName="Repertory" />
+          <ScalarProperty Name="Type" ColumnName="Type" />
+          <ScalarProperty Name="YPlot" ColumnName="YPlot" />
+          <ScalarProperty Name="XPlot" ColumnName="XPlot" />
+          <ScalarProperty Name="Address" ColumnName="Address" />
+          <ScalarProperty Name="NearBy" ColumnName="NearBy" />
+          <ScalarProperty Name="Apartment" ColumnName="Apartment" />
+          <ScalarProperty Name="District" ColumnName="District" />
+          <ScalarProperty Name="City" ColumnName="City" />
+          <ScalarProperty Name="Province" ColumnName="Province" />
+          <ScalarProperty Name="RentType" ColumnName="RentType" />
+          <ScalarProperty Name="DeliveryType" ColumnName="DeliveryType" />
+          <ScalarProperty Name="EvaluatedPercentage" ColumnName="EvaluatedPercentage" />
+          <ScalarProperty Name="EvaluatedPrice" ColumnName="EvaluatedPrice" />
+          <ScalarProperty Name="AuditMessage" ColumnName="AuditMessage" />
+          <ScalarProperty Name="AuditTime" ColumnName="AuditTime" />
+          <ScalarProperty Name="AuditUserId" ColumnName="AuditUserId" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="Price" ColumnName="Price" />
+          <ScalarProperty Name="Pledge" ColumnName="Pledge" />
+          <ScalarProperty Name="Percentage" ColumnName="Percentage" />
+          <ScalarProperty Name="Updated" ColumnName="Updated" />
+          <ScalarProperty Name="Created" ColumnName="Created" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="UserId" ColumnName="UserId" />
+          <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
           <ScalarProperty Name="Id" ColumnName="Id" />
         </MappingFragment>
       </EntityTypeMapping>

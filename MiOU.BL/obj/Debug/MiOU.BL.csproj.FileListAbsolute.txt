@@ -75,3 +75,6 @@ C:\Users\Danny\Documents\GitHub\MiOU\MiOU.BL\bin\Debug\Newtonsoft.Json.xml
 C:\Users\Danny\Documents\GitHub\MiOU\MiOU.BL\obj\Debug\MiOU.BL.csprojResolveAssemblyReference.cache
 C:\Users\Danny\Documents\GitHub\MiOU\MiOU.BL\obj\Debug\MiOU.BL.dll
 C:\Users\Danny\Documents\GitHub\MiOU\MiOU.BL\obj\Debug\MiOU.BL.pdb
+C:\Users\boling\Documents\GitHub\MiOU\MiOU.BL\bin\Debug\MySql.Data.xml
+C:\Users\boling\Documents\GitHub\MiOU\MiOU.BL\bin\Debug\MySql.Data.Entity.EF5.xml
+C:\Users\boling\Documents\GitHub\MiOU\MiOU.BL\bin\Debug\MySql.Data.Entity.EF6.xml

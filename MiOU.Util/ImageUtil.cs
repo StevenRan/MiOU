@@ -82,7 +82,7 @@ namespace MiOU.Util
                 sW = sWidth;
                 sH = sHeight;
             }
-            Bitmap outBmp = new Bitmap(destWidth, destHeight);
+            Bitmap outBmp = new Bitmap(sW, sH);
             Graphics g = Graphics.FromImage(outBmp);
             g.Clear(Color.Transparent);
             // 设置画布的描绘质量         

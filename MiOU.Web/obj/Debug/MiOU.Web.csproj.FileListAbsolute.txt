@@ -209,3 +209,6 @@ C:\Users\Danny\Documents\GitHub\MiOU\MiOU.Web\bin\ru\GridMvc.resources.dll
 C:\Users\Danny\Documents\GitHub\MiOU\MiOU.Web\obj\Debug\MiOU.Web.csprojResolveAssemblyReference.cache
 C:\Users\Danny\Documents\GitHub\MiOU\MiOU.Web\obj\Debug\MiOU.Web.dll
 C:\Users\Danny\Documents\GitHub\MiOU\MiOU.Web\obj\Debug\MiOU.Web.pdb
+C:\Users\boling\Documents\GitHub\MiOU\MiOU.Web\bin\MySql.Data.xml
+C:\Users\boling\Documents\GitHub\MiOU\MiOU.Web\bin\MySql.Data.Entity.EF5.xml
+C:\Users\boling\Documents\GitHub\MiOU\MiOU.Web\bin\MySql.Data.Entity.EF6.xml

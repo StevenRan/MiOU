@@ -16,6 +16,7 @@ namespace MiOU.Entities.Beans
     {
         public string Description { get; set; }
         public BCategory Category { get; set; }
+        public BCategory PCategory { get; set; }
         public BUser User { get; set; }
         public float Percentage { get; set; }
         public float Pledge { get; set; }
@@ -38,5 +39,8 @@ namespace MiOU.Entities.Beans
         public List<BProductPrice> ProductPrices { get; set; }
         public int Repertory { get; set; }
         public BVIPLevel VIPRentLevel { get; set; }
+        public string Contact { get; set; }
+        public string Phone { get; set; }
+        public BProductLevel ProductLevel { get; set; }
     }
 }

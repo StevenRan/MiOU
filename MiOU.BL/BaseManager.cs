@@ -61,6 +61,20 @@ namespace MiOU.BL
             os.Add(new BObject { Id = 2, Name = "女" });
             return os;
         }
+
+        public List<BObject> GetPercentages()
+        {
+            List<BObject> os = new List<BObject>();
+            os.Add(new BObject { Id = 40, Name = "四层新" });
+            os.Add(new BObject { Id = 50, Name = "五层新" });
+            os.Add(new BObject { Id = 60, Name = "六层新" });
+            os.Add(new BObject { Id = 70, Name = "七层新" });
+            os.Add(new BObject { Id = 80, Name = "八层新" });
+            os.Add(new BObject { Id = 90, Name = "九层新" });
+            os.Add(new BObject { Id = 95, Name = "九五层新" });
+            os.Add(new BObject { Id = 100, Name = "全新" });
+            return os.OrderByDescending(o=>o.Id).ToList<BObject>();
+        }
         public BUser GetUserInfoByNickName(string nickName)
         {
             if (string.IsNullOrEmpty(nickName))

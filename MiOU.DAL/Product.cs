@@ -44,5 +44,8 @@ namespace MiOU.DAL
         public int Repertory { get; set; }
         public bool Locked { get; set; }
         public int VIPLevel { get; set; }
+        public string Contact { get; set; }
+        public string Phone { get; set; }
+        public int EvaluatedPriceCategoryId { get; set; }
     }
 }

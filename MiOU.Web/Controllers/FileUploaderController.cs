@@ -6,8 +6,11 @@ using System.Web.Mvc;
 using MiOU.Entities;
 using MiOU.BL;
 using MiOU.Entities.Beans;
+using Microsoft.AspNet.Identity;
+
 namespace MiOU.Web.Controllers
 {
+    [Authorize]
     public class FileUploaderController : Controller
     {
         [HttpPost]
@@ -16,7 +19,7 @@ namespace MiOU.Web.Controllers
             ApiMessage message = new ApiMessage() {  Status = "OK",Message="Files successfully uploaded."};
             if(FilesInput!=null && FilesInput.Count()>0)
             {
-                UploadFileManagement fileMger = new UploadFileManagement(0);
+                UploadFileManagement fileMger = new UploadFileManagement(User.Identity.GetUserId<int>());
                 message.Result= fileMger.UploadFile(FilesInput);
             }
             return Json(message);

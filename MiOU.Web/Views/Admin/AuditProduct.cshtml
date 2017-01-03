@@ -1,0 +1,124 @@
+﻿@using GridMvc.Html
+@using GridMvc.DBGrid
+@using MiOU.Entities.Beans;
+@model BProduct
+@{
+    ViewBag.Title = "审核产品";
+    Layout = "~/Views/Shared/_adminLayout.cshtml";
+    BProduct product = (BProduct)ViewBag.Product;
+}
+<script>
+    function showPicPreview(path) {
+        $('#show_big_pic').find('#big_pic').attr('src', path);
+        $('#show_big_pic').modal();
+    }
+</script>
+<h2>@ViewBag.Title</h2>
+<hr/>
+
+@using (Html.BeginForm("SaveProduct", "Admin", FormMethod.Post, new { @class = "form-horizontal", role = "form", id = "ProductForm" }))
+{
+    @Html.AntiForgeryToken()
+    <div class="form-group">
+        <label class="control-label col-md-2" for="CategoryId">名称</label>
+        <div class="col-md-8">
+            <label class="control-label" style="font-weight:normal;">
+                @product.Name
+            </label>          
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-md-2" for="CategoryId">类别</label>
+        <div class="col-md-8">
+            <label class="control-label" style="font-weight:normal;">
+                @product.PCategory.Name
+                @product.Category.Name
+            </label>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-md-2" for="CategoryId">层色</label>
+        <div class="col-md-8">
+            <label class="control-label" style="font-weight:normal;">@(product.Percentage*10)</label>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-md-2" for="CategoryId">市场价</label>
+        <div class="col-md-8">
+            <label class="control-label" style="font-weight:normal;">@product.Price 元</label>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-md-2" for="CategoryId">租赁</label>
+        <div class="col-md-8">
+            <label class="control-label" style="font-weight:normal;">@product.RentType.Name</label>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-md-2" for="CategoryId">交付</label>
+        <div class="col-md-8">
+            <label class="control-label" style="font-weight:normal;">@product.DeliveryType.Name</label>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-md-2" for="CategoryId">联系人</label>
+        <div class="col-md-8">
+            <label class="control-label" style="font-weight:normal;">@product.Contact</label>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-md-2" for="CategoryId">电话</label>
+        <div class="col-md-8">
+            <label class="control-label" style="font-weight:normal;">@product.Phone</label>
+        </div>
+    </div>
+   
+    <div class="form-group">       
+        <label class="control-label col-md-2" for="CategoryId">照片</label>
+        <div class="col-md-8" style="padding-top:7px;">
+            <div class="file-preview">
+                @*<div class="close fileinput-remove">×</div>*@
+                <div class=" file-drop-zone">
+                    <div class="file-preview-thumbnails">
+                        <div class="file-live-thumbs">
+                            @foreach(BProductImage image in product.Images)
+                            {                           
+                                <div class="file-preview-frame file-preview-success" data-fileindex="-1" data-template="image">
+                                    <div class="kv-file-content">
+                                        <img src="@Html.Raw("/"+image.Image.Path)" style="width:auto;height:160px;"/>
+                                    </div>
+                                    <div class="file-thumbnail-footer">
+                                        <div class="file-actions">
+                                            <div class="file-footer-buttons">
+                                                <button type="button" onclick="showPicPreview('/@image.Image.Path')" class="kv-file-zoom btn btn-xs btn-default" title="查看大图"><i class="glyphicon glyphicon-zoom-in"></i></button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                    <div class="file-preview-status text-center text-success"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+<div class="modal fade" id="show_big_pic" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div id="" class="modal-content" style="display:none;">
+            <div class="modal-header">
+                <div class="kv-zoom-actions pull-right"><button type="button" class="btn btn-default btn-header-toggle btn-toggleheader" title="Toggle header" data-toggle="button" aria-pressed="false" autocomplete="off"><i class="glyphicon glyphicon-resize-vertical"></i></button><button type="button" class="btn btn-default btn-fullscreen" title="Toggle full screen" data-toggle="button" aria-pressed="false" autocomplete="off"><i class="glyphicon glyphicon-fullscreen"></i></button><button type="button" class="btn btn-default btn-borderless" title="Toggle borderless mode" data-toggle="button" aria-pressed="false" autocomplete="off"><i class="glyphicon glyphicon-resize-full"></i></button><button type="button" class="btn btn-default btn-close" title="Close detailed preview" data-dismiss="modal" aria-hidden="true"><i class="glyphicon glyphicon-remove"></i></button></div>
+                <h3 class="modal-title">大图预览 <small><span class="kv-zoom-title"></span></small></h3>
+            </div>
+            <div class="modal-body">
+                <div class="floating-buttons"></div>
+                <div class="kv-zoom-body file-zoom-content">
+                    <img id="big_pic" />
+                </div>
+                <button type="button" class="btn btn-navigate btn-prev" title="View previous file" disabled="disabled"><i class="glyphicon glyphicon-triangle-left"></i></button> <button type="button" class="btn btn-navigate btn-next" title="View next file" disabled="disabled"><i class="glyphicon glyphicon-triangle-right"></i></button>
+            </div>
+        </div>
+    </div>
+</div>

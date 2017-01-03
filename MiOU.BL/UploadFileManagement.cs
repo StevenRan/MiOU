@@ -49,7 +49,8 @@ namespace MiOU.BL
                 bool ret=FileUtil.SaveBitmap(tmp,Path.Combine(directory,absPath2));
                 if(ret)
                 {
-                    BFile tmpFile = CreateNewFile(CurrentLoginUser.User.UserId,directory, absPath2,null);
+                    if (savedFiles == null) { savedFiles = new List<BFile>(); }
+                    BFile tmpFile = CreateNewFile(CurrentLoginUser.User.UserId,directory, absPath2, fileName + fileExt,fileExt);
                     if(tmpFile!=null)
                     {
                         savedFiles.Add(tmpFile);
@@ -64,7 +65,7 @@ namespace MiOU.BL
         {
             
             BFile bfile = null;
-            if (!System.IO.File.Exists(filePath))
+            if (!System.IO.File.Exists(Path.Combine(directory, filePath)))
             {
                 throw new MiOUException(string.Format(MiOUConstants.FILE_NOT_EXIST,name!=null?name:""));
             }

@@ -10,8 +10,8 @@
 
 @Html.Grid(Model).Columns(columns =>
 {
-    columns.Add(c => c.Id).Titled("编号").Filterable(true).SetWidth("5%");
-    columns.Add(c => c.Name).Titled("名称").Filterable(true);
+    columns.Add(c => c.Id).Titled("编号").Filterable(false).SetWidth("5%");
+    columns.Add(c => c.Name).Titled("名称").Filterable(false);
     //columns.Add(c => c.Description).Titled("描述").Filterable(true).SetWidth("50%");
 
     //columns.Add()
@@ -22,7 +22,7 @@
           //.RenderValueAs(o => Html.Raw("<a href=\"javascript:void(0);\" onclick=\"openModalDialog('/Admin/UpdateUserTypes',{id:" + o.Id + "})\">编辑</a>"));
           //.RenderValueAs(o=>Html.Raw("编辑"));
 
-}).Sortable(true)
+}).Sortable(false)
 
 
 

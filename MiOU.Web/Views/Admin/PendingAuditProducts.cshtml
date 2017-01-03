@@ -1,0 +1,32 @@
+﻿@using GridMvc.Html
+@using GridMvc.DBGrid
+@using MiOU.Entities.Beans;
+@using MiOU.Entities.Exceptions;
+@model DBGrid<BProduct>
+@{
+    ViewBag.Title = "待审核的产品";
+    Layout = "~/Views/Shared/_adminLayout.cshtml";
+}
+
+<h2>@ViewBag.Title</h2>
+<hr />
+@Html.Grid(Model).Columns(columns =>
+{
+    columns.Add(c => c.Id).Titled("编号").Filterable(false).SetWidth("5%");
+    columns.Add(c => c.Name).Titled("名称").Filterable(false).SetWidth("20%");
+    columns.Add().Titled("类别").Filterable(false).RenderValueAs(c=>c.PCategory.Name+" "+ c.Category.Name).SetWidth("10%");
+    columns.Add().Titled("审核状态").Filterable(false).RenderValueAs(c => Html.Raw(c.Status == ProductStatus.CREATED ? "待审核" : c.Status == ProductStatus.FAILED ? "失败" : c.Status == ProductStatus.PASSED ? "通过" : "")).SetWidth("10%");
+    columns.Add().Titled("藕主").Filterable(false).RenderValueAs(c => c.User.User.Email).SetWidth("10%");
+
+
+    columns.Add()
+        .Encoded(false)
+      .Sanitized(false)
+    .SetWidth("10%")
+    .RenderValueAs(o => Html.Raw("<a target=\"_blank\" href=\"/Admin/AuditProduct?productId="+o.Id+"\">审核</a>"));
+    //.RenderValueAs(o => Html.ActionLink("编辑", "EditResource", new { resourceId = o.Resource.Id }));
+    //.RenderValueAs(o => Html.Raw("<a href=\"javascript:void(0);\" onclick=\"openModalDialog('/Admin/UpdateUserTypes',{id:" + o.Id + "})\">编辑</a>"));
+    //.RenderValueAs(o => Html.Raw("编辑"));
+
+}).Sortable(false)
+

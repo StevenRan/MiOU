@@ -143,7 +143,7 @@
     <Key>
       <PropertyRef Name="Id" />
     </Key>
-    <Property Name="Id" Type="int" Nullable="false" />
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="OrderNo" Type="varchar" MaxLength="50" Nullable="false" />
     <Property Name="ProductId" Type="int" Nullable="false" />
     <Property Name="PriceCategory" Type="int" Nullable="false" />
@@ -237,12 +237,15 @@
     <Property Name="Repertory" Type="int" Nullable="false" />
     <Property Name="Locked" Type="bool" Nullable="false" />
     <Property Name="VIPLevel" Type="int" Nullable="false" />
+    <Property Name="Contact" Type="varchar" MaxLength="100" Nullable="false" />
+    <Property Name="Phone" Type="varchar" MaxLength="25" Nullable="false" />
+    <Property Name="EvaluatedPriceCategoryId" Type="int" Nullable="false" />
   </EntityType>
   <EntityType Name="ProductImage">
     <Key>
       <PropertyRef Name="Id" />
     </Key>
-    <Property Name="Id" Type="int" Nullable="false" />
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="ProductId" Type="int" Nullable="false" />
     <Property Name="ImageId" Type="int" Nullable="false" />
     <Property Name="IsMain" Type="bool" Nullable="false" />
@@ -263,7 +266,7 @@
     <Key>
       <PropertyRef Name="Id" />
     </Key>
-    <Property Name="Id" Type="int" Nullable="false" />
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="ProductId" Type="int" Nullable="false" />
     <Property Name="PriceCategory" Type="int" Nullable="false" />
     <Property Name="ProductCategoryId" Type="int" Nullable="false" />
