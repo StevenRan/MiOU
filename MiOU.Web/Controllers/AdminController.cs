@@ -192,6 +192,23 @@ namespace MiOU.Web.Controllers
         #endregion
 
         #region Product Level Related
+        [HttpGet]
+        public ActionResult SetProductLevelPrices(int id)
+        {
+            ProductManagement pdtMgr = new ProductManagement(User.Identity.GetUserId<int>());
+            List<BEvaluatedPrice> prices = pdtMgr.GetProductLevelPrices(id);
+            return View(prices);
+        }
+
+        [HttpPost]
+        public ActionResult SetProductLevelPrices()
+        {
+            ProductManagement pdtMgr = new ProductManagement(User.Identity.GetUserId<int>());
+            string[] eids = Request["epid"].Split(',');
+            string[] values= Request["eprice"].Split(',');
+            return View();
+        }
+
         public ActionResult SearchProductLevels()
         {
             ProductManagement pdtMgr = new ProductManagement(User.Identity.GetUserId<int>());

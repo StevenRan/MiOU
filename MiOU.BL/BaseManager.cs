@@ -329,7 +329,7 @@ namespace MiOU.BL
             List<BPriceCategory> categories = null;
             using (MiOUEntities db = new MiOUEntities())
             {
-                var tmp = from c in db.PriceCategory orderby c.Order select new BPriceCategory { Name=c.Name,Id=c.Id, Order=c.Order };
+                var tmp = from c in db.PriceCategory orderby c.Order select new BPriceCategory { Name=c.Name,Id=c.Id, Order=c.Order,Days= c.Days };
                 categories = tmp.ToList<BPriceCategory>();
             }
                 return categories;

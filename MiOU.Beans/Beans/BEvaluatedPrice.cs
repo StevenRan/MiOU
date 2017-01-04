@@ -12,5 +12,7 @@ namespace MiOU.Entities.Beans
         public BPriceCategory Catetegory { get; set; }
         public BUser CreatedBy { get; set; }
         public BUser UpdatedBy { get; set; }
+        public BProductLevel ProductLevel { get; set; }
+        public bool Available { get; set; }
     }
 }

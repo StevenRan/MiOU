@@ -42,6 +42,11 @@
          .Sanitized(false)
          .SetWidth("6%")
          .RenderValueAs(o => Html.Raw("<a href=\"#\" onclick=\"openModalDialog('/Admin/UpdateProductLevel/"+o.Id+"',null)\">编辑</a>"));
+    columns.Add()
+         .Encoded(false)
+         .Sanitized(false)
+         .SetWidth("6%")
+         .RenderValueAs(o => Html.Raw("<a href=\"#\" onclick=\"openModalDialog('/Admin/SetProductLevelPrices/" + o.Id + "',null)\">设置租金</a>"));
 
 })
 

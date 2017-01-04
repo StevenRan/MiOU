@@ -59,6 +59,37 @@ namespace MiOU.BL
             return SaveProductLevel(level);
         }
 
+        public List<BEvaluatedPrice> GetProductLevelPrices(int productLevel)
+        {
+            List<BEvaluatedPrice> prices = null;
+            using (MiOUEntities db = new MiOUEntities())
+            {
+                var tmp = from p in db.EvaluatedPrice
+                          join pc in db.PriceCategory on p.PriceCategory equals pc.Id into lpc
+                          from llpc in lpc.DefaultIfEmpty()
+                          join epc in db.EvaluatedPriceCategory on p.EvaluatedPriceCategory equals epc.Id into lepc
+                          from llepc in lepc.DefaultIfEmpty()
+                          where p.EvaluatedPriceCategory == productLevel
+                          orderby p.EvaluatedPriceCategory  orderby p.PriceCategory
+                          select new BEvaluatedPrice
+                          {
+                              Catetegory = new BPriceCategory { Id= p.PriceCategory,Name= llpc.Name },
+                              Created = p.Created,
+                              Id = p.Id,
+                              Price = p.Price,
+                              ProductLevel = new BProductLevel { Id= p.EvaluatedPriceCategory,Name= llepc.Name },                            
+                          };
+
+                if(productLevel>0)
+                {
+                    tmp = tmp.Where(p=>p.ProductLevel.Id == productLevel);
+                }
+
+                prices = tmp.ToList<BEvaluatedPrice>();
+            }
+            return prices;
+        }
+
         private bool SaveProductLevel(BProductLevel level)
         {
             if (!CurrentLoginUser.IsAdmin)
@@ -136,6 +167,28 @@ namespace MiOU.BL
                     db.EvaluatedPriceCategory.Add(dbLevel);
                 }
 
+                db.SaveChanges();
+                //Generate prices by price categories
+                List<EvaluatedPrice> prices = (from p in db.EvaluatedPrice where p.EvaluatedPriceCategory== dbLevel.Id select p).ToList<EvaluatedPrice>();
+                List<PriceCategory> categories = (from c in db.PriceCategory orderby c.Id select c).ToList<PriceCategory>();
+                foreach(PriceCategory cate in categories)
+                {
+                    EvaluatedPrice tmpprice = (from p in prices where p.PriceCategory == cate.Id select p).FirstOrDefault<EvaluatedPrice>();
+                    if(tmpprice==null)
+                    {
+                        tmpprice = new EvaluatedPrice()
+                        {
+                            Created = DateTimeUtil.ConvertDateTimeToInt(DateTime.Now),
+                            EvaluatedPriceCategory = dbLevel.Id,
+                            Price = 0,
+                            PriceCategory = cate.Id,
+                            Updated = 0,
+                            UpdatedUserId = 0,
+                            UserId = CurrentLoginUser.User.UserId
+                        };
+                        db.EvaluatedPrice.Add(tmpprice);
+                    }
+                }
                 db.SaveChanges();
                 ret = true;
             }

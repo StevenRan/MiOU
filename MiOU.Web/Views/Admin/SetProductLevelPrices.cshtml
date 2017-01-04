@@ -1,0 +1,56 @@
+﻿@using MiOU.BL
+@using MiOU.Entities.Beans
+@model List<BEvaluatedPrice>
+@{
+    ViewBag.Title = "设置产品等级租金";
+    Layout = Request.IsAjaxRequest() ? null : "~/Views/Shared/_adminLayout.cshtml";
+}
+<script>
+    $(function () {
+        $('#btn_save_pdtlevel_price').click(function () {
+            var checked = true;
+            $('#SetProductLevelPricesForm').find('input[type="text"]').each(function (i, v) {
+                var value = $(v).val();
+                if(isNaN(value))
+                {
+                    alert("租金必须是数字，可以带小数点");
+                    checked = false;
+                    return false;
+                }
+            });
+
+            if (!checked) {
+                return;
+            }
+
+            $('#SetProductLevelPricesForm').submit();
+        });
+    });
+</script>
+<h2>@ViewBag.Title</h2>
+<hr />
+@using (Html.BeginForm("SetProductLevelPrices", "Admin", FormMethod.Post, new { @class = "form-horizontal", role = "form", id = "SetProductLevelPricesForm" }))
+{
+    <h4>租金单位为元/日</h4>
+    @Html.AntiForgeryToken()
+    foreach(BEvaluatedPrice price in Model)
+    {        
+        <div class="form-group">
+            <input type="hidden" name="epid" value="@price.Id" />
+            <label class="control-label col-md-2">@price.Catetegory.Name</label>
+           
+            <div class="col-md-8">
+               <input type="text" name="eprice" class="form-control input_reg" value="@price.Price" />
+            </div>
+        </div>
+    }
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-8">
+            <button id="btn_save_pdtlevel_price" type="button" class="btn btn-warning">
+                <span class="glyphicon glyphicon-save"></span> 保存
+            </button>
+        </div>
+    </div>
+}
+

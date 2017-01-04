@@ -107,17 +107,22 @@
 }
 <div class="modal fade" id="show_big_pic" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
-        <div id="" class="modal-content" style="display:none;">
+        <div id="" class="modal-content">
             <div class="modal-header">
-                <div class="kv-zoom-actions pull-right"><button type="button" class="btn btn-default btn-header-toggle btn-toggleheader" title="Toggle header" data-toggle="button" aria-pressed="false" autocomplete="off"><i class="glyphicon glyphicon-resize-vertical"></i></button><button type="button" class="btn btn-default btn-fullscreen" title="Toggle full screen" data-toggle="button" aria-pressed="false" autocomplete="off"><i class="glyphicon glyphicon-fullscreen"></i></button><button type="button" class="btn btn-default btn-borderless" title="Toggle borderless mode" data-toggle="button" aria-pressed="false" autocomplete="off"><i class="glyphicon glyphicon-resize-full"></i></button><button type="button" class="btn btn-default btn-close" title="Close detailed preview" data-dismiss="modal" aria-hidden="true"><i class="glyphicon glyphicon-remove"></i></button></div>
+                <div class="kv-zoom-actions pull-right">
+                    @*<button type="button" class="btn btn-default btn-header-toggle btn-toggleheader" title="Toggle header" data-toggle="button" aria-pressed="false" autocomplete="off">
+                        <i class="glyphicon glyphicon-resize-vertical"></i>
+                    </button>
+                    <button type="button" class="btn btn-default btn-fullscreen" title="Toggle full screen" data-toggle="button" aria-pressed="false" autocomplete="off"><i class="glyphicon glyphicon-fullscreen"></i></button>
+                    <button type="button" class="btn btn-default btn-borderless" title="Toggle borderless mode" data-toggle="button" aria-pressed="false" autocomplete="off"><i class="glyphicon glyphicon-resize-full"></i></button>*@
+                    <button type="button" class="btn btn-default btn-close" title="Close detailed preview" data-dismiss="modal" aria-hidden="true">
+                    <i class="glyphicon glyphicon-remove"></i>
+                    </button>
+                </div>
                 <h3 class="modal-title">大图预览 <small><span class="kv-zoom-title"></span></small></h3>
             </div>
             <div class="modal-body">
-                <div class="floating-buttons"></div>
-                <div class="kv-zoom-body file-zoom-content">
-                    <img id="big_pic" />
-                </div>
-                <button type="button" class="btn btn-navigate btn-prev" title="View previous file" disabled="disabled"><i class="glyphicon glyphicon-triangle-left"></i></button> <button type="button" class="btn btn-navigate btn-next" title="View next file" disabled="disabled"><i class="glyphicon glyphicon-triangle-right"></i></button>
+                <img id="big_pic" style="width:100%;height:auto;" />
             </div>
         </div>
     </div>

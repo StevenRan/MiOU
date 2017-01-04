@@ -207,6 +207,7 @@
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Name" Type="varchar" MaxLength="45" Nullable="false" />
           <Property Name="Order" Type="int" Nullable="false" />
+          <Property Name="Days" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Product">
           <Key>
@@ -404,7 +405,6 @@
           <EntitySet Name="File" EntityType="MiOU.DAL.File" />
           <EntitySet Name="PayCategory" EntityType="MiOU.DAL.PayCategory" />
           <EntitySet Name="PayType" EntityType="MiOU.DAL.PayType" />
-          <EntitySet Name="PriceCategory" EntityType="MiOU.DAL.PriceCategory" />
           <EntitySet Name="ProductMaintenance" EntityType="MiOU.DAL.ProductMaintenance" />
           <EntitySet Name="RentType" EntityType="MiOU.DAL.RentType" />
           <EntitySet Name="UserType" EntityType="MiOU.DAL.UserType" />
@@ -425,6 +425,7 @@
           <EntitySet Name="ProductImage" EntityType="MiOU.DAL.ProductImage" />
           <EntitySet Name="ProductPrice" EntityType="MiOU.DAL.ProductPrice" />
           <EntitySet Name="Product" EntityType="MiOU.DAL.Product" />
+          <EntitySet Name="PriceCategory" EntityType="MiOU.DAL.PriceCategory" />
         </EntityContainer>
         <EntityType Name="Admin_Actions">
           <Key>
@@ -477,14 +478,6 @@
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Name" Type="String" Nullable="false" MaxLength="45" FixedLength="false" Unicode="false" />
-        </EntityType>
-        <EntityType Name="PriceCategory">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" Nullable="false" MaxLength="45" FixedLength="false" Unicode="false" />
-          <Property Name="Order" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="ProductMaintenance">
           <Key>
@@ -785,6 +778,15 @@
           <Property Name="Phone" Type="String" Nullable="false" MaxLength="25" FixedLength="false" Unicode="false" />
           <Property Name="EvaluatedPriceCategoryId" Type="Int32" Nullable="false" />
         </EntityType>
+        <EntityType Name="PriceCategory">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="45" FixedLength="false" Unicode="false" />
+          <Property Name="Order" Type="Int32" Nullable="false" />
+          <Property Name="Days" Type="Int32" Nullable="false" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -843,15 +845,6 @@
           <EntitySetMapping Name="PayType">
             <EntityTypeMapping TypeName="MiOU.DAL.PayType">
               <MappingFragment StoreEntitySet="PayType">
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="PriceCategory">
-            <EntityTypeMapping TypeName="MiOU.DAL.PriceCategory">
-              <MappingFragment StoreEntitySet="PriceCategory">
-                <ScalarProperty Name="Order" ColumnName="Order" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
@@ -1172,6 +1165,16 @@
                 <ScalarProperty Name="Description" ColumnName="Description" />
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
                 <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PriceCategory">
+            <EntityTypeMapping TypeName="MiOU.DAL.PriceCategory">
+              <MappingFragment StoreEntitySet="PriceCategory">
+                <ScalarProperty Name="Days" ColumnName="Days" />
+                <ScalarProperty Name="Order" ColumnName="Order" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

@@ -11,7 +11,6 @@
         <EntityTypeShape EntityType="MiOU.DAL.File" Width="1.5" PointX="6.75" PointY="3.75" />
         <EntityTypeShape EntityType="MiOU.DAL.PayCategory" Width="1.5" PointX="8.75" PointY="4.75" />
         <EntityTypeShape EntityType="MiOU.DAL.PayType" Width="1.5" PointX="8.75" PointY="7.75" />
-        <EntityTypeShape EntityType="MiOU.DAL.PriceCategory" Width="1.5" PointX="10.75" PointY="0.75" />
         <EntityTypeShape EntityType="MiOU.DAL.ProductMaintenance" Width="1.5" PointX="10.75" PointY="3.75" />
         <EntityTypeShape EntityType="MiOU.DAL.RentType" Width="1.5" PointX="8.75" PointY="11.75" />
         <EntityTypeShape EntityType="MiOU.DAL.UserType" Width="1.5" PointX="12.75" PointY="0.75" />
@@ -32,6 +31,7 @@
         <EntityTypeShape EntityType="MiOU.DAL.ProductImage" Width="1.5" PointX="5.375" PointY="0.75" />
         <EntityTypeShape EntityType="MiOU.DAL.ProductPrice" Width="1.5" PointX="5.375" PointY="7.75" />
         <EntityTypeShape EntityType="MiOU.DAL.Product" Width="1.5" PointX="0.75" PointY="16.75" />
+        <EntityTypeShape EntityType="MiOU.DAL.PriceCategory" Width="1.5" PointX="7.375" PointY="0.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

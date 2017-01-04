@@ -9,5 +9,6 @@ namespace MiOU.Entities.Beans
     public class BPriceCategory:BObject
     {
         public int Order { get; set; }
+        public int Days { get; set; }
     }
 }
