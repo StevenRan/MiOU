@@ -90,11 +90,82 @@ namespace MiOU.BL
             return prices;
         }
 
+        public bool SaveProductLevelPrices(int productLevelId, string[] epIds, string[] values)
+        {
+            bool result = false;           
+            if(CurrentLoginUser==null)
+            {
+                throw new MiOUException("请先登录");
+            }
+            if(epIds==null || epIds.Length==0)
+            {
+                throw new MiOUException("参数错误");
+            }
+            if (values == null || values.Length == 0)
+            {
+                throw new MiOUException("参数错误");
+            }
+            if(epIds.Length!=values.Length)
+            {
+                throw new MiOUException("参数错误");
+            }
+            if (!CurrentLoginUser.IsAdmin)
+            {
+                throw new MiOUException("只有管理员账户才能执行此操作");
+            }
+            if(!CurrentLoginUser.Permission.UPDATE_PRODUCT_LEVEL_PRICES)
+            {
+                throw new MiOUException("没有更新产品等级租金的权限");
+            }
+            using (MiOUEntities db = new MiOUEntities())
+            {
+                EvaluatedPriceCategory epcate = (from ep in db.EvaluatedPriceCategory where ep.Id == productLevelId select ep).FirstOrDefault<EvaluatedPriceCategory>();
+                if (epcate == null)
+                {
+                    throw new MiOUException("产品等级不存在");
+                }
+                int[] ids = (from s in epIds select int.Parse(s)).ToArray<int>();
+                List<EvaluatedPrice> prices = (from pr in db.EvaluatedPrice where ids.Contains(pr.Id) select pr).ToList<EvaluatedPrice>();
+                if(prices.Count==0)
+                {
+                    throw new MiOUException(string.Format("参数错误，没有找到任何租金数据 - 产品等级 {0}",epcate.Name!=null?epcate.Name:""));
+                }
+                if(prices.Count!=values.Length)
+                {
+                    throw new MiOUException(string.Format("参数错误，没有找到任何租金数据 - 产品等级 {0}", epcate.Name != null ? epcate.Name : ""));
+                }
+                
+                for(int i=0;i<epIds.Length;i++)
+                {
+                    EvaluatedPrice tmp = (from p in prices where p.Id==int.Parse(epIds[i]) select p).FirstOrDefault<EvaluatedPrice>();
+                    if(tmp==null)
+                    {
+                        logger.Warn(string.Format("Evaluated price record doesn't exist for No - {0} of Product Level {1}", epIds[i], epcate.Name != null ? epcate.Name : ""));
+                        continue;
+                    }
+                    if(tmp.Price!=float.Parse(values[i]))
+                    {
+                        tmp.Price = float.Parse(values[i]);
+                        tmp.Updated = DateTimeUtil.ConvertDateTimeToInt(DateTime.Now);
+                        tmp.UpdatedUserId = CurrentLoginUser.User.UserId;
+                    }
+                }
+
+                db.SaveChanges();
+                result = true;
+            }
+            return result;
+        }
+
         private bool SaveProductLevel(BProductLevel level)
         {
             if (!CurrentLoginUser.IsAdmin)
             {
                 throw new MiOUException("没有权限创建或修改产品物资等级");
+            }
+            if (!CurrentLoginUser.Permission.UPDATE_PRODUCT_LEVEL)
+            {
+                throw new MiOUException("没有更新产品等级信息");
             }
             bool ret = false;
             bool newLevel = false;

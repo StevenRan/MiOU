@@ -58,15 +58,6 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="PriceCategory">
-      <EntityTypeMapping TypeName="MiOU.DAL.PriceCategory">
-        <MappingFragment StoreEntitySet="PriceCategory">
-          <ScalarProperty Name="Order" ColumnName="Order" />
-          <ScalarProperty Name="Name" ColumnName="Name" />
-          <ScalarProperty Name="Id" ColumnName="Id" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
     <EntitySetMapping Name="ProductMaintenance">
       <EntityTypeMapping TypeName="MiOU.DAL.ProductMaintenance">
         <MappingFragment StoreEntitySet="ProductMaintenance">
@@ -382,6 +373,16 @@
           <ScalarProperty Name="Description" ColumnName="Description" />
           <ScalarProperty Name="UserId" ColumnName="UserId" />
           <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="PriceCategory">
+      <EntityTypeMapping TypeName="MiOU.DAL.PriceCategory">
+        <MappingFragment StoreEntitySet="PriceCategory">
+          <ScalarProperty Name="Days" ColumnName="Days" />
+          <ScalarProperty Name="Order" ColumnName="Order" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
           <ScalarProperty Name="Id" ColumnName="Id" />
         </MappingFragment>
       </EntityTypeMapping>

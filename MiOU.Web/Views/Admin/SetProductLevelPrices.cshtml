@@ -15,6 +15,7 @@
                 {
                     alert("租金必须是数字，可以带小数点");
                     checked = false;
+                    $(v).val(0)
                     return false;
                 }
             });
@@ -31,6 +32,7 @@
 <hr />
 @using (Html.BeginForm("SetProductLevelPrices", "Admin", FormMethod.Post, new { @class = "form-horizontal", role = "form", id = "SetProductLevelPricesForm" }))
 {
+    <input type="hidden" name="epcid" value="@Model[0].ProductLevel.Id" />
     <h4>租金单位为元/日</h4>
     @Html.AntiForgeryToken()
     foreach(BEvaluatedPrice price in Model)

@@ -12,8 +12,23 @@
         $('#show_big_pic').find('#big_pic').attr('src', path);
         $('#show_big_pic').modal();
     }
+    $('#audit_product_btn').click(function () {
+
+    });
 </script>
-<h2>@ViewBag.Title</h2>
+
+<div style="overflow:hidden;height:65px;line-height:65px;">
+    <div style="float:left;">
+        <h2>@ViewBag.Title</h2>
+    </div>
+    <div style="float:right;">
+        <button id="audit_product_btn" class="btn btn-warning">
+            <span class="glyphicon glyphicon-asterisk">
+                审核(设定级别)
+            </span>
+        </button>
+    </div>
+</div>
 <hr/>
 
 @using (Html.BeginForm("SaveProduct", "Admin", FormMethod.Post, new { @class = "form-horizontal", role = "form", id = "ProductForm" }))
@@ -72,7 +87,14 @@
             <label class="control-label" style="font-weight:normal;">@product.Phone</label>
         </div>
     </div>
-   
+
+    <div class="form-group">
+        <label class="control-label col-md-2" for="CategoryId">描述</label>
+        <div class="col-md-8">
+            <label class="control-label" style="font-weight:normal;">@product.Description</label>
+        </div>
+    </div>
+
     <div class="form-group">       
         <label class="control-label col-md-2" for="CategoryId">照片</label>
         <div class="col-md-8" style="padding-top:7px;">

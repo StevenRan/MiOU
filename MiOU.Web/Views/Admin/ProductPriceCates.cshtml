@@ -26,4 +26,5 @@
 @Html.Grid(Model).Columns(columns =>
 {   
     columns.Add(c => c.Name).Titled("名称");
+    columns.Add(c => c.Days).Titled("起租天数");
 })

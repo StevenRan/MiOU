@@ -202,6 +202,7 @@
     <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="Name" Type="varchar" MaxLength="45" Nullable="false" />
     <Property Name="Order" Type="int" Nullable="false" />
+    <Property Name="Days" Type="int" Nullable="false" />
   </EntityType>
   <EntityType Name="Product">
     <Key>

@@ -197,6 +197,7 @@ namespace MiOU.Web.Controllers
         {
             ProductManagement pdtMgr = new ProductManagement(User.Identity.GetUserId<int>());
             List<BEvaluatedPrice> prices = pdtMgr.GetProductLevelPrices(id);
+            
             return View(prices);
         }
 
@@ -204,9 +205,28 @@ namespace MiOU.Web.Controllers
         public ActionResult SetProductLevelPrices()
         {
             ProductManagement pdtMgr = new ProductManagement(User.Identity.GetUserId<int>());
+            int epcId = 0;
+            int.TryParse(Request["epcid"],out epcId);
+            if(epcId<=0)
+            {
+                return ShowError("参数错误，不能修改租金");
+            }
             string[] eids = Request["epid"].Split(',');
             string[] values= Request["eprice"].Split(',');
-            return View();
+            try
+            {
+                pdtMgr.SaveProductLevelPrices(epcId,eids,values);
+                return RedirectToAction("SearchProductLevels");
+            }
+            catch(MiOUException mex)
+            {
+                return ShowError(mex.Message);
+            }
+            catch(Exception ex)
+            {
+                logger.Fatal(ex);
+                return ShowError("致命错误，请联系系统管理员");
+            }            
         }
 
         public ActionResult SearchProductLevels()

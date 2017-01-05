@@ -86,6 +86,14 @@ namespace MiOU.Entities.Beans
         [AdminActionAttribute(ID = 2, CategoryName = "产品管理", ActionDescription = "删除产品图片")]
         public bool DELETE_PRODUCT_IMAGES { get; set; }
 
+        [Display(Name = "更新产品等级")]
+        [AdminActionAttribute(ID = 2, CategoryName = "产品管理", ActionDescription = "更新产品等级")]
+        public bool UPDATE_PRODUCT_LEVEL { get; set; }
+
+        [Display(Name = "更新产品等级租金")]
+        [AdminActionAttribute(ID = 2, CategoryName = "产品管理", ActionDescription = "更新产品等级租金")]
+        public bool UPDATE_PRODUCT_LEVEL_PRICES { get; set; }
+
 
         [Display(Name = "查看订单")]
         [AdminActionAttribute(ID = 3, CategoryName = "订单管理", ActionDescription = "查看订单")]
