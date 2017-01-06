@@ -1,9 +1,9 @@
 ﻿@using MiOU.Entities.Beans
 @model MiOU.Entities.Beans.BProductLevel
 @{
-    ViewBag.Title = "新建产品等级";
+    ViewBag.Title = "新建藕品等级";
     if (Model != null && Model.Id>0) {
-        ViewBag.Title = "更新产品等级";
+        ViewBag.Title = "更新藕品等级";
     }
     Layout = Request.IsAjaxRequest()?null: "~/Views/Shared/_adminLayout.cshtml";
     List<BVIPLevel> allVips = null;

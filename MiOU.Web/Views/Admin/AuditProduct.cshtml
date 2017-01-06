@@ -3,7 +3,7 @@
 @using MiOU.Entities.Beans;
 @model BProduct
 @{
-    ViewBag.Title = "审核产品";
+    ViewBag.Title = "藕品信息";
     Layout = "~/Views/Shared/_adminLayout.cshtml";
     BProduct product = (BProduct)ViewBag.Product;
 }
@@ -12,28 +12,43 @@
         $('#show_big_pic').find('#big_pic').attr('src', path);
         $('#show_big_pic').modal();
     }
-    $('#audit_product_btn').click(function () {
-
+    $(function () {
+        $('#audit_product_btn').click(function () {
+            var id = $('#ProductForm').find('#product_id').val();
+            openModalDialog('/Admin/PerformAuditProduct/', { productId :id});
+        });
     });
+   
 </script>
+@if (product.ProductLevel == null)
+{
+    <div style="overflow:hidden;height:65px;line-height:65px;">
+        <div style="float:left;">
+            <h2>@ViewBag.Title</h2>
+        </div>
+        <div style="float:right;">
+            <button id="audit_product_btn" class="btn btn-warning">
+                <span class="glyphicon glyphicon-asterisk">
+                </span>
+                @if(product.Status== ProductStatus.FAILED)
+                {
+                    @Html.Raw("重新审核(设定级别)");
+                }
+                else
+                {
+                    @Html.Raw("审核(设定级别)");
+                }
+            </button>
+        </div>
+    </div>
+}
 
-<div style="overflow:hidden;height:65px;line-height:65px;">
-    <div style="float:left;">
-        <h2>@ViewBag.Title</h2>
-    </div>
-    <div style="float:right;">
-        <button id="audit_product_btn" class="btn btn-warning">
-            <span class="glyphicon glyphicon-asterisk">
-                审核(设定级别)
-            </span>
-        </button>
-    </div>
-</div>
 <hr/>
 
 @using (Html.BeginForm("SaveProduct", "Admin", FormMethod.Post, new { @class = "form-horizontal", role = "form", id = "ProductForm" }))
 {
     @Html.AntiForgeryToken()
+    <input type="hidden" id="product_id" value="@product.Id"/>
     <div class="form-group">
         <label class="control-label col-md-2" for="CategoryId">名称</label>
         <div class="col-md-8">

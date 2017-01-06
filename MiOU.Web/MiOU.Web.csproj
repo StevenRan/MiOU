@@ -459,6 +459,9 @@
     <Content Include="Views\Admin\PendingAuditProducts.cshtml" />
     <Content Include="Views\Admin\AuditProduct.cshtml" />
     <Content Include="Views\Admin\SetProductLevelPrices.cshtml" />
+    <Content Include="Views\Admin\PerformAuditProduct.cshtml" />
+    <Content Include="Views\Admin\MyAuditProducts.cshtml" />
+    <Content Include="Views\Admin\SearchProducts.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

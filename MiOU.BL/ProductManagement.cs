@@ -556,7 +556,21 @@ namespace MiOU.BL
             }
         }
 
-        public bool AuditProduct(int productId, int status, string message,float ePrice,float percentage)
+        public bool AuditProduct(MAuditProduct auditProduct)
+        {
+            if (auditProduct.AuditResult == 2)
+            {
+                auditProduct.EvalutedPercentage = 0;
+                auditProduct.EvalutedPrice = 0;
+            }
+            else
+            {
+                auditProduct.EvalutedPercentage = auditProduct.EvalutedPercentage / 100;
+            }
+            return AuditProduct(auditProduct.ProductId,auditProduct.ProductLevel, auditProduct.AuditResult, auditProduct.Message, auditProduct.EvalutedPrice, auditProduct.EvalutedPercentage);
+        }
+
+        public bool AuditProduct(int productId,int productLevel, int status, string message,float ePrice,float percentage)
         {
             bool ret = false;
             if (string.IsNullOrEmpty(message))
@@ -589,7 +603,11 @@ namespace MiOU.BL
                 }
                 if (product.Status == status && status != 0)
                 {
-                    throw new MiOUException("不能进行同样结果的审核");
+                    return true;
+                }
+                if(product.EvaluatedPriceCategoryId>0)
+                {
+                    throw new MiOUException("藕品等级已经设置过，不能重复审核藕品");
                 }
 
                 product.Status = status;
@@ -598,6 +616,7 @@ namespace MiOU.BL
                 product.AuditUserId = CurrentLoginUser.User.UserId;
                 product.EvaluatedPercentage = percentage;
                 product.EvaluatedPrice = ePrice;
+                product.EvaluatedPriceCategoryId = productLevel;
                 db.SaveChanges();
                 GenerateProductPrice(product, db);
                 ret = true;
@@ -681,23 +700,16 @@ namespace MiOU.BL
             {
                 return;
             }
-
             int[] priceCategories = (from cate in prices select cate.PriceCategory).ToArray<int>();
-            float rPrice = product.EvaluatedPrice * product.EvaluatedPercentage;
-            int ePriceCatge = (from epc in db.EvaluatedPriceCategory where epc.StartPrice <= rPrice && epc.EndPrice<rPrice select epc.Id).FirstOrDefault<int>();
-            if(ePriceCatge==0)
-            {
-                return;
-            }
-
-            List<EvaluatedPrice> eprices = (from eprice in db.EvaluatedPrice where eprice.EvaluatedPriceCategory==ePriceCatge && priceCategories.Contains(eprice.PriceCategory) select eprice).ToList<EvaluatedPrice>();
+            float rPrice = product.EvaluatedPrice * product.EvaluatedPercentage; 
+            List<EvaluatedPrice> eprices = (from eprice in db.EvaluatedPrice where eprice.EvaluatedPriceCategory==product.EvaluatedPriceCategoryId && priceCategories.Contains(eprice.PriceCategory) select eprice).ToList<EvaluatedPrice>();
             foreach(EvaluatedPrice eprice in eprices)
             {
                 ProductPrice price = (from pdtPrice in prices where pdtPrice.ProductId == product.Id && pdtPrice.PriceCategory == eprice.PriceCategory select pdtPrice).FirstOrDefault<ProductPrice>();
                 if (price != null)
                 {
                     price.EvaluatedPriceId = eprice.Id;
-                    price.Price = eprice.Price;                  
+                    //price.Price = eprice.Price;                  
                 }
             }
             db.SaveChanges();

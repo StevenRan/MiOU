@@ -1,0 +1,86 @@
+﻿@using GridMvc.Html
+@using GridMvc.DBGrid
+@using MiOU.Entities.Beans;
+@using MiOU.Entities.Models
+@model MAuditProduct
+@{
+    ViewBag.Title = "审核藕品";
+    Layout = Request.IsAjaxRequest()?null: "~/Views/Shared/_adminLayout.cshtml";
+}
+<script>
+    $(function () {
+        $('#audit_pass').change(function () {
+            if ($('#audit_pass').is(":checked")) {
+                $('#audit_info').show();
+            }
+        });
+        $('#audit_reject').change(function () {
+            if ($('#audit_reject').is(":checked")) {
+                $('#audit_info').hide();
+            }
+        });
+    });
+</script>
+<h2>@ViewBag.Title</h2>
+<hr />
+
+@using (Html.BeginForm("PerformAuditProduct", "Admin", FormMethod.Post, new { @class = "form-horizontal", role = "form", id = "PerformAuditProductForm" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(model=>model.ProductId)
+    <div class="form-group">
+        @Html.LabelFor(model => model.AuditResult, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-8">   
+            <div class="btn-group" data-toggle="buttons">
+                <label class="btn btn-default">
+                    <input id="audit_pass" name="AuditResult" value="1" type="radio" checked>通过
+                </label>
+                <label class="btn btn-default">
+                    <input id="audit_reject" name="AuditResult" value="2" type="radio">驳回
+                </label>              
+            </div>
+                    
+            @*@Html.DropDownListFor(model => model.AuditResult, (SelectList)ViewBag.Status, htmlAttributes: new { @class = "form-control input_reg" })
+            @Html.ValidationMessageFor(model => model.AuditResult, "", new { @class = "text-danger" })*@
+        </div>
+    </div>
+    <div id="audit_info">
+        <div class="form-group">
+            @Html.LabelFor(model => model.ProductLevel, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-8">
+                @Html.DropDownListFor(model => model.ProductLevel, (SelectList)ViewBag.Levels, htmlAttributes: new { @class = "form-control input_reg" })
+                @Html.ValidationMessageFor(model => model.ProductLevel, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.EvalutedPercentage, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-8">
+                @Html.DropDownListFor(model => model.EvalutedPercentage, (SelectList)ViewBag.Percentages, htmlAttributes: new { @class = "form-control input_reg" })
+                @Html.ValidationMessageFor(model => model.EvalutedPercentage, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.EvalutedPrice, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.EvalutedPrice, new { htmlAttributes = new { @class = "form-control input_reg" } })
+                @Html.ValidationMessageFor(model => model.EvalutedPrice, "", new { @class = "text-danger" })
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.Message, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-8">
+            @Html.TextAreaFor(model => model.Message, htmlAttributes: new { @class = "form-control mTA1" })
+            @Html.ValidationMessageFor(model => model.Message, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-8">
+            <button id="btn_save_audit_product" type="submit" class="btn btn-warning">
+                <span class="glyphicon glyphicon-save"></span> 保存
+            </button>
+        </div>
+    </div>
+}
+

@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using GridMvc;
 using GridMvc.DBGrid;
 using MiOU.Entities.Beans;
+using MiOU.Entities.Models;
 namespace MiOU.Web.Models
 {
     public class MiOuSearchUserModel
@@ -11,6 +12,13 @@ namespace MiOU.Web.Models
         public SearchUserModel SearchModel { get; set; }
 
         public DBGrid<BUser> UserGrid { get; set; }
+    }
+
+    public class MiOuSearchProductModel
+    {
+        public MSearchProduct SearchModel { get; set; }
+
+        public DBGrid<BProduct> ProductGrid { get; set; }
     }
 
     public class SearchUserModel

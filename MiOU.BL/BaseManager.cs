@@ -75,6 +75,13 @@ namespace MiOU.BL
             os.Add(new BObject { Id = 100, Name = "全新" });
             return os.OrderByDescending(o=>o.Id).ToList<BObject>();
         }
+        public List<BObject> GetAduitStatus()
+        {
+            List<BObject> os = new List<BObject>();
+            os.Add(new BObject { Id = 1, Name = "通过" });
+            os.Add(new BObject { Id = 2, Name = "不通过" });           
+            return os.OrderByDescending(o => o.Id).ToList<BObject>();
+        }
         public BUser GetUserInfoByNickName(string nickName)
         {
             if (string.IsNullOrEmpty(nickName))

@@ -145,7 +145,7 @@ namespace MiOU.Web.Controllers
             List<BProduct> products = pdtMgr.SearchProducts(null,null,0, User.Identity.GetUserId<int>(), 0, 0, 0, 0, 0, 0, null, pageSize, page, false, out total);
             PageItemsResult<BProduct> result = new PageItemsResult<BProduct>() { CurrentPage = page, PageSize = pageSize, EnablePaging = true, Items = products, TotalRecords = total };
             DBGrid<BProduct> grid = new DBGrid<BProduct>(result);
-            return View("MyProducts", grid);
+            return View(grid);
         }
 
         public ActionResult PendingAuditProducts()
@@ -168,6 +168,90 @@ namespace MiOU.Web.Controllers
             PageItemsResult<BProduct> result = new PageItemsResult<BProduct>() { CurrentPage = page, PageSize = pageSize, EnablePaging = true, Items = products, TotalRecords = total };
             DBGrid<BProduct> grid = new DBGrid<BProduct>(result);
             return View("PendingAuditProducts", grid);
+        }
+
+        public ActionResult SearchProducts(MSearchProduct searchModel)
+        {
+            ProductManagement pdtMgr = new ProductManagement(User.Identity.GetUserId<int>());
+            List<BArea> provinces = pdtMgr.GetAreas(0);
+            List<BArea> cities = new List<BArea>();
+            List<BArea> districts = new List<BArea>();
+            ViewBag.Provinces = new SelectList(provinces, "Id", "Name");
+            if (searchModel.Province != null && (int)searchModel.Province > 0)
+            {
+                BArea province = (from p in provinces where p.Id == searchModel.Province select p).FirstOrDefault<BArea>();
+                if (province != null)
+                {
+                    if (province.IsDirect)
+                    {
+                        cities = new List<BArea>();
+                        cities.Add(province);
+                        searchModel.City = province.Id;
+                        districts = pdtMgr.GetAreas((int)searchModel.Province);
+                    }
+                    else
+                    {
+                        cities = pdtMgr.GetAreas((int)searchModel.Province);
+                        if (searchModel.City == null)
+                        {
+                            districts = new List<BArea>();
+                        }
+                        else
+                        {
+                            districts = pdtMgr.GetAreas((int)searchModel.City);
+                        }
+                    }
+                }
+            }
+            ViewBag.Cities = new SelectList(cities, "Id", "Name");
+            ViewBag.Districts = new SelectList(districts, "Id", "Name");
+            ViewBag.ProductLevels = new SelectList(pdtMgr.GetProductLevels(0, 0, 0, null), "Id", "Name");
+            ViewBag.Percentages = new SelectList(pdtMgr.GetPercentages(), "Id", "Name");
+            ViewBag.RentTypes = new SelectList(pdtMgr.GetRentTypes(), "Id", "Name");
+            ViewBag.DeliverTypes = new SelectList(pdtMgr.GetDeliveryTypes(), "Id", "Name");
+            int page = 1;
+            int pageSize = 40;
+            if (!string.IsNullOrEmpty(Request["page"]))
+            {
+                int.TryParse(Request["page"], out page);
+            }
+            if (!string.IsNullOrEmpty(Request["pageSize"]))
+            {
+                int.TryParse(Request["pageSize"], out pageSize);
+            }
+            int total = 0;
+            return View();
+        }
+
+        [HttpGet]
+        public ActionResult PerformAuditProduct(int? productId)
+        {
+            MAuditProduct map = new MAuditProduct() { ProductId=productId!=null?(int)productId:0};
+            ProductManagement pdtMgr = new ProductManagement(User.Identity.GetUserId<int>());
+            List<BProductLevel> productLevels = pdtMgr.GetProductLevels(0,0,0,null);
+            ViewBag.Levels =new SelectList(productLevels,"Id","Name");
+            ViewBag.Status = new SelectList(pdtMgr.GetAduitStatus(),"Id","Name");
+            ViewBag.Percentages = new SelectList(pdtMgr.GetPercentages(),"Id","Name");
+            return View(map);
+        }
+        [HttpPost]
+        public ActionResult PerformAuditProduct(MAuditProduct map)
+        {
+            ProductManagement pdtMgr = new ProductManagement(User.Identity.GetUserId<int>());
+            try
+            {
+                pdtMgr.AuditProduct(map);
+            }
+            catch(MiOUException mex)
+            {
+                return ShowError(mex.Message);
+            }
+            catch(Exception ex)
+            {
+                logger.Fatal(ex);
+                return ShowError("致命错误，请联系系统管理员");
+            }
+            return Redirect("/Admin/AuditProduct?productId="+map.ProductId);
         }
         public ActionResult AuditProduct()
         {

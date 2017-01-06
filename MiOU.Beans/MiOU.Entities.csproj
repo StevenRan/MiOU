@@ -74,7 +74,9 @@
     <Compile Include="Exceptions\MiOUException.cs" />
     <Compile Include="MiOUConstants.cs" />
     <Compile Include="MiOUEnum.cs" />
+    <Compile Include="Models\MAuditProduct.cs" />
     <Compile Include="Models\MProduct.cs" />
+    <Compile Include="Models\MSearchProduct.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />

@@ -1,0 +1,76 @@
+﻿@using MiOU.BL;
+@using MiOU.Entities.Beans;
+@using MiOU.Entities.Models;
+@using GridMvc.Html;
+@using GridMvc.DBGrid
+@using MiOU.Web.Models;
+@model MiOuSearchProductModel
+@{
+    ViewBag.Title = "搜索藕品";
+    Layout = "~/Views/Shared/_adminLayout.cshtml";
+}
+
+<h2>@ViewBag.Title</h2>
+<hr />
+@using (Html.BeginForm("SearchUsers", "Admin", FormMethod.Get, new { @class = "form-horizontal", role = "form" }))
+{
+    @Html.AntiForgeryToken()
+    <div style="overflow:hidden;width:100%;">
+        <div style="float:left; width:33%;">
+            <div class="form-group">
+                @Html.LabelFor(model => model.SearchModel.ProductLevel, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-8">
+                    @Html.DropDownListFor(model => model.SearchModel.ProductLevel, (SelectList)ViewBag.ProductLevels, "--选择等级--", new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.SearchModel.ProductLevel, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.SearchModel.Percentage, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-8">
+                    @Html.DropDownListFor(model => model.SearchModel.Percentage, (SelectList)ViewBag.Percentages, "--选择层色--", new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.SearchModel.Percentage, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.SearchModel.RentType, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-8">
+                    @Html.DropDownListFor(model => model.SearchModel.RentType, (SelectList)ViewBag.RentTypes, "--选择租赁类型--", new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.SearchModel.RentType, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.SearchModel.DeliverType, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-8">
+                    @Html.DropDownListFor(model => model.SearchModel.DeliverType, (SelectList)ViewBag.DeliverTypes, "--选择交付类型--", new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.SearchModel.DeliverType, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+        </div>
+        <div style="float:left; width:33%;"></div>
+        <div style="float:left; width:33%;">
+            <div class="form-group">
+                @Html.LabelFor(model => model.SearchModel.Province, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-8">
+                    @Html.DropDownListFor(model => model.SearchModel.Province, (SelectList)ViewBag.Provinces, "--选择省份--", new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.SearchModel.Province, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.SearchModel.City, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-8">
+                    @Html.DropDownListFor(model => model.SearchModel.City, (SelectList)ViewBag.Cities, "--选择省份--", new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.SearchModel.City, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.SearchModel.District, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-8">
+                    @Html.DropDownListFor(model => model.SearchModel.District, (SelectList)ViewBag.Districts, "--选择区域--", new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.SearchModel.District, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
