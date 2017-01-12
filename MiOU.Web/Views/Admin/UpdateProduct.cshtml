@@ -5,7 +5,29 @@
     ViewBag.Title = "新建藕品";
     Layout = "~/Views/Shared/_adminLayout.cshtml";
 }
+<script>
+    var BASE_URL = '@Url.Content("~/")';
+    $(function () {
+        $('#CategoryId').change(function () {
+            var _this = this;
+            var cate = $(this).val();
+            $.post(
+                BASE_URL + 'api/Common/GetCategories',
+                { parentId: cate },
+                function (data) {
+                    if (data.Status == 'OK') {
+                        $('#ChildCategoryId').empty();
+                        //$('<option value="">--选择子类别--</option>').appendTo($('#SearchModel_ChildCategory'));
+                        $(data.Result).each(function (index, item) {
+                            $('<option value="' + item.Id + '">' + item.Name + '</option>').appendTo($('#ChildCategoryId'));
+                        });
+                    }
+                }
+            );
+        });
+    });
 
+</script>
 <h2>@ViewBag.Title</h2>
 <script>
     var gg = [];

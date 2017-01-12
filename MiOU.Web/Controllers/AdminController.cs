@@ -209,6 +209,13 @@ namespace MiOU.Web.Controllers
             ViewBag.Percentages = new SelectList(pdtMgr.GetPercentages(), "Id", "Name");
             ViewBag.RentTypes = new SelectList(pdtMgr.GetRentTypes(), "Id", "Name");
             ViewBag.DeliverTypes = new SelectList(pdtMgr.GetDeliveryTypes(), "Id", "Name");
+            ViewBag.AStatus = new SelectList(pdtMgr.GetAduitStatus(), "Id", "Name");
+            ViewBag.Cates = new SelectList(pdtMgr.GetCategories(0), "Id", "Name");
+            ViewBag.CCates = new SelectList(new List<BObject>(), "Id", "Name");
+            if(searchModel.Category!=null && (int)searchModel.Category>0)
+            {
+                ViewBag.CCates = new SelectList(pdtMgr.GetCategories((int)searchModel.Category), "Id", "Name");
+            }
             int page = 1;
             int pageSize = 40;
             if (!string.IsNullOrEmpty(Request["page"]))
@@ -220,7 +227,16 @@ namespace MiOU.Web.Controllers
                 int.TryParse(Request["pageSize"], out pageSize);
             }
             int total = 0;
-            return View();
+
+            List<BProduct> products = pdtMgr.SearchProducts(null, null, 0, 0, searchModel.Category != null ? (int)searchModel.Category : 0,
+                                                            searchModel.ChildCategory!=null?(int)searchModel.ChildCategory:0,searchModel.RentType!=null?(int)searchModel.RentType:0,
+                                                            searchModel.Province!=null?(int)searchModel.Province:0,searchModel.City!=null?(int)searchModel.City:0,searchModel.District!=null?(int)searchModel.District:0,
+                                                            searchModel.Keyword,pageSize,page,false,out total);
+
+            PageItemsResult<BProduct> result = new PageItemsResult<BProduct>() { CurrentPage=page,PageSize=pageSize, EnablePaging=true, Items=products, TotalRecords=total };
+            DBGrid<BProduct> grid = new DBGrid<BProduct>(result);
+            MiOuSearchProductModel model = new MiOuSearchProductModel() { ProductGrid = grid, SearchModel = searchModel };
+            return View(model);
         }
 
         [HttpGet]
@@ -252,6 +268,11 @@ namespace MiOU.Web.Controllers
                 return ShowError("致命错误，请联系系统管理员");
             }
             return Redirect("/Admin/AuditProduct?productId="+map.ProductId);
+        }
+
+        public ActionResult ProductDetail(int? productId)
+        {
+            return View();
         }
         public ActionResult AuditProduct()
         {

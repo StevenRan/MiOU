@@ -17,7 +17,7 @@ namespace MiOU.Web.Controllers.api
         {
 
         }
-        [HttpPost,HttpGet]
+        [HttpPost]
         public ApiMessage GetAreaByParent()
         {
             ApiMessage message = new ApiMessage();
@@ -25,6 +25,20 @@ namespace MiOU.Web.Controllers.api
             int parentId = 0;
             int.TryParse(request["pId"],out parentId);
             List<BArea> ares = manager.GetAreas(parentId);
+            message.Status = "OK";
+            message.Message = "";
+            message.Result = ares;
+            return message;
+        }
+
+        [HttpPost]
+        public ApiMessage GetCategories()
+        {
+            ApiMessage message = new ApiMessage();
+            this.IniRequest();
+            int parentId = 0;
+            int.TryParse(request["parentId"], out parentId);
+            List<BCategory> ares = manager.GetCategories(parentId);
             message.Status = "OK";
             message.Message = "";
             message.Result = ares;

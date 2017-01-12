@@ -4,11 +4,81 @@
 @using GridMvc.Html;
 @using GridMvc.DBGrid
 @using MiOU.Web.Models;
+@using MiOU.Util;
 @model MiOuSearchProductModel
 @{
     ViewBag.Title = "搜索藕品";
     Layout = "~/Views/Shared/_adminLayout.cshtml";
 }
+
+<script>
+    var BASE_URL = '@Url.Content("~/")';
+    $(function () {
+        $('#SearchModel_Category').change(function () {
+            var _this = this;
+            var cate = $(this).val();
+            $.post(
+                BASE_URL+'api/Common/GetCategories',
+                { parentId :cate},
+                function (data) {
+                    if (data.Status == 'OK') {
+                        $('#SearchModel_ChildCategory').empty();
+                        $('<option value="">--选择子类别--</option>').appendTo($('#SearchModel_ChildCategory'));
+                        $(data.Result).each(function (index, item) {
+                            $('<option value="' + item.Id + '">' + item.Name + '</option>').appendTo($('#SearchModel_ChildCategory'));
+                        });
+                    }
+                }
+            );
+        });
+
+        $('#SearchModel_Province').change(function () {
+            var parentId = $('#SearchModel_Province').val();
+            var parentName = $('#SearchModel_Province option:selected').text();
+            $.post(
+                BASE_URL + 'api/Common/GetAreaByParent',
+                { pId: parentId },
+                function (res, status) {
+                    if (res.Status == "OK") {
+                        $('#SearchModel_City').empty();
+                        $('#SearchModel_District').empty();
+                        $('#SearchModel_District').append("<option value=\"\">--选择区域--</option>");
+                        if (parentId == "1" || parentId == "9" || parentId == "2" || parentId == "22") {
+                            $('#SearchModel_City').append("<option value=\"" + parentId + "\">" + parentName + "</option>");
+                            $('#SearchModel_District').empty();
+                            $('#SearchModel_District').append("<option value=\"\">--选择区域--</option>");
+                            $(res.Result).each(function (index, item) {
+                                $('#SearchModel_District').append("<option value=\"" + item.Id + "\">" + item.Name + "</option>");
+                            });
+                        } else {
+                            $('#SearchModel_City').append("<option value=\"\">--选择城市--</option>");
+                            $(res.Result).each(function (index, item) {
+                                $('#SearchModel_City').append("<option value=\"" + item.Id + "\">" + item.Name + "</option>");
+                            });
+                        }
+                    }
+                }
+            );
+        });
+
+        $('#SearchModel_City').change(function () {
+            $.post(
+               BASE_URL + 'api/Common/GetAreaByParent',
+               { pId: $('#SearchModel_City').val() },
+               function (res, status) {
+                   if (res.Status == "OK") {
+                       $('#SearchModel_District').empty();
+                       $('#SearchModel_District').append("<option value=\"\">--选择区域--</option>");
+                       $(res.Result).each(function (index, item) {
+                           $('#SearchModel_District').append("<option value=\"" + item.Id + "\">" + item.Name + "</option>");
+                       });
+                   }
+               }
+           );
+        });
+
+    });
+</script>
 
 <h2>@ViewBag.Title</h2>
 <hr />
@@ -18,28 +88,28 @@
     <div style="overflow:hidden;width:100%;">
         <div style="float:left; width:33%;">
             <div class="form-group">
-                @Html.LabelFor(model => model.SearchModel.ProductLevel, htmlAttributes: new { @class = "control-label col-md-2" })
+                @Html.LabelFor(model => model.SearchModel.ProductLevel, htmlAttributes: new { @class = "control-label col-md-3" })
                 <div class="col-md-8">
                     @Html.DropDownListFor(model => model.SearchModel.ProductLevel, (SelectList)ViewBag.ProductLevels, "--选择等级--", new { @class = "form-control" })
                     @Html.ValidationMessageFor(model => model.SearchModel.ProductLevel, "", new { @class = "text-danger" })
                 </div>
             </div>
             <div class="form-group">
-                @Html.LabelFor(model => model.SearchModel.Percentage, htmlAttributes: new { @class = "control-label col-md-2" })
+                @Html.LabelFor(model => model.SearchModel.Percentage, htmlAttributes: new { @class = "control-label col-md-3" })
                 <div class="col-md-8">
                     @Html.DropDownListFor(model => model.SearchModel.Percentage, (SelectList)ViewBag.Percentages, "--选择层色--", new { @class = "form-control" })
                     @Html.ValidationMessageFor(model => model.SearchModel.Percentage, "", new { @class = "text-danger" })
                 </div>
             </div>
             <div class="form-group">
-                @Html.LabelFor(model => model.SearchModel.RentType, htmlAttributes: new { @class = "control-label col-md-2" })
+                @Html.LabelFor(model => model.SearchModel.RentType, htmlAttributes: new { @class = "control-label col-md-3" })
                 <div class="col-md-8">
                     @Html.DropDownListFor(model => model.SearchModel.RentType, (SelectList)ViewBag.RentTypes, "--选择租赁类型--", new { @class = "form-control" })
                     @Html.ValidationMessageFor(model => model.SearchModel.RentType, "", new { @class = "text-danger" })
                 </div>
             </div>
             <div class="form-group">
-                @Html.LabelFor(model => model.SearchModel.DeliverType, htmlAttributes: new { @class = "control-label col-md-2" })
+                @Html.LabelFor(model => model.SearchModel.DeliverType, htmlAttributes: new { @class = "control-label col-md-3" })
                 <div class="col-md-8">
                     @Html.DropDownListFor(model => model.SearchModel.DeliverType, (SelectList)ViewBag.DeliverTypes, "--选择交付类型--", new { @class = "form-control" })
                     @Html.ValidationMessageFor(model => model.SearchModel.DeliverType, "", new { @class = "text-danger" })
@@ -47,30 +117,80 @@
             </div>
 
         </div>
-        <div style="float:left; width:33%;"></div>
         <div style="float:left; width:33%;">
             <div class="form-group">
-                @Html.LabelFor(model => model.SearchModel.Province, htmlAttributes: new { @class = "control-label col-md-2" })
+                @Html.LabelFor(model => model.SearchModel.Category, htmlAttributes: new { @class = "control-label col-md-3" })
+                <div class="col-md-8">
+                    @Html.DropDownListFor(model => model.SearchModel.Category, (SelectList)ViewBag.Cates, "--选择类别--", new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.SearchModel.Category, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.SearchModel.ChildCategory, htmlAttributes: new { @class = "control-label col-md-3" })
+                <div class="col-md-8">
+                    @Html.DropDownListFor(model => model.SearchModel.ChildCategory, (SelectList)ViewBag.CCates, "--选择子类别--", new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.SearchModel.ChildCategory, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.SearchModel.Status, htmlAttributes: new { @class = "control-label col-md-3" })
+                <div class="col-md-8">
+                    @Html.DropDownListFor(model => model.SearchModel.Status, (SelectList)ViewBag.AStatus, "--审核状态--", new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.SearchModel.Status, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.SearchModel.Keyword, htmlAttributes: new { @class = "control-label col-md-3" })
+                <div class="col-md-8">
+                    @Html.EditorFor(model => model.SearchModel.Keyword, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.SearchModel.Keyword, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+        <div style="float:left; width:33%;">
+            <div class="form-group">
+                @Html.LabelFor(model => model.SearchModel.Province, htmlAttributes: new { @class = "control-label col-md-3" })
                 <div class="col-md-8">
                     @Html.DropDownListFor(model => model.SearchModel.Province, (SelectList)ViewBag.Provinces, "--选择省份--", new { @class = "form-control" })
                     @Html.ValidationMessageFor(model => model.SearchModel.Province, "", new { @class = "text-danger" })
                 </div>
             </div>
             <div class="form-group">
-                @Html.LabelFor(model => model.SearchModel.City, htmlAttributes: new { @class = "control-label col-md-2" })
+                @Html.LabelFor(model => model.SearchModel.City, htmlAttributes: new { @class = "control-label col-md-3" })
                 <div class="col-md-8">
-                    @Html.DropDownListFor(model => model.SearchModel.City, (SelectList)ViewBag.Cities, "--选择省份--", new { @class = "form-control" })
+                    @Html.DropDownListFor(model => model.SearchModel.City, (SelectList)ViewBag.Cities, "--选择城市--", new { @class = "form-control" })
                     @Html.ValidationMessageFor(model => model.SearchModel.City, "", new { @class = "text-danger" })
                 </div>
             </div>
             <div class="form-group">
-                @Html.LabelFor(model => model.SearchModel.District, htmlAttributes: new { @class = "control-label col-md-2" })
+                @Html.LabelFor(model => model.SearchModel.District, htmlAttributes: new { @class = "control-label col-md-3" })
                 <div class="col-md-8">
                     @Html.DropDownListFor(model => model.SearchModel.District, (SelectList)ViewBag.Districts, "--选择区域--", new { @class = "form-control" })
                     @Html.ValidationMessageFor(model => model.SearchModel.District, "", new { @class = "text-danger" })
                 </div>
             </div>
+            <div class="form-group">
+                <div class="col-md-offset-3 col-md-8">
+                    <button id="btn_save_product" type="submit" class="btn btn-warning">
+                        <span class="glyphicon glyphicon-search"></span> 搜索
+                    </button>
+                </div>
+            </div>
         </div>
     </div>
 }
+
+@Html.Grid(Model.ProductGrid).Columns(columns =>
+{
+    columns.Add(c => c.Id).Titled("编号").Filterable(false).SetWidth("4%");
+    columns.Add(c => c.Name).Titled("名称").Filterable(false).SetWidth("15%").Encoded(false)
+      .Sanitized(false).RenderValueAs(c=> Html.Raw("<a target=\"_blank\" href=\"/Admin/ProductDetail?productId=" + c.Id + "\">"+c.Name+"</a>"));
+    columns.Add().Titled("类别").Filterable(false).RenderValueAs(c => c.PCategory.Name + " - " + c.Category.Name).SetWidth("10%");
+    columns.Add().Titled("等级").Filterable(false).RenderValueAs(c => c.ProductLevel.Name+" ("+c.ProductLevel.StartPrice+"元 - "+c.ProductLevel.EndPrice+"元)").SetWidth("12%");
+
+    columns.Add().Titled("审核状态").Filterable(false).RenderValueAs(c => Html.Raw(c.Status == ProductStatus.CREATED ? "待审核" : c.Status == ProductStatus.FAILED ? "失败" : c.Status == ProductStatus.PASSED ? "通过" : "")).SetWidth("5%");
+    columns.Add().Titled("审核时间").SetWidth("8%").Filterable(false).RenderValueAs(c => Html.Raw(DateTimeUtil.ConvertToDateTime(c.AuditTime).ToString("yyyy-MM-dd HH:mm")));
+
+
+}).Sortable(false)
 
