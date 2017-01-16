@@ -19,11 +19,12 @@
     <div class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
             <div class="navbar-header">
-                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
+               
                 <a class="navbar-brand" style="padding:10px;"  href="/Home/Index"><img style="width:30px;height:30px;" src="~/Content/Images/logo.png" /></a>
             </div>
           
@@ -35,21 +36,22 @@
                     <li>@Html.ActionLink("我的米藕", "My", "Account")</li>
                    
                 </ul>
-                <div class="col-sm-3 col-md-5">
-                    <form class="navbar-form" role="search">
-                        <div class="form-group">
-                            <input type="text" class="form-control" placeholder="搜索">
-                        </div>
-                        <button type="submit" class="btn btn-default btn-primary">搜索</button>
-                        <button type="submit" class="btn btn-default btn-primary">添加藕品</button>
-                    </form>
-                </div>
-               
-                    @Html.Partial("_LoginPartial")
-                </div>
+                 @Html.Partial("_LoginPartial")
+             </div>
         </div>
     </div>
-  
+    @*<div class="navbar navbar-inverse" style="background:#FFF;border-radius:0;border:0;">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>               
+                <a class="navbar-brand" style="padding:10px;"  href="/Home/Index"><img style="width:30px;height:30px;" src="~/Content/Images/logo.png" /></a>
+            </div>
+        </div>
+    </div>*@
     <div class="container">
             @RenderBody()
 

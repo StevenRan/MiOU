@@ -41,6 +41,7 @@ namespace MiOU.Entities.Beans
         public BVIPLevel VIPRentLevel { get; set; }
         public string Contact { get; set; }
         public string Phone { get; set; }
+        public int RentTimes { get; set; }
         public BProductLevel ProductLevel { get; set; }
     }
 }

@@ -28,6 +28,7 @@ namespace MiOU.DAL
         public int AuditUserId { get; set; }
         public long AuditTime { get; set; }
         public string AuditMessage { get; set; }
+        public int EvaluatedPriceCategoryId { get; set; }
         public float EvaluatedPrice { get; set; }
         public float EvaluatedPercentage { get; set; }
         public int DeliveryType { get; set; }
@@ -46,6 +47,6 @@ namespace MiOU.DAL
         public int VIPLevel { get; set; }
         public string Contact { get; set; }
         public string Phone { get; set; }
-        public int EvaluatedPriceCategoryId { get; set; }
+        public int RentTimes { get; set; }
     }
 }

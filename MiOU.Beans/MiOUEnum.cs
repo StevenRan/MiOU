@@ -6,6 +6,17 @@ using System.Threading.Tasks;
 
 namespace MiOU.Entities
 {
+    public enum ProductOrderField
+    {
+        RENTTIMES,
+        CREATED,
+        UPDATED,
+        REPERTORY,
+        OWNER,
+        RENTTYPE,
+        SHIPTYPE
+    }
+   
     public enum ApiCallStatus
     {
         OK,

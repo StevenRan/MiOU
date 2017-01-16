@@ -18,6 +18,25 @@ namespace MiOU.BL
         {
         }
 
+        public List<BCategory> GetHomeProdustListByCategory(int province)
+        {
+            List<BCategory> categories = new List<BCategory>();
+            categories = GetCategories(0, true);
+            if(categories.Count>0)
+            {
+                using (MiOUEntities db = new MiOUEntities())
+                {
+                    foreach (BCategory category in categories)
+                    {
+                        int total = 0;
+                        List<BProduct> products = SearchProducts(null, null, 0, 0, category.Id,0, 0,province,  0, 0,null, 10, 1, true, out total, ProductOrderField.RENTTIMES);
+                        category.HotProducts = products;
+                    }
+                }                    
+            }           
+            return categories;
+        }
+
         public ProductManagement(BUser user) : base(user)
         {
 
@@ -324,7 +343,7 @@ namespace MiOU.BL
             return levels;
         }
 
-        public List<BProduct> SearchProducts(int[] productIds,int[] states,int userId,int auditUserId, int pId,int cId,int rentType,int provinceId,int cityId,int districtId,string keyword,int pageSize,int page,bool getDetail,out int total)
+        public List<BProduct> SearchProducts(int[] productIds,int[] states,int userId,int auditUserId, int pId,int cId,int rentType,int provinceId,int cityId,int districtId,string keyword,int pageSize,int page,bool getDetail,out int total, ProductOrderField pOrder= ProductOrderField.RENTTIMES)
         {
             List<BProduct> products = null;
             MiOUEntities db = null;
@@ -382,6 +401,7 @@ namespace MiOU.BL
                                User = llowner != null ? new BUser() { User = llowner } : null,
                                XPlot = p.XPlot,
                                YPlot = p.YPlot,
+                               RentTimes= p.RentTimes,
                                ProductLevel= lllevel!=null?new BProductLevel { Name= lllevel.Name,Id= lllevel.Id,StartPrice= lllevel.StartPrice,EndPrice= lllevel.EndPrice } :null
                            };
                 if(productIds!=null && productIds.Length>0)
@@ -428,7 +448,32 @@ namespace MiOU.BL
                 {
                     linq = linq.Where(a=>(a.Name.Contains(keyword) || a.Address.Contains(keyword) || a.Nearby.Contains(keyword) || a.Apartment.Contains(keyword)));
                 }
-                linq = linq.OrderByDescending(a=>a.Created);
+                switch(pOrder)
+                {
+                    case ProductOrderField.OWNER:
+                        linq = linq.OrderByDescending(a => a.User.Id);
+                        break;
+                    case ProductOrderField.RENTTIMES:
+                        linq = linq.OrderByDescending(a => a.RentTimes);
+                        break;
+                    case ProductOrderField.RENTTYPE:
+                        linq = linq.OrderByDescending(a => a.RentType.Id);
+                        break;
+                    case ProductOrderField.SHIPTYPE:
+                        linq = linq.OrderByDescending(a => a.DeliveryType.Id);
+                        break;
+                    case ProductOrderField.UPDATED:
+                        linq = linq.OrderByDescending(a => a.Updated);
+                        break;
+                    case ProductOrderField.REPERTORY:
+                        linq = linq.OrderByDescending(a => a.Repertory);
+                        break;
+                    case ProductOrderField.CREATED:
+                    default:
+                        linq = linq.OrderByDescending(a => a.Created);
+                        break;
+                }
+                
                 total = linq.Count();
                 if(page<=0)
                 {

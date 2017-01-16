@@ -15,5 +15,6 @@ namespace MiOU.Entities.Beans
         public List<BCategory> ChildRen { get; set; }
         public string IconPhotoMobile { get; set; }
         public string IconPhotoPC { get; set; }
+        public List<BProduct> HotProducts { get; set; }
     }
 }

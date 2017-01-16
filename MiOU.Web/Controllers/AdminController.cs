@@ -272,7 +272,22 @@ namespace MiOU.Web.Controllers
 
         public ActionResult ProductDetail(int? productId)
         {
-            return View();
+            int id = 0;
+            int.TryParse(productId!=null?productId.ToString():"0", out id);
+            if (productId <= 0)
+            {
+                return ShowError("请不要随意修改URL参数");
+            }
+            ProductManagement pdtMgr = new ProductManagement(User.Identity.GetUserId<int>());
+            int total = 0;
+            List<BProduct> products = pdtMgr.SearchProducts(new int[] { id }, null, User.Identity.GetUserId<int>(), 0, 0, 0, 0, 0, 0, 0, null, 1, 1, true, out total);
+            if (products.Count == 0)
+            {
+                return ShowError(string.Format("编号为{0}的产品不存在", productId));
+            }
+            BProduct product = products[0];
+            ViewBag.Product = product;
+            return View(product);
         }
         public ActionResult AuditProduct()
         {

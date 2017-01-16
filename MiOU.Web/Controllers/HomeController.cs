@@ -18,7 +18,10 @@ namespace MiOU.Web.Controllers
         // GET: Home
         public ActionResult Index()
         {
-            ProductManagement userMgr = new ProductManagement(User.Identity.GetUserId<int>());
+            ProductManagement pdtMgr = new ProductManagement(User.Identity.GetUserId<int>());
+            UserManagement userMgr = new UserManagement(User.Identity.GetUserId<int>());
+            List<BCategory> categories = pdtMgr.GetHomeProdustListByCategory(0);
+            ViewBag.Categories = categories;
             return View();
         }
     }

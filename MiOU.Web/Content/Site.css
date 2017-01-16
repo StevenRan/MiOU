@@ -1,5 +1,6 @@
 ﻿
 body{
+    background-color:#FFF;
     padding-top: 51px;
 }
 /* Set padding to keep content from hitting the edges */
@@ -13,6 +14,10 @@ body{
 */
 .dl-horizontal dt {
     white-space: normal;
+    width:100px;padding-top:5px;padding-bottom:5px;
+}
+.dl-horizontal dd {
+    margin-left:120px;padding-top:5px;padding-bottom:5px;
 }
 /*.container {
 padding-left:0px;
@@ -206,3 +211,123 @@ textarea.mTA1{
 .perLabel {
 width:auto;font-weight: normal;margin-left:4px;
 }
+
+.footContainer{
+    padding-top:100px;background-color:#F1F1F1;margin-top:20px;
+}
+    .footContainer .content {
+    padding:20px 0px 20px 0px;background-color:#FFF;
+    }
+    .footContainer .content .top{
+        height:80px;line-height:80px;color:#12BF60;text-align:center;border-bottom:1px solid #DFDFDF;font-size:30px;font-weight:bold;
+    }
+        .footContainer .content .middle {
+        padding:20px 20px 20px 20px;overflow:hidden;
+        }
+            .footContainer .content .middle .c {
+                width:14.2%;float:left;border-right:1px solid #DFDFDF;text-align:center;height:80px;
+            }
+            .footContainer .content .middle ul{
+                list-style:none;padding:0;margin:0;width:100%;
+            }
+                .footContainer .content .middle ul li {
+                    font-size:13px;
+                }
+            .footContainer .content .bottom {
+                text-align:center;font-size:12px;
+            }
+.hmain {
+    background-color:#F1F1F1;
+}
+.hmargin{
+    margin-top:50px;
+}
+.hc {
+    background-color:#FFF;   
+  }
+    .hc .title {
+        font-size:16px;
+        font-weight:bold;
+    }
+    .hc .more {
+        font-size:13px;
+    }
+.hcp {
+   
+    height:50px;
+    line-height:50px;
+    background-color:#FFF;
+    border-bottom:1px solid #DFDFDF;
+}
+.hcpc{
+    padding-left:20px;
+    padding-right:20px;
+}
+.hc .bar{
+    background-color:#FF6F5E;
+    height:100px;
+}
+    .hc .bar .box {
+        margin-top:20px;
+        padding:10px 10px 10px 10px;
+        color:#FFF;
+        
+        float:left;
+       
+    }
+.boxleft1{
+    margin-left:100px;
+}
+.boxfont1{
+    font-size:14px;
+    font-weight:bold;
+}
+.boxborder {
+     border-radius:3px 3px;
+     border:1px solid #FFF;
+}
+    .hc .bar .box .pt{
+        margin:0;
+    }
+
+.boxfont2{
+    font-size:13px;
+}
+.hcate{
+
+}
+.hcate .hctitle{
+    overflow:hidden;
+}
+.hcate .hctitle .category{
+    float:left;background-color:#6FA0FF;height:50px;line-height:30px;padding:10px 20px 10px 20px;color:#FFF;
+}
+.hcate .hctitle .category .alink{
+    margin-left:20px;
+    color:#FFF;
+    display:inline-block;
+    padding:0px 10px 0px 10px;
+    font-size:14px;
+    text-decoration:none;
+    cursor:pointer;
+    border-radius:3px 3px;
+    border:1px solid #FFF;
+}
+.hcate .hctitle .categoryList{
+    float:left;margin-left:20px;padding-top:16px;
+}
+    .hcate .hctitle .categoryList ul {
+        list-style:none;margin:0;padding:0;overflow:hidden;border:1px solid #DFDFDF;border-left:0px;
+    }
+        .hcate .hctitle .categoryList ul li {
+            float:left;font-size:16px;padding:5px 20px 5px 20px;border-left:1px solid #DFDFDF;
+        }
+    .hcate .hctitle .categoryList ul li .alinkc{
+        color:#000;
+        display:inline-block;       
+        font-size:16px;
+        text-decoration:none;
+        cursor:pointer;
+        border-radius:3px 3px;
+        border:1px solid #FFF;
+    }

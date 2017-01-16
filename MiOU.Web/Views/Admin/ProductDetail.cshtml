@@ -1,9 +1,91 @@
-﻿
+﻿@using MiOU.BL;
+@using MiOU.Entities.Beans;
+@model BProduct
 @{
     ViewBag.Title = "藕品信息";
     Layout = "~/Views/Shared/_adminLayout.cshtml";
 }
+<script>
+    function showPicPreview(path) {
+        $('#show_big_pic').find('#big_pic').attr('src', path);
+        $('#show_big_pic').modal();
+    } 
+</script>
 
 <h2>@ViewBag.Title</h2>
 <hr />
+
+<dl class="dl-horizontal">
+    <dt>名称:</dt>
+    <dd>@Model.Name</dd>
+    <dt>类别:</dt>
+    <dd>@Model.PCategory.Name @Model.Category.Name</dd>
+    <dt>层色:</dt>
+    <dd>@Model.Percentage*10</dd>
+    <dt>市场价:</dt>
+    <dd>@Model.Price</dd>
+    <dt>租赁类型:</dt>
+    <dd>@Model.RentType.Name</dd>
+    <dt>交付方式:</dt>
+    <dd>@Model.DeliveryType.Name</dd>
+    <dt>联系人:</dt>
+    <dd>@Model.Contact</dd>
+    <dt>电话:</dt>
+    <dd>@Model.Phone</dd>
+    <dt>描述:</dt>
+    <dd>@Model.Description</dd>
+    <dt>图片:</dt>
+    <dd>
+        <div class="file-preview">
+            @*<div class="close fileinput-remove">×</div>*@
+            <div class=" file-drop-zone">
+                <div class="file-preview-thumbnails">
+                    <div class="file-live-thumbs">
+                        @foreach (BProductImage image in Model.Images)
+                        {
+                            <div class="file-preview-frame file-preview-success" data-fileindex="-1" data-template="image">
+                                <div class="kv-file-content">
+                                    <img src="@Html.Raw("/"+image.Image.Path)" style="width:auto;height:160px;" />
+                                </div>
+                                <div class="file-thumbnail-footer">
+                                    <div class="file-actions">
+                                        <div class="file-footer-buttons">
+                                            <button type="button" onclick="showPicPreview('/@image.Image.Path')" class="kv-file-zoom btn btn-xs btn-default" title="查看大图"><i class="glyphicon glyphicon-zoom-in"></i></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+                <div class="file-preview-status text-center text-success"></div>
+            </div>
+        </div>
+
+    </dd>
+</dl>
+
+<div class="modal fade" id="show_big_pic" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div id="" class="modal-content">
+            <div class="modal-header">
+                <div class="kv-zoom-actions pull-right">
+                    @*<button type="button" class="btn btn-default btn-header-toggle btn-toggleheader" title="Toggle header" data-toggle="button" aria-pressed="false" autocomplete="off">
+                            <i class="glyphicon glyphicon-resize-vertical"></i>
+                        </button>
+                        <button type="button" class="btn btn-default btn-fullscreen" title="Toggle full screen" data-toggle="button" aria-pressed="false" autocomplete="off"><i class="glyphicon glyphicon-fullscreen"></i></button>
+                        <button type="button" class="btn btn-default btn-borderless" title="Toggle borderless mode" data-toggle="button" aria-pressed="false" autocomplete="off"><i class="glyphicon glyphicon-resize-full"></i></button>*@
+                    <button type="button" class="btn btn-default btn-close" title="Close detailed preview" data-dismiss="modal" aria-hidden="true">
+                        <i class="glyphicon glyphicon-remove"></i>
+                    </button>
+                </div>
+                <h3 class="modal-title">大图预览 <small><span class="kv-zoom-title"></span></small></h3>
+            </div>
+            <div class="modal-body">
+                <img id="big_pic" style="width:100%;height:auto;" />
+            </div>
+        </div>
+    </div>
+</div>
 
