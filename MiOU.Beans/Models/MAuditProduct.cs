@@ -24,7 +24,10 @@ namespace MiOU.Entities.Models
         public int Date { get; set; }
 
         [Display(Name = "审核状态")]
+        [Range(1,5,ErrorMessage ="请选择审核状态，通过或者不通过")]
         public int AuditResult { get; set; }
+
+        [Required(ErrorMessage = "审核备注不能为空")]
         [Display(Name = "审核备注")]
         public string Message { get; set; }
     }

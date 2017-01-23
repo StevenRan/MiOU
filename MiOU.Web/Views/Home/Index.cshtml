@@ -1,9 +1,58 @@
-﻿
+﻿@using MiOU.BL;
+@using MiOU.Entities.Beans;
+@using MiOU.Util;
 @{
     ViewBag.Title = "中国最专业的养老租赁平台";
+    List<BCategory> categories = null;
+    if (ViewBag.Categories != null) {
+        categories = ViewBag.Categories as List<BCategory>;
+    }
 }
-
-<div class="hmain">    
+<script>
+    function getProducts(parent,cate) {
+        $.post(
+            '/api/Product/GetHomePageProducts',
+            {categoryId:cate},
+            function(data){
+                if(data.Status=='OK'){
+                    var productDiv = $('#products_' + parent);
+                   
+                    if (data.Result != 'undefined' && data.Result != null && data.Result.length > 0) {                        
+                        $(productDiv).html("");
+                        $(data.Result).each(function(i,item){
+                            var mod=i %5;
+                            var style="nb";
+                            if(mod!=0){
+                                style="nhp";
+                            }
+                           
+                            var pitem=$('<div class="spdt pw '+style+'"></div>').appendTo(productDiv);
+                            var pImage= $('<div class="" style="border-bottom:1px solid #DFDFDF;width:100%;padding-bottom:10px;"></div>').appendTo(pitem);
+                            var photo = "~/Content/Images/logo.png";
+                            var pMiddle = $('<div style="border-bottom:1px solid #DFDFDF;overflow:hidden;"></div>').appendTo(pitem);
+                            var piMiddle1 = $('<div style="overflow:hidden;"></div>').appendTo(pMiddle);
+                            $('<div class="dlit" style="float:left;">' + item.Name + '</div>').appendTo(piMiddle1);
+                            $('<div class="dlit" style="float:right;">' + item.Category.Name + '</div>').appendTo(piMiddle1);
+                            $('<div class="dli" style="overflow:hidden;">...</div>').appendTo(pMiddle);
+                            $('<div class="dli" style="overflow:hidden;">...</div>').appendTo(pMiddle);
+                            var mtype="自己管理";
+                            if(item.ManageType=="2" || item.ManageType==2){
+                                mtype="米藕代管"
+                            }
+                            var htmlBottom = '<div class="dlit" style="padding-top:10px;">' + mtype + '</div>';
+                            
+                            $(htmlBottom).appendTo(pitem);
+                        });
+                    }
+                }
+            }
+        );
+    }
+</script>
+<div class="hmain">
+    <div class="hc hmargin">
+        <img src="~/Content/Images/bg.jpg" style="width:1140px;height:400px;" />
+    </div>    
     <div class="hc hmargin">
         <div class="hcp hcpc" style="overflow:hidden;">
             <div style="float:left;"><span class="title">藕主</span></div>
@@ -46,30 +95,86 @@
         <div class="hcp hcpc" style="overflow:hidden;">
             <div style="float:left;"><span class="title">藕品</span></div>           
         </div>
-        <div class="hcpc" style="padding-top:20px;padding-bottom:20px;overflow:hidden;">
-            <div class="hcate">
-                <div class="hctitle">
-                    <div class="category">
-                        <span style="font-size:20px;">出行代步</span> <a class="alink">查看全部</a>
+        <div class="hcpc" style="overflow:hidden;">
+            
+            @foreach (BCategory category in categories)
+            {
+                <div class="hcate" id="cate_@category.Id">
+                    <div class="hctitle">
+                        <div class="category pw">
+                            <span style="font-size:20px;">@category.Name</span> <a class="alink">查看全部</a>
+                        </div>
+                        @if (category.ChildRen != null)
+                        {
+                            <div class="categoryList">
+                                <ul>
+                                    @foreach (BCategory child in category.ChildRen)
+                                    {
+                                        <li>
+                                            <a id="child_cate_@Html.Raw(child.Id)" class="alinkc" onclick="getProducts(@category.Id,@child.Id)">@child.Name</a>
+                                        </li>
+                                    }
+                                </ul>
+                            </div>
+                        }
                     </div>
-                    <div class="categoryList">
-                        <ul>
-                            <li>
-                                <a class="alinkc">热门</a>
-                            </li>
-                            <li>
-                                <a class="alinkc">手动轮椅</a>
-                            </li>
-                            <li>
-                                <a class="alinkc">电动轮椅</a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-                <div>
+                    <div id="@Html.Raw("products_"+category.Id)" style="overflow:hidden;">
+                        @if (category.HotProducts != null && category.HotProducts.Count > 0)
+                        {
+                            for (int i = 0; i < category.HotProducts.Count; i++)
+                            {
+                                BProduct tmp = category.HotProducts[i];
+                                int mod = i % 5;
+                                string style = "nb";
+                                if (mod != 0)
+                                {
+                                    style = "nhp";
+                                }
+                                string photo = "~/Content/Images/logo.png";
+                                <div class="spdt pw @Html.Raw(style)">
+                                    <div style="border-bottom:1px solid #DFDFDF;width:100%;padding-bottom:10px;">                                        
+                                        
+                                        @if (tmp.Images != null && tmp.Images.Count > 0)
+                                        {
+                                            foreach(BProductImage pImage in tmp.Images)
+                                            {
+                                                if(pImage.Image!=null && pImage.IsMain)
+                                                {
+                                                    photo = "/"+pImage.Image.Path;
+                                                }
+                                            }
+                                        }
+                                        <img src="@Html.Raw(photo)" style="width:100%;height:200px;" />
 
+                                    </div>
+                                    <div style="border-bottom:1px solid #DFDFDF;overflow:hidden;">
+                                        <div style="overflow:hidden;">
+                                            <div class="dlit" style="float:left;">
+                                                @tmp.Name
+                                            </div>
+                                            <div class="dli" style="float:right;">
+                                                @tmp.Category.Name
+                                            </div>
+                                        </div>
+                                        <div class="dli" style="overflow:hidden;">
+                                           ... 
+                                        </div>
+                                        <div class="dli" style="overflow:hidden;">
+                                            ...
+                                        </div>
+                                    </div>
+                                    <div class="dlit" style="padding-top:10px;">
+                                        米藕代管
+                                        30元/天
+                                    </div>
+                                </div>
+                            }
+
+                        }
+                    </div>
                 </div>
-            </div>
-        </div>
+            }
+               
+          </div>
     </div>   
 </div>

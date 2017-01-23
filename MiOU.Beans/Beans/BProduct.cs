@@ -43,5 +43,6 @@ namespace MiOU.Entities.Beans
         public string Phone { get; set; }
         public int RentTimes { get; set; }
         public BProductLevel ProductLevel { get; set; }
+        public int ManageType { get; set; }
     }
 }

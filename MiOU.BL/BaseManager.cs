@@ -62,6 +62,14 @@ namespace MiOU.BL
             return os;
         }
 
+        public List<BObject> GetManageTypes()
+        {
+            List<BObject> os = new List<BObject>();
+            os.Add(new BObject { Id = 1, Name = "自己管理" });
+            os.Add(new BObject { Id = 2, Name = "米藕代管" });
+            return os;
+        }
+
         public List<BObject> GetPercentages()
         {
             List<BObject> os = new List<BObject>();
@@ -302,6 +310,27 @@ namespace MiOU.BL
                 }
             }
             return area;
+        }
+
+        public BCategory GetCategory(int categoryId, bool withChildren = false)
+        {
+            BCategory category = null;
+            if (categoryId <= 0)
+            {
+                throw new MiOUException("类目ID不能小于等于0");
+            }
+           
+            using (MiOUEntities db = new MiOUEntities())
+            {
+                var tmp = from c in db.Category where c.Id == categoryId orderby c.Order select new BCategory { Id = c.Id, Name = c.Name, Order = c.Order != null ? (int)c.Order : 0, IconPhotoMobile = c.PhotoMobile, IconPhotoPC = c.PhotoPC,ParentId= c.ParentId };
+                category = tmp.FirstOrDefault<BCategory>();               
+                if (withChildren && category!=null && category.ParentId==0)
+                {
+                    List<BCategory> children = (from c in db.Category where c.ParentId==category.ParentId orderby c.Order select new BCategory { Id = c.Id, Name = c.Name, ParentId = c.ParentId, Order = c.Order != null ? (int)c.Order : 0, IconPhotoMobile = c.PhotoMobile, IconPhotoPC = c.PhotoPC }).ToList<BCategory>();
+                   
+                }
+            }
+            return category;
         }
 
         public List<BCategory> GetCategories(int parentId,bool withChildren=false)

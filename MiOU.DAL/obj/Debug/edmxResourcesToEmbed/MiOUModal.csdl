@@ -26,8 +26,8 @@
     <EntitySet Name="Order" EntityType="MiOU.DAL.Order" />
     <EntitySet Name="ProductImage" EntityType="MiOU.DAL.ProductImage" />
     <EntitySet Name="ProductPrice" EntityType="MiOU.DAL.ProductPrice" />
-    <EntitySet Name="Product" EntityType="MiOU.DAL.Product" />
     <EntitySet Name="PriceCategory" EntityType="MiOU.DAL.PriceCategory" />
+    <EntitySet Name="Product" EntityType="MiOU.DAL.Product" />
   </EntityContainer>
   <EntityType Name="Admin_Actions">
     <Key>
@@ -342,6 +342,15 @@
     <Property Name="Created" Type="Int64" Nullable="false" />
     <Property Name="UserId" Type="Int32" Nullable="false" />
   </EntityType>
+  <EntityType Name="PriceCategory">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" Nullable="false" MaxLength="45" FixedLength="false" Unicode="false" />
+    <Property Name="Order" Type="Int32" Nullable="false" />
+    <Property Name="Days" Type="Int32" Nullable="false" />
+  </EntityType>
   <EntityType Name="Product">
     <Key>
       <PropertyRef Name="Id" />
@@ -360,6 +369,7 @@
     <Property Name="AuditUserId" Type="Int32" Nullable="false" />
     <Property Name="AuditTime" Type="Int64" Nullable="false" />
     <Property Name="AuditMessage" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="EvaluatedPriceCategoryId" Type="Int32" Nullable="false" />
     <Property Name="EvaluatedPrice" Type="Single" Nullable="false" />
     <Property Name="EvaluatedPercentage" Type="Single" Nullable="false" />
     <Property Name="DeliveryType" Type="Int32" Nullable="false" />
@@ -378,15 +388,7 @@
     <Property Name="VIPLevel" Type="Int32" Nullable="false" />
     <Property Name="Contact" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
     <Property Name="Phone" Type="String" Nullable="false" MaxLength="25" FixedLength="false" Unicode="false" />
-    <Property Name="EvaluatedPriceCategoryId" Type="Int32" Nullable="false" />
-  </EntityType>
-  <EntityType Name="PriceCategory">
-    <Key>
-      <PropertyRef Name="Id" />
-    </Key>
-    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="Name" Type="String" Nullable="false" MaxLength="45" FixedLength="false" Unicode="false" />
-    <Property Name="Order" Type="Int32" Nullable="false" />
-    <Property Name="Days" Type="Int32" Nullable="false" />
+    <Property Name="RentTimes" Type="Int32" Nullable="false" />
+    <Property Name="ManageType" Type="Int32" Nullable="false" />
   </EntityType>
 </Schema>

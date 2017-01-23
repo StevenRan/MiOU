@@ -47,8 +47,8 @@
     
     $(function () {
         $('#btn_save_product').click(function () {
-            if (gg.length < 3) {
-                alert("产品图片至少三张，最多6张");
+            if (gg.length < 2) {
+                alert("产品图片至少两张，最多6张");
                 return;
             }
             var picIds = "";
@@ -91,7 +91,7 @@
             }
         }).on('fileloaded', function (event, file, previewId, index, reader) {
             if (gg.length == 6) {
-                alert("产品图片至少三张，最多6张");
+                alert("产品图片至少两张，最多6张");
                 return;
             }
             $('#FilesInput').fileinput("upload");
@@ -124,6 +124,13 @@
             @Html.ValidationMessageFor(model => model.CategoryId, "", new { @class = "text-danger" })
            
           
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.ManageType, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-8">
+            @Html.DropDownListFor(model => model.ManageType, (SelectList)ViewBag.ManageTypes, new { @class = "form-control input_reg" })
+            @Html.ValidationMessageFor(model => model.ManageType, "", new { @class = "text-danger" })
         </div>
     </div>
     <div class="form-group">

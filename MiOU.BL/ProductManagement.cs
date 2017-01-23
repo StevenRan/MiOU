@@ -21,7 +21,7 @@ namespace MiOU.BL
         public List<BCategory> GetHomeProdustListByCategory(int province)
         {
             List<BCategory> categories = new List<BCategory>();
-            categories = GetCategories(0, true);
+            categories = GetCategories(0, true);           
             if(categories.Count>0)
             {
                 using (MiOUEntities db = new MiOUEntities())
@@ -29,12 +29,27 @@ namespace MiOU.BL
                     foreach (BCategory category in categories)
                     {
                         int total = 0;
-                        List<BProduct> products = SearchProducts(null, null, 0, 0, category.Id,0, 0,province,  0, 0,null, 10, 1, true, out total, ProductOrderField.RENTTIMES);
+                        List<BProduct> products = SearchProducts(null, new int[] { 1}, 0, 0, category.Id,0, 0,province,  0, 0,null, 10, 1, true, out total, ProductOrderField.RENTTIMES);
                         category.HotProducts = products;
                     }
                 }                    
             }           
             return categories;
+        }
+
+        public BCategory GetHomeProdusByCategory(int province,int categoryid)
+        {
+            BCategory category = GetCategory(categoryid, true);
+            if (category!=null)
+            {
+                using (MiOUEntities db = new MiOUEntities())
+                {
+                    int total = 0;
+                    List<BProduct> products = SearchProducts(null, new int[] { 1 }, 0, 0,0, category.Id, 0, province, 0, 0, null, 10, 1, true, out total, ProductOrderField.RENTTIMES);
+                    category.HotProducts = products;
+                }
+            }
+            return category;
         }
 
         public ProductManagement(BUser user) : base(user)
@@ -343,7 +358,7 @@ namespace MiOU.BL
             return levels;
         }
 
-        public List<BProduct> SearchProducts(int[] productIds,int[] states,int userId,int auditUserId, int pId,int cId,int rentType,int provinceId,int cityId,int districtId,string keyword,int pageSize,int page,bool getDetail,out int total, ProductOrderField pOrder= ProductOrderField.RENTTIMES)
+        public List<BProduct> SearchProducts(int[] productIds,int[] states,int userId,int auditUserId, int pId,int cId,int rentType,int provinceId,int cityId,int districtId,string keyword,int pageSize,int page,bool getDetail,out int total, ProductOrderField pOrder= ProductOrderField.RENTTIMES,int manageType=1)
         {
             List<BProduct> products = null;
             MiOUEntities db = null;
@@ -402,6 +417,7 @@ namespace MiOU.BL
                                XPlot = p.XPlot,
                                YPlot = p.YPlot,
                                RentTimes= p.RentTimes,
+                               ManageType=p.ManageType,
                                ProductLevel= lllevel!=null?new BProductLevel { Name= lllevel.Name,Id= lllevel.Id,StartPrice= lllevel.StartPrice,EndPrice= lllevel.EndPrice } :null
                            };
                 if(productIds!=null && productIds.Length>0)
@@ -447,6 +463,10 @@ namespace MiOU.BL
                 if(!string.IsNullOrEmpty(keyword))
                 {
                     linq = linq.Where(a=>(a.Name.Contains(keyword) || a.Address.Contains(keyword) || a.Nearby.Contains(keyword) || a.Apartment.Contains(keyword)));
+                }
+                if(manageType>0)
+                {
+                    linq = linq.Where(a=>a.ManageType==manageType);
                 }
                 switch(pOrder)
                 {
@@ -778,6 +798,7 @@ namespace MiOU.BL
             model.Price = product.Price;
             model.Category = new BCategory() { Id = product.ChildCategoryId };
             model.PCategory = new BCategory() { Id = product.CategoryId };
+            model.ManageType = product.ManageType;
             if(!string.IsNullOrEmpty(product.PhotoIds))
             {
                 string[] files = product.PhotoIds.Split(',');
@@ -848,27 +869,27 @@ namespace MiOU.BL
         {
             if(model==null)
             {
-                throw new MiOUException("产品数据不正确");
+                throw new MiOUException("藕品数据不正确");
             }
             if(model.Category==null || model.Category.Id<=0)
             {
-                throw new MiOUException("产品类别不能为空");
+                throw new MiOUException("藕品类别不能为空");
             }
             if(string.IsNullOrEmpty(model.Name))
             {
-                throw new MiOUException("产品名称不能为空");
+                throw new MiOUException("藕品名称不能为空");
             }
             if (string.IsNullOrEmpty(model.Description))
             {
-                throw new MiOUException("产品描述不能为空");
+                throw new MiOUException("藕品描述不能为空");
             }
             //if(string.IsNullOrEmpty(model.Address))
             //{
-            //    throw new MiOUException("产品地址不能为空");
+            //    throw new MiOUException("藕品地址不能为空");
             //}
-            if(model.DeliveryType==null || model.DeliveryType.Id<=0)
+            if (model.DeliveryType==null || model.DeliveryType.Id<=0)
             {
-                throw new MiOUException("产品交付方式不能为空");
+                throw new MiOUException("藕品交付方式不能为空");
             }
             if(model.RentType==null || model.RentType.Id<=0)
             {
@@ -888,23 +909,23 @@ namespace MiOU.BL
             //}
             if(model.Percentage==0)
             {
-                throw new MiOUException("产品成色不能为空");
+                throw new MiOUException("藕品成色不能为空");
             }
             if(model.Images==null)
             {
-                throw new MiOUException("缺少产品图片");
+                throw new MiOUException("缺少藕品图片");
             }
-            if (model.Images.Count<3)
+            if (model.Images.Count<2)
             {
-                throw new MiOUException("产品图片至少三张");
+                throw new MiOUException("藕品图片至少两张");
             }
             if(model.ProductPrices==null || model.ProductPrices.Count<=0)
             {
-                throw new MiOUException("产品的租赁租价方式至少一种");
+                throw new MiOUException("藕品的租赁租价方式至少一种");
             }
             if(CurrentLoginUser.User.UserType==1 && model.Repertory>1)
             {
-                throw new MiOUException("个人用户的藕品库存必须等于1，如有同种产品请新添加一个藕品");
+                throw new MiOUException("个人用户的藕品库存必须等于1，如有同种藕品请新添加一个藕品");
             }
             MiOUEntities db = null;
             try
@@ -938,7 +959,8 @@ namespace MiOU.BL
                     NearBy=model.Nearby,
                     VIPLevel= model.VIPRentLevel!=null?model.VIPRentLevel.Id:0,
                     Contact= model.Contact!=null?model.Contact:"",
-                    Phone= model.Phone!=null?model.Phone:""
+                    Phone= model.Phone!=null?model.Phone:"",
+                    ManageType= model.ManageType
                 };
                 db.Product.Add(product);
                 db.SaveChanges();

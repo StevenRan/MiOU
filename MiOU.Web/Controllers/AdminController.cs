@@ -81,6 +81,7 @@ namespace MiOU.Web.Controllers
             ViewBag.cCates = new SelectList(pdtMgr.GetCategories(cates[0].Id), "Id", "Name");
             ViewBag.cPriceCates = pdtMgr.GetPriceCategories();
             ViewBag.Percentages = new SelectList(pdtMgr.GetPercentages(),"Id","Name");
+            ViewBag.ManageTypes = new SelectList(pdtMgr.GetManageTypes(),"Id","Name");
             MProduct model = new MProduct() { Phone= pdtMgr.CurrentLoginUser.User.Phone,Contact= pdtMgr.CurrentLoginUser.User.Phone };
             return View("UpdateProduct", model);
         }
@@ -102,7 +103,7 @@ namespace MiOU.Web.Controllers
             {
                 logger.Fatal(ex);
             }
-            return View("MyProducts");
+            return RedirectToAction("MyProducts");
         }
 
         public ActionResult MyProducts()
@@ -245,6 +246,10 @@ namespace MiOU.Web.Controllers
             MAuditProduct map = new MAuditProduct() { ProductId=productId!=null?(int)productId:0};
             ProductManagement pdtMgr = new ProductManagement(User.Identity.GetUserId<int>());
             List<BProductLevel> productLevels = pdtMgr.GetProductLevels(0,0,0,null);
+            foreach(BProductLevel level in productLevels)
+            {
+                level.Name = level.Name + "(" + level.StartPrice.ToString() + " - " + level.EndPrice + ")";
+            }
             ViewBag.Levels =new SelectList(productLevels,"Id","Name");
             ViewBag.Status = new SelectList(pdtMgr.GetAduitStatus(),"Id","Name");
             ViewBag.Percentages = new SelectList(pdtMgr.GetPercentages(),"Id","Name");

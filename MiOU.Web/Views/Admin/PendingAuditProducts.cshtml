@@ -14,6 +14,7 @@
 {
     columns.Add(c => c.Id).Titled("编号").Filterable(false).SetWidth("5%");
     columns.Add(c => c.Name).Titled("名称").Filterable(false).SetWidth("20%");
+    columns.Add(c => c.Price).Titled("提交价格").Filterable(false).SetWidth("20%");
     columns.Add().Titled("类别").Filterable(false).RenderValueAs(c=>c.PCategory.Name+" "+ c.Category.Name).SetWidth("10%");
     columns.Add().Titled("审核状态").Filterable(false).RenderValueAs(c => Html.Raw(c.Status == ProductStatus.CREATED ? "待审核" : c.Status == ProductStatus.FAILED ? "失败" : c.Status == ProductStatus.PASSED ? "通过" : "")).SetWidth("10%");
     columns.Add().Titled("藕主").Filterable(false).RenderValueAs(c => c.User.User.Email).SetWidth("10%");

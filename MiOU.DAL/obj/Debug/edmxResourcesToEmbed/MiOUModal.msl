@@ -338,10 +338,21 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="PriceCategory">
+      <EntityTypeMapping TypeName="MiOU.DAL.PriceCategory">
+        <MappingFragment StoreEntitySet="PriceCategory">
+          <ScalarProperty Name="Days" ColumnName="Days" />
+          <ScalarProperty Name="Order" ColumnName="Order" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
     <EntitySetMapping Name="Product">
       <EntityTypeMapping TypeName="MiOU.DAL.Product">
         <MappingFragment StoreEntitySet="Product">
-          <ScalarProperty Name="EvaluatedPriceCategoryId" ColumnName="EvaluatedPriceCategoryId" />
+          <ScalarProperty Name="ManageType" ColumnName="ManageType" />
+          <ScalarProperty Name="RentTimes" ColumnName="RentTimes" />
           <ScalarProperty Name="Phone" ColumnName="Phone" />
           <ScalarProperty Name="Contact" ColumnName="Contact" />
           <ScalarProperty Name="VIPLevel" ColumnName="VIPLevel" />
@@ -360,6 +371,7 @@
           <ScalarProperty Name="DeliveryType" ColumnName="DeliveryType" />
           <ScalarProperty Name="EvaluatedPercentage" ColumnName="EvaluatedPercentage" />
           <ScalarProperty Name="EvaluatedPrice" ColumnName="EvaluatedPrice" />
+          <ScalarProperty Name="EvaluatedPriceCategoryId" ColumnName="EvaluatedPriceCategoryId" />
           <ScalarProperty Name="AuditMessage" ColumnName="AuditMessage" />
           <ScalarProperty Name="AuditTime" ColumnName="AuditTime" />
           <ScalarProperty Name="AuditUserId" ColumnName="AuditUserId" />
@@ -373,16 +385,6 @@
           <ScalarProperty Name="Description" ColumnName="Description" />
           <ScalarProperty Name="UserId" ColumnName="UserId" />
           <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
-          <ScalarProperty Name="Id" ColumnName="Id" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="PriceCategory">
-      <EntityTypeMapping TypeName="MiOU.DAL.PriceCategory">
-        <MappingFragment StoreEntitySet="PriceCategory">
-          <ScalarProperty Name="Days" ColumnName="Days" />
-          <ScalarProperty Name="Order" ColumnName="Order" />
-          <ScalarProperty Name="Name" ColumnName="Name" />
           <ScalarProperty Name="Id" ColumnName="Id" />
         </MappingFragment>
       </EntityTypeMapping>

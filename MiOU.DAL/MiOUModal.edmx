@@ -247,6 +247,7 @@
           <Property Name="Contact" Type="varchar" MaxLength="100" Nullable="false" />
           <Property Name="Phone" Type="varchar" MaxLength="25" Nullable="false" />
           <Property Name="RentTimes" Type="int" Nullable="false" />
+          <Property Name="ManageType" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="ProductImage">
           <Key>
@@ -788,6 +789,7 @@
           <Property Name="Contact" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="Phone" Type="String" Nullable="false" MaxLength="25" FixedLength="false" Unicode="false" />
           <Property Name="RentTimes" Type="Int32" Nullable="false" />
+          <Property Name="ManageType" Type="Int32" Nullable="false" />
         </EntityType>
         </Schema>
     </edmx:ConceptualModels>
@@ -1145,6 +1147,7 @@
           <EntitySetMapping Name="Product">
             <EntityTypeMapping TypeName="MiOU.DAL.Product">
               <MappingFragment StoreEntitySet="Product">
+                <ScalarProperty Name="ManageType" ColumnName="ManageType" />
                 <ScalarProperty Name="RentTimes" ColumnName="RentTimes" />
                 <ScalarProperty Name="Phone" ColumnName="Phone" />
                 <ScalarProperty Name="Contact" ColumnName="Contact" />

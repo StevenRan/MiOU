@@ -48,5 +48,6 @@ namespace MiOU.DAL
         public string Contact { get; set; }
         public string Phone { get; set; }
         public int RentTimes { get; set; }
+        public int ManageType { get; set; }
     }
 }

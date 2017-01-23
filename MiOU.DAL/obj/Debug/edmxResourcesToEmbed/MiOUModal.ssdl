@@ -222,6 +222,7 @@
     <Property Name="AuditUserId" Type="int" Nullable="false" />
     <Property Name="AuditTime" Type="uint" Nullable="false" />
     <Property Name="AuditMessage" Type="varchar" MaxLength="100" />
+    <Property Name="EvaluatedPriceCategoryId" Type="int" Nullable="false" />
     <Property Name="EvaluatedPrice" Type="float" Nullable="false" />
     <Property Name="EvaluatedPercentage" Type="float" Nullable="false" />
     <Property Name="DeliveryType" Type="int" Nullable="false" />
@@ -240,7 +241,8 @@
     <Property Name="VIPLevel" Type="int" Nullable="false" />
     <Property Name="Contact" Type="varchar" MaxLength="100" Nullable="false" />
     <Property Name="Phone" Type="varchar" MaxLength="25" Nullable="false" />
-    <Property Name="EvaluatedPriceCategoryId" Type="int" Nullable="false" />
+    <Property Name="RentTimes" Type="int" Nullable="false" />
+    <Property Name="ManageType" Type="int" Nullable="false" />
   </EntityType>
   <EntityType Name="ProductImage">
     <Key>
