@@ -28,7 +28,16 @@
                            
                             var pitem=$('<div class="spdt pw '+style+'"></div>').appendTo(productDiv);
                             var pImage= $('<div class="" style="border-bottom:1px solid #DFDFDF;width:100%;padding-bottom:10px;"></div>').appendTo(pitem);
-                            var photo = "~/Content/Images/logo.png";
+                            var photo = "/Content/Images/logo.png";
+                            if (item.Images != 'undefined' && item.Images != null && item.Images.length > 0) {
+                                $(item.Images).each(function (im, image) {
+                                    if (image.Image != null && image.IsMain == true) {
+                                        photo = "/" + image.Image.Path;
+                                        return false;
+                                    }
+                                });
+                            }
+                            $('<img style="height:200px;width:100%;" src="' + photo + '"/>').appendTo(pImage);
                             var pMiddle = $('<div style="border-bottom:1px solid #DFDFDF;overflow:hidden;"></div>').appendTo(pitem);
                             var piMiddle1 = $('<div style="overflow:hidden;"></div>').appendTo(pMiddle);
                             $('<div class="dlit" style="float:left;">' + item.Name + '</div>').appendTo(piMiddle1);

@@ -1,0 +1,85 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>@ViewBag.Title - 米藕</title>
+    <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/miou")
+    <link href="http://netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href='http://fonts.googleapis.com/css?family=Grand+Hotel' rel='stylesheet' type='text/css'>
+
+</head>
+<body>
+
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+
+                <a class="navbar-brand" style="padding:10px;" href="/Home/Index"><img style="width:30px;height:30px;" src="~/Content/Images/logo.png" /></a>
+            </div>
+
+            <div class="navbar-collapse collapse ">
+                <ul class="nav navbar-nav">
+                    <li>@Html.ActionLink("租赁", "Rent", "Home")</li>
+                    <li>@Html.ActionLink("藕主", "Owner", "Home")</li>
+                    <li>@Html.ActionLink("一起买", "Buy", "Home")</li>
+
+
+                </ul>
+                @Html.Partial("_LoginPartial")
+            </div>
+        </div>
+    </div>
+    @*<div class="navbar navbar-inverse" style="background:#FFF;border-radius:0;border:0;">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" style="padding:10px;"  href="/Home/Index"><img style="width:30px;height:30px;" src="~/Content/Images/logo.png" /></a>
+                </div>
+            </div>
+        </div>*@
+    <div class="container">
+        <div style="overflow:hidden;">
+            <div style="float:left;width:20%;">
+                <div>我的米藕</div>
+                <ul style="list-style:none;margin:0;padding:0;display:block;">
+                    <li>添加藕品</li>
+                    <li>我的藕品</li>                   
+                </ul>
+                <div>我租入的</div>
+                <ul style="list-style:none;margin:0;padding:0;display:block;">
+                    <li>付费租入</li>
+                    <li>Vip借入</li>
+                </ul>
+                <div>我租出的</div>
+                <ul style="list-style:none;margin:0;padding:0;display:block;">
+                    <li>收费租出</li>
+                    <li>Vip借出</li>
+                </ul>
+            </div>
+            <div style="float:left;">
+                @RenderBody()
+            </div>
+        </div>
+        <footer>
+            @Html.Partial("_footer")
+        </footer>
+    </div>
+
+    @RenderSection("scripts", required: false)
+</body>
+</html>
