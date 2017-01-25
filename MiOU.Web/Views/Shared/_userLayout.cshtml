@@ -53,23 +53,19 @@
             </div>
         </div>*@
     <div class="container">
-        <div style="overflow:hidden;">
-            <div style="float:left;width:20%;">
-                <div>我的米藕</div>
-                <ul style="list-style:none;margin:0;padding:0;display:block;">
-                    <li>添加藕品</li>
-                    <li>我的藕品</li>                   
+        <div style="overflow:hidden;padding:10px 0px 10px 0px;">
+            <div style="float:left;width:20%;padding-right:20px;">
+                <div class="myTitle">我的米藕</div>
+                <ul class="myTitleUl">
+                    <li class="lid libd"><a href="/User/AddProduct">添加藕品</a></li>
+                    <li class="lid"><a href="/User/MyProducts">我的藕品</a></li>                   
                 </ul>
-                <div>我租入的</div>
+                <div style="height:40px;line-height:40px;text-align:center;font-weight:bold;">我租入的</div>
                 <ul style="list-style:none;margin:0;padding:0;display:block;">
-                    <li>付费租入</li>
-                    <li>Vip借入</li>
+                    <li style="text-align:center;display:block;height:40px;line-height:40px;background:#F1F1F1;border-bottom:1px solid #FFF;">付费租入</li>
+                    <li style="text-align:center;display:block;height:40px;line-height:40px;background:#F1F1F1;">Vip借入</li>
                 </ul>
-                <div>我租出的</div>
-                <ul style="list-style:none;margin:0;padding:0;display:block;">
-                    <li>收费租出</li>
-                    <li>Vip借出</li>
-                </ul>
+               
             </div>
             <div style="float:left;">
                 @RenderBody()

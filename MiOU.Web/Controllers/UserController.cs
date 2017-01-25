@@ -13,5 +13,14 @@ namespace MiOU.Web.Controllers
         {
             return View();
         }
+        public ActionResult MyProducts()
+        {
+            return View();
+        }
+
+        public ActionResult AddProduct()
+        {
+            return View();
+        }
     }
 }

@@ -45,7 +45,14 @@ namespace MiOU.BL
                 using (MiOUEntities db = new MiOUEntities())
                 {
                     int total = 0;
-                    List<BProduct> products = SearchProducts(null, new int[] { 1 }, 0, 0,0, category.Id, 0, province, 0, 0, null, 10, 1, true, out total, ProductOrderField.RENTTIMES);
+                    List<BProduct> products = null;
+                    if(category.ParentId>0)
+                    {
+                        products = SearchProducts(null, new int[] { 1 }, 0, 0, 0, category.Id, 0, province, 0, 0, null, 10, 1, true, out total, ProductOrderField.RENTTIMES);
+                    }else
+                    {
+                        products = SearchProducts(null, new int[] { 1 }, 0, 0,category.Id,0, 0, province, 0, 0, null, 10, 1, true, out total, ProductOrderField.RENTTIMES);
+                    }                   
                     category.HotProducts = products;
                 }
             }

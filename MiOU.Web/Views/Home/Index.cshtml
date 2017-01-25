@@ -10,14 +10,38 @@
 }
 <script>
     function getProducts(parent,cate) {
+        var postCate=cate;
+        if(postCate==0 || postCate=="0"){
+            postCate=parent;
+        }
         $.post(
             '/api/Product/GetHomePageProducts',
-            {categoryId:cate},
+            {categoryId:postCate},
             function(data){
                 if(data.Status=='OK'){
-                    var productDiv = $('#products_' + parent);
-                   
-                    if (data.Result != 'undefined' && data.Result != null && data.Result.length > 0) {                        
+                    var productDiv = $('#products_' + parent);                   
+                    if (data.Result != 'undefined' && data.Result != null && data.Result.length > 0) { 
+                        
+                        //change children background
+                        var pcate=$('#cate_'+parent);
+                        var categoryListUL=$(pcate).find('.categoryList').find("ul");
+                        $(categoryListUL).find("li").each(function(i,licate){
+                            var liId=$(licate).attr('id');
+                            var desLiId=null;
+                            if(cate==0 || cate=="0"){
+                                desLiId="li_"+parent;
+                            }else{
+                                desLiId="li_"+cate;
+                            }
+
+                            if(liId==desLiId){
+                                $(licate).removeClass("lis");
+                                $(licate).addClass("lis");
+                            }else{
+                                $(licate).removeClass("lis");
+                            }
+                        });
+
                         $(productDiv).html("");
                         $(data.Result).each(function(i,item){
                             var mod=i %5;
@@ -117,9 +141,12 @@
                         {
                             <div class="categoryList">
                                 <ul>
+                                    <li id="li_@Html.Raw(category.Id)" class="lis">
+                                        <a class="alinkc" onclick="getProducts(@category.Id,0)">热门</a>
+                                    </li>
                                     @foreach (BCategory child in category.ChildRen)
                                     {
-                                        <li>
+                                        <li id="li_@Html.Raw(child.Id)">
                                             <a id="child_cate_@Html.Raw(child.Id)" class="alinkc" onclick="getProducts(@category.Id,@child.Id)">@child.Name</a>
                                         </li>
                                     }

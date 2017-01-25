@@ -300,7 +300,7 @@ width:auto;font-weight: normal;margin-left:4px;
     overflow:hidden;
 }
 .hcate .hctitle .category{
-    float:left;background-color:#6FA0FF;height:50px;line-height:30px;padding:10px 20px 10px 20px;color:#FFF;
+    float:left;background-color:#6FA0FF;height:40px;line-height:20px;padding:10px 20px 10px 20px;color:#FFF;
 }
 .hcate .hctitle .category .alink{
     
@@ -319,23 +319,36 @@ width:auto;font-weight: normal;margin-left:4px;
     width:204px;
 }
 .hcate .hctitle .categoryList{
-    float:left;margin-left:20px;padding-top:16px;
+    float:left;margin-left:20px;padding-top:6px;font-size:13px;
 }
     .hcate .hctitle .categoryList ul {
-        list-style:none;margin:0;padding:0;overflow:hidden;border:1px solid #DFDFDF;border-left:0px;
+        list-style:none;margin:0;padding:0;overflow:hidden;border:1px solid #DFDFDF;border-left:0px;border-radius:3px 3px;
     }
         .hcate .hctitle .categoryList ul li {
-            float:left;font-size:16px;padding:5px 20px 5px 20px;border-left:1px solid #DFDFDF;
+            float:left;font-size:16px;padding:5px 20px 5px 20px;border-left:1px solid #DFDFDF;background-color:#FFF;
         }
-    .hcate .hctitle .categoryList ul li .alinkc{
-        color:#000;
+            .hcate .hctitle .categoryList ul li a {
+                color:#333;
+            }
+        .hcate .hctitle .categoryList ul .lis {
+            background-color:#FFD03F;
+        }
+            .hcate .hctitle .categoryList ul .lis a {
+                color:#FFF;
+            }
+    .hcate .hctitle .categoryList ul li .alinkc{        
         display:inline-block;       
-        font-size:16px;
+        font-size:14px;
         text-decoration:none;
         cursor:pointer;
-        border-radius:3px 3px;
-        border:1px solid #FFF;
     }
+    .hcate .hctitle .categoryList ul li .alinks{       
+        display:inline-block;       
+        font-size:14px;
+        text-decoration:none;
+        cursor:pointer;     
+    }
+           
 .hcate .spdt{
     float:left;
     padding:10px 10px 10px 10px;
@@ -357,3 +370,20 @@ width:auto;font-weight: normal;margin-left:4px;
 .dlit {
     color:#333;
 }
+
+.myTitle {
+    height:40px;line-height:40px;text-align:center;font-weight:bold;
+}
+.myTitleUl {
+    list-style:none;margin:0;padding:0;display:block;
+}
+    .myTitleUl .libd {
+        border-bottom:1px solid #FFF;
+    }
+    .myTitleUl .lid {
+        text-align:center;display:block;height:40px;line-height:40px;background:#F1F1F1;    
+    }
+
+     .myTitleUl .lis {
+        text-align:center;display:block;height:40px;line-height:40px;background:#FFD03F;    
+    }
