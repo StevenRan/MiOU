@@ -22,5 +22,14 @@ namespace MiOU.Web.Controllers
         {
             return View();
         }
+
+        public ActionResult RentOut()
+        {
+            return View();
+        }
+        public ActionResult RentIn()
+        {
+            return View();
+        }
     }
 }
