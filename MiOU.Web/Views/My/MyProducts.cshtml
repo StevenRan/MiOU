@@ -25,7 +25,7 @@
         }
         else
         {
-            htmlStr += " <span>|</span> <a class=\"" + className + "\" href=\"/My/MyProducts?type=" + rtype.Id + "\">" + rtype.Name + "</a>";
+            htmlStr += " <span style=\"color:#B4B4B4;padding-bottom:2px;\">|</span> <a class=\"" + className + "\" href=\"/My/MyProducts?type=" + rtype.Id + "\">" + rtype.Name + "</a>";
         }
     }
 
@@ -49,26 +49,72 @@
         @{ 
             foreach(BProduct product in products)
             {
-                <div style="overflow:hidden;width:100%;padding-bottom:20px;border-bottom:1px solid #F1F1F1;">
+                string area = "";
+                if (product.City != null)
+                {
+                    area += product.City.Name;
+                }
+                if(product.District!=null)
+                {
+                    area += " "+product.District.Name;
+                }
+                if(!string.IsNullOrEmpty(product.Apartment))
+                {
+                    area += " - " + product.Apartment;
+                }
+                <div style="overflow:hidden;width:100%;padding-bottom:20px;padding-top:20px;border-bottom:1px solid #F1F1F1;">
                     <div style="float:left;width:15%">
-                        <img style="width:100px;height:100px;" src="/@Html.Raw(product.Images[0].Image.Path)"/>
+                        <img style="width:138px;height:138px;" src="/@Html.Raw(product.Images[0].Image.Path)"/>
                     </div>
-                    <div style="float:left;width:25%">
-                        <div style="overflow:hidden;border-bottom:1px solid #F1F1F1;">
-                            <div class="dlit" style="float:left;">
+                    <div style="float:left;width:30%;padding-left:20px;padding-right:20px;border-right:1px solid #F1F1F1;">
+                        <div style="overflow:hidden;border-bottom:1px solid #F1F1F1;padding-bottom:5px;">
+                            <div  style="float:left;">
                                 @product.Name
                             </div>
-                            <div class="dli" style="float:right;">
-                                @product.Category.Name
+                            <div  style="float:right;">
+                                <a href="/My/MyProducts?type=@iType.ToString()&cate=@product.Category.Id">@product.Category.Name</a>
                             </div>
                         </div>
+                        <div style="overflow:hidden;margin-top:10px;height:20px;line-height:20px;">
+                            <img style="width:16px;height:16px;margin:0;padding:0;margin-top:-2px;" src="~/Content/Images/location_icon.png"/><span style="color:#B4B4B4;">@area</span>
+                        </div>
+                        <div style="overflow:hidden;margin-top:10px;color:#B4B4B4;">
+                            近：外滩，人民广场
+                        </div>
+                        <div style="overflow:hidden;margin-top:10px;color:#B4B4B4;">
+                            @product.DeliveryType.Name
+                        </div>
+                        <div style="overflow:hidden;margin-top:10px;color:#B4B4B4;">
+                            @{ 
+                                if (product.Status == ProductStatus.CREATED) {
+                                    @Html.Raw("等待审核");
+                                }
+                                else if (product.Status == ProductStatus.PASSED)
+                                {
+                                    @Html.Raw("审核通过");
+                                }
+                                else if (product.Status == ProductStatus.FAILED)
+                                {
+                                    @Html.Raw("审核未通过");
+                                }
+                            }
+                        </div>
                     </div>
-                    <div style="float:left;">
-
+                    <div style="float:left;width:30%;padding-left:20px;color:#B4B4B4;">
+                        <div>@product.RentType.Name - 费用:</div>
+                        <div style="overflow:hidden;margin-top:10px;">
+                            @{ 
+                                foreach(BProductPrice price in product.ProductPrices)
+                                {
+                                    <div style="float:left;padding-right:20px;padding-top:5px;padding-bottom:5px;"><span style="color:#B4B4B4;">@price.PriceCategory.Name:</span><span style="color:red;padding-left:5px;">@price.EPrice.Price/天</span></div>
+                                } 
+                            }
+                        </div>
                     </div>
                     <div style="float:right;">
 
                     </div>
+
                 </div>
             }
         }

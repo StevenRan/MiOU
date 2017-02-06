@@ -294,6 +294,7 @@
     <Content Include="Content\Images\owner_click_btn.png" />
     <Content Include="Content\Images\rent_btn.png" />
     <Content Include="Content\Images\rent_click_btn.png" />
+    <Content Include="Content\Images\location_icon.png" />
     <Content Include="Content\pe-icon-7-stroke.css" />
     <Content Include="Content\Site.css" />
     <Content Include="favicon.ico" />

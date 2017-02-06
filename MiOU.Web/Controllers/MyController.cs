@@ -27,6 +27,7 @@ namespace MiOU.Web.Controllers
         public ActionResult MyProducts()
         {
             int iType = 0;
+            int cate = 0;
             if (!string.IsNullOrEmpty(Request["type"]))
             {
                 int.TryParse(Request["type"], out iType);
@@ -34,6 +35,10 @@ namespace MiOU.Web.Controllers
             if (iType == 0)
             {
                 iType = 1;
+            }
+            if (!string.IsNullOrEmpty(Request["cate"]))
+            {
+                int.TryParse(Request["cate"], out cate);
             }
             ProductManagement pdt = new ProductManagement(User.Identity.GetUserId<int>());
             List<BObject> rentTypes = pdt.GetRentTypes();
@@ -58,7 +63,7 @@ namespace MiOU.Web.Controllers
                     page = 1;
                 }
             }
-            List<BProduct> products = pdt.SearchProducts(null, null, User.Identity.GetUserId<int>(), 0, 0, 0, iType, 0, 0, 0, null, pageSize, page, true, out total, Entities.ProductOrderField.RENTTIMES);
+            List<BProduct> products = pdt.SearchProducts(null, null, User.Identity.GetUserId<int>(), 0, 0, cate, iType, 0, 0, 0, null, pageSize, page, true, out total, Entities.ProductOrderField.RENTTIMES);
             return View(products);
         }
 
