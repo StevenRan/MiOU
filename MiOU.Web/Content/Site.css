@@ -50,7 +50,15 @@ textarea {
 .input_reg_drp {
     width:30x;
 }
-
+.nma{
+    color:#B4B4B4;font-size:15px;text-decoration:none;cursor:pointer;
+}
+    .nma:hover {
+     color:#B4B4B4;font-size:15px;text-decoration:none;cursor:pointer;
+    }
+.nmaa,.nmaa:hover{
+    color:#FFD03F;font-size:15px;text-decoration:none;cursor:pointer;
+}
 .mainBg {
     background-color:#F1F1F1;
 }
@@ -371,19 +379,31 @@ width:auto;font-weight: normal;margin-left:4px;
     color:#333;
 }
 
-.myTitle {
+.lMenu {
+float:left;width:18%;padding-right:20px;
+}
+.rContent {
+float:left;width:82%;padding-left:10px;
+}
+.lTitle {
     height:40px;line-height:40px;text-align:center;font-weight:bold;
 }
-.myTitleUl {
+.lTitleUl {
     list-style:none;margin:0;padding:0;display:block;
 }
-    .myTitleUl .libd {
+    .lTitleUl .libd {
         border-bottom:1px solid #FFF;
     }
-    .myTitleUl .lid {
+    .lTitleUl .lid {
         text-align:center;display:block;height:40px;line-height:40px;background:#F1F1F1;    
     }
+        .lTitleUl .lid a {
+        color:#B4B4B4;font-size:15px;text-decoration:none;cursor:pointer;
+        }
 
-     .myTitleUl .lis {
-        text-align:center;display:block;height:40px;line-height:40px;background:#FFD03F;    
+     .lTitleUl .liactive {
+        text-align:center;display:block;height:40px;line-height:40px;background:#FFD03F;color:#FFF;
     }
+        .lTitleUl .liactive a {
+            color:#FFF;font-size:15px;text-decoration:none;cursor:pointer;
+        }

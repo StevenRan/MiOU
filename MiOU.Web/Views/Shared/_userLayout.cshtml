@@ -1,4 +1,8 @@
-﻿<!DOCTYPE html>
+﻿@{ 
+    string actionName = ViewContext.RouteData.Values["action"].ToString();
+    string controllerName = ViewContext.RouteData.Values["controller"].ToString();
+}
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -54,20 +58,36 @@
         </div>*@
     <div class="container">
         <div style="overflow:hidden;padding:10px 0px 10px 0px;">
-            <div style="float:left;width:20%;padding-right:20px;">
-                <div class="myTitle">我的米藕</div>
-                <ul class="myTitleUl">
-                    <li class="lid libd"><a href="/User/AddProduct">添加藕品</a></li>
-                    <li class="lid"><a href="/User/MyProducts">我的藕品</a></li>                   
+            <div class="lMenu" >
+                <div class="lTitle">我的米藕</div>
+                <ul class="lTitleUl">
+                    <li class="lid libd @{if(controllerName=="My" && actionName=="AddProduct"){ @Html.Raw("liactive"); }}"><a href="/My/AddProduct">添加藕品</a></li>
+                    <li class="lid @{if(controllerName=="My" && actionName=="MyProducts"){ @Html.Raw("liactive"); }}"><a href="/My/MyProducts">我的藕品</a></li>                   
                 </ul>
-                <div style="height:40px;line-height:40px;text-align:center;font-weight:bold;">我租入的</div>
-                <ul style="list-style:none;margin:0;padding:0;display:block;">
-                    <li style="text-align:center;display:block;height:40px;line-height:40px;background:#F1F1F1;border-bottom:1px solid #FFF;">付费租入</li>
-                    <li style="text-align:center;display:block;height:40px;line-height:40px;background:#F1F1F1;">Vip借入</li>
+                <div class="lTitle">我租入的</div>
+                <ul class="lTitleUl">
+                    <li class="lid libd @{if(controllerName=="My" && actionName=="NormalRentIn"){ @Html.Raw("liactive"); }}"><a href="/My/NormalRentIn">付费租入</a></li>
+                    <li class="lid @{if(controllerName=="My" && actionName=="VIPRentIn"){ @Html.Raw("liactive"); }}"><a href="/My/VIPRentIn">VIP借入</a></li>                   
                 </ul>
-               
+                <div class="lTitle">我租出的</div>
+                <ul class="lTitleUl">
+                    <li class="lid libd @{if(controllerName=="My" && actionName=="NormalRentOut"){ @Html.Raw("liactive"); }}"><a href="/My/NormalRentOut">收费租入</a></li>
+                    <li class="lid @{if(controllerName=="My" && actionName=="VIPRentOut"){ @Html.Raw("liactive"); }}"><a href="/My/VIPRentOut">VIP借出</a></li>
+                </ul>
+                <div class="lTitle">资金管理</div>
+                <ul class="lTitleUl">
+                    <li class="lid libd @{if(controllerName=="My" && actionName=="Vip"){ @Html.Raw("liactive"); }}"><a href="/My/Vip">米藕VIP</a></li>
+                    <li class="lid libd @{if(controllerName=="My" && actionName=="Money"){ @Html.Raw("liactive"); }}"><a href="/My/Money">我的资金</a></li>
+                    <li class="lid @{if(controllerName=="My" && actionName=="Currency"){ @Html.Raw("liactive"); }}"><a href="/My/Currency">我的藕币</a></li>
+                </ul>
+                <div class="lTitle">其他</div>
+                <ul class="lTitleUl">
+                    <li class="lid libd @{if(controllerName=="My" && actionName=="Vip"){ @Html.Raw("liactive"); }}"><a href="/My/Certificate">米藕认证</a></li>
+                    <li class="lid libd @{if(controllerName=="My" && actionName=="Money"){ @Html.Raw("liactive"); }}"><a href="/My/JoinUs">加入我们</a></li>
+                    <li class="lid @{if(controllerName=="My" && actionName=="Currency"){ @Html.Raw("liactive"); }}"><a href="/My/ContactUs">联系我们</a></li>
+                </ul>
             </div>
-            <div style="float:left;">
+            <div class="rContent">
                 @RenderBody()
             </div>
         </div>

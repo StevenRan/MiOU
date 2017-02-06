@@ -1,0 +1,41 @@
+﻿@using MiOU.BL;
+@using MiOU.Entities.Beans;
+@{
+    string htmlStr = null;
+    ViewBag.Title = "我的藕品";
+    Layout = "~/Views/Shared/_userLayout.cshtml";
+    List<BObject> rentTypes = null;
+    if (ViewBag.rTypes != null) {
+        rentTypes = ViewBag.rTypes as List<BObject>;
+    }
+    int iType = (int)ViewBag.selType;  
+    foreach (BObject rtype in rentTypes)
+    {
+        string className = "nma";
+        if (iType == rtype.Id)
+        {
+            className = "nmaa";
+        }
+        if (htmlStr == null)
+        {
+            htmlStr = "<a class=\"" + className + "\" href=\"/My/MyProducts?type=" + rtype.Id + "\">"+rtype.Name+"</a>";
+        }
+        else
+        {
+            htmlStr += " <span>|</span> <a class=\"" + className + "\" href=\"/My/MyProducts?type=" + rtype.Id + "\">" + rtype.Name + "</a>";
+        }
+    }
+}
+
+<div>
+    <div>
+        <h4>@ViewBag.Title</h4>
+    </div>
+    <hr/>
+    
+    <div>
+        @Html.Raw(htmlStr)
+    </div>
+</div>
+
+
