@@ -1,5 +1,8 @@
 ﻿@using MiOU.BL;
 @using MiOU.Entities.Beans;
+@using GridMvc.Html
+@using GridMvc.DBGrid
+@model List<BProduct>
 @{
     string htmlStr = null;
     ViewBag.Title = "我的藕品";
@@ -8,7 +11,7 @@
     if (ViewBag.rTypes != null) {
         rentTypes = ViewBag.rTypes as List<BObject>;
     }
-    int iType = (int)ViewBag.selType;  
+    int iType = (int)ViewBag.selType;
     foreach (BObject rtype in rentTypes)
     {
         string className = "nma";
@@ -25,6 +28,12 @@
             htmlStr += " <span>|</span> <a class=\"" + className + "\" href=\"/My/MyProducts?type=" + rtype.Id + "\">" + rtype.Name + "</a>";
         }
     }
+
+    List<BProduct> products = null;
+    if(Model!=null)
+    {
+        products = Model as List<BProduct>;
+    }
 }
 
 <div>
@@ -35,6 +44,34 @@
     
     <div>
         @Html.Raw(htmlStr)
+    </div>
+    <div>
+        @{ 
+            foreach(BProduct product in products)
+            {
+                <div style="overflow:hidden;width:100%;padding-bottom:20px;border-bottom:1px solid #F1F1F1;">
+                    <div style="float:left;width:15%">
+                        <img style="width:100px;height:100px;" src="/@Html.Raw(product.Images[0].Image.Path)"/>
+                    </div>
+                    <div style="float:left;width:25%">
+                        <div style="overflow:hidden;border-bottom:1px solid #F1F1F1;">
+                            <div class="dlit" style="float:left;">
+                                @product.Name
+                            </div>
+                            <div class="dli" style="float:right;">
+                                @product.Category.Name
+                            </div>
+                        </div>
+                    </div>
+                    <div style="float:left;">
+
+                    </div>
+                    <div style="float:right;">
+
+                    </div>
+                </div>
+            }
+        }
     </div>
 </div>
 

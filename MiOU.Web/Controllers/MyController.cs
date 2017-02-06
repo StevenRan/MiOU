@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Microsoft.AspNet.Identity;
 
 using MiOU.BL;
 using MiOU.Entities.Beans;
@@ -34,11 +35,31 @@ namespace MiOU.Web.Controllers
             {
                 iType = 1;
             }
-            ProductManagement pdt = new ProductManagement(0);
+            ProductManagement pdt = new ProductManagement(User.Identity.GetUserId<int>());
             List<BObject> rentTypes = pdt.GetRentTypes();
             ViewBag.rTypes = rentTypes;
             ViewBag.selType = iType;
-            return View();
+            int total = 0;
+            int pageSize = 20;
+            int page = 1;
+            if(!string.IsNullOrEmpty(Request["pageSize"]))
+            {
+                int.TryParse(Request["pageSize"],out pageSize);
+                if(pageSize==0)
+                {
+                    pageSize = 20;
+                }
+            }
+            if (!string.IsNullOrEmpty(Request["page"]))
+            {
+                int.TryParse(Request["page"], out page);
+                if (page == 0)
+                {
+                    page = 1;
+                }
+            }
+            List<BProduct> products = pdt.SearchProducts(null, null, User.Identity.GetUserId<int>(), 0, 0, 0, iType, 0, 0, 0, null, pageSize, page, true, out total, Entities.ProductOrderField.RENTTIMES);
+            return View(products);
         }
 
         public ActionResult AddProduct()
