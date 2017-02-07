@@ -465,10 +465,11 @@
     <Content Include="Views\Admin\MyAuditProducts.cshtml" />
     <Content Include="Views\Admin\SearchProducts.cshtml" />
     <Content Include="Views\Admin\ProductDetail.cshtml" />
-    <Content Include="Views\Shared\_userLayout.cshtml" />
+    <Content Include="Views\Shared\_myLayout.cshtml" />
     <Content Include="Views\My\Index.cshtml" />
     <Content Include="Views\My\MyProducts.cshtml" />
     <Content Include="Views\My\AddProduct.cshtml" />
+    <Content Include="Views\My\ProductForm.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

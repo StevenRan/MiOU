@@ -49,130 +49,128 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Admin_Actions.cs">
-      <DependentUpon>MiOUModal.tt</DependentUpon>
+      <DependentUpon>MiOUModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Admin_Categories.cs">
-      <DependentUpon>MiOUModal.tt</DependentUpon>
+      <DependentUpon>MiOUModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Admin_Users.cs">
-      <DependentUpon>MiOUModal.tt</DependentUpon>
+      <DependentUpon>MiOUModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Admin_Users_Actions.cs">
-      <DependentUpon>MiOUModal.tt</DependentUpon>
+      <DependentUpon>MiOUModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Area.cs">
-      <DependentUpon>MiOUModal.tt</DependentUpon>
+      <DependentUpon>MiOUModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Category.cs">
-      <DependentUpon>MiOUModal.tt</DependentUpon>
+      <DependentUpon>MiOUModel.tt</DependentUpon>
     </Compile>
     <Compile Include="CurrencyTransferCategory.cs">
-      <DependentUpon>MiOUModal.tt</DependentUpon>
+      <DependentUpon>MiOUModel.tt</DependentUpon>
     </Compile>
     <Compile Include="DeliveryType.cs">
-      <DependentUpon>MiOUModal.tt</DependentUpon>
+      <DependentUpon>MiOUModel.tt</DependentUpon>
     </Compile>
     <Compile Include="EvaluatedPrice.cs">
-      <DependentUpon>MiOUModal.tt</DependentUpon>
+      <DependentUpon>MiOUModel.tt</DependentUpon>
     </Compile>
     <Compile Include="EvaluatedPriceCategory.cs">
-      <DependentUpon>MiOUModal.tt</DependentUpon>
+      <DependentUpon>MiOUModel.tt</DependentUpon>
     </Compile>
     <Compile Include="File.cs">
-      <DependentUpon>MiOUModal.tt</DependentUpon>
+      <DependentUpon>MiOUModel.tt</DependentUpon>
     </Compile>
     <Compile Include="MaintenanceType.cs">
-      <DependentUpon>MiOUModal.tt</DependentUpon>
+      <DependentUpon>MiOUModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="MiOUModal.Context.cs">
+    <Compile Include="MiOUModel.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>MiOUModal.Context.tt</DependentUpon>
+      <DependentUpon>MiOUModel.Context.tt</DependentUpon>
     </Compile>
-    <Compile Include="MiOUModal.cs">
+    <Compile Include="MiOUModel.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>MiOUModal.tt</DependentUpon>
+      <DependentUpon>MiOUModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="MiOUModal.Designer.cs">
+    <Compile Include="MiOUModel.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>MiOUModal.edmx</DependentUpon>
+      <DependentUpon>MiOUModel.edmx</DependentUpon>
     </Compile>
     <Compile Include="Order.cs">
-      <DependentUpon>MiOUModal.tt</DependentUpon>
+      <DependentUpon>MiOUModel.tt</DependentUpon>
     </Compile>
     <Compile Include="PayCategory.cs">
-      <DependentUpon>MiOUModal.tt</DependentUpon>
+      <DependentUpon>MiOUModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Payment.cs">
-      <DependentUpon>MiOUModal.tt</DependentUpon>
+      <DependentUpon>MiOUModel.tt</DependentUpon>
     </Compile>
     <Compile Include="PayType.cs">
-      <DependentUpon>MiOUModal.tt</DependentUpon>
+      <DependentUpon>MiOUModel.tt</DependentUpon>
     </Compile>
     <Compile Include="PriceCategory.cs">
-      <DependentUpon>MiOUModal.tt</DependentUpon>
+      <DependentUpon>MiOUModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Product.cs">
-      <DependentUpon>MiOUModal.tt</DependentUpon>
+      <DependentUpon>MiOUModel.tt</DependentUpon>
     </Compile>
     <Compile Include="ProductImage.cs">
-      <DependentUpon>MiOUModal.tt</DependentUpon>
+      <DependentUpon>MiOUModel.tt</DependentUpon>
     </Compile>
     <Compile Include="ProductMaintenance.cs">
-      <DependentUpon>MiOUModal.tt</DependentUpon>
+      <DependentUpon>MiOUModel.tt</DependentUpon>
     </Compile>
     <Compile Include="ProductPrice.cs">
-      <DependentUpon>MiOUModal.tt</DependentUpon>
+      <DependentUpon>MiOUModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RentType.cs">
-      <DependentUpon>MiOUModal.tt</DependentUpon>
+      <DependentUpon>MiOUModel.tt</DependentUpon>
     </Compile>
     <Compile Include="UseCurrencyHistory.cs">
-      <DependentUpon>MiOUModal.tt</DependentUpon>
+      <DependentUpon>MiOUModel.tt</DependentUpon>
     </Compile>
     <Compile Include="User.cs">
-      <DependentUpon>MiOUModal.tt</DependentUpon>
+      <DependentUpon>MiOUModel.tt</DependentUpon>
     </Compile>
     <Compile Include="UserType.cs">
-      <DependentUpon>MiOUModal.tt</DependentUpon>
+      <DependentUpon>MiOUModel.tt</DependentUpon>
     </Compile>
     <Compile Include="UserVip.cs">
-      <DependentUpon>MiOUModal.tt</DependentUpon>
+      <DependentUpon>MiOUModel.tt</DependentUpon>
     </Compile>
     <Compile Include="VipLevel.cs">
-      <DependentUpon>MiOUModal.tt</DependentUpon>
+      <DependentUpon>MiOUModel.tt</DependentUpon>
     </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <EntityDeploy Include="MiOUModal.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>MiOUModal.Designer.cs</LastGenOutput>
-    </EntityDeploy>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.Config" />
-    <None Include="MiOUModal.edmx.diagram">
-      <DependentUpon>MiOUModal.edmx</DependentUpon>
+    <EntityDeploy Include="MiOUModel.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>MiOUModel.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="MiOUModel.edmx.diagram">
+      <DependentUpon>MiOUModel.edmx</DependentUpon>
     </None>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="MiOUModal.Context.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>MiOUModal.edmx</DependentUpon>
-      <LastGenOutput>MiOUModal.Context.cs</LastGenOutput>
-    </Content>
-    <Content Include="MiOUModal.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>MiOUModal.edmx</DependentUpon>
-      <LastGenOutput>MiOUModal.cs</LastGenOutput>
-    </Content>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
-    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+    <Content Include="MiOUModel.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>MiOUModel.edmx</DependentUpon>
+      <LastGenOutput>MiOUModel.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="MiOUModel.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>MiOUModel.edmx</DependentUpon>
+      <LastGenOutput>MiOUModel.cs</LastGenOutput>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

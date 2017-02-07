@@ -38,6 +38,7 @@ namespace MiOU.Entities.Beans
         public List<BProductImage> Images { get; set; }
         public List<BProductPrice> ProductPrices { get; set; }
         public int Repertory { get; set; }
+        public int RentOutQuantity { get; set; }
         public BVIPLevel VIPRentLevel { get; set; }
         public string Contact { get; set; }
         public string Phone { get; set; }

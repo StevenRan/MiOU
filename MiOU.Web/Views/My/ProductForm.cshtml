@@ -1,0 +1,327 @@
+﻿@using MiOU.Entities.Beans
+@using MiOU.Entities.Models
+@model MProduct
+@{
+    ViewBag.Title = "添加藕品";
+    Layout = "~/Views/Shared/_myLayout.cshtml";
+}
+
+<script>
+    var BASE_URL = '@Url.Content("~/")';
+    $(function () {
+        $('#CategoryId').change(function () {
+            var _this = this;
+            var cate = $(this).val();
+            $.post(
+                BASE_URL + 'api/Common/GetCategories',
+                { parentId: cate },
+                function (data) {
+                    if (data.Status == 'OK') {
+                        $('#ChildCategoryId').empty();
+                        //$('<option value="">--选择子类别--</option>').appendTo($('#SearchModel_ChildCategory'));
+                        $(data.Result).each(function (index, item) {
+                            $('<option value="' + item.Id + '">' + item.Name + '</option>').appendTo($('#ChildCategoryId'));
+                        });
+                    }
+                }
+            );
+        });
+    });
+
+</script>
+<h4>@ViewBag.Title</h4>
+<hr />
+<script>
+    var gg = [];
+    function setPhoto(id) {
+        found=false;
+        $(gg).each(function (i, g) {
+            if (g == id) {
+                found = true;
+                return false;
+            }
+        });
+        if (!found) {
+            gg.push(id);
+        }
+    }
+
+    $(function () {
+
+        $('#submit_warning').find('button').find('span').click(function () {
+            $('#submit_warning').hide();
+        });
+
+        $('#btn_save_product').click(function () {
+            var errorMsg = null;            
+            var productName = $('#ProductForm').find('#Name').val();
+            var price = $('#ProductForm').find('#Price').val();
+            var contact = $('#ProductForm').find('#Contact').val();
+            var phone = $('#ProductForm').find('#Phone').val();
+            var repertory = $('#ProductForm').find('#Repertory').val();
+            
+            if ($.trim(productName) == '') {
+                if (errorMsg != null) {
+                    errorMsg += "<br/>藕品名称不能为空";
+                } else {
+                    errorMsg = "藕品名称不能为空";
+                }
+            }
+            
+            if ($.trim(contact) == '') {
+                if (errorMsg != null) {
+                    errorMsg += "<br/>藕品联系人不能为空";
+                } else {
+                    errorMsg = "藕品联系人不能为空";
+                }
+            }
+            
+            if ($.trim(phone) == '') {
+                if (errorMsg != null) {
+                    errorMsg += "<br/>藕品联系人电话号码不能为空";
+                } else {
+                    errorMsg = "藕品联系人电话号码不能为空";
+                }
+            }
+            
+            if ($.trim(price) == '') {
+                if (errorMsg != null) {
+                    errorMsg += "<br/>藕品原价不能为空";
+                } else {
+                    errorMsg = "藕品原价不能为空";
+                }
+            } else {
+                if (isNaN(price)) {
+                    if (errorMsg != null) {
+                        errorMsg += "<br/>藕品原价必须为数字";
+                    } else {
+                        errorMsg = "藕品原价必须为数字";
+                    }
+                }
+            }
+           
+            if ($.trim(repertory) == '') {
+                if (errorMsg != null) {
+                    errorMsg += "<br/>藕品库存不能为空";
+                } else {
+                    errorMsg = "藕品库存不能为空";
+                }
+            } else {
+                if (isNaN(repertory)) {
+                    if (errorMsg != null) {
+                        errorMsg += "<br/>藕品库存必须为整数";
+                    } else {
+                        errorMsg = "藕品库存必须为整数";
+                    }
+                } else if (repertory.index('.')) {
+                    if (errorMsg != null) {
+                        errorMsg += "<br/>藕品库存必须为整数";
+                    } else {
+                        errorMsg = "藕品库存必须为整数";
+                    }
+                } else if (parseInt(repertory)==0) {
+                    if (errorMsg != null) {
+                        errorMsg += "<br/>藕品库存必须为大于零的整数";
+                    } else {
+                        errorMsg = "藕品库存必须为大于零的整数";
+                    }
+                }
+            }
+
+            if (gg.length < 2) {
+                if (errorMsg != null) {
+                    errorMsg += "<br/>产品图片至少两张，最多3张";
+                } else {
+                    errorMsg = "产品图片至少两张，最多3张";
+                }
+            }
+
+            if (errorMsg != null) {
+                $('#submit_warning').find('p').html(errorMsg);
+                $('#submit_warning').show();
+                return;
+            }
+            var picIds = "";
+            if (gg.length > 0) {
+                $(gg).each(function (i, g) {
+                    if (picIds == "") {
+                        picIds = g;
+                    } else {
+                        picIds += "," + g;
+                    }
+                });
+            }
+
+            //alert(picIds);
+            //return;
+            $('#PhotoIds').val(picIds);
+            $('#ProductForm').submit();
+        });
+        $("#FilesInput").fileinput({
+            maxFileCount: 1,
+            allowedFileExtensions: ["jpg", "png"],
+            showRemove: false,
+            showUpload: false,
+            uploadAsync: true,
+            uploadUrl: '/FileUploader/Upload',
+            deleteUrl: '/FileUploader/Delete',
+            previewSettings: { image: { width: "auto", height: "100px" }}
+        }).on('fileuploaded', function (event, data, previewId, index) {
+            var form = data.form, files = data.files, extra = data.extra,
+                response = data.response, reader = data.reader;
+            if (response.Status == 'OK') {
+                if (response.Result != 'undefined' && response.Result != null && typeof (response.Result) == 'object') {
+                    setPhoto($.trim(response.Result[0].Id));
+                }
+            } else {
+                alert(response.Message);
+            }
+        }).on('fileloaded', function (event, file, previewId, index, reader) {
+            if (gg.length == 3) {
+                alert("产品图片至少两张，最多3张");
+                return;
+            }
+            $('#FilesInput').fileinput("upload");
+        });
+    });
+</script>
+
+
+
+@using (Html.BeginForm("SaveProduct", "Admin", FormMethod.Post, new { @class = "form-horizontal", role = "form", id = "ProductForm" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(m => m.Id)
+    @Html.HiddenFor(m => m.PhotoIds)
+    @Html.HiddenFor(m => m.PriceCotegories)
+    if (ViewBag.Error != null)
+    {
+        @*<div class="form-group" id="submit_message_warn">
+            <div class="col-md-offset-1 col-md-7 alert alert-danger fade in">
+                <p class="" id="message">@Html.Raw((string)ViewBag.Error)</p>
+            </div>
+        </div>*@
+    }
+    @Html.HiddenFor(model => model.Id)
+    
+    <div class="form-group">
+        @Html.LabelFor(model => model.CategoryId, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-8">
+            @Html.DropDownListFor(model => model.CategoryId, (SelectList)ViewBag.Cates, htmlAttributes: new { @class = "form-control input_reg" })
+
+            @Html.DropDownListFor(model => model.ChildCategoryId, (SelectList)ViewBag.cCates, new { @class = "form-control input_reg", @style = "margin-top:2px;" })
+            @Html.ValidationMessageFor(model => model.CategoryId, "", new { @class = "text-danger" })
+
+
+        </div>
+    </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.ManageType, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-8">
+                    @Html.DropDownListFor(model => model.ManageType, (SelectList)ViewBag.ManageTypes, new { @class = "form-control input_reg" })
+                    @Html.ValidationMessageFor(model => model.ManageType, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-8">
+                    @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control input_reg" } })
+                    @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.Percentage, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-8">
+                    @Html.DropDownListFor(model => model.Percentage, (SelectList)ViewBag.Percentages, htmlAttributes: new { @class = "form-control input_reg" })
+                    @Html.ValidationMessageFor(model => model.Percentage, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.Price, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-8">
+                    @Html.EditorFor(model => model.Price, new { htmlAttributes = new { @class = "form-control input_reg" } })
+                    @Html.ValidationMessageFor(model => model.Price, "", new { @class = "text-danger" })
+                </div>
+            </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.RentType, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-8">
+            @Html.DropDownListFor(model => model.RentType, (SelectList)ViewBag.rTypes, new { @class = "form-control input_reg" })
+            @Html.ValidationMessageFor(model => model.RentType, "", new { @class = "text-danger" })
+        </div>
+    </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.DeliveryType, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-8">
+                    @Html.DropDownListFor(model => model.DeliveryType, (SelectList)ViewBag.sTypes, new { @class = "form-control input_reg" })
+                    @Html.ValidationMessageFor(model => model.DeliveryType, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.Contact, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-8">
+                    @Html.EditorFor(model => model.Contact, new { htmlAttributes = new { @class = "form-control input_reg" } })
+                    @Html.ValidationMessageFor(model => model.Contact, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.Phone, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-8">
+                    @Html.EditorFor(model => model.Phone, new { htmlAttributes = new { @class = "form-control input_reg" } })
+                    @Html.ValidationMessageFor(model => model.Phone, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.Repertory, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-8">
+                    @Html.EditorFor(model => model.Repertory, new { htmlAttributes = new { @class = "form-control input_reg" } })
+                    @Html.ValidationMessageFor(model => model.Repertory, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+    <div class="form-group">
+        <label class="control-label col-md-2" for="图片">照片</label>
+        <div class="col-md-9">
+            <input id="FilesInput" name="FilesInput" type="file" multiple class="file-loading" />
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-8">
+            @Html.TextAreaFor(model => model.Description, htmlAttributes: new { @class = "form-control mTA1" })
+            @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.PriceCotegories, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-8" style="overflow:hidden;">
+            @if (ViewBag.cPriceCates != null)
+            {
+                bool chked = true;
+                List<BPriceCategory> pCates = (List<BPriceCategory>)ViewBag.cPriceCates;
+                foreach (BPriceCategory cate in pCates)
+                {
+                    <div style="margin-right:10px;float:left;">
+                        <div class="checkbox" style="float:left;">
+                            <input @if (chked) { @Html.Raw("checked")   } type="checkbox" class="check-box" style="margin-left:0px;" id="PriceCotegories" name="PriceCotegories" value="@cate.Id" />
+                        </div>
+                        <label class="control-label perLabel" style="margin-left:15px;">@Html.Raw(cate.Name)</label>
+                    </div>
+                }
+            }
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-8">
+            <button id="btn_save_product" type="button" class="btn btn-warning">
+                保存
+            </button>
+        </div>
+    </div>
+}
+
+<div id="submit_warning" class="alert alert-danger alert-dismissible" role="alert" style="display:none;">
+    <button type="button" class="close"><span aria-hidden="true">&times;</span></button>
+    <p></p>
+</div>
+

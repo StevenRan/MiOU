@@ -6,7 +6,7 @@
 @{
     string htmlStr = null;
     ViewBag.Title = "我的藕品";
-    Layout = "~/Views/Shared/_userLayout.cshtml";
+    Layout = "~/Views/Shared/_myLayout.cshtml";
     List<BObject> rentTypes = null;
     if (ViewBag.rTypes != null) {
         rentTypes = ViewBag.rTypes as List<BObject>;
@@ -63,11 +63,11 @@
                     area += " - " + product.Apartment;
                 }
                 <div style="overflow:hidden;width:100%;padding-bottom:20px;padding-top:20px;border-bottom:1px solid #F1F1F1;">
-                    <div style="float:left;width:15%">
+                    <div style="float:left;width:138px;">
                         <img style="width:138px;height:138px;" src="/@Html.Raw(product.Images[0].Image.Path)"/>
                     </div>
-                    <div style="float:left;width:30%;padding-left:20px;padding-right:20px;border-right:1px solid #F1F1F1;">
-                        <div style="overflow:hidden;border-bottom:1px solid #F1F1F1;padding-bottom:5px;">
+                    <div style="float:left;width:277.44px;padding-left:20px;padding-right:20px;border-right:1px solid #F1F1F1;font-size:13px;">
+                        <div style="overflow:hidden;border-bottom:1px solid #F1F1F1;padding-bottom:5px;font-size:14px;">
                             <div  style="float:left;">
                                 @product.Name
                             </div>
@@ -100,21 +100,36 @@
                             }
                         </div>
                     </div>
-                    <div style="float:left;width:30%;padding-left:20px;color:#B4B4B4;">
+                    <div style="float:left;width:369.91px;padding-left:20px;color:#B4B4B4;font-size:13px;">
                         <div>@product.RentType.Name - 费用:</div>
                         <div style="overflow:hidden;margin-top:10px;">
                             @{ 
                                 foreach(BProductPrice price in product.ProductPrices)
                                 {
                                     <div style="float:left;padding-right:20px;padding-top:5px;padding-bottom:5px;"><span style="color:#B4B4B4;">@price.PriceCategory.Name:</span><span style="color:red;padding-left:5px;">@price.EPrice.Price/天</span></div>
-                                } 
+                                }
+                            }
+                        </div>
+                        <div style="overflow:hidden;margin-top:10px;">
+                            @{
+                                if (product.RentOutQuantity > 0)
+                                {
+                                    <span style="color:#FFD03F;">租赁中...</span>
+                                }
+                                else
+                                {
+                                    <span>库存:</span><span style="color:red;padding-left:5px;">@(product.RentOutQuantity)/@(product.Repertory+product.RentOutQuantity)</span>
+                                }
                             }
                         </div>
                     </div>
-                    <div style="float:right;">
-
+                    <div style="padding-left:20px;width:138px;height:100%;float:right;height:140px;border-left:1px solid #F1F1F1;">
+                        <ul style="list-style:none;margin:0;padding:0;height:100%;display:block;line-height:100%;">
+                            <li style="height:33%;display:block;"><a style="padding:5px 10px 5px 10px;border:1px solid #FFD03F;border-radius:4px; color:#FFD03F;" href="">排期</a></li>
+                            <li style="height:33%;display:block;"><a style="padding:5px 10px 5px 10px;border:1px solid #FF9389;border-radius:4px; color:#FF9389;" href="">清洁</a></li>
+                            <li style="height:33%;display:block;"><a style="padding:5px 10px 5px 10px;border:1px solid #91B9FF;border-radius:4px; color:#91B9FF;" href="">编辑</a></li>
+                        </ul>
                     </div>
-
                 </div>
             }
         }

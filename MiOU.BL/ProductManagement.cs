@@ -420,6 +420,7 @@ namespace MiOU.BL
                                AuditUser = new BUser { User= llauser },
                                Description = p.Description,
                                Repertory = p.Repertory,
+                               RentOutQuantity= p.RentOutQuantity,
                                User = llowner != null ? new BUser() { User = llowner } : null,
                                XPlot = p.XPlot,
                                YPlot = p.YPlot,

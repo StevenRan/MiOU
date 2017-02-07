@@ -53,19 +53,20 @@ namespace MiOU.Entities.Models
         public int DeliveryType { get; set; }  
              
         [Display(Name = "库存")]
+        [Range(1,Int32.MaxValue,ErrorMessage ="库存必须大于等于1")]
         public int Repertory { get; set; }
 
         [Display(Name = "层色")]
         [Range(0.1,1,ErrorMessage ="层色只能在0.1 - 1之间")]
         public float Percentage { get; set; }
 
-        [Display(Name = "市场价")]
+        [Display(Name = "原价")]
         public int Price { get; set; }
 
         [Display(Name = "租赁形式")]
         public string PriceCotegories { get; set; }
 
-        [Display(Name = "营业方式")]
+        [Display(Name = "托管方式")]
         public int ManageType { get; set; }
     }
 }

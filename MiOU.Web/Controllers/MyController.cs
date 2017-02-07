@@ -4,7 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
-
+using MiOU.Entities.Models;
 using MiOU.BL;
 using MiOU.Entities.Beans;
 
@@ -69,7 +69,19 @@ namespace MiOU.Web.Controllers
 
         public ActionResult AddProduct()
         {
-            return View();
+            ProductManagement pdtMgr = new ProductManagement(User.Identity.GetUserId<int>());
+            List<BObject> rentTypes = pdtMgr.GetRentTypes();
+            List<BSelType> shippingTypes = pdtMgr.GetDeliveryTypes();
+            List<BCategory> cates = pdtMgr.GetCategories(0, false);
+            ViewBag.rTypes = new SelectList(rentTypes, "Id", "Name");
+            ViewBag.sTypes = new SelectList(shippingTypes, "Id", "Name");
+            ViewBag.Cates = new SelectList(cates, "Id", "Name");
+            ViewBag.cCates = new SelectList(pdtMgr.GetCategories(cates[0].Id), "Id", "Name");
+            ViewBag.cPriceCates = pdtMgr.GetPriceCategories();
+            ViewBag.Percentages = new SelectList(pdtMgr.GetPercentages(), "Id", "Name");
+            ViewBag.ManageTypes = new SelectList(pdtMgr.GetManageTypes(), "Id", "Name");
+            MProduct model = new MProduct() { Phone = pdtMgr.CurrentLoginUser.User.Phone, Contact = pdtMgr.CurrentLoginUser.User.Phone };
+            return View("ProductForm", model);
         }
 
         public ActionResult NormalRentOut()
