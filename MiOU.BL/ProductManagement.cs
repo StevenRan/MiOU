@@ -792,7 +792,7 @@ namespace MiOU.BL
         {
             if (product == null)
             {
-                throw new MiOUException("产品数据不正确");
+                throw new MiOUException("藕品数据不正确");
             }
             
             BProduct model = new BProduct();
@@ -929,7 +929,7 @@ namespace MiOU.BL
             }
             if(model.ProductPrices==null || model.ProductPrices.Count<=0)
             {
-                throw new MiOUException("藕品的租赁租价方式至少一种");
+                throw new MiOUException("藕品的租赁方式至少勾选一种如（日租，周租，月租...）");
             }
             if(CurrentLoginUser.User.UserType==1 && model.Repertory>1)
             {
@@ -965,6 +965,7 @@ namespace MiOU.BL
                     Repertory=model.Repertory,
                     Apartment=model.Apartment,
                     NearBy=model.Nearby,
+                    RentOutQuantity=0,
                     VIPLevel= model.VIPRentLevel!=null?model.VIPRentLevel.Id:0,
                     Contact= model.Contact!=null?model.Contact:"",
                     Phone= model.Phone!=null?model.Phone:"",

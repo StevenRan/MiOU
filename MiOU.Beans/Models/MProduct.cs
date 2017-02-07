@@ -53,11 +53,12 @@ namespace MiOU.Entities.Models
         public int DeliveryType { get; set; }  
              
         [Display(Name = "库存")]
-        [Range(1,Int32.MaxValue,ErrorMessage ="库存必须大于等于1")]
+        [Range(1,Int32.MaxValue,ErrorMessage ="库存必须大于或等于1")]
         public int Repertory { get; set; }
 
+        //后台数据库里存入的数据必须是此数值除以100后的数据
         [Display(Name = "层色")]
-        [Range(0.1,1,ErrorMessage ="层色只能在0.1 - 1之间")]
+        [Range(1,100,ErrorMessage ="层色只能在10 - 100之间")]
         public float Percentage { get; set; }
 
         [Display(Name = "原价")]

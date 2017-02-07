@@ -97,14 +97,20 @@
                     } else {
                         errorMsg = "藕品原价必须为数字";
                     }
+                } else if (parseFloat(price)==0) {
+                    if (errorMsg != null) {
+                        errorMsg += "<br/>藕品原价必须大于0";
+                    } else {
+                        errorMsg = "藕品原价必须大于0";
+                    }
                 }
             }
-           
+            alert(repertory);
             if ($.trim(repertory) == '') {
                 if (errorMsg != null) {
-                    errorMsg += "<br/>藕品库存不能为空";
+                    errorMsg += "<br/>藕品库存不能为空,并且不能是非整数字符";
                 } else {
-                    errorMsg = "藕品库存不能为空";
+                    errorMsg = "藕品库存不能为空,并且不能是非整数字符";
                 }
             } else {
                 if (isNaN(repertory)) {
@@ -113,11 +119,11 @@
                     } else {
                         errorMsg = "藕品库存必须为整数";
                     }
-                } else if (repertory.index('.')) {
+                } else if (repertory.indexOf('.')>-1) {                    
                     if (errorMsg != null) {
-                        errorMsg += "<br/>藕品库存必须为整数";
+                        errorMsg += "<br/>藕品库存必须为整数,不能带有小数点";
                     } else {
-                        errorMsg = "藕品库存必须为整数";
+                        errorMsg = "藕品库存必须为整数,不能带有小数点";
                     }
                 } else if (parseInt(repertory)==0) {
                     if (errorMsg != null) {
@@ -127,7 +133,7 @@
                     }
                 }
             }
-
+            
             if (gg.length < 2) {
                 if (errorMsg != null) {
                     errorMsg += "<br/>产品图片至少两张，最多3张";
@@ -188,19 +194,18 @@
 
 
 
-@using (Html.BeginForm("SaveProduct", "Admin", FormMethod.Post, new { @class = "form-horizontal", role = "form", id = "ProductForm" }))
+@using (Html.BeginForm("SaveProduct", "My", FormMethod.Post, new { @class = "form-horizontal", role = "form", id = "ProductForm" }))
 {
     @Html.AntiForgeryToken()
     @Html.HiddenFor(m => m.Id)
     @Html.HiddenFor(m => m.PhotoIds)
     @Html.HiddenFor(m => m.PriceCotegories)
-    if (ViewBag.Error != null)
+    if (ViewBag.Message != null)
     {
-        @*<div class="form-group" id="submit_message_warn">
-            <div class="col-md-offset-1 col-md-7 alert alert-danger fade in">
-                <p class="" id="message">@Html.Raw((string)ViewBag.Error)</p>
-            </div>
-        </div>*@
+        <div id="submit_warning" class="alert alert-danger alert-dismissible" role="alert" style="display:none;">
+            <button type="button" class="close"><span aria-hidden="true">&times;</span></button>
+            <p>@ViewBag.Message</p>
+        </div>
     }
     @Html.HiddenFor(model => model.Id)
     

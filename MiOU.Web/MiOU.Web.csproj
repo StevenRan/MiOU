@@ -470,6 +470,7 @@
     <Content Include="Views\My\MyProducts.cshtml" />
     <Content Include="Views\My\AddProduct.cshtml" />
     <Content Include="Views\My\ProductForm.cshtml" />
+    <Content Include="Views\My\Error.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

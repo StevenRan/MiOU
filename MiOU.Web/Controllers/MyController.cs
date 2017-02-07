@@ -7,6 +7,7 @@ using Microsoft.AspNet.Identity;
 using MiOU.Entities.Models;
 using MiOU.BL;
 using MiOU.Entities.Beans;
+using MiOU.Entities.Exceptions;
 
 namespace MiOU.Web.Controllers
 {
@@ -81,6 +82,75 @@ namespace MiOU.Web.Controllers
             ViewBag.Percentages = new SelectList(pdtMgr.GetPercentages(), "Id", "Name");
             ViewBag.ManageTypes = new SelectList(pdtMgr.GetManageTypes(), "Id", "Name");
             MProduct model = new MProduct() { Phone = pdtMgr.CurrentLoginUser.User.Phone, Contact = pdtMgr.CurrentLoginUser.User.Phone };
+            return View("ProductForm", model);
+        }
+        public ActionResult EditProduct(int? productId)
+        {
+            ProductManagement pdtMgr = new ProductManagement(User.Identity.GetUserId<int>());
+            List<BObject> rentTypes = pdtMgr.GetRentTypes();
+            List<BSelType> shippingTypes = pdtMgr.GetDeliveryTypes();
+            List<BCategory> cates = pdtMgr.GetCategories(0, false);
+            ViewBag.rTypes = new SelectList(rentTypes, "Id", "Name");
+            ViewBag.sTypes = new SelectList(shippingTypes, "Id", "Name");
+            ViewBag.Cates = new SelectList(cates, "Id", "Name");
+            ViewBag.cCates = new SelectList(pdtMgr.GetCategories(cates[0].Id), "Id", "Name");
+            ViewBag.cPriceCates = pdtMgr.GetPriceCategories();
+            ViewBag.Percentages = new SelectList(pdtMgr.GetPercentages(), "Id", "Name");
+            ViewBag.ManageTypes = new SelectList(pdtMgr.GetManageTypes(), "Id", "Name");
+            MProduct model = new MProduct() { Phone = pdtMgr.CurrentLoginUser.User.Phone, Contact = pdtMgr.CurrentLoginUser.User.Phone };
+            
+            if(productId!=null)
+            {
+                int total = 0;
+                List<BProduct> products = pdtMgr.SearchProducts(new int[] { (int)productId }, null, 0, 0, 0, 0, 0, 0, 0, 0, null, 1, 1, true, out total);
+                if(products.Count==0)
+                {
+                    return ShowError("此藕品不存在");
+                }
+            }
+            else
+            {
+                return ShowError("请不要随意修改URL里的数据");
+            }
+            return View("ProductForm", model);
+        }
+
+        public ActionResult ShowError(string message)
+        {
+            return RedirectToAction("Error", "My", new System.Web.Routing.RouteValueDictionary(new { controller = "My", action = "Error", message = message }));
+        }
+        
+
+        [HttpPost]
+        public ActionResult SaveProduct(MProduct model)
+        {
+            ProductManagement pdtMgr = new ProductManagement(User.Identity.GetUserId<int>());
+            List<BObject> rentTypes = pdtMgr.GetRentTypes();
+            List<BSelType> shippingTypes = pdtMgr.GetDeliveryTypes();
+            List<BCategory> cates = pdtMgr.GetCategories(0, false);
+            ViewBag.rTypes = new SelectList(rentTypes, "Id", "Name");
+            ViewBag.sTypes = new SelectList(shippingTypes, "Id", "Name");
+            ViewBag.Cates = new SelectList(cates, "Id", "Name");
+            ViewBag.cCates = new SelectList(pdtMgr.GetCategories(cates[0].Id), "Id", "Name");
+            ViewBag.cPriceCates = pdtMgr.GetPriceCategories();
+            ViewBag.Percentages = new SelectList(pdtMgr.GetPercentages(), "Id", "Name");
+            ViewBag.ManageTypes = new SelectList(pdtMgr.GetManageTypes(), "Id", "Name");
+            try
+            {
+                model.Percentage = model.Percentage /100;
+                model.PriceCotegories = Request["PriceCotegories"];
+                pdtMgr.CreateProduct(model);
+                return RedirectToAction("MyProducts");
+            }   
+            catch(MiOUException mex)
+            {
+                ViewBag.Message = mex.Message;
+            }  
+            catch(Exception ex)
+            {
+                logger.Fatal(ex);
+                ViewBag.Message = "知名错误，请联络系统管理员";
+            }       
             return View("ProductForm", model);
         }
 
