@@ -22,5 +22,6 @@ namespace MiOU.DAL
         public float Price { get; set; }
         public long Created { get; set; }
         public int UserId { get; set; }
+        public bool Enabled { get; set; }
     }
 }

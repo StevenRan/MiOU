@@ -36,12 +36,14 @@ namespace MiOU.Entities.Models
         [Display(Name = "描述")]
         public string Description { get; set; }
 
-        [Required(ErrorMessage = "照片不能为空")]
+       
         [Display(Name = "照片")]
         public string Photos { get; set; }
 
         public HttpPostedFileBase FilesInput { get; set; }
 
+        [Display(Name = "照片")]
+        [Required(ErrorMessage = "照片不能为空")]
         public string PhotoIds { get; set; }
 
         [Required(ErrorMessage = "租赁类别不能为空")]
@@ -62,7 +64,7 @@ namespace MiOU.Entities.Models
         public float Percentage { get; set; }
 
         [Display(Name = "原价")]
-        public int Price { get; set; }
+        public float Price { get; set; }
 
         [Display(Name = "租赁形式")]
         public string PriceCotegories { get; set; }

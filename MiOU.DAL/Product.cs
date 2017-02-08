@@ -33,6 +33,7 @@ namespace MiOU.DAL
         public float EvaluatedPercentage { get; set; }
         public int DeliveryType { get; set; }
         public int RentType { get; set; }
+        public int AddressId { get; set; }
         public int Province { get; set; }
         public int City { get; set; }
         public int District { get; set; }

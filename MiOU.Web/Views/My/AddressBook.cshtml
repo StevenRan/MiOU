@@ -1,0 +1,42 @@
+﻿@using MiOU.BL;
+@using MiOU.Entities.Beans;
+@using GridMvc.Html
+@using GridMvc.DBGrid
+@model List<BAddress>
+@{
+    ViewBag.Title = "藕品地点";
+    Layout = "~/Views/Shared/_myLayout.cshtml";
+    List<BAddress> addresses = null;
+    if(Model!=null)
+    {
+        addresses = Model as List<BAddress>;
+    }
+}
+<script type="text/javascript">
+    $(function () {
+        $('#add_new_address').click(function () {
+            openModalDialog("/My/AddAddress", null);
+            //window.location.href = "/Admin/NewProductLevel";
+        });
+    });
+</script>
+<div>
+    <div style="overflow:hidden;height:40px;line-height:40px;">
+        <div style="float:left;font-size:18px;height:100%;">           
+            @ViewBag.Title
+        </div>
+        <div style="float:right;height:100%;">
+            <input id="add_new_address" type="button" class="btn btn-info" value="添加藕品地点" onclick="">
+        </div>
+    </div>   
+    <hr />
+    <div>
+        @{
+            if (addresses == null || addresses.Count == 0)
+            {
+                <div>您还没有添加任何藕品地点</div>                
+            }
+        }
+    </div>
+</div>
+

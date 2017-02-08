@@ -46,6 +46,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApiMessage.cs" />
+    <Compile Include="Beans\BAddress.cs" />
     <Compile Include="Beans\BAdmin.cs" />
     <Compile Include="Beans\BArea.cs" />
     <Compile Include="Beans\BCategory.cs" />
@@ -74,6 +75,7 @@
     <Compile Include="Exceptions\MiOUException.cs" />
     <Compile Include="MiOUConstants.cs" />
     <Compile Include="MiOUEnum.cs" />
+    <Compile Include="Models\MAddress.cs" />
     <Compile Include="Models\MAuditProduct.cs" />
     <Compile Include="Models\MProduct.cs" />
     <Compile Include="Models\MSearchProduct.cs" />

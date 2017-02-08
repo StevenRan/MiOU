@@ -27,8 +27,53 @@ namespace MiOU.BL
 
         public bool RemoveFile(int id)
         {
+            if(id<=0)
+            {
+                return false;
+            }
             bool ret = false;
+            MiOUEntities db = null;
+            try
+            {
+                db = new MiOUEntities();
+                DAL.File tmpFile = (from f in db.File where f.Id == id select f).FirstOrDefault<DAL.File>();
+                if (tmpFile == null)
+                {
+                    return false;
+                }
+
+                string directory = System.AppDomain.CurrentDomain.BaseDirectory;
+                string absPath = tmpFile.Path.Replace("/", "\\");
+                string fullPath = System.IO.Path.Combine(directory, absPath);
+                if (System.IO.File.Exists(fullPath))
+                {
+                    System.IO.File.Delete(fullPath);
+                    db.File.Remove(tmpFile);
+                }
+                db.SaveChanges();
+                ret = true;
+            }
+            catch (Exception ex)
+            {
+                logger.Fatal(ex);
+            }
+            finally
+            {
+                if (db != null)
+                {
+                    db.Dispose();
+                }
+            }
             return ret;
+        }
+
+        public bool RemoveFile(DAL.File file)
+        {
+            if(file==null || file.Id==0)
+            {
+                return false;
+            }
+            return RemoveFile(file.Id);
         }
         public List<BFile> UploadFile(IEnumerable<HttpPostedFileBase> files)
         {

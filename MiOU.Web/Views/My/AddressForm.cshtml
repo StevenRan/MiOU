@@ -1,0 +1,234 @@
+﻿@using MiOU.Entities.Beans
+@using MiOU.Entities.Models
+@model MAddress
+@{
+    ViewBag.Title = "添加藕品地点";
+    Layout = Request.IsAjaxRequest() ? null : "~/Views/Shared/_myLayout.cshtml";    
+}
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+<script type="text/javascript">
+    var BASE_URL = '@Url.Content("~/")';
+    $(function () {
+
+        function VerifyInputs()
+        {
+            var msg = null;
+            var province = $('#Province').val();
+            var city = $('#City').val();
+            var district = $('#District').val();
+            var contact = $('#Contact').val();
+            var phone = $('#Phone').val();
+            var apartment = $('#Apartment').val();
+            var nearBy = $('#NearBy').val();
+            if (province == "") {
+                if(msg==null)
+                {
+                    msg = "省份不能为空";
+                } else {
+                    msg += "<br/>省份不能为空";
+                }
+            }
+            if (city == "") {
+                if (msg == null) {
+                    msg = "城市不能为空";
+                } else {
+                    msg += "<br/>城市不能为空";
+                }
+            }
+            if (district == "") {
+                if (msg == null) {
+                    msg = "区不能为空";
+                } else {
+                    msg += "<br/>区不能为空";
+                }
+            }
+            if (contact == "") {
+                if (msg == null) {
+                    msg = "联系人不能为空";
+                } else {
+                    msg += "<br/>联系人不能为空";
+                }
+            }
+            if (phone == "") {
+                if (msg == null) {
+                    msg = "电话不能为空";
+                } else {
+                    msg += "<br/>电话不能为空";
+                }
+            }
+            if (apartment == "") {
+                if (msg == null) {
+                    msg = "小区不能为空";
+                } else {
+                    msg += "<br/>小区不能为空";
+                }
+            }
+            if (nearBy == "") {
+                if (msg == null) {
+                    msg = "靠近不能为空";
+                } else {
+                    msg += "<br/>靠近不能为空";
+                }
+            }
+
+            return msg;
+        }
+
+        $('#btn_save_address').click(function () {
+            var message = VerifyInputs();
+            if (message != null)
+            {
+                $('#submit_warning').find('p').html(message);
+                $('#submit_warning').show();
+                return;
+            }
+            $('#AddressForm').submit();
+        });
+
+        $('#submit_warning').find('button').find('span').click(function () {
+            $('#submit_warning').hide();
+        });
+
+        $('#response_success').find('button').find('span').click(function () {
+            $('#response_success').hide();
+        });
+        $('#response_warning').find('button').find('span').click(function () {
+            $('#response_warning').hide();
+        });
+
+        $('#Province').change(function () {
+           
+            var parentId = $('#Province').val();
+            var parentName = $('#Province option:selected').text();
+            $.post(
+                BASE_URL + 'api/Common/GetAreaByParent',
+                { pId: parentId },
+                function (res, status) {
+                    if (res.Status == "OK") {
+                        $('#City').empty();
+                        $('#District').empty();
+                        $('#District').append("<option value=\"\">--选择区--</option>");
+                        if (parentId == "1" || parentId == "9" || parentId == "2" || parentId == "22") {
+                            $('#City').append("<option value=\"" + parentId + "\">" + parentName + "</option>");
+                            $('#District').empty();
+                            $('#District').append("<option value=\"\">--选择区--</option>");
+                            $(res.Result).each(function (index, item) {
+                                $('#District').append("<option value=\"" + item.Id + "\">" + item.Name + "</option>");
+                            });
+                        } else {
+                            $('#City').append("<option value=\"\">--选择城市--</option>");
+                            $(res.Result).each(function (index, item) {
+                                $('#City').append("<option value=\"" + item.Id + "\">" + item.Name + "</option>");
+                            });
+                        }
+                    }
+                }
+            );
+        });
+
+        $('#City').change(function () {
+            $.post(
+               BASE_URL + 'api/Common/GetAreaByParent',
+               { pId: $('#City').val() },
+               function (res, status) {
+                   if (res.Status == "OK") {
+                       $('#District').empty();
+                       $('#District').append("<option value=\"\">--选择区--</option>");
+                       $(res.Result).each(function (index, item) {
+                           $('#District').append("<option value=\"" + item.Id + "\">" + item.Name + "</option>");
+                       });
+                   }
+               }
+           );
+        });
+    });
+</script>
+<div style="height:40px;line-height:40px;font-size:18px;">
+    @ViewBag.Title
+</div>
+<hr />
+
+@using (Html.BeginForm("SaveAddress", "My", FormMethod.Post, new { @class = "form-horizontal", role = "form", id = "AddressForm" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(m => m.Id)
+    if (ViewBag.Message != null)
+    {
+        <div id="response_success" class="alert alert-success alert-dismissible" role="alert">
+            <button type="button" class="close"><span aria-hidden="true">&times;</span></button>
+            <p>@ViewBag.Message</p>
+        </div>
+    }
+    if (ViewBag.Error != null)
+    {
+        <div id="response_warning" class="alert alert-danger alert-dismissible" role="alert">
+            <button type="button" class="close"><span aria-hidden="true">&times;</span></button>
+            <p>@ViewBag.Error</p>
+        </div>
+    }
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Province, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-8">
+            @Html.DropDownListFor(model => model.Province, (SelectList)ViewBag.Provinces, "--选择省份--", htmlAttributes: new { @class = "form-control " })
+            @Html.ValidationMessageFor(model => model.Province, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.City, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-8">
+            @Html.DropDownListFor(model => model.City, (SelectList)ViewBag.Cities, "--选择城市--", htmlAttributes: new { @class = "form-control " })
+            @Html.ValidationMessageFor(model => model.City, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.District, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-8">
+            @Html.DropDownListFor(model => model.District, (SelectList)ViewBag.Districts, "--选择区域--", htmlAttributes: new { @class = "form-control " })
+            @Html.ValidationMessageFor(model => model.District, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.Apartment, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-8">
+            @Html.EditorFor(model => model.Apartment, new { htmlAttributes = new { @class = "form-control " } })
+            @Html.ValidationMessageFor(model => model.Apartment, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.NearBy, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-8">
+            @Html.EditorFor(model => model.NearBy, new { htmlAttributes = new { @class = "form-control " } })
+            @Html.ValidationMessageFor(model => model.NearBy, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.Contact, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-8">
+            @Html.EditorFor(model => model.Contact, new { htmlAttributes = new { @class = "form-control " } })
+            @Html.ValidationMessageFor(model => model.Contact, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.Phone, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-8">
+            @Html.EditorFor(model => model.Phone, new { htmlAttributes = new { @class = "form-control " } })
+            @Html.ValidationMessageFor(model => model.Phone, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-8">
+            <button id="btn_save_address" type="button" class="btn btn-warning">
+                保存
+            </button>
+        </div>
+    </div>
+
+}
+
+<div id="submit_warning" class="alert alert-danger alert-dismissible" role="alert" style="display:none;">
+    <button type="button" class="close"><span aria-hidden="true">&times;</span></button>
+    <p></p>
+</div>

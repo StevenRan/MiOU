@@ -312,6 +312,31 @@ namespace MiOU.BL
             return area;
         }
 
+        public BArea GetAreaByIdWithChildren(int id)
+        {
+            BArea area = null;
+            using (MiOUEntities db = new MiOUEntities())
+            {
+                var tmp = from a in db.Area
+                          where a.Id==id
+                          select new BArea
+                          {
+                              Id = a.Id,
+                              Name = a.Name,
+                              Level = a.Level,
+                              IsDirect= a.IsDirect
+                          };
+
+                area = tmp.FirstOrDefault<BArea>();
+                if (area != null && area.Level==1)
+                {
+                    List<BArea> childRen = (from a in db.Area where a.Upid == area.Id select new BArea { Id = a.Id, Name = a.Name, Level = a.Level,IsDirect=a.IsDirect }).ToList<BArea>();
+                    area.Chindren = childRen;
+                }
+            }
+            return area;
+        }
+
         public BCategory GetCategory(int categoryId, bool withChildren = false)
         {
             BCategory category = null;

@@ -42,15 +42,16 @@ namespace MiOU.DAL
         public DbSet<Payment> Payment { get; set; }
         public DbSet<PayType> PayType { get; set; }
         public DbSet<PriceCategory> PriceCategory { get; set; }
-        public DbSet<Product> Product { get; set; }
         public DbSet<ProductImage> ProductImage { get; set; }
         public DbSet<ProductMaintenance> ProductMaintenance { get; set; }
-        public DbSet<ProductPrice> ProductPrice { get; set; }
         public DbSet<RentType> RentType { get; set; }
         public DbSet<UseCurrencyHistory> UseCurrencyHistory { get; set; }
         public DbSet<User> User { get; set; }
         public DbSet<UserType> UserType { get; set; }
         public DbSet<UserVip> UserVip { get; set; }
         public DbSet<VipLevel> VipLevel { get; set; }
+        public DbSet<AddressBook> AddressBook { get; set; }
+        public DbSet<ProductPrice> ProductPrice { get; set; }
+        public DbSet<Product> Product { get; set; }
     }
 }

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using MiOU.Entities.Beans;
+using MiOU.Entities.Models;
 using MiOU.Entities.Exceptions;
 using MiOU.Entities;
 using MiOU.DAL;
@@ -402,6 +403,144 @@ namespace MiOU.BL
                 }
                 db.SaveChanges();
             }
+        }
+
+        public List<BAddress> GetAddresses(int userId)
+        {
+            List<BAddress> addresses = null;
+            using (MiOUEntities db = new MiOUEntities())
+            {
+                addresses = (
+                    from a in db.AddressBook
+                    join aprovince in db.Area on a.Province equals aprovince.Id into lap
+                    from llap in lap.DefaultIfEmpty()
+                    join acity in db.Area on a.City equals acity.Id into lac
+                    from llac in lac.DefaultIfEmpty()
+                    join adis in db.Area on a.City equals adis.Id into lad
+                    from llad in lad.DefaultIfEmpty()
+                    where a.UserId==userId
+                    orderby a.Default orderby a.Created descending 
+                    select new BAddress
+                    {
+                         Address=a.Address,
+                         Id=a.Id,
+                         Apartment=a.Apartment,
+                         City=new BArea { Id=a.City,Name=llac.Name },
+                         Province= new BArea { Id = a.Province, Name = llap.Name },
+                         District = new BArea { Id = a.District, Name = llad.Name },
+                         Contact=a.Contact,
+                         Phone=a.Phone,
+                         Created=a.Created,
+                         Updated=a.Updated,
+                         NearBy= a.NearBy,
+                         IsDefault=a.Default,
+                         User= CurrentLoginUser
+                    }
+                    ).ToList<BAddress>();
+            }
+            return addresses;
+        }
+
+        public void SetDefaultAddress(int id)
+        {
+            using (MiOUEntities db = new MiOUEntities())
+            {                
+                AddressBook newDefaultAddress = (from ab in db.AddressBook where ab.Id==id select ab).FirstOrDefault<AddressBook>();
+                if(newDefaultAddress==null)
+                {
+                    throw new MiOUException("您要设为默认藕品的地点信息不存在");
+                }
+                if(newDefaultAddress.UserId!=CurrentLoginUser.User.UserId)
+                {
+                    throw new MiOUException("您要设置的藕品地点不属于您，无法设置");
+                }
+                AddressBook defaultAddress = (from ab in db.AddressBook where ab.Default == true select ab).FirstOrDefault<AddressBook>();
+                if(defaultAddress!=null)
+                {
+                    if(defaultAddress.UserId!=CurrentLoginUser.User.UserId)
+                    {
+                        throw new MiOUException("当前的默认藕品地点不属于您，无法对其进行更改，请确保操作自己的藕品地点");
+                    }
+
+                    defaultAddress.Default = false;
+                }
+                newDefaultAddress.Default = true;
+                db.SaveChanges();
+            }
+        }
+
+        public bool SaveAddress(MAddress address)
+        {
+            bool ret = false;
+            if(address==null)
+            {
+                throw new MiOUException("藕品地点数据不正确");
+            }
+            if(string.IsNullOrEmpty(address.Contact))
+            {
+                throw new MiOUException("联系人不能为空");
+            }
+            if (string.IsNullOrEmpty(address.Phone))
+            {
+                throw new MiOUException("联系电话不能为空");
+            }
+            if (string.IsNullOrEmpty(address.Apartment))
+            {
+                throw new MiOUException("小区不能为空");
+            }
+            if (string.IsNullOrEmpty(address.NearBy))
+            {
+                throw new MiOUException("靠近的商圈不能为空，至少填一个标志性建筑");
+            }
+            if (address.Province==0)
+            {
+                throw new MiOUException("省份不能为空");
+            }
+            if (address.City == 0)
+            {
+                throw new MiOUException("城市不能为空");
+            }
+            if (address.District == 0)
+            {
+                throw new MiOUException("行政区不能为空");
+            }
+            using (MiOUEntities db = new MiOUEntities())
+            {
+                AddressBook dbAddress = null;
+                if (address.Id == 0)
+                {
+                    dbAddress = new AddressBook();
+                    dbAddress.Created = DateTimeUtil.ConvertDateTimeToInt(DateTime.Now);
+                    dbAddress.UserId = CurrentLoginUser.User.UserId;
+                }
+                else
+                {
+                    dbAddress = (from ab in db.AddressBook where ab.Id == address.Id select ab).FirstOrDefault<AddressBook>();
+                    if(dbAddress==null)
+                    {
+                        throw new MiOUException("您要编辑的藕品地点不存在");
+                    }
+                    if(dbAddress.UserId!=CurrentLoginUser.User.UserId)
+                    {
+                        throw new MiOUException("当前编辑的藕品地点不属于您，请不要尝试修改别人的数据");
+                    }
+                    dbAddress.Updated = DateTimeUtil.ConvertDateTimeToInt(DateTime.Now);
+                }                
+                
+                dbAddress.NearBy = address.NearBy;
+                dbAddress.Phone = address.Phone;
+                dbAddress.Province = address.Province;
+                dbAddress.City = address.City;
+                dbAddress.Contact = address.Contact;
+                dbAddress.District = address.District;
+                dbAddress.Phone = address.Phone;
+                dbAddress.Address = address.Address;
+                dbAddress.Default = address.Default;
+                db.AddressBook.Add(dbAddress);
+                db.SaveChanges();
+                ret = true;
+            }
+            return ret;
         }
     }
 }

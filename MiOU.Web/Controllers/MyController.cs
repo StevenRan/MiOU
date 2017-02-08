@@ -107,6 +107,35 @@ namespace MiOU.Web.Controllers
                 {
                     return ShowError("此藕品不存在");
                 }
+                BProduct product = products[0];
+                model.Address = product.Address;
+                model.CategoryId = product.PCategory.Id;
+                model.Percentage = product.Percentage;
+                model.Phone = product.Phone;
+                model.Id = product.Id;
+                model.ChildCategoryId = product.Category.Id;
+                model.Name = product.Name;
+                model.ManageType = product.ManageType;
+                model.Price = product.Price;
+                model.RentType = product.RentType.Id;
+                model.DeliveryType = product.DeliveryType.Id;
+                model.Contact = product.Contact;
+                model.Description = product.Description;
+                model.Repertory = product.Repertory;
+
+                foreach(BProductImage image in product.Images)
+                {
+                    if (string.IsNullOrEmpty(model.PhotoIds))
+                    {
+                        model.PhotoIds = image.Image.Id.ToString();
+                    }
+                    else
+                    {
+                        model.PhotoIds +=","+ image.Image.Id.ToString();
+                    }
+                }
+
+                ViewBag.Product = product;
             }
             else
             {
@@ -137,20 +166,53 @@ namespace MiOU.Web.Controllers
             ViewBag.ManageTypes = new SelectList(pdtMgr.GetManageTypes(), "Id", "Name");
             try
             {
-                model.Percentage = model.Percentage /100;
-                model.PriceCotegories = Request["PriceCotegories"];
-                pdtMgr.CreateProduct(model);
-                return RedirectToAction("MyProducts");
+                if(ModelState.IsValid)
+                {
+                    model.Percentage = model.Percentage / 100;
+                    model.PriceCotegories = Request["PriceCotegories"];
+                    if (model.Id==0)
+                    {                        
+                        pdtMgr.CreateProduct(model);
+                        //return RedirectToAction("MyProducts");
+                        ViewBag.Message = string.Format("您的藕品 {0} 已经添加成功",model.Name);
+                    }
+                    else
+                    {
+                        pdtMgr.UpdateProduct(model);
+                        //return RedirectToAction("MyProducts");
+                        ViewBag.Message = string.Format("您的藕品 {0} 已经编辑成功", model.Name);
+                    }
+                    //ViewBag.Message = "";
+                    //return Redirect("/My/EditProduct?productId="+model.Id); 
+                                   
+                }
+                else
+                {
+                    string messages = string.Join("; ", ModelState.Values
+                                        .SelectMany(x => x.Errors)
+                                        .Select(x => x.ErrorMessage));
+                    ViewBag.Error = messages;
+                }
+                
             }   
             catch(MiOUException mex)
             {
-                ViewBag.Message = mex.Message;
+                ViewBag.Error = mex.Message;
             }  
             catch(Exception ex)
             {
                 logger.Fatal(ex);
-                ViewBag.Message = "知名错误，请联络系统管理员";
-            }       
+                ViewBag.Error = "知名错误，请联络系统管理员";
+            }  
+            if(model.Id>0)
+            {
+                int total = 0;
+                List<BProduct> products = pdtMgr.SearchProducts(new int[] { model.Id }, null, 0, 0, 0, 0, 0, 0, 0, 0, null, 1, 1, true, out total);
+                if (products.Count == 1)
+                {
+                    ViewBag.Product = products[0];
+                }
+            }     
             return View("ProductForm", model);
         }
 
@@ -197,6 +259,106 @@ namespace MiOU.Web.Controllers
             return View();
         }
         public ActionResult ContactUs()
+        {
+            return View();
+        }
+
+        public ActionResult AddressBook()
+        {
+            return View();
+        }
+        public ActionResult AddAddress()
+        {
+            UserManagement userMgr = new UserManagement(User.Identity.GetUserId<int>());
+            List<BArea> ares = userMgr.GetAreas(0);
+            ViewBag.Provinces = new SelectList(ares, "Id", "Name");
+            ViewBag.Cities = new SelectList(new List<BArea>(), "Id", "Name");
+            ViewBag.Districts = new SelectList(new List<BArea>(), "Id", "Name");
+            MAddress model = new MAddress() { Province = userMgr.CurrentLoginUser.User.Province, City = userMgr.CurrentLoginUser.User.City, District = userMgr.CurrentLoginUser.User.District };
+            if(model.Province>0)
+            {
+                BArea province = userMgr.GetAreaByIdWithChildren(model.Province);
+                if(province.IsDirect)
+                {
+                    List<BArea> tmpCities = new List<BArea>();
+                    tmpCities.Add(new BArea() { Id = province.Id, Name = province.Name });
+                    ViewBag.Cities = new SelectList(tmpCities, "Id", "Name");
+                    ViewBag.Districts = new SelectList(province.Chindren, "Id", "Name");
+                }
+                else
+                {
+                    ViewBag.Cities = new SelectList(province.Chindren, "Id", "Name");
+                }
+            }
+            return View("AddressForm", model);
+        }
+
+        public ActionResult SaveAddress(MAddress address)
+        {
+            UserManagement userMgr = new UserManagement(User.Identity.GetUserId<int>());
+            if (ModelState.IsValid)
+            {                
+                try
+                {
+                    bool result = false;
+                    if (address.Id > 0)
+                    {
+                        ViewBag.Message = "藕品地点更新成功";
+                    }
+                    else
+                    {
+                        ViewBag.Message = "藕品地点添加成功";
+                    }
+                    result =userMgr.SaveAddress(address);
+                    if(!result)
+                    {
+                        ViewBag.Message = null;
+                        ViewBag.Error = "藕品地点保存失败";
+                    }                    
+                }
+                catch(MiOUException mex)
+                {
+                    ViewBag.Error = mex.Message;
+                }
+                catch(Exception ex)
+                {
+                    ViewBag.Error = "系统错误，请稍后再试";
+                    logger.Fatal(ex);
+                }
+            }
+            else
+            {
+                string messages = string.Join("; ", ModelState.Values
+                                       .SelectMany(x => x.Errors)
+                                       .Select(x => x.ErrorMessage));
+                ViewBag.Error = messages;
+            }
+            List<BArea> ares = userMgr.GetAreas(0);
+            ViewBag.Provinces = new SelectList(ares, "Id", "Name");
+            ViewBag.Cities = new SelectList(new List<BArea>(), "Id", "Name");
+            ViewBag.Districts = new SelectList(new List<BArea>(), "Id", "Name");
+            if (address.Province > 0)
+            {
+                BArea province = userMgr.GetAreaByIdWithChildren(address.Province);
+                if (province.IsDirect)
+                {
+                    List<BArea> tmpCities = new List<BArea>();
+                    tmpCities.Add(new BArea() { Id = province.Id, Name = province.Name });
+                    ViewBag.Cities = new SelectList(tmpCities, "Id", "Name");
+                    ViewBag.Districts = new SelectList(province.Chindren, "Id", "Name");
+                }
+                else
+                {
+                    ViewBag.Cities = new SelectList(province.Chindren, "Id", "Name");
+                }
+            }
+            return View("AddressForm",address);
+        }
+        public ActionResult ChangePassword()
+        {
+            return View();
+        }
+        public ActionResult ChangeAvator()
         {
             return View();
         }

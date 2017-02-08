@@ -528,7 +528,8 @@ namespace MiOU.BL
                                      Price= price.Price,
                                      Product= new BProduct { Id= price.ProductId },
                                      PriceCategory= llcate!=null? new BPriceCategory { Id= llcate.Id, Name= llcate.Name }:null,
-                                     EPrice= lleprice!=null? new BEvaluatedPrice { Price= lleprice.Price }:null
+                                     EPrice= lleprice!=null? new BEvaluatedPrice { Price= lleprice.Price }:null,
+                                     Enabled= price.Enabled
                                   };
 
                     prices = tmpPrices.ToList<BProductPrice>();
@@ -698,7 +699,7 @@ namespace MiOU.BL
         }
 
         /// <summary>
-        /// 租赁出去 count未负整数，归还count为正整数
+        /// 租赁出去 count为负整数，归还count为正整数
         /// </summary>
         /// <param name="productId"></param>
         /// <param name="orderId"></param>
@@ -786,6 +787,181 @@ namespace MiOU.BL
                 }
             }
             db.SaveChanges();
+        }
+
+        public void UpdateProduct(MProduct product)
+        {
+            if(product==null || product.Id<=0)
+            {
+                throw new MiOUException("藕品数据不存在");
+            }
+            int total = 0;
+            List<BProduct> products = SearchProducts(new int[] { product.Id }, null, 0, 0, 0, 0, 0, 0, 0, 0, null, 1, 1, true, out total);
+            if(products.Count==0)
+            {
+                throw new MiOUException(string.Format("Id为{0}的藕品数据不存在"));
+            }
+            if(products.Count>1)
+            {
+                throw new MiOUException(string.Format("Id为{0}的藕品数据不唯一"));
+            }
+
+            BProduct existedProduct = products[0];
+            if(existedProduct.User.User.UserId!=CurrentLoginUser.User.UserId)
+            {
+                throw new MiOUException("请不要尝试修改别人的藕品");
+            }
+
+            if(string.IsNullOrEmpty(product.Name))
+            {
+                throw new MiOUException("藕品名称不能为空");
+            }
+            if (product.Repertory<1)
+            {
+                throw new MiOUException("藕品库存必须大于或等于1");
+            }
+            if(product.Price<=0)
+            {
+                throw new MiOUException("藕品价格必须大于零");
+            }
+            if(product.Price!=existedProduct.Price)
+            {
+                throw new MiOUException("藕品价格不能修改");
+            }
+            if(string.IsNullOrEmpty(product.PriceCotegories))
+            {
+                throw new MiOUException("租赁形式必须选择一个，如日租，周租...");
+            }
+            
+            List<ProductImage> newImages = new List<ProductImage>();
+            if(!string.IsNullOrEmpty(product.PhotoIds))
+            {
+                string[] photoes = product.PhotoIds.Split(',');
+                foreach(string photo in photoes)
+                {
+                    int photoId = 0;
+                    int.TryParse(photo,out photoId);
+                    if(photoId>0)
+                    {
+                        newImages.Add(new ProductImage {ImageId=photoId,ProductId= product.Id });
+                    }
+                }
+            }
+            //get removed images
+            List<int> removedImages = new List<int>();
+            List<int> newUploadedImages = new List<int>();
+            foreach (BProductImage image in existedProduct.Images)
+            {
+                ProductImage file = (from f in newImages where f.ImageId== image.Image.Id select f).FirstOrDefault<ProductImage>();
+                if(file==null)
+                {
+                    //The image has been removed from frontend
+                    removedImages.Add(image.Image.Id);
+                }
+            }
+            foreach(ProductImage image in newImages)
+            {
+                BProductImage pImage = (from pi in existedProduct.Images where pi.Image.Id==image.ImageId select pi).FirstOrDefault<BProductImage>();
+                if(pImage==null)
+                {
+                    newUploadedImages.Add(image.ImageId);
+                }
+            }
+            MiOUEntities db = null;
+            try
+            {
+                db = new MiOUEntities();                
+                lock (obj)
+                {
+                    Product dbProduct = (from p in db.Product where p.Id == product.Id select p).FirstOrDefault<Product>();
+                    dbProduct.Repertory = product.Repertory;
+                    dbProduct.Name = product.Name;
+                    dbProduct.Contact = product.Contact;
+                    dbProduct.Phone = product.Phone;
+                    dbProduct.Address = product.Address;
+                    dbProduct.DeliveryType = product.DeliveryType;
+                    dbProduct.RentType = product.RentType;
+                    dbProduct.Description = product.Description;
+                    db.SaveChanges();
+                }
+
+                List<ProductPrice> newAdded = new List<ProductPrice>();
+                List<int> removedPcates = new List<int>();                    
+                string[] priceCate = product.PriceCotegories.Split(',');
+                //handle new added rent price category
+                foreach(string pcate in priceCate)
+                {
+                    int pcateId = 0;
+                    int.TryParse(pcate, out pcateId);
+                    if(pcateId>0)
+                    {
+                        BProductPrice price = (from p in existedProduct.ProductPrices where p.PriceCategory.Id == pcateId select p).FirstOrDefault<BProductPrice>();
+                        if(price==null)
+                        {
+                            EvaluatedPrice ePrice = (from ep in db.EvaluatedPrice where ep.EvaluatedPriceCategory == existedProduct.ProductLevel.Id && ep.PriceCategory == pcateId select ep).FirstOrDefault<EvaluatedPrice>();
+                            int ePriceId = ePrice!=null?ePrice.Id:0;
+                            ProductPrice tmpPrice = new ProductPrice { Created = DateTimeUtil.ConvertDateTimeToInt(DateTime.Now), EvaluatedPriceId = ePriceId, PriceCategory = pcateId, ProductCategoryId = product.ChildCategoryId, ProductId = product.Id, UserId = CurrentLoginUser.User.UserId };
+                            newAdded.Add(tmpPrice);
+                            db.ProductPrice.Add(tmpPrice);
+                        }
+                        else
+                        {
+                            ProductPrice pprice = (from p in db.ProductPrice where p.ProductId==product.Id && p.PriceCategory==pcateId select p).FirstOrDefault<ProductPrice>();
+                            if(pprice!=null)
+                            {
+                                pprice.Enabled = true;
+                            }
+                        }
+                    }                    
+                }
+
+                //handle removed rent price category
+                List<ProductPrice> productPrices = (from pp in db.ProductPrice where pp.ProductId== product.Id select pp).ToList<ProductPrice>();
+                foreach(ProductPrice price in productPrices)
+                {
+                    string tmpPrice = (from p in priceCate where price.PriceCategory.ToString()==p select p).FirstOrDefault<string>();
+                    if(string.IsNullOrEmpty(tmpPrice))
+                    {
+                        //the existed product price category has been removed from frontend
+                        price.Enabled = false;
+                    }
+                }
+
+                //handle new uploaded images
+                foreach(int imageId in newUploadedImages)
+                {
+                    ProductImage nPImage = new ProductImage() { ImageId=imageId, IsMain=false, ProductId=product.Id };
+                    db.ProductImage.Add(nPImage);
+                }
+
+                //handle removed images
+                //List<File> images = (from f in db.File where removedImages.Contains(f.Id) select f).ToList<File>();
+                List<ProductImage> pImages = (from pi in db.ProductImage where pi.ProductId==product.Id && removedImages.Contains(pi.ImageId) select pi).ToList<ProductImage>();
+                if(pImages.Count>0)
+                {
+                    UploadFileManagement fileMgr = new UploadFileManagement(CurrentLoginUser);
+                    foreach (ProductImage file in pImages)
+                    {                        
+                        if(fileMgr.RemoveFile(file.ImageId))
+                        {
+                            db.ProductImage.Remove(file);
+                        }
+                    }
+                }
+                db.SaveChanges();
+               
+            }
+            catch(Exception ex)
+            {
+                logger.Fatal(ex);
+            }
+            finally
+            {
+                if(db!=null)
+                {
+                    db.Dispose();
+                }
+            }
         }
 
         public void CreateProduct(MProduct product)

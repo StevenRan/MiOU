@@ -468,9 +468,12 @@
     <Content Include="Views\Shared\_myLayout.cshtml" />
     <Content Include="Views\My\Index.cshtml" />
     <Content Include="Views\My\MyProducts.cshtml" />
-    <Content Include="Views\My\AddProduct.cshtml" />
     <Content Include="Views\My\ProductForm.cshtml" />
     <Content Include="Views\My\Error.cshtml" />
+    <Content Include="Views\My\ChangePassword.cshtml" />
+    <Content Include="Views\My\ChangeAvator.cshtml" />
+    <Content Include="Views\My\AddressForm.cshtml" />
+    <Content Include="Views\My\AddressBook.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -45,5 +45,6 @@ namespace MiOU.Entities.Beans
         public int RentTimes { get; set; }
         public BProductLevel ProductLevel { get; set; }
         public int ManageType { get; set; }
+        public BAddress Addresso { get; set; }
     }
 }

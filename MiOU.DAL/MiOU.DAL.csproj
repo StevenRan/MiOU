@@ -48,6 +48,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AddressBook.cs">
+      <DependentUpon>MiOUModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Admin_Actions.cs">
       <DependentUpon>MiOUModel.tt</DependentUpon>
     </Compile>

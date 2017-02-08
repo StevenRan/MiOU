@@ -10,8 +10,10 @@
     $(function () {
 
         $('#Province').change(function () {
+            
             var parentId = $('#Province').val();
             var parentName = $('#Province option:selected').text();
+            
             $.post(
                 BASE_URL + 'api/Common/GetAreaByParent',
                 { pId: parentId },
@@ -24,12 +26,12 @@
                             $('#City').append("<option value=\"" + parentId + "\">" + parentName + "</option>");
                             $('#District').empty();
                             $('#District').append("<option value=\"\">--选择区--</option>");
-                            $(res.result).each(function (index, item) {
+                            $(res.Result).each(function (index, item) {
                                 $('#District').append("<option value=\"" + item.Id + "\">" + item.Name + "</option>");
                             });
                         } else {
                             $('#City').append("<option value=\"\">--选择城市--</option>");
-                            $(res.result).each(function (index, item) {
+                            $(res.Result).each(function (index, item) {
                                 $('#City').append("<option value=\"" + item.Id + "\">" + item.Name + "</option>");
                             });
                         }
@@ -46,7 +48,7 @@
                    if (res.Status == "OK") {
                        $('#District').empty();
                        $('#District').append("<option value=\"\">--选择区--</option>");
-                       $(res.result).each(function (index, item) {
+                       $(res.Result).each(function (index, item) {
                            $('#District').append("<option value=\"" + item.Id + "\">" + item.Name + "</option>");
                        });
                    }                  

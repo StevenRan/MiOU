@@ -1,13 +1,26 @@
 ﻿@using MiOU.Entities.Beans
 @using MiOU.Entities.Models
+
 @model MProduct
 @{
     ViewBag.Title = "添加藕品";
     Layout = "~/Views/Shared/_myLayout.cshtml";
+    BProduct product = null;
+    if(ViewBag.Product!=null)
+    {
+        product = ViewBag.Product as BProduct;
+        ViewBag.Title = "编辑藕品";
+    }
 }
-
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
 <script>
     var BASE_URL = '@Url.Content("~/")';
+    function showPicPreview(path) {
+        $('#show_big_pic').find('#big_pic').attr('src', path);
+        $('#show_big_pic').modal();
+    }
     $(function () {
         $('#CategoryId').change(function () {
             var _this = this;
@@ -29,7 +42,9 @@
     });
 
 </script>
-<h4>@ViewBag.Title</h4>
+<div style="height:40px;line-height:40px;font-size:18px;">
+    @ViewBag.Title
+</div>
 <hr />
 <script>
     var gg = [];
@@ -45,11 +60,36 @@
             gg.push(id);
         }
     }
+    function removePhoto(id) {       
+        found = false;
+        var tmp = [];
+        $(gg).each(function (i, g) {
+            if (g != id) {
+                tmp.push(g);
+            }
+        });
+        gg = tmp;
+        $('#pimage_' + id).remove();
+        if(gg.length==0)
+        {
+            $('#existed_images').hide();
+        }
+    }
 
-    $(function () {
+    $(function(){
 
+        //initialize product images when editing product
+        if ($('#PhotoIds').val() != '') {
+            gg = $('#PhotoIds').val().split(',');            
+        }
         $('#submit_warning').find('button').find('span').click(function () {
             $('#submit_warning').hide();
+        });
+        $('#response_success').find('button').find('span').click(function () {
+            $('#response_success').hide();
+        });
+        $('#response_warning').find('button').find('span').click(function () {
+            $('#response_warning').hide();
         });
 
         $('#btn_save_product').click(function () {
@@ -105,7 +145,7 @@
                     }
                 }
             }
-            alert(repertory);
+            
             if ($.trim(repertory) == '') {
                 if (errorMsg != null) {
                     errorMsg += "<br/>藕品库存不能为空,并且不能是非整数字符";
@@ -136,17 +176,13 @@
             
             if (gg.length < 2) {
                 if (errorMsg != null) {
-                    errorMsg += "<br/>产品图片至少两张，最多3张";
+                    errorMsg += "<br/>产品图片至少2张，最多4张";
                 } else {
-                    errorMsg = "产品图片至少两张，最多3张";
+                    errorMsg = "产品图片至少2张，最多4张";
                 }
             }
-
-            if (errorMsg != null) {
-                $('#submit_warning').find('p').html(errorMsg);
-                $('#submit_warning').show();
-                return;
-            }
+            
+            
             var picIds = "";
             if (gg.length > 0) {
                 $(gg).each(function (i, g) {
@@ -157,8 +193,15 @@
                     }
                 });
             }
-
             //alert(picIds);
+            if (errorMsg != null) {
+                $('#submit_warning').find('p').html(errorMsg);
+                $('#submit_warning').show();
+                return;
+            } else {
+                $('#submit_warning').find('p').html('');
+                $('#submit_warning').hide();
+            }
             //return;
             $('#PhotoIds').val(picIds);
             $('#ProductForm').submit();
@@ -183,16 +226,14 @@
                 alert(response.Message);
             }
         }).on('fileloaded', function (event, file, previewId, index, reader) {
-            if (gg.length == 3) {
-                alert("产品图片至少两张，最多3张");
+            if (gg.length == 4) {
+                alert("产品图片至少2张，最多4张");
                 return;
             }
             $('#FilesInput').fileinput("upload");
         });
     });
 </script>
-
-
 
 @using (Html.BeginForm("SaveProduct", "My", FormMethod.Post, new { @class = "form-horizontal", role = "form", id = "ProductForm" }))
 {
@@ -202,12 +243,18 @@
     @Html.HiddenFor(m => m.PriceCotegories)
     if (ViewBag.Message != null)
     {
-        <div id="submit_warning" class="alert alert-danger alert-dismissible" role="alert" style="display:none;">
+        <div id="response_success" class="alert alert-success alert-dismissible" role="alert" >
             <button type="button" class="close"><span aria-hidden="true">&times;</span></button>
             <p>@ViewBag.Message</p>
         </div>
     }
-    @Html.HiddenFor(model => model.Id)
+    if (ViewBag.Error != null)
+    {
+        <div id="response_warning" class="alert alert-danger alert-dismissible" role="alert">
+            <button type="button" class="close"><span aria-hidden="true">&times;</span></button>
+            <p>@ViewBag.Error</p>
+        </div>
+    }
     
     <div class="form-group">
         @Html.LabelFor(model => model.CategoryId, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -285,9 +332,42 @@
             </div>
 
     <div class="form-group">
-        <label class="control-label col-md-2" for="图片">照片</label>
+        @*<label class="control-label col-md-2" for="图片">照片</label>*@
+        @Html.LabelFor(model => model.PhotoIds, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-9">
-            <input id="FilesInput" name="FilesInput" type="file" multiple class="file-loading" />
+            @if(Model.Id>0)
+            {
+                <div id="existed_images" style="overflow:hidden;">
+                    <div class="file-preview">
+                        @*<div class="close fileinput-remove">×</div>*@
+                        <div class=" file-drop-zone">
+                            <div class="file-preview-thumbnails">
+                                <div class="file-live-thumbs">
+                                    @foreach (BProductImage image in product.Images)
+                                    {
+                                        <div id="pimage_@image.Image.Id" class="file-preview-frame file-preview-success" data-fileindex="-1" data-template="image">
+                                            <div class="kv-file-content">
+                                                <img src="@Html.Raw("/"+image.Image.Path)" style="width:auto;height:215px;" />
+                                            </div>
+                                            <div class="file-thumbnail-footer">
+                                                <div class="file-actions">
+                                                    <div class="file-footer-buttons">
+                                                        <button type="button" onclick="removePhoto(@image.Image.Id)" class="kv-file-remove btn btn-xs btn-default" title="删除图片"><i class="glyphicon glyphicon-trash text-danger"></i></button>
+                                                        <button type="button" onclick="showPicPreview('/@image.Image.Path')" class="kv-file-zoom btn btn-xs btn-default" title="查看大图"><i class="glyphicon glyphicon-zoom-in"></i></button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                            <div class="clearfix"></div>
+                            <div class="file-preview-status text-center text-success"></div>
+                        </div>
+                    </div>
+                </div>
+            }
+            <div><input id="FilesInput" name="FilesInput" type="file" multiple class="file-loading" /></div>            
         </div>
     </div>
     <div class="form-group">
@@ -306,13 +386,21 @@
                 List<BPriceCategory> pCates = (List<BPriceCategory>)ViewBag.cPriceCates;
                 foreach (BPriceCategory cate in pCates)
                 {
+                    if(product!=null && product.ProductPrices!=null && product.ProductPrices.Count>0)
+                    {
+                        BProductPrice pprice = product.ProductPrices.Where(p => p.PriceCategory.Id == cate.Id).FirstOrDefault<BProductPrice>();
+                        if (pprice == null || !pprice.Enabled)
+                        {
+                            chked = false;
+                        }
+                    }
                     <div style="margin-right:10px;float:left;">
                         <div class="checkbox" style="float:left;">
-                            <input @if (chked) { @Html.Raw("checked")   } type="checkbox" class="check-box" style="margin-left:0px;" id="PriceCotegories" name="PriceCotegories" value="@cate.Id" />
+                            <input @if (chked) { @Html.Raw("checked")     } type="checkbox" class="check-box" style="margin-left:0px;" id="PriceCotegories" name="PriceCotegories" value="@cate.Id" />
                         </div>
                         <label class="control-label perLabel" style="margin-left:15px;">@Html.Raw(cate.Name)</label>
                     </div>
-                }
+                }               
             }
         </div>
     </div>
@@ -328,5 +416,29 @@
 <div id="submit_warning" class="alert alert-danger alert-dismissible" role="alert" style="display:none;">
     <button type="button" class="close"><span aria-hidden="true">&times;</span></button>
     <p></p>
+</div>
+
+
+<div class="modal fade" id="show_big_pic" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document" style="width:900px;">
+        <div id="" class="modal-content">
+            <div class="modal-header">
+                <div class="kv-zoom-actions pull-right">
+                    @*<button type="button" class="btn btn-default btn-header-toggle btn-toggleheader" title="Toggle header" data-toggle="button" aria-pressed="false" autocomplete="off">
+                            <i class="glyphicon glyphicon-resize-vertical"></i>
+                        </button>
+                        <button type="button" class="btn btn-default btn-fullscreen" title="Toggle full screen" data-toggle="button" aria-pressed="false" autocomplete="off"><i class="glyphicon glyphicon-fullscreen"></i></button>
+                        <button type="button" class="btn btn-default btn-borderless" title="Toggle borderless mode" data-toggle="button" aria-pressed="false" autocomplete="off"><i class="glyphicon glyphicon-resize-full"></i></button>*@
+                    <button type="button" class="btn btn-default btn-close" title="Close detailed preview" data-dismiss="modal" aria-hidden="true">
+                        <i class="glyphicon glyphicon-remove"></i>
+                    </button>
+                </div>
+                <h3 class="modal-title">大图预览 <small><span class="kv-zoom-title"></span></small></h3>
+            </div>
+            <div class="modal-body">
+                <img id="big_pic" style="width:100%;height:auto;" />
+            </div>
+        </div>
+    </div>
 </div>
 

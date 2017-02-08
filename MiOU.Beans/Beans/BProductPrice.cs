@@ -14,5 +14,6 @@ namespace MiOU.Entities.Beans
         public BEvaluatedPrice EPrice { get; set; }
         public float Price { get; set; }
         public BUser CreatedBy { get; set; }
+        public bool Enabled { get; set; }
     }
 }

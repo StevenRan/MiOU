@@ -43,7 +43,17 @@ textarea {
         padding: 10px 15px;
     }
 }
-
+hr {
+    margin-top:0px;
+}
+a {
+    cursor:pointer;
+    text-decoration:none;
+}
+a:hover{
+    text-decoration:underline;
+    cursor:pointer;
+}
 .input_reg {
     width:40%;
 }
@@ -268,8 +278,8 @@ width:auto;font-weight: normal;margin-left:4px;
     border-bottom:1px solid #DFDFDF;
 }
 .hcpc{
-    padding-left:20px;
-    padding-right:20px;
+    padding-left:0px;
+    padding-right:0px;
 }
 .hc .bar{
     background-color:#FF6F5E;

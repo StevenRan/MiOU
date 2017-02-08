@@ -204,47 +204,6 @@
     <Property Name="Order" Type="Int32" Nullable="false" />
     <Property Name="Days" Type="Int32" Nullable="false" />
   </EntityType>
-  <EntityType Name="Product">
-    <Key>
-      <PropertyRef Name="Id" />
-    </Key>
-    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="CategoryId" Type="Int32" Nullable="false" />
-    <Property Name="UserId" Type="Int32" Nullable="false" />
-    <Property Name="Description" Type="String" MaxLength="2000" FixedLength="false" Unicode="false" />
-    <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
-    <Property Name="Created" Type="Int64" Nullable="false" />
-    <Property Name="Updated" Type="Int64" Nullable="false" />
-    <Property Name="Percentage" Type="Single" Nullable="false" />
-    <Property Name="Pledge" Type="Single" Nullable="false" />
-    <Property Name="Price" Type="Single" Nullable="false" />
-    <Property Name="Status" Type="Int32" Nullable="false" />
-    <Property Name="AuditUserId" Type="Int32" Nullable="false" />
-    <Property Name="AuditTime" Type="Int64" Nullable="false" />
-    <Property Name="AuditMessage" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-    <Property Name="EvaluatedPriceCategoryId" Type="Int32" Nullable="false" />
-    <Property Name="EvaluatedPrice" Type="Single" Nullable="false" />
-    <Property Name="EvaluatedPercentage" Type="Single" Nullable="false" />
-    <Property Name="DeliveryType" Type="Int32" Nullable="false" />
-    <Property Name="RentType" Type="Int32" Nullable="false" />
-    <Property Name="Province" Type="Int32" Nullable="false" />
-    <Property Name="City" Type="Int32" Nullable="false" />
-    <Property Name="District" Type="Int32" Nullable="false" />
-    <Property Name="Apartment" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-    <Property Name="NearBy" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
-    <Property Name="Address" Type="String" MaxLength="150" FixedLength="false" Unicode="false" Nullable="false" />
-    <Property Name="XPlot" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
-    <Property Name="YPlot" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
-    <Property Name="Type" Type="Int32" Nullable="false" />
-    <Property Name="Repertory" Type="Int32" Nullable="false" />
-    <Property Name="Locked" Type="Boolean" Nullable="false" />
-    <Property Name="VIPLevel" Type="Int32" Nullable="false" />
-    <Property Name="Contact" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
-    <Property Name="Phone" Type="String" MaxLength="25" FixedLength="false" Unicode="false" Nullable="false" />
-    <Property Name="RentTimes" Type="Int32" Nullable="false" />
-    <Property Name="ManageType" Type="Int32" Nullable="false" />
-    <Property Name="RentOutQuantity" Type="Int32" Nullable="false" />
-  </EntityType>
   <EntityType Name="ProductImage">
     <Key>
       <PropertyRef Name="Id" />
@@ -265,19 +224,6 @@
     <Property Name="Description" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
     <Property Name="Finished" Type="Int64" Nullable="false" />
     <Property Name="Updated" Type="Int64" Nullable="false" />
-  </EntityType>
-  <EntityType Name="ProductPrice">
-    <Key>
-      <PropertyRef Name="Id" />
-    </Key>
-    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="ProductId" Type="Int32" Nullable="false" />
-    <Property Name="PriceCategory" Type="Int32" Nullable="false" />
-    <Property Name="ProductCategoryId" Type="Int32" Nullable="false" />
-    <Property Name="EvaluatedPriceId" Type="Int32" Nullable="false" />
-    <Property Name="Price" Type="Single" Nullable="false" />
-    <Property Name="Created" Type="Int64" Nullable="false" />
-    <Property Name="UserId" Type="Int32" Nullable="false" />
   </EntityType>
   <EntityType Name="RentType">
     <Key>
@@ -381,15 +327,90 @@
     <EntitySet Name="Payment" EntityType="Self.Payment" />
     <EntitySet Name="PayType" EntityType="Self.PayType" />
     <EntitySet Name="PriceCategory" EntityType="Self.PriceCategory" />
-    <EntitySet Name="Product" EntityType="Self.Product" />
     <EntitySet Name="ProductImage" EntityType="Self.ProductImage" />
     <EntitySet Name="ProductMaintenance" EntityType="Self.ProductMaintenance" />
-    <EntitySet Name="ProductPrice" EntityType="Self.ProductPrice" />
     <EntitySet Name="RentType" EntityType="Self.RentType" />
     <EntitySet Name="UseCurrencyHistory" EntityType="Self.UseCurrencyHistory" />
     <EntitySet Name="User" EntityType="Self.User" />
     <EntitySet Name="UserType" EntityType="Self.UserType" />
     <EntitySet Name="UserVip" EntityType="Self.UserVip" />
     <EntitySet Name="VipLevel" EntityType="Self.VipLevel" />
+    <EntitySet Name="AddressBook" EntityType="MiOU.DAL.AddressBook" />
+    <EntitySet Name="ProductPrice" EntityType="MiOU.DAL.ProductPrice" />
+    <EntitySet Name="Product" EntityType="MiOU.DAL.Product" />
   </EntityContainer>
+  <EntityType Name="AddressBook">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="UserId" Type="Int32" Nullable="false" />
+    <Property Name="Contact" Type="String" Nullable="false" MaxLength="45" FixedLength="false" Unicode="false" />
+    <Property Name="Phone" Type="String" Nullable="false" MaxLength="45" FixedLength="false" Unicode="false" />
+    <Property Name="Province" Type="Int32" Nullable="false" />
+    <Property Name="City" Type="Int32" Nullable="false" />
+    <Property Name="District" Type="Int32" Nullable="false" />
+    <Property Name="Apartment" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+    <Property Name="NearBy" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="Address" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+    <Property Name="Created" Type="Int64" Nullable="false" />
+    <Property Name="Updated" Type="Int64" Nullable="false" />
+    <Property Name="Default" Type="Boolean" Nullable="false" />
+  </EntityType>
+  <EntityType Name="ProductPrice">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ProductId" Type="Int32" Nullable="false" />
+    <Property Name="PriceCategory" Type="Int32" Nullable="false" />
+    <Property Name="ProductCategoryId" Type="Int32" Nullable="false" />
+    <Property Name="EvaluatedPriceId" Type="Int32" Nullable="false" />
+    <Property Name="Price" Type="Single" Nullable="false" />
+    <Property Name="Created" Type="Int64" Nullable="false" />
+    <Property Name="UserId" Type="Int32" Nullable="false" />
+    <Property Name="Enabled" Type="Boolean" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Product">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="CategoryId" Type="Int32" Nullable="false" />
+    <Property Name="UserId" Type="Int32" Nullable="false" />
+    <Property Name="Description" Type="String" MaxLength="2000" FixedLength="false" Unicode="false" />
+    <Property Name="Name" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="Created" Type="Int64" Nullable="false" />
+    <Property Name="Updated" Type="Int64" Nullable="false" />
+    <Property Name="Percentage" Type="Single" Nullable="false" />
+    <Property Name="Pledge" Type="Single" Nullable="false" />
+    <Property Name="Price" Type="Single" Nullable="false" />
+    <Property Name="Status" Type="Int32" Nullable="false" />
+    <Property Name="AuditUserId" Type="Int32" Nullable="false" />
+    <Property Name="AuditTime" Type="Int64" Nullable="false" />
+    <Property Name="AuditMessage" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="EvaluatedPriceCategoryId" Type="Int32" Nullable="false" />
+    <Property Name="EvaluatedPrice" Type="Single" Nullable="false" />
+    <Property Name="EvaluatedPercentage" Type="Single" Nullable="false" />
+    <Property Name="DeliveryType" Type="Int32" Nullable="false" />
+    <Property Name="RentType" Type="Int32" Nullable="false" />
+    <Property Name="AddressId" Type="Int32" Nullable="false" />
+    <Property Name="Province" Type="Int32" Nullable="false" />
+    <Property Name="City" Type="Int32" Nullable="false" />
+    <Property Name="District" Type="Int32" Nullable="false" />
+    <Property Name="Apartment" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="NearBy" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="Address" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+    <Property Name="XPlot" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+    <Property Name="YPlot" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+    <Property Name="Type" Type="Int32" Nullable="false" />
+    <Property Name="Repertory" Type="Int32" Nullable="false" />
+    <Property Name="Locked" Type="Boolean" Nullable="false" />
+    <Property Name="VIPLevel" Type="Int32" Nullable="false" />
+    <Property Name="Contact" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="Phone" Type="String" Nullable="false" MaxLength="25" FixedLength="false" Unicode="false" />
+    <Property Name="RentTimes" Type="Int32" Nullable="false" />
+    <Property Name="ManageType" Type="Int32" Nullable="false" />
+    <Property Name="RentOutQuantity" Type="Int32" Nullable="false" />
+  </EntityType>
 </Schema>
