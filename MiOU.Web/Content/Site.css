@@ -417,3 +417,43 @@ float:left;width:82%;padding-left:10px;
         .lTitleUl .liactive a {
             color:#FFF;font-size:15px;text-decoration:none;cursor:pointer;display:block;
         }
+.myrightItem{
+    overflow:hidden;width:100%;padding-bottom:20px;padding-top:20px;border-bottom:1px solid #F1F1F1;
+}
+.myrightItem .pdtImg{
+    float:left;width:138px;
+}
+.myrightItem .pdtCate{
+    float:left;width:277.44px;padding-left:20px;padding-right:20px;border-right:1px solid #F1F1F1;font-size:13px;
+}
+.myrightItem .title{
+    overflow:hidden;border-bottom:1px solid #F1F1F1;padding-bottom:5px;font-size:14px;
+}
+.myrightItem .mg{
+    margin-top:10px;height:20px;line-height:20px;
+}
+.myrightItem .liitem{
+    overflow:hidden;margin-top:10px;color:#B4B4B4;
+}
+.myrightItem .locIcon{
+    width:16px;height:16px;margin:0;padding:0;margin-top:-2px;
+}
+.myrightItem .pdtfee{
+    float:left;width:369.91px;padding-left:20px;color:#B4B4B4;font-size:13px;
+}
+.myrightItem .pdtMenu{    
+    padding-left:20px;width:138px;height:100%;float:right;height:140px;border-left:1px solid #F1F1F1;
+}
+.myrightItem .pdtMenu ul{
+    list-style:none;margin:0;padding:0;height:100%;display:block;line-height:100%;
+}
+.myrightItem .pdtMenu ul li{    
+    height:33%;display:block;
+}
+.bg1{color:#FFD03F;border:1px solid #FFD03F;}
+.bg2{color:#FF9389;border:1px solid #FF9389;}
+.bg3{color:#91B9FF;border:1px solid #91B9FF;}
+.myrightItem .pdtMenu ul li a{
+    padding:5px 10px 5px 10px;border-radius:4px;
+}
+ 

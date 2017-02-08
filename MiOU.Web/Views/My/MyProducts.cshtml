@@ -62,12 +62,12 @@
                 {
                     area += " - " + product.Apartment;
                 }
-                <div style="overflow:hidden;width:100%;padding-bottom:20px;padding-top:20px;border-bottom:1px solid #F1F1F1;">
-                    <div style="float:left;width:138px;">
+                <div class="myrightItem">
+                    <div class="pdtImg">
                         <img style="width:138px;height:138px;" src="/@Html.Raw(product.Images[0].Image.Path)"/>
                     </div>
-                    <div style="float:left;width:277.44px;padding-left:20px;padding-right:20px;border-right:1px solid #F1F1F1;font-size:13px;">
-                        <div style="overflow:hidden;border-bottom:1px solid #F1F1F1;padding-bottom:5px;font-size:14px;">
+                    <div class="pdtCate">
+                        <div class="title">
                             <div  style="float:left;">
                                 @product.Name
                             </div>
@@ -75,16 +75,16 @@
                                 <a href="/My/MyProducts?type=@iType.ToString()&cate=@product.Category.Id">@product.Category.Name</a>
                             </div>
                         </div>
-                        <div style="overflow:hidden;margin-top:10px;height:20px;line-height:20px;">
-                            <img style="width:16px;height:16px;margin:0;padding:0;margin-top:-2px;" src="~/Content/Images/location_icon.png"/><span style="color:#B4B4B4;">@area</span>
+                        <div class="mg" style="overflow:hidden;">
+                            <img class="locIcon" style="" src="~/Content/Images/location_icon.png"/><span style="color:#B4B4B4;">@area</span>
                         </div>
-                        <div style="overflow:hidden;margin-top:10px;color:#B4B4B4;">
+                        <div class="liitem">
                             近：外滩，人民广场
                         </div>
-                        <div style="overflow:hidden;margin-top:10px;color:#B4B4B4;">
+                        <div class="liitem">
                             @product.DeliveryType.Name
                         </div>
-                        <div style="overflow:hidden;margin-top:10px;color:#B4B4B4;">
+                        <div class="liitem">
                             @{ 
                                 if (product.Status == ProductStatus.CREATED) {
                                     @Html.Raw("等待审核");
@@ -100,7 +100,7 @@
                             }
                         </div>
                     </div>
-                    <div style="float:left;width:369.91px;padding-left:20px;color:#B4B4B4;font-size:13px;">
+                    <div class="pdtfee">
                         <div>@product.RentType.Name - 费用:</div>
                         <div style="overflow:hidden;margin-top:10px;">
                             @{
@@ -134,11 +134,11 @@
                             }
                         </div>
                     </div>
-                    <div style="padding-left:20px;width:138px;height:100%;float:right;height:140px;border-left:1px solid #F1F1F1;">
-                        <ul style="list-style:none;margin:0;padding:0;height:100%;display:block;line-height:100%;">
-                            <li style="height:33%;display:block;"><a style="padding:5px 10px 5px 10px;border:1px solid #FFD03F;border-radius:4px; color:#FFD03F;" href="">排期</a></li>
-                            <li style="height:33%;display:block;"><a style="padding:5px 10px 5px 10px;border:1px solid #FF9389;border-radius:4px; color:#FF9389;" href="">清洁</a></li>
-                            <li style="height:33%;display:block;"><a style="padding:5px 10px 5px 10px;border:1px solid #91B9FF;border-radius:4px; color:#91B9FF;" target="_blank" href="/My/EditProduct?productId=@product.Id">编辑</a></li>
+                    <div class="pdtMenu">
+                        <ul>
+                            <li><a class="bg1" href="">排期</a></li>
+                            <li><a class="bg2" href="">清洁</a></li>
+                            <li><a class="bg3" target="_blank" href="/My/EditProduct?productId=@product.Id">编辑</a></li>
                         </ul>
                     </div>
                 </div>
