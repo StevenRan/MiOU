@@ -17,6 +17,10 @@ namespace MiOU.BL
         {
         }
 
+        public UserManagement(string name) : base(name)
+        {
+        }
+
         public UserManagement(BUser user) : base(user)
         {
 
@@ -405,38 +409,49 @@ namespace MiOU.BL
             }
         }
 
-        public List<BAddress> GetAddresses(int userId)
+        public List<BAddress> GetAddresses(int userId=0,int addressId=0)
         {
             List<BAddress> addresses = null;
             using (MiOUEntities db = new MiOUEntities())
             {
-                addresses = (
+                var tmp =
                     from a in db.AddressBook
                     join aprovince in db.Area on a.Province equals aprovince.Id into lap
                     from llap in lap.DefaultIfEmpty()
                     join acity in db.Area on a.City equals acity.Id into lac
                     from llac in lac.DefaultIfEmpty()
-                    join adis in db.Area on a.City equals adis.Id into lad
+                    join adis in db.Area on a.District equals adis.Id into lad
                     from llad in lad.DefaultIfEmpty()
-                    where a.UserId==userId
-                    orderby a.Default orderby a.Created descending 
+                    join user in db.User on a.UserId equals user.UserId into luser
+                    from lluser in luser.DefaultIfEmpty()
+                    orderby a.Default
+                    orderby a.Created descending
                     select new BAddress
                     {
-                         Address=a.Address,
-                         Id=a.Id,
-                         Apartment=a.Apartment,
-                         City=new BArea { Id=a.City,Name=llac.Name },
-                         Province= new BArea { Id = a.Province, Name = llap.Name },
-                         District = new BArea { Id = a.District, Name = llad.Name },
-                         Contact=a.Contact,
-                         Phone=a.Phone,
-                         Created=a.Created,
-                         Updated=a.Updated,
-                         NearBy= a.NearBy,
-                         IsDefault=a.Default,
-                         User= CurrentLoginUser
-                    }
-                    ).ToList<BAddress>();
+                        Address = a.Address,
+                        Id = a.Id,
+                        Apartment = a.Apartment,
+                        City = new BArea { Id = a.City, Name = llac.Name, IsDirect = llac.IsDirect },
+                        Province = new BArea { Id = a.Province, Name = llap.Name, IsDirect = llap.IsDirect },
+                        District = new BArea { Id = a.District, Name = llad.Name, IsDirect = llad.IsDirect },
+                        Contact = a.Contact,
+                        Phone = a.Phone,
+                        Created = a.Created,
+                        Updated = a.Updated,
+                        NearBy = a.NearBy,
+                        IsDefault = a.Default,
+                        User = new BUser { User = lluser }
+                    };
+                  
+                if(addressId>0)
+                {
+                    tmp = tmp.Where(a => a.Id == addressId);
+                }
+                if (userId > 0)
+                {
+                    tmp = tmp.Where(a => a.User.User.UserId == userId);
+                }
+                addresses = tmp.ToList<BAddress>();
             }
             return addresses;
         }
@@ -469,6 +484,59 @@ namespace MiOU.BL
             }
         }
 
+        public MAddress GetAddressModel(int addressId)
+        {
+            BAddress address = GetAddress(addressId);
+            MAddress model = new MAddress();
+            if(address!=null)
+            {
+                model.Id = address.Id;
+                model.Address = address.Address;
+                model.Apartment = address.Apartment;
+                model.City = address.City.Id;
+                model.Province = address.Province.Id;
+                model.District = address.District.Id;
+                model.NearBy = address.NearBy;
+                model.Phone = address.Phone;
+                model.User = address.User.User.UserId;
+                model.Contact = address.Contact;
+            }
+            return model;
+        }
+
+        public void DeleteAddress(int addressId)
+        {
+            using (MiOUEntities db = new MiOUEntities())
+            {
+                AddressBook address = (from a in db.AddressBook where a.Id==addressId select a).FirstOrDefault<AddressBook>();
+                if(address==null)
+                {
+                    throw new MiOUException("此藕品地点不存在");
+                }
+                if(address.UserId!=CurrentLoginUser.User.UserId)
+                {
+                    throw new MiOUException("请不要尝试删除别人的藕品地点");
+                }
+
+                db.AddressBook.Remove(address);
+                db.SaveChanges();
+            }
+        }
+        public BAddress GetAddress(int addressId)
+        {
+            BAddress address = null;
+            List<BAddress> tmps = GetAddresses(0, addressId);
+            if(tmps==null || tmps.Count==0)
+            {
+                throw new MiOUException("当前藕品地点不存在");
+            }
+            address = tmps[0];
+            if(address.User.User.UserId!=CurrentLoginUser.User.UserId)
+            {
+                throw new MiOUException("不能获取他人的藕品地点信息");
+            }
+            return address;
+        }
         public bool SaveAddress(MAddress address)
         {
             bool ret = false;
@@ -512,6 +580,7 @@ namespace MiOU.BL
                     dbAddress = new AddressBook();
                     dbAddress.Created = DateTimeUtil.ConvertDateTimeToInt(DateTime.Now);
                     dbAddress.UserId = CurrentLoginUser.User.UserId;
+                    db.AddressBook.Add(dbAddress);
                 }
                 else
                 {
@@ -536,7 +605,7 @@ namespace MiOU.BL
                 dbAddress.Phone = address.Phone;
                 dbAddress.Address = address.Address;
                 dbAddress.Default = address.Default;
-                db.AddressBook.Add(dbAddress);
+                dbAddress.Apartment = address.Apartment;                
                 db.SaveChanges();
                 ret = true;
             }

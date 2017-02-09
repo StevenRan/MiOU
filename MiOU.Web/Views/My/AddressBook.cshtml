@@ -12,11 +12,36 @@
         addresses = Model as List<BAddress>;
     }
 }
-<script type="text/javascript">
+<script type="text/javascript">   
+    userUtil=new UserUtil();
+    function editAddress(id) {
+        openModalDialog("/My/EditAddress?addressId=" + id, null);
+    }
+    function deleteAddress(id) {
+        userUtil.DeleteAddress(id,function(res){
+            if(res.Status=="OK"){
+                $('#addressBook_'+id).remove();
+                $('#delete_success').find('p').html("藕品地点被成功删除");
+                $('#delete_success').show();
+            }else{
+                $('#delete_warning').find('p').html(res.Message);
+                $('#delete_warning').show();
+            }
+        });
+    }
+    function setDefaultAddress(id) {
+    }
     $(function () {
         $('#add_new_address').click(function () {
             openModalDialog("/My/AddAddress", null);
             //window.location.href = "/Admin/NewProductLevel";
+        });
+
+        $('#delete_success').find('button').find('span').click(function () {
+            $('#delete_success').hide();
+        });
+        $('#delete_warning').find('button').find('span').click(function () {
+            $('#delete_warning').hide();
         });
     });
 </script>
@@ -30,13 +55,55 @@
         </div>
     </div>   
     <hr />
+
+    <div id="delete_success" class="alert alert-success alert-dismissible" role="alert" style="display:none;">
+        <button type="button" class="close"><span aria-hidden="true">&times;</span></button>
+        <p></p>
+    </div>
+    <div id="delete_warning" class="alert alert-danger alert-dismissible" role="alert" style="display:none;">
+        <button type="button" class="close"><span aria-hidden="true">&times;</span></button>
+        <p></p>
+    </div>
     <div>
         @{
             if (addresses == null || addresses.Count == 0)
             {
-                <div>您还没有添加任何藕品地点</div>                
+                <div>您还没有添加任何藕品地点</div>
+            }
+            else
+            {
+                foreach (BAddress address in addresses)
+                {
+                    string area=string.Empty;
+                    if(address.Province.IsDirect)
+                    {
+                        area = string.Format("{0} {1} {2}", address.Province.Name, address.District.Name, address.Apartment);
+                    }
+                    else
+                    {
+                        area = string.Format("{0} {1} {2} {3}", address.Province.Name, address.City.Name, address.District.Name, address.Apartment);
+                    }
+                    <div id="addressBook_@address.Id" class="myrightItem">
+                        <div class="pdtCate rfontSize1 wd60">
+                            <div class="mg" >
+                                <img class="locIcon" style="" src="~/Content/Images/location_icon.png" /><span>@area</span>
+                            </div>
+                            <div class="liitem">
+                                <div style="margin-right:20px;float:left;width:50%;">近：@address.NearBy</div><div style="float:left;"><span>联系人：@address.Contact</span> <span>电话：@address.Phone</span></div>
+                            </div>
+                        </div>
+                        <div class="wd40 fleft h60 lh60">
+                            <a class="bg3 ahmenu" onclick="editAddress(@address.Id)">编辑</a>
+                            <a class="ahmenu bg2" onclick="deleteAddress(@address.Id)" >删除</a>
+                            <a class="ahmenu bg1" >设为默认</a>
+                           
+                        </div>
+                    </div>
+                }
             }
         }
+
+       
     </div>
 </div>
 

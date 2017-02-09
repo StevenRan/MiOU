@@ -238,6 +238,7 @@
     <Compile Include="Controllers\api\BaseApiController.cs" />
     <Compile Include="Controllers\api\CommonController.cs" />
     <Compile Include="Controllers\api\ProductController.cs" />
+    <Compile Include="Controllers\api\UserController.cs" />
     <Compile Include="Controllers\FileUploaderController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\MeController.cs" />

@@ -417,6 +417,12 @@ float:left;width:82%;padding-left:10px;
         .lTitleUl .liactive a {
             color:#FFF;font-size:15px;text-decoration:none;cursor:pointer;display:block;
         }
+.myrightItem .rfontSize1 {
+    font-size:14px;
+}
+.myrightItem .rfontColor1{
+    color:#000;
+}
 .myrightItem{
     overflow:hidden;width:100%;padding-bottom:20px;padding-top:20px;border-bottom:1px solid #F1F1F1;
 }
@@ -424,8 +430,12 @@ float:left;width:82%;padding-left:10px;
     float:left;width:138px;
 }
 .myrightItem .pdtCate{
-    float:left;width:277.44px;padding-left:20px;padding-right:20px;border-right:1px solid #F1F1F1;font-size:13px;
+    float:left;width:277.44px;padding-left:20px;padding-right:20px;
 }
+.myrightItem .bgr1{
+    border-right:1px solid #F1F1F1;font-size:13px;
+}
+
 .myrightItem .title{
     overflow:hidden;border-bottom:1px solid #F1F1F1;padding-bottom:5px;font-size:14px;
 }
@@ -436,13 +446,16 @@ float:left;width:82%;padding-left:10px;
     overflow:hidden;margin-top:10px;color:#B4B4B4;
 }
 .myrightItem .locIcon{
-    width:16px;height:16px;margin:0;padding:0;margin-top:-2px;
+    width:16px;height:16px;margin:0;padding:0;margin-top:-2px;margin-right:10px;
 }
 .myrightItem .pdtfee{
     float:left;width:369.91px;padding-left:20px;color:#B4B4B4;font-size:13px;
 }
 .myrightItem .pdtMenu{    
     padding-left:20px;width:138px;height:100%;float:right;height:140px;border-left:1px solid #F1F1F1;
+}
+.myrightItem .bgr2 {
+    border-left:0;
 }
 .myrightItem .pdtMenu ul{
     list-style:none;margin:0;padding:0;height:100%;display:block;line-height:100%;
@@ -455,5 +468,26 @@ float:left;width:82%;padding-left:10px;
 .bg3{color:#91B9FF;border:1px solid #91B9FF;}
 .myrightItem .pdtMenu ul li a{
     padding:5px 10px 5px 10px;border-radius:4px;
+}
+.myrightItem .wd60{
+    width:60%;
+}
+.myrightItem .wd40{
+    width:40%;
+}
+.fleft{
+    float:left;
+}
+.h60{
+    height:60px;
+}
+.lh60{
+    line-height:60px;
+}
+.ahmenu{
+    padding:5px 10px 5px 10px;border-radius:4px;margin-right:10px;
+}
+.ahmenu:hover{
+    text-decoration:none;
 }
  

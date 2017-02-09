@@ -53,6 +53,35 @@ function ProductUtil() {
 }
 ProductUtil.prototype = new BaseMiOU();
 
+function UserUtil() {
+    this.EditAddress = function (id, callback) {
+        $.post
+         (
+           '/api/User/EditAddress',
+           { addressId: id },
+           function (res) {
+               if (res != 'undefined' && typeof (res) == 'object' && callback != 'undefined' && typeof (callback) == 'function') {
+                   callback(res);
+               }
+           }
+       );
+    }
+    this.DeleteAddress = function (id, callback) {
+        alert(id);
+        $.post
+         (
+           '/api/User/DeleteAddress',
+           { addressId: id },
+           function (res) {
+               if (res != 'undefined' && typeof (res) == 'object' && callback != 'undefined' && typeof (callback) == 'function') {
+                   callback(res);
+               }
+           }
+       );
+    }
+}
+UserUtil.prototype = new BaseMiOU();
+
 function openModalDialog(url, data) {
     $.get(
             url,

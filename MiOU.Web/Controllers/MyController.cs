@@ -265,7 +265,9 @@ namespace MiOU.Web.Controllers
 
         public ActionResult AddressBook()
         {
-            return View();
+            UserManagement userMgr = new UserManagement(User.Identity.GetUserId<int>());
+            List<BAddress> addresses = userMgr.GetAddresses(User.Identity.GetUserId<int>());
+            return View(addresses);
         }
         public ActionResult AddAddress()
         {
@@ -293,6 +295,54 @@ namespace MiOU.Web.Controllers
             return View("AddressForm", model);
         }
 
+        public ActionResult EditAddress(int? addressId)
+        {
+            UserManagement userMgr = new UserManagement(User.Identity.GetUserId<int>());
+            List<BArea> ares = userMgr.GetAreas(0);
+            ViewBag.Provinces = new SelectList(ares, "Id", "Name");
+            ViewBag.Cities = new SelectList(new List<BArea>(), "Id", "Name");
+            ViewBag.Districts = new SelectList(new List<BArea>(), "Id", "Name");
+            int id = 0;
+            if(addressId!=null)
+            {
+                id = (int)addressId;
+            }
+            else
+            {
+                return ShowError(Url.Encode("请不要随意修改URL"));
+            }
+            MAddress model = null;
+            try
+            {
+                model = userMgr.GetAddressModel(id);
+                if (model.Province > 0)
+                {
+                    BArea province = userMgr.GetAreaByIdWithChildren(model.Province);
+                    if (province.IsDirect)
+                    {
+                        List<BArea> tmpCities = new List<BArea>();
+                        tmpCities.Add(new BArea() { Id = province.Id, Name = province.Name });
+                        ViewBag.Cities = new SelectList(tmpCities, "Id", "Name");
+                        ViewBag.Districts = new SelectList(province.Chindren, "Id", "Name");
+                    }
+                    else
+                    {
+                        ViewBag.Cities = new SelectList(province.Chindren, "Id", "Name");
+                    }
+                }
+                return View("AddressForm", model);
+            }
+            catch(MiOUException mex)
+            {
+                logger.Warn(mex);
+                return ShowError(Url.Encode(mex.Message));
+            }
+            catch(Exception ex)
+            {
+                logger.Fatal(ex);
+                return ShowError(Url.Encode("请稍后再试，目前系统忙"));
+            }           
+        }
         public ActionResult SaveAddress(MAddress address)
         {
             UserManagement userMgr = new UserManagement(User.Identity.GetUserId<int>());
