@@ -67,7 +67,7 @@ function UserUtil() {
        );
     }
     this.DeleteAddress = function (id, callback) {
-        alert(id);
+        
         $.post
          (
            '/api/User/DeleteAddress',
