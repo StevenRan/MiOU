@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
@@ -9,6 +10,9 @@ using Microsoft.Owin.Security.Google;
 using Microsoft.Owin.Security.OAuth;
 using Microsoft.Owin.Security.WeChat;
 using Owin;
+using System.Web;
+using System.Web.Http;
+
 using MiOU.Web.Models;
 using MiOU.Web.Providers;
 using MiOU.BL;
@@ -74,7 +78,7 @@ namespace MiOU.Web
 
            
             //app.UseWeChatAuthentication("wx2d7c39688bcdd661", "b59620515093df4eae17bcbd592829f5");
-   
+           
         }
     }
 }
