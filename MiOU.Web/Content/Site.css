@@ -436,6 +436,15 @@ float:left;width:82%;padding-left:10px;
     border-right:1px solid #F1F1F1;font-size:13px;
 }
 
+ .topNav {
+        height:40px;line-height:40px;font-size:18px;overflow:hidden;margin-bottom:10px;
+    }
+.topNav .title {
+        float:left;width:10%;height:40px;line-height:40px;font-size:18px;border-bottom:4px solid #FFD03F;
+    }
+.topNav .line {
+        float:left;width:90%;height:40px;line-height:40px;font-size:18px;border-bottom:1.5px solid #F1F1F1;
+    }
 .myrightItem .title{
     overflow:hidden;border-bottom:1px solid #F1F1F1;padding-bottom:5px;font-size:14px;
 }

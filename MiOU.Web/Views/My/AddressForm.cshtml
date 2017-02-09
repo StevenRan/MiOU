@@ -92,6 +92,7 @@
         });
 
         $('#response_success').find('button').find('span').click(function () {
+            alert('OK');
             $('#response_success').hide();
         });
         $('#response_warning').find('button').find('span').click(function () {
@@ -145,10 +146,10 @@
         });
     });
 </script>
-<div style="height:40px;line-height:40px;font-size:18px;">
-    @ViewBag.Title
+<div class="topNav">
+    <div class="title">@ViewBag.Title</div>
+    <div class="line"></div>
 </div>
-<hr />
 
 @using (Html.BeginForm("SaveAddress", "My", FormMethod.Post, new { @class = "form-horizontal", role = "form", id = "AddressForm" }))
 {

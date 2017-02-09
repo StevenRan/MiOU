@@ -406,11 +406,13 @@ namespace MiOU.Web.Controllers
         }
         public ActionResult ChangePassword()
         {
-            return View();
+            MResetPassword model = new MResetPassword() { Email= User.Identity.Name, Password="", ConfirmPassword="",OldPassword="" };
+            return View(model);
         }
         public ActionResult ChangeAvator()
         {
             return View();
         }
+
     }
 }

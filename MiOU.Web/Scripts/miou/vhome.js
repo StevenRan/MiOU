@@ -79,6 +79,19 @@ function UserUtil() {
            }
        );
     }
+    this.SetDefaultAddress = function (id, callback) {
+
+        $.post
+         (
+           '/api/User/SetDefaultAddress',
+           { addressId: id },
+           function (res) {
+               if (res != 'undefined' && typeof (res) == 'object' && callback != 'undefined' && typeof (callback) == 'function') {
+                   callback(res);
+               }
+           }
+       );
+    }
 }
 UserUtil.prototype = new BaseMiOU();
 

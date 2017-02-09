@@ -64,7 +64,8 @@
                 <ul class="lTitleUl">                   
                     <li class="lid libd @{if(controllerName=="My" && actionName=="AddProduct"){ @Html.Raw("liactive"); }}"><a href="/My/AddProduct">添加藕品</a></li>
                     <li class="lid libd @{if(controllerName=="My" && actionName=="MyProducts"){ @Html.Raw("liactive"); }}"><a href="/My/MyProducts">我的藕品</a></li> 
-                    <li class="lid @{if(controllerName=="My" && actionName=="AddressBook"){ @Html.Raw("liactive"); }}"><a href="/My/AddressBook">藕品地点</a></li>                                    
+                    <li class="lid libd @{if(controllerName=="My" && actionName=="AddressBook"){ @Html.Raw("liactive"); }}"><a href="/My/AddressBook">藕品地点</a></li> 
+                    <li class="lid @{if(controllerName=="My" && (actionName=="AddAddress" || actionName=="SaveAddress")){ @Html.Raw("liactive"); }}"><a href="/My/AddAddress">添加地点</a></li>                                   
                 </ul>
                 <div class="lTitle">我租入的</div>
                 <ul class="lTitleUl">

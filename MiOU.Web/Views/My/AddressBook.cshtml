@@ -30,6 +30,15 @@
         });
     }
     function setDefaultAddress(id) {
+        userUtil.SetDefaultAddress(id,function(res){
+            if(res.Status=="OK"){                
+                $('#delete_success').find('p').html("默认藕品地点设置成功");
+                $('#delete_success').show();
+            }else{
+                $('#delete_warning').find('p').html(res.Message);
+                $('#delete_warning').show();
+            }
+        });
     }
     $(function () {
         $('#add_new_address').click(function () {
@@ -38,6 +47,7 @@
         });
 
         $('#delete_success').find('button').find('span').click(function () {
+            alert('ok');
             $('#delete_success').hide();
         });
         $('#delete_warning').find('button').find('span').click(function () {
@@ -46,15 +56,13 @@
     });
 </script>
 <div>
-    <div style="overflow:hidden;height:40px;line-height:40px;">
-        <div style="float:left;font-size:18px;height:100%;">           
-            @ViewBag.Title
+    <div class="topNav">
+        <div class="title">@ViewBag.Title</div>
+        <div class="line" style="float:right;text-align:right;">
+            @*<input id="add_new_address" type="button" class="btn btn-info" value="添加藕品地点" onclick="">*@
         </div>
-        <div style="float:right;height:100%;">
-            <input id="add_new_address" type="button" class="btn btn-info" value="添加藕品地点" onclick="">
-        </div>
-    </div>   
-    <hr />
+    </div>
+   
 
     <div id="delete_success" class="alert alert-success alert-dismissible" role="alert" style="display:none;">
         <button type="button" class="close"><span aria-hidden="true">&times;</span></button>
@@ -95,7 +103,7 @@
                         <div class="wd40 fleft h60 lh60">
                             <a class="bg3 ahmenu" onclick="editAddress(@address.Id)">编辑</a>
                             <a class="ahmenu bg2" onclick="deleteAddress(@address.Id)" >删除</a>
-                            <a class="ahmenu bg1" >设为默认</a>
+                            <a class="ahmenu bg1" onclick="setDefaultAddress(@address.Id)">设为默认</a>
                            
                         </div>
                     </div>
