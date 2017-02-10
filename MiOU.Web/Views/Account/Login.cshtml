@@ -5,15 +5,24 @@
     ViewBag.Title = "米藕登录";
 }
 
-<h2>@ViewBag.Title</h2>
+<div class="topNavExt">
+    <div class="title">@ViewBag.Title</div>
+    <div class="line"></div>
+</div>
+@if (ViewBag.Error != null)
+{
+<div id="response_warning" class="alert alert-danger alert-dismissible" role="alert">
+    <button type="button" class="close"><span aria-hidden="true">&times;</span></button>
+    <p>@ViewBag.Error</p>
+</div>
+}
 <div class="row">
     <div class="col-md-8">
         <section id="loginForm">
             @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
             {
                 @Html.AntiForgeryToken()
-                
-                <hr />
+               
                 @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                 <div class="form-group">
                     @Html.LabelFor(m => m.Email, new { @class = "col-md-2 control-label" })
@@ -39,7 +48,7 @@
                 </div>
                 <div class="form-group">
                     <div class="col-md-offset-2 col-md-10">
-                        <input type="submit" value="登录" class="btn btn-warning" />
+                        <input type="submit" value="登录米藕" class="btn btn-warning" />
                     </div>
                 </div>               
             }

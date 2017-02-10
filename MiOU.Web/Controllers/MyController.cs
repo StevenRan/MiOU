@@ -4,10 +4,13 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.Owin;
+using Microsoft.Owin.Security;
 using MiOU.Entities.Models;
 using MiOU.BL;
 using MiOU.Entities.Beans;
 using MiOU.Entities.Exceptions;
+using System.Threading.Tasks;
 
 namespace MiOU.Web.Controllers
 {
@@ -15,7 +18,30 @@ namespace MiOU.Web.Controllers
     public class MyController : Controller
     {
         log4net.ILog logger = null;
-
+        private ApplicationUserManager _userManager;
+        private ApplicationSignInManager _signInManager;
+        public ApplicationSignInManager SignInManager
+        {
+            get
+            {
+                return _signInManager ?? HttpContext.GetOwinContext().Get<ApplicationSignInManager>();
+            }
+            private set
+            {
+                _signInManager = value;
+            }
+        }
+        public ApplicationUserManager UserManager
+        {
+            get
+            {
+                return _userManager ?? HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
+            }
+            private set
+            {
+                _userManager = value;
+            }
+        }
         public MyController()
         {
             logger = log4net.LogManager.GetLogger(this.GetType().FullName);
@@ -408,6 +434,37 @@ namespace MiOU.Web.Controllers
         {
             MResetPassword model = new MResetPassword() { Email= User.Identity.Name, Password="", ConfirmPassword="",OldPassword="" };
             return View(model);
+        }
+        [HttpPost]
+        public async Task<ActionResult> ChangePassword(MResetPassword model)
+        {
+            if(ModelState.IsValid)
+            {
+                var result = await UserManager.ChangePasswordAsync(User.Identity.GetUserId<int>(), model.OldPassword, model.Password);
+                if (result.Succeeded)
+                {
+                    var user = await UserManager.FindByIdAsync(User.Identity.GetUserId<int>());
+                    if (user != null)
+                    {
+                        await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+                    }
+                    ViewBag.Message = "密码修改成功";
+                    return View("ChangePassword", new MResetPassword() { Email = User.Identity.Name, Password = "", ConfirmPassword = "", OldPassword = "" });
+                }
+                else
+                {
+                    ViewBag.Message = "当前密码不正确";
+                    model = new MResetPassword() { Email = User.Identity.Name, Password = "", ConfirmPassword = "", OldPassword = "" };
+                }
+            }
+            else
+            {
+                string messages = string.Join("; ", ModelState.Values
+                                     .SelectMany(x => x.Errors)
+                                     .Select(x => x.ErrorMessage));
+                ViewBag.Error = messages;
+            }
+            return View("ChangePassword",model);
         }
         public ActionResult ChangeAvator()
         {

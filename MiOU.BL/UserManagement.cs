@@ -611,5 +611,24 @@ namespace MiOU.BL
             }
             return ret;
         }
+
+        public List<BUserAvator> GetAvtors(int userId)
+        {
+            List<BUserAvator> acs = null;
+            if (userId <= 0 && CurrentLoginUser!=null)
+            {
+                userId = CurrentLoginUser.User.UserId;
+            }
+
+            if(userId<=0)
+            {
+                throw new MiOUException("输入数据不正确");
+            }
+            using (MiOUEntities db = new MiOUEntities())
+            {
+
+            }
+                return acs;
+        }
     }
 }

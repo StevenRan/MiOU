@@ -445,6 +445,18 @@ float:left;width:82%;padding-left:10px;
 .topNav .line {
         float:left;width:90%;height:40px;line-height:40px;font-size:18px;border-bottom:1.5px solid #F1F1F1;
     }
+
+.topNavExt {
+    font-size:30px;margin-top:20px;margin-bottom:30px;
+    height:40px;line-height:40px;overflow:hidden;
+}
+.topNavExt .title {
+    float:left;width:10%;height:40px;line-height:40px;font-size:24px;border-bottom:4px solid #FFD03F;
+}
+.topNavExt .line {
+    float:left;width:90%;height:40px;line-height:40px;font-size:18px;border-bottom:1.5px solid #F1F1F1;
+}
+
 .myrightItem .title{
     overflow:hidden;border-bottom:1px solid #F1F1F1;padding-bottom:5px;font-size:14px;
 }

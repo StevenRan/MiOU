@@ -104,7 +104,7 @@ namespace MiOU.Web.Controllers
                     return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
                 case SignInStatus.Failure:
                 default:
-                    ModelState.AddModelError("", "Invalid login attempt.");
+                    ViewBag.Error = "用户或密码错误";
                     return View(model);
             }
         }

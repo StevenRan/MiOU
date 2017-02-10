@@ -33,6 +33,8 @@
         <EntityTypeShape EntityType="MiOU.DAL.AddressBook" Width="1.5" PointX="9.375" PointY="13.75" />
         <EntityTypeShape EntityType="MiOU.DAL.ProductPrice" Width="1.5" PointX="15.375" PointY="12.75" />
         <EntityTypeShape EntityType="MiOU.DAL.Product" Width="1.5" PointX="15.375" PointY="3.75" />
+        <EntityTypeShape EntityType="MiOU.DAL.UserAvator" Width="1.5" PointX="5.375" PointY="16.75" />
+        <EntityTypeShape EntityType="MiOU.DAL.UserLogin" Width="1.5" PointX="15.375" PointY="16.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

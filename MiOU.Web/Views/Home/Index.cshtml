@@ -3,6 +3,7 @@
 @using MiOU.Util;
 @{
     ViewBag.Title = "中国最专业的养老租赁平台";
+    Layout = "~/Views/Shared/_Layout.cshtml";
     List<BCategory> categories = null;
     if (ViewBag.Categories != null) {
         categories = ViewBag.Categories as List<BCategory>;

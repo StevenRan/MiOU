@@ -24,5 +24,6 @@ namespace MiOU.Entities.Beans
         public BUserType UserType { get; set; }
         public BObject Gendar { get; set; }
         public BVIPLevel VIPLevel { get; set; }
+        public BUserAvator Avator { get; set; }
     }
 }

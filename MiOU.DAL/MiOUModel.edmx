@@ -352,6 +352,28 @@
           <Property Name="CurrencyAmount" Type="float" Nullable="false" />
           <Property Name="AccountAmount" Type="float" Nullable="false" />
         </EntityType>
+        <EntityType Name="UserAvator">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="FileId" Type="int" Nullable="false" />
+          <Property Name="Enabled" Type="bool" Nullable="false" />
+          <Property Name="Created" Type="uint" Nullable="false" />
+          <Property Name="Updated" Type="uint" Nullable="false" />
+          <Property Name="UpdatedBy" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="UserLogin">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="IP" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="Created" Type="uint" Nullable="false" />
+          <Property Name="Description" Type="varchar" MaxLength="200" />
+        </EntityType>
         <EntityType Name="UserType">
           <Key>
             <PropertyRef Name="Id" />
@@ -414,6 +436,8 @@
           <EntitySet Name="RentType" EntityType="Self.RentType" Schema="MiOU" store:Type="Tables" />
           <EntitySet Name="UseCurrencyHistory" EntityType="Self.UseCurrencyHistory" Schema="MiOU" store:Type="Tables" />
           <EntitySet Name="User" EntityType="Self.User" Schema="MiOU" store:Type="Tables" />
+          <EntitySet Name="UserAvator" EntityType="Self.UserAvator" Schema="MiOU" store:Type="Tables" />
+          <EntitySet Name="UserLogin" EntityType="Self.UserLogin" Schema="MiOU" store:Type="Tables" />
           <EntitySet Name="UserType" EntityType="Self.UserType" Schema="MiOU" store:Type="Tables" />
           <EntitySet Name="UserVip" EntityType="Self.UserVip" Schema="MiOU" store:Type="Tables" />
           <EntitySet Name="VipLevel" EntityType="Self.VipLevel" Schema="MiOU" store:Type="Tables" />
@@ -760,6 +784,8 @@
           <EntitySet Name="AddressBook" EntityType="MiOU.DAL.AddressBook" />
           <EntitySet Name="ProductPrice" EntityType="MiOU.DAL.ProductPrice" />
           <EntitySet Name="Product" EntityType="MiOU.DAL.Product" />
+          <EntitySet Name="UserAvator" EntityType="MiOU.DAL.UserAvator" />
+          <EntitySet Name="UserLogin" EntityType="MiOU.DAL.UserLogin" />
         </EntityContainer>
         <EntityType Name="AddressBook">
           <Key>
@@ -834,6 +860,28 @@
           <Property Name="RentTimes" Type="Int32" Nullable="false" />
           <Property Name="ManageType" Type="Int32" Nullable="false" />
           <Property Name="RentOutQuantity" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="UserAvator">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="FileId" Type="Int32" Nullable="false" />
+          <Property Name="Enabled" Type="Boolean" Nullable="false" />
+          <Property Name="Created" Type="Int64" Nullable="false" />
+          <Property Name="Updated" Type="Int64" Nullable="false" />
+          <Property Name="UpdatedBy" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="UserLogin">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="IP" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Created" Type="Int64" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -1247,6 +1295,30 @@
                 <ScalarProperty Name="Description" ColumnName="Description" />
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
                 <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserAvator">
+            <EntityTypeMapping TypeName="MiOU.DAL.UserAvator">
+              <MappingFragment StoreEntitySet="UserAvator">
+                <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
+                <ScalarProperty Name="Updated" ColumnName="Updated" />
+                <ScalarProperty Name="Created" ColumnName="Created" />
+                <ScalarProperty Name="Enabled" ColumnName="Enabled" />
+                <ScalarProperty Name="FileId" ColumnName="FileId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserLogin">
+            <EntityTypeMapping TypeName="MiOU.DAL.UserLogin">
+              <MappingFragment StoreEntitySet="UserLogin">
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Created" ColumnName="Created" />
+                <ScalarProperty Name="IP" ColumnName="IP" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

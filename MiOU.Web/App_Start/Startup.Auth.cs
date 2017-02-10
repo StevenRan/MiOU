@@ -21,19 +21,19 @@ namespace MiOU.Web
     public partial class Startup
     {
         // Enable the application to use OAuthAuthorization. You can then secure your Web APIs
-        //static Startup()
-        //{
-        //    PublicClientId = "web";
+        static Startup()
+        {
+            PublicClientId = "web";
 
-        //    OAuthOptions = new OAuthAuthorizationServerOptions
-        //    {
-        //        TokenEndpointPath = new PathString("/Token"),
-        //        AuthorizeEndpointPath = new PathString("/Account/Authorize"),
-        //        Provider = new ApplicationOAuthProvider(PublicClientId),
-        //        AccessTokenExpireTimeSpan = TimeSpan.FromDays(14),
-        //        AllowInsecureHttp = true
-        //    };
-        //}
+            OAuthOptions = new OAuthAuthorizationServerOptions
+            {
+                TokenEndpointPath = new PathString("/Token"),
+                AuthorizeEndpointPath = new PathString("/Account/Authorize"),
+                Provider = new ApplicationOAuthProvider(PublicClientId),
+                AccessTokenExpireTimeSpan = TimeSpan.FromDays(14),
+                AllowInsecureHttp = true
+            };
+        }
 
         public static OAuthAuthorizationServerOptions OAuthOptions { get; private set; }
 
@@ -77,7 +77,7 @@ namespace MiOU.Web
             //app.UseOAuthBearerTokens(OAuthOptions);
 
            
-            //app.UseWeChatAuthentication("wx2d7c39688bcdd661", "b59620515093df4eae17bcbd592829f5");
+            app.UseWeChatAuthentication("wx2d7c39688bcdd661", "b59620515093df4eae17bcbd592829f5");
            
         }
     }

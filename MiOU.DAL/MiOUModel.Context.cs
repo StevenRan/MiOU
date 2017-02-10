@@ -53,5 +53,7 @@ namespace MiOU.DAL
         public DbSet<AddressBook> AddressBook { get; set; }
         public DbSet<ProductPrice> ProductPrice { get; set; }
         public DbSet<Product> Product { get; set; }
+        public DbSet<UserAvator> UserAvator { get; set; }
+        public DbSet<UserLogin> UserLogin { get; set; }
     }
 }

@@ -132,6 +132,7 @@ namespace MiOU.BL
             }
             return user;
         }
+       
     }
     public class ApplicationSignInManager : SignInManager<ApplicationUser, int>
     {
@@ -165,7 +166,7 @@ namespace MiOU.BL
 
     public class MiOUPasswordHasher : IPasswordHasher
     {
-        private string passwordSalt = "5c149dc0-3a0f-438f-ae70-273575d2e66d";
+        private const string passwordSalt = "5c149dc0-3a0f-438f-ae70-273575d2e66d";
         public string HashPassword(string password)
         {
             return UrlSignUtil.GetMD5(UrlSignUtil.GetMD5(password)+passwordSalt);
@@ -268,7 +269,10 @@ namespace MiOU.BL
             {
                 throw new Exception("Please login with valid user name and password");
             }
-            return Task.FromResult(user.Password);
+            var identityUser = ToIdentityUser(user);
+            var task = userStore.GetPasswordHashAsync(identityUser);
+            SetApplicationUser(user, identityUser);
+            return task;
         }
 
         public Task<bool> HasPasswordAsync(ApplicationUser user)
@@ -277,17 +281,26 @@ namespace MiOU.BL
             {
                 throw new Exception("Please login with valid user name and password");
             }
-            if (string.IsNullOrEmpty(user.Password))
-            {
-                throw new Exception("No password for this user");
-            }
-            return Task.FromResult(true);
+            var identityUser = ToIdentityUser(user);
+            var task = userStore.HasPasswordAsync(identityUser);
+            SetApplicationUser(user, identityUser);
+            return task;
         }
 
         public Task SetPasswordHashAsync(ApplicationUser user, string passwordHash)
         {
-            user.Password = passwordHash;
-            return Task.FromResult(0);
+            //update user password
+            var identityUser = ToIdentityUser(user);
+            Task task = null;
+            User dbUser = (from u in content.User where u.UserId == user.Id select u).FirstOrDefault<User>();
+            if (dbUser != null)
+            {
+                dbUser.Password = passwordHash;
+                task = content.SaveChangesAsync();
+            }
+
+            SetApplicationUser(user, identityUser);
+            return task;
         }
 
         public Task UpdateAsync(ApplicationUser user)
@@ -303,10 +316,10 @@ namespace MiOU.BL
 
         private static void SetApplicationUser(ApplicationUser user, IdentityUser identityUser)
         {
-            //user.PasswordHash = identityUser.PasswordHash;
+            user.Password = identityUser.PasswordHash;
             //user.SecurityStamp = identityUser.SecurityStamp;
             user.Id = int.Parse(identityUser.Id);
-            user.UserName = identityUser.UserName;
+            user.Email = identityUser.UserName;
         }
 
         private IdentityUser ToIdentityUser(ApplicationUser user)
@@ -314,9 +327,9 @@ namespace MiOU.BL
             return new IdentityUser
             {
                 Id = user.Id.ToString(),
-                //PasswordHash = user.PasswordHash,
+                PasswordHash = user.Password,
                 //SecurityStamp = user.SecurityStamp,
-                UserName = user.UserName
+                UserName = user.Email
             };
         }
 
@@ -473,7 +486,7 @@ namespace MiOU.BL
             User dbUser = (from u in content.User where u.ExternalUserType== type && u.ExternalUserId==login.ProviderKey select u).FirstOrDefault<User>();
             ApplicationUser appUser = ApplicationUser.DBUserToAppUser(dbUser);
             return Task.FromResult<ApplicationUser>(appUser);
-        }
+        }       
     }
 
     public class ApplicationUser : User, Microsoft.AspNet.Identity.IUser<int>
