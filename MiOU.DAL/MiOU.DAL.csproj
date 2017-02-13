@@ -139,6 +139,12 @@
     <Compile Include="User.cs">
       <DependentUpon>MiOUModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="UserAvator.cs">
+      <DependentUpon>MiOUModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="UserLogin.cs">
+      <DependentUpon>MiOUModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="UserType.cs">
       <DependentUpon>MiOUModel.tt</DependentUpon>
     </Compile>

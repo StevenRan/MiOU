@@ -53,6 +53,7 @@
     <Compile Include="Beans\BCategoryStatistic.cs" />
     <Compile Include="Beans\BEvaluatedPrice.cs" />
     <Compile Include="Beans\BFile.cs" />
+    <Compile Include="Beans\BLogin.cs" />
     <Compile Include="Beans\BMaintenanceType.cs" />
     <Compile Include="Beans\BObject.cs" />
     <Compile Include="Beans\BOrder.cs" />
@@ -67,6 +68,7 @@
     <Compile Include="Beans\BProductPrice.cs" />
     <Compile Include="Beans\BSelType.cs" />
     <Compile Include="Beans\BUser.cs" />
+    <Compile Include="Beans\BUserAvator.cs" />
     <Compile Include="Beans\BUserType.cs" />
     <Compile Include="Beans\BVIPLevel.cs" />
     <Compile Include="Beans\Permission.cs" />
