@@ -12,5 +12,6 @@ namespace MiOU.Entities.Beans
         public BUser UpdatedBy { get; set; }
         public BUser Owner { get; set; }
         public bool Enabled { get; set; }
+
     }
 }
