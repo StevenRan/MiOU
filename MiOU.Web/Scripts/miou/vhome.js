@@ -79,6 +79,31 @@ function UserUtil() {
            }
        );
     }
+    this.DeleteAvactor = function (id, callback) {
+        alert('lalal');
+        $.post
+         (
+           '/api/User/DeleteAvactor',
+           { avactorId: id },
+           function (res) {
+               if (res != 'undefined' && typeof (res) == 'object' && callback != 'undefined' && typeof (callback) == 'function') {
+                   callback(res);
+               }
+           }
+       );
+    }
+    this.SetAvactor = function (id, callback) {
+        $.post
+         (
+           '/api/User/DeleteAddress',
+           { addressId: id },
+           function (res) {
+               if (res != 'undefined' && typeof (res) == 'object' && callback != 'undefined' && typeof (callback) == 'function') {
+                   callback(res);
+               }
+           }
+       );
+    }
     this.SetDefaultAddress = function (id, callback) {
 
         $.post

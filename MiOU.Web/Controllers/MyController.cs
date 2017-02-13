@@ -468,8 +468,20 @@ namespace MiOU.Web.Controllers
         }
         public ActionResult ChangeAvator()
         {
-            return View();
+            UserManagement userMgr = new UserManagement(User.Identity.GetUserId<int>());
+            List<BUserAvator> acators = userMgr.GetAvtors(User.Identity.GetUserId<int>());
+            BUserAvator current = null;
+            if (acators!=null)
+            {
+                ViewBag.AvatorHistory = (from a in acators where a.Enabled == false select a).ToList<BUserAvator>();
+                current = (from a in acators where a.Enabled==true select a).FirstOrDefault<BUserAvator>();
+            } 
+            if(current==null)
+            {
+                current = new BUserAvator();
+                current.Image = new BFile() { Id = 0, Path = "" };
+            }           
+            return View(current);
         }
-
     }
 }

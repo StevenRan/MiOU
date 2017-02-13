@@ -120,7 +120,7 @@ namespace MiOU.BL
         public void SetAdminStatus(int adminId,int status)
         {
             UserManagement userMgr = new UserManagement(CurrentLoginUser);
-            BUser admin = userMgr.GetUserInfoWithPermissionInfo(adminId);
+            BUser admin = userMgr.GetUserInfo(adminId);
             if(admin==null)
             {
                 throw new MiOUException("管理员账户不存在");

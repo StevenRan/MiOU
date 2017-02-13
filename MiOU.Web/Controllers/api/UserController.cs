@@ -13,7 +13,7 @@ namespace MiOU.Web.Controllers.api
     
     public class UserController : BaseApiController
     {
-        [AcceptVerbs("POST", "GET")]
+        [AcceptVerbs("POST")]
         public ApiMessage DeleteAddress()
         {
             this.IniRequest();
@@ -51,7 +51,45 @@ namespace MiOU.Web.Controllers.api
             return result;
         }
 
-        [AcceptVerbs("POST", "GET")]
+        [AcceptVerbs("POST")]
+        public ApiMessage DeleteAvactor()
+        {
+            this.IniRequest();
+            ApiMessage result = new ApiMessage();
+            int avactorId = 0;
+            int.TryParse(request["avactorId"], out avactorId);
+            if (avactorId <= 0)
+            {
+                result.Message = "POST的参数有误";
+                result.Result = null;
+                result.Status = ApiCallStatus.ERROR.ToString();
+            }
+            UserManagement userMgr = new UserManagement(User.Identity.Name);
+            try
+            {
+                userMgr.DeleteAvator(avactorId);
+                result.Result = null;
+                result.Status = ApiCallStatus.OK.ToString();
+                result.Message = "历史头像删除成功";
+            }
+            catch (MiOUException mex)
+            {
+                logger.Warn(mex);
+                result.Message = mex.Message;
+                result.Result = null;
+                result.Status = ApiCallStatus.ERROR.ToString();
+            }
+            catch (Exception ex)
+            {
+                logger.Fatal(ex);
+                result.Message = "服务不可用，请稍后在试";
+                result.Result = null;
+                result.Status = ApiCallStatus.ERROR.ToString();
+            }
+            return result;
+        }
+
+        [AcceptVerbs("POST")]
         public ApiMessage SetDefaultAddress()
         {
             this.IniRequest();

@@ -39,7 +39,7 @@ namespace MiOU.BL
                 DAL.File tmpFile = (from f in db.File where f.Id == id select f).FirstOrDefault<DAL.File>();
                 if (tmpFile == null)
                 {
-                    return false;
+                    throw new MiOUException("要删除的文件不存在");
                 }
 
                 string directory = System.AppDomain.CurrentDomain.BaseDirectory;

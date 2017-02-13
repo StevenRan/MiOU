@@ -473,7 +473,7 @@ namespace MiOU.Web.Controllers
             }
             List<UserAdminAction> actions = perMgr.GetAllAdminActions();
             ViewBag.actions = actions;
-            BUser reqUser = perMgr.GetUserInfoWithPermissionInfo(userId);
+            BUser reqUser = perMgr.GetUserInfo(userId);
             ViewBag.reqUser = reqUser;            
             return View(reqUser.Permission);
         }

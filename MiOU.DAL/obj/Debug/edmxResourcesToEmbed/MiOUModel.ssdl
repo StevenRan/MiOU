@@ -347,6 +347,28 @@
     <Property Name="CurrencyAmount" Type="float" Nullable="false" />
     <Property Name="AccountAmount" Type="float" Nullable="false" />
   </EntityType>
+  <EntityType Name="UserAvator">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="UserId" Type="int" Nullable="false" />
+    <Property Name="FileId" Type="int" Nullable="false" />
+    <Property Name="Enabled" Type="bool" Nullable="false" />
+    <Property Name="Created" Type="uint" Nullable="false" />
+    <Property Name="Updated" Type="uint" Nullable="false" />
+    <Property Name="UpdatedBy" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="UserLogin">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="UserId" Type="int" Nullable="false" />
+    <Property Name="IP" Type="varchar" MaxLength="100" Nullable="false" />
+    <Property Name="Created" Type="uint" Nullable="false" />
+    <Property Name="Description" Type="varchar" MaxLength="200" />
+  </EntityType>
   <EntityType Name="UserType">
     <Key>
       <PropertyRef Name="Id" />
@@ -409,6 +431,8 @@
     <EntitySet Name="RentType" EntityType="Self.RentType" Schema="MiOU" store:Type="Tables" />
     <EntitySet Name="UseCurrencyHistory" EntityType="Self.UseCurrencyHistory" Schema="MiOU" store:Type="Tables" />
     <EntitySet Name="User" EntityType="Self.User" Schema="MiOU" store:Type="Tables" />
+    <EntitySet Name="UserAvator" EntityType="Self.UserAvator" Schema="MiOU" store:Type="Tables" />
+    <EntitySet Name="UserLogin" EntityType="Self.UserLogin" Schema="MiOU" store:Type="Tables" />
     <EntitySet Name="UserType" EntityType="Self.UserType" Schema="MiOU" store:Type="Tables" />
     <EntitySet Name="UserVip" EntityType="Self.UserVip" Schema="MiOU" store:Type="Tables" />
     <EntitySet Name="VipLevel" EntityType="Self.VipLevel" Schema="MiOU" store:Type="Tables" />

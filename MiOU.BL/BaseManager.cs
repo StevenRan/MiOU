@@ -30,13 +30,13 @@ namespace MiOU.BL
         {
             if (user != null)
             {
-                this.CurrentLoginUser = this.GetUserInfoWithPermissionInfo(user.UserId);
+                this.CurrentLoginUser = this.GetUserInfo(user.UserId);
             }
             this.InitializeLoggger();
         }
         public BaseManager(int userId)
         {
-            this.CurrentLoginUser = this.GetUserInfoWithPermissionInfo(userId);
+            this.CurrentLoginUser = this.GetUserInfo(userId);
             this.InitializeLoggger();
         }
         public BaseManager(string email)
@@ -92,134 +92,28 @@ namespace MiOU.BL
         }
         public BUser GetUserInfoByNickName(string nickName)
         {
-            if (string.IsNullOrEmpty(nickName))
-            {
-                throw new MiOU.Entities.Exceptions.MiOUException(MiOUConstants.USER_NICK_IS_EMPTY);
-            }
-            BUser user = null;
-            using (MiOUEntities db = new MiOUEntities())
-            {
-                //user = new BUser();
-                //user.User = (from u in db.User
-                //             where u.Id == userId select u).FirstOrDefault<User>();
-
-
-                var u = from usr in db.User
-                        join city in db.Area on usr.City equals city.Id into lcity
-                        from llcity in lcity.DefaultIfEmpty()
-                        join province in db.Area on usr.Province equals province.Id into lprovince
-                        from llprovince in lprovince.DefaultIfEmpty()
-                        join district in db.Area on usr.Province equals district.Id into ldistrict
-                        from lldistrict in ldistrict.DefaultIfEmpty()
-                        where usr.NickName == nickName
-                        select new BUser
-                        {
-                            User = usr,
-                            Province = new BArea { Id=llprovince.Id,Name=llprovince.Name },
-                            City = new BArea { Id = llcity.Id, Name = llcity.Name },
-                            District = new BArea { Id = lldistrict.Id, Name = lldistrict.Name },
-                        };
-                user = u.FirstOrDefault<BUser>();
-                if(user==null)
-                {
-                    logger.Warn(string.Format(MiOUConstants.USER_NICK_NOT_EXIST, nickName));
-                    return user;                    
-                }
-                Admin_Users au = (from ausr in db.Admin_Users where ausr.User_Id == user.User.UserId select ausr).FirstOrDefault<Admin_Users>();
-                if (au != null)
-                {
-                    user.IsSuperAdmin = au.IsSuperAdmin;
-                    user.IsWebMaster = au.IsWebMaster;
-                    user.IsAdmin = true;
-                }
-                if (!user.IsSuperAdmin)
-                {
-                    user.Permission = PermissionManagement.GetUserPermissions(user.User.UserId);
-                }
-                else
-                {
-                    user.Permission = new Permissions();
-                    System.Reflection.PropertyInfo[] fields = typeof(Permissions).GetProperties();
-                    foreach (System.Reflection.PropertyInfo field in fields)
-                    {
-                        field.SetValue(user.Permission, true);
-                    }
-                }
-            }
-            return user;
+            return GetUserDetail(0, null, nickName);
         }
 
-        public BUser GetUserInfoWithPermissionInfo(int userId)
+        public BUser GetUserInfo(int userId)
         {
-            if (userId <= 0)
-            {
-                return null;
-                //throw new MiOUException(MiOUConstants.USER_ID_IS_EMPTY);
-            }
-            BUser user = null;
-            using (MiOUEntities db = new MiOUEntities())
-            {
-                //user = new BUser();
-                //user.User = (from u in db.User
-                //             where u.Id == userId select u).FirstOrDefault<User>();
-
-
-                var u = from usr in db.User
-                        join city in db.Area on usr.City equals city.Id into lcity
-                        from llcity in lcity.DefaultIfEmpty()
-                        join province in db.Area on usr.Province equals province.Id into lprovince
-                        from llprovince in lprovince.DefaultIfEmpty()
-                        join district in db.Area on usr.Province equals district.Id into ldistrict
-                        from lldistrict in ldistrict.DefaultIfEmpty()
-                        where usr.UserId==userId
-                        select new BUser
-                        {
-                            User = usr,
-                            Province = new BArea { Id = llprovince.Id, Name = llprovince.Name },
-                            City = new BArea { Id = llcity.Id, Name = llcity.Name },
-                            District = new BArea { Id = lldistrict.Id, Name = lldistrict.Name },
-                        };
-                user = u.FirstOrDefault<BUser>();
-                if (user == null)
-                {
-                    logger.Warn(string.Format(MiOUConstants.USER_ID_NOT_EXIST, userId));
-                    return null;
-                }
-                Admin_Users au = (from ausr in db.Admin_Users where ausr.User_Id == userId select ausr).FirstOrDefault<Admin_Users>();
-                if (au != null)
-                {
-                    user.IsSuperAdmin = au.IsSuperAdmin;
-                    user.IsWebMaster = au.IsWebMaster;
-                    user.IsAdmin = true;
-                }
-                if (!user.IsSuperAdmin)
-                {
-                    user.Permission = PermissionManagement.GetUserPermissions(userId);
-                }
-                else
-                {
-                    user.Permission = new Permissions();
-                    System.Reflection.PropertyInfo[] fields = typeof(Permissions).GetProperties();
-                    foreach (System.Reflection.PropertyInfo field in fields)
-                    {
-                        field.SetValue(user.Permission, true);
-                    }
-                }
-            }
-            return user;
+            return GetUserDetail(userId, null, null);
         }
 
         public BUser GetUserInfo(string email)
         {
-            if (string.IsNullOrEmpty(email))
-            {
-                throw new MiOUException(MiOUConstants.USER_EMAIL_IS_EMPTY);
-            }
+            return GetUserDetail(0, email, null);
+        }
+
+        public BUser GetUserDetail(int userId,string email,string nickName)
+        {
             BUser user = null;
+            if (string.IsNullOrEmpty(email) && string.IsNullOrEmpty(nickName) && userId<=0)
+            {
+                throw new MiOUException("查询用户详细信息时，昵称，邮箱或者用户编号不能同时为空");
+            }
             using (MiOUEntities db = new MiOUEntities())
             {
-                //user = new BUser();
-                //user.User = (from u in db.User where u.Email == email select u).FirstOrDefault<User>();
                 var u = from usr in db.User
                         join city in db.Area on usr.City equals city.Id into lcity
                         from llcity in lcity.DefaultIfEmpty()
@@ -227,7 +121,6 @@ namespace MiOU.BL
                         from llprovince in lprovince.DefaultIfEmpty()
                         join district in db.Area on usr.Province equals district.Id into ldistrict
                         from lldistrict in ldistrict.DefaultIfEmpty()
-                        where usr.Email==email
                         select new BUser
                         {
                             User = usr,
@@ -235,10 +128,23 @@ namespace MiOU.BL
                             City = new BArea { Id = llcity.Id, Name = llcity.Name },
                             District = new BArea { Id = lldistrict.Id, Name = lldistrict.Name },
                         };
-                user = u.FirstOrDefault<BUser>();
-                if(user==null)
+
+                if(userId>0)
                 {
-                    logger.Warn(string.Format(MiOUConstants.USER_EMAIL_NOT_EXIST,email));
+                    u = u.Where(t=>t.User.UserId==userId);
+                }
+                if(!string.IsNullOrEmpty(email))
+                {
+                    u = u.Where(t => t.User.Email == email);
+                }
+                if (!string.IsNullOrEmpty(nickName))
+                {
+                    u = u.Where(t => t.User.NickName == nickName);
+                }
+                user = u.FirstOrDefault<BUser>();
+                if (user == null)
+                {
+                    logger.Warn(string.Format(MiOUConstants.USER_EMAIL_NOT_EXIST, email));
                     return null;
                 }
                 Admin_Users au = (from ausr in db.Admin_Users where ausr.User_Id == user.User.UserId select ausr).FirstOrDefault<Admin_Users>();
@@ -261,6 +167,22 @@ namespace MiOU.BL
                         field.SetValue(user.Permission, 1);
                     }
                 }
+                if(user!=null && user.User!=null)
+                {
+                    user.User.Password = "";
+                    BUserAvator avator = (from uv in db.UserAvator
+                                          join file in db.File on uv.FileId equals file.Id into lfile
+                                          from llfile in lfile.DefaultIfEmpty()
+                                          where uv.UserId == user.User.UserId && llfile.Enabled == true
+                                          select new BUserAvator
+                                          {
+                                              Created = uv.Created,
+                                              Enabled = uv.Enabled,
+                                              Image = new BFile { Created =llfile.Created, Path= llfile.Path }
+                                          }
+                                     ).FirstOrDefault<BUserAvator>();
+                }
+               
             }
             return user;
         }
@@ -283,9 +205,7 @@ namespace MiOU.BL
                 areas = tmp.OrderBy(a => a.Id).ToList<BArea>();
             }
             return areas;
-        }
-
-     
+        }     
 
         public BArea GetAreaByName(string name)
         {

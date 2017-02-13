@@ -338,6 +338,8 @@
     <EntitySet Name="AddressBook" EntityType="MiOU.DAL.AddressBook" />
     <EntitySet Name="ProductPrice" EntityType="MiOU.DAL.ProductPrice" />
     <EntitySet Name="Product" EntityType="MiOU.DAL.Product" />
+    <EntitySet Name="UserLogin" EntityType="MiOU.DAL.UserLogin" />
+    <EntitySet Name="UserAvator" EntityType="MiOU.DAL.UserAvator" />
   </EntityContainer>
   <EntityType Name="AddressBook">
     <Key>
@@ -412,5 +414,27 @@
     <Property Name="RentTimes" Type="Int32" Nullable="false" />
     <Property Name="ManageType" Type="Int32" Nullable="false" />
     <Property Name="RentOutQuantity" Type="Int32" Nullable="false" />
+  </EntityType>
+  <EntityType Name="UserLogin">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="UserId" Type="Int32" Nullable="false" />
+    <Property Name="IP" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="Created" Type="Int64" Nullable="false" />
+    <Property Name="Description" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <EntityType Name="UserAvator">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="UserId" Type="Int32" Nullable="false" />
+    <Property Name="FileId" Type="Int32" Nullable="false" />
+    <Property Name="Enabled" Type="Boolean" Nullable="false" />
+    <Property Name="Created" Type="Int64" Nullable="false" />
+    <Property Name="Updated" Type="Int64" Nullable="false" />
+    <Property Name="UpdatedBy" Type="Int32" Nullable="false" />
   </EntityType>
 </Schema>

@@ -13,7 +13,8 @@
     }
 }
 <script type="text/javascript">   
-    userUtil=new UserUtil();
+    userUtil = new UserUtil();
+    
     function editAddress(id) {
         openModalDialog("/My/EditAddress?addressId=" + id, null);
     }
@@ -23,9 +24,11 @@
                 $('#addressBook_'+id).remove();
                 $('#delete_success').find('p').html("藕品地点被成功删除");
                 $('#delete_success').show();
+                enableClose();
             }else{
                 $('#delete_warning').find('p').html(res.Message);
                 $('#delete_warning').show();
+                enableClose();
             }
         });
     }
@@ -34,25 +37,29 @@
             if(res.Status=="OK"){                
                 $('#delete_success').find('p').html("默认藕品地点设置成功");
                 $('#delete_success').show();
+                enableClose();
             }else{
                 $('#delete_warning').find('p').html(res.Message);
                 $('#delete_warning').show();
+                enableClose();
             }
         });
     }
-    $(function () {
-        $('#add_new_address').click(function () {
-            openModalDialog("/My/AddAddress", null);
-            //window.location.href = "/Admin/NewProductLevel";
-        });
 
+    function enableClose() {
         $('#delete_success').find('button').find('span').click(function () {
-            alert('ok');
             $('#delete_success').hide();
         });
         $('#delete_warning').find('button').find('span').click(function () {
             $('#delete_warning').hide();
         });
+    }
+
+    $(function () {
+        $('#add_new_address').click(function () {
+            openModalDialog("/My/AddAddress", null);
+            //window.location.href = "/Admin/NewProductLevel";
+        });       
     });
 </script>
 <div>
@@ -92,7 +99,7 @@
                         area = string.Format("{0} {1} {2} {3}", address.Province.Name, address.City.Name, address.District.Name, address.Apartment);
                     }
                     <div id="addressBook_@address.Id" class="myrightItem">
-                        <div class="pdtCate rfontSize1 wd60">
+                        <div class="pdtCate rfontSize1 wd60 lp0">
                             <div class="mg" >
                                 <img class="locIcon" style="" src="~/Content/Images/location_icon.png" /><span>@area</span>
                             </div>

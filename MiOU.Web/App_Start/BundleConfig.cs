@@ -11,7 +11,8 @@ namespace MiOU.Web
         public static void RegisterBundles(BundleCollection bundles)
         {
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
-                "~/Scripts/jquery-{version}.js"));
+                "~/Scripts/jquery-{version}.js"
+               ));
 
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
                 "~/Scripts/jquery.unobtrusive*",
@@ -56,7 +57,7 @@ namespace MiOU.Web
             bundles.Add(new StyleBundle("~/Content/css").Include(
                  "~/Content/bootstrap.css",
                  "~/Content/Gridmvc.css",
-                 "~/Content/bootstrap-fileinput/css/fileinput.min.css",
+                 "~/Content/bootstrap-fileinput/css/fileinput.min.css",               
                  "~/Content/Site.css"));
         }
     }

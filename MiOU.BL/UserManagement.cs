@@ -579,7 +579,7 @@ namespace MiOU.BL
                 {
                     dbAddress = new AddressBook();
                     dbAddress.Created = DateTimeUtil.ConvertDateTimeToInt(DateTime.Now);
-                    dbAddress.UserId = CurrentLoginUser.User.UserId;
+                    dbAddress.UserId = address.User>0?address.User: CurrentLoginUser.User.UserId;
                     db.AddressBook.Add(dbAddress);
                 }
                 else
@@ -615,20 +615,124 @@ namespace MiOU.BL
         public List<BUserAvator> GetAvtors(int userId)
         {
             List<BUserAvator> acs = null;
-            if (userId <= 0 && CurrentLoginUser!=null)
+            if (userId <= 0 && CurrentLoginUser != null)
             {
                 userId = CurrentLoginUser.User.UserId;
             }
 
-            if(userId<=0)
+            if (userId <= 0)
             {
                 throw new MiOUException("输入数据不正确");
             }
             using (MiOUEntities db = new MiOUEntities())
             {
-
+                var tmp = from a in db.UserAvator
+                          join img in db.File on a.FileId equals img.Id into limg
+                          from llimg in limg.DefaultIfEmpty()
+                          join usr in db.User on a.UpdatedBy equals usr.UserId into lupdatedby
+                          from llupdatedbt in lupdatedby.DefaultIfEmpty()
+                          join owner in db.User on a.UserId equals owner.UserId into lowner
+                          from llowner in lowner.DefaultIfEmpty()
+                          orderby a.Enabled
+                          select new BUserAvator
+                          {
+                              Created = a.Created,
+                              Enabled = a.Enabled,
+                              Id = a.Id,
+                              Image = new BFile { Created = llimg.Created, Path = llimg.Path, UserId = llimg.UserId },
+                              Updated = a.Updated,
+                              UpdatedBy = new BUser { User = llupdatedbt },
+                              Owner=new BUser { User=llowner}
+                          };
+                if (userId > 0)
+                {
+                    tmp = tmp.Where(a => a.Owner.User.UserId == userId);
+                }
+                acs = tmp.ToList<BUserAvator>();
             }
-                return acs;
+            return acs;
+        }
+        public bool SaveAvator(int userId, BFile file)
+        {
+            bool ret = false;
+            using (MiOUEntities db = new MiOUEntities())
+            {
+                if (userId != CurrentLoginUser.User.UserId)
+                {
+                    throw new MiOUException("请不要尝试修改别人的头像");
+                }
+
+                UserAvator old = (from o in db.UserAvator where o.UserId==userId & o.Enabled==true select o).FirstOrDefault<UserAvator>();
+                UserAvator newAvator = new UserAvator() { Created=DateTimeUtil.ConvertDateTimeToInt(DateTime.Now), Enabled=true, FileId=file.Id, Updated=0, UpdatedBy=0, UserId=userId};
+                db.UserAvator.Add(newAvator);
+                db.SaveChanges();
+                if(newAvator.Id>0 && old!=null)
+                {
+                    old.Enabled = false;
+                    old.Updated = DateTimeUtil.ConvertDateTimeToInt(DateTime.Now);
+                    old.UpdatedBy = CurrentLoginUser.User.UserId;
+                    db.SaveChanges();
+                    ret = true;
+                }
+            }
+            return ret;
+        }
+        public bool SetAvaror(int avarorId,int userId)
+        {
+            bool ret = false;
+            using (MiOUEntities db = new MiOUEntities())
+            {
+                if (userId != CurrentLoginUser.User.UserId)
+                {
+                    throw new MiOUException("请不要尝试修改别人的头像");
+                }
+
+                UserAvator old = (from o in db.UserAvator where o.UserId == userId & o.Enabled == true select o).FirstOrDefault<UserAvator>();
+                UserAvator newOne = (from o in db.UserAvator where o.UserId == userId & o.Id==avarorId select o).FirstOrDefault<UserAvator>();               
+                if(newOne!=null)
+                {
+                    newOne.Enabled = true;
+                    db.SaveChanges();
+                    old.Enabled = false;
+                    db.SaveChanges();
+                }
+                else
+                {
+                    throw new MiOUException("要设置的头像数据不存在");
+                }
+            }
+            return ret;
+        }
+
+        public bool DeleteAvator(int avatorId)
+        {
+            bool ret = false;
+            using (MiOUEntities db = new MiOUEntities())
+            {
+                UserAvator current = (from o in db.UserAvator where o.Id==avatorId select o).FirstOrDefault<UserAvator>();
+                if(current==null)
+                {
+                    throw new MiOUException("要删除的头像数据不存在");
+                }
+                if(current.UserId!=CurrentLoginUser.User.UserId)
+                {
+                    throw new MiOUException("请不要尝试删除别人的历史头像数据");
+                }
+                if(current.Enabled)
+                {
+                    throw new MiOUException("无法删除正在使用中的头像，请先上传新头像或者重新设置历史头像为当前头像，然后在删除此头像");
+                }
+                File file = (from f in db.File where f.Id== current.FileId select f).FirstOrDefault<File>();
+                db.UserAvator.Remove(current);
+                db.SaveChanges();
+                if(file!=null)
+                {
+                    UploadFileManagement fileMgr = new UploadFileManagement(CurrentLoginUser);
+                    fileMgr.RemoveFile(file);
+                    ret = true;
+                }
+            }
+            return ret;
         }
     }
 }
