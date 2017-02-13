@@ -2,6 +2,8 @@
 /// <reference path="../client scripts/mvcfoolproof.unobtrusive.min.js" />
 /// <reference path="../client scripts/mvcfoolproofjqueryvalidation.min.js" />
 /// <reference path="../client scripts/mvcfoolproofvalidation.min.js" />
+/// <reference path="../Content/bootstrap-fileinput/themes/fa/theme.js" />
+/// <reference path="../Content/bootstrap-fileinput/themes/gly/theme.js" />
 /// <reference path="app/_run.js" />
 /// <reference path="app/app.datamodel.js" />
 /// <reference path="app/app.viewmodel.js" />
@@ -18,8 +20,6 @@
 /// <reference path="jquery-3.1.1.js" />
 /// <reference path="jquery-3.1.1.min.js" />
 /// <reference path="jquery-3.1.1.slim.min.js" />
-/// <reference path="jquery-ui-1.12.1.js" />
-/// <reference path="jquery-ui-1.12.1.min.js" />
 /// <reference path="knockout.validation.js" />
 /// <reference path="knockout-2.3.0.debug.js" />
 /// <reference path="locales/ar.js" />
@@ -53,7 +53,6 @@
 /// <reference path="locales/zh-tw.js" />
 /// <reference path="miou/vhome.js" />
 /// <reference path="modernizr-2.6.2.js" />
-/// <reference path="npm.js" />
 /// <reference path="plugins/canvas-to-blob.min.js" />
 /// <reference path="plugins/purify.min.js" />
 /// <reference path="plugins/sortable.min.js" />

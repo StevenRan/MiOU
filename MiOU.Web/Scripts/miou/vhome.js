@@ -80,7 +80,7 @@ function UserUtil() {
        );
     }
     this.DeleteAvactor = function (id, callback) {
-        alert('lalal');
+       
         $.post
          (
            '/api/User/DeleteAvactor',
@@ -95,8 +95,8 @@ function UserUtil() {
     this.SetAvactor = function (id, callback) {
         $.post
          (
-           '/api/User/DeleteAddress',
-           { addressId: id },
+           '/api/User/SetAvactor',
+           { avactorId: id },
            function (res) {
                if (res != 'undefined' && typeof (res) == 'object' && callback != 'undefined' && typeof (callback) == 'function') {
                    callback(res);

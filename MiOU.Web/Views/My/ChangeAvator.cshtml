@@ -8,9 +8,20 @@
 <script type="text/javascript">
     userUtil = null;
     function setAvator(id) {
-        
+        userUtil.SetAvactor(id, function (res) {
+            if (res.Status == 'OK') {
+                window.location.reload();
+                //$('#delete_success').find('p').html("头像设置成功");
+                //$('#delete_success').show();
+                //enableClose();
+            } else {
+                $('#delete_warning').find('p').html(res.Message);
+                $('#delete_warning').show();
+                enableClose();
+            }
+        });
     }
-    function deleteAvator(id) {        
+    function deleteAvator(id) {
         userUtil.DeleteAvactor(id, function (res) {
             if (res.Status == 'OK') {
                 $('#delete_success').find('p').html("历史头像删除成功");
@@ -80,7 +91,6 @@
         <input id="FilesInput" type="file" name="FilesInput" />
     </div>  
 </div>
-
 
 @using (Html.BeginForm("ChangeAvator", "My", FormMethod.Post, new { @class = "form-horizontal", role = "form", id = "AvatorForm" }))
 {
