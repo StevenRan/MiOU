@@ -365,6 +365,22 @@ namespace MiOU.BL
             return levels;
         }
 
+        public BProduct GetProductDetail(int productId)
+        {
+            BProduct product = null;
+            if(productId<=0)
+            {
+                throw new MiOUException("产品信息不存在");
+            }
+            int total = 0;
+            List<BProduct> products = SearchProducts(new int[] { }, null, 0, 0, 0, 0, 0, 0, 0, 0, null, 10, 1, true, out total);
+            if (total != 1)
+            {
+                throw new MiOUException("产品信息不存在");
+            }
+            product = products[0];
+            return product;
+        }
         public List<BProduct> SearchProducts(int[] productIds,int[] states,int userId,int auditUserId, int pId,int cId,int rentType,int provinceId,int cityId,int districtId,string keyword,int pageSize,int page,bool getDetail,out int total, ProductOrderField pOrder= ProductOrderField.RENTTIMES,int manageType=1)
         {
             List<BProduct> products = null;
@@ -412,7 +428,8 @@ namespace MiOU.BL
                                DeliveryType = new BObject { Id = p.DeliveryType, Name = llshipping.Name },
                                VIPRentLevel = new BVIPLevel { Id = p.VIPLevel, Name = llvip.Name },
                                RentType = new BObject { Id = p.RentType, Name = llrtype.Name },
-                               Status = (ProductStatus)p.Status,
+                               AuditStatus = (ProductStatus)p.Status,
+                               Status = (RentStatus)p.Status,
                                Created = p.Created,
                                Updated = p.Updated,
                                AuditTime = p.AuditTime,
@@ -442,7 +459,7 @@ namespace MiOU.BL
                 }
                 if (states!=null && states.Length>0)
                 {
-                    linq = linq.Where(a =>states.Contains((int)a.Status));
+                    linq = linq.Where(a =>states.Contains((int)a.AuditStatus));
                 }
                 if(rentType>0)
                 {

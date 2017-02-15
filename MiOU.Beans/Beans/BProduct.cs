@@ -12,6 +12,13 @@ namespace MiOU.Entities.Beans
         PASSED=1,
         FAILED=2
     }
+    public enum RentStatus
+    {
+        IDEL = 0,
+        BUSY = 1,
+        LOCKED = 2,
+        MAINTAIN=3
+    }
     public class BProduct:BObject
     {
         public string Description { get; set; }
@@ -21,7 +28,7 @@ namespace MiOU.Entities.Beans
         public float Percentage { get; set; }
         public float Pledge { get; set; }
         public float Price { get; set; }        
-        public ProductStatus Status { get; set; }
+        public ProductStatus AuditStatus { get; set; }
         public BUser AuditUser { get; set; }
         public long AuditTime { get; set; }
         public string AuditMessage { get; set; }
@@ -46,5 +53,6 @@ namespace MiOU.Entities.Beans
         public BProductLevel ProductLevel { get; set; }
         public int ManageType { get; set; }
         public BAddress Addresso { get; set; }
+        public RentStatus Status { get; set; }
     }
 }

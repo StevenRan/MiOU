@@ -4,6 +4,9 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
+using MiOU.BL;
+using MiOU.Entities.Beans;
+using MiOU.Entities.Exceptions;
 namespace MiOU.Web.Controllers
 {
     public class ProductController : Controller
@@ -14,9 +17,11 @@ namespace MiOU.Web.Controllers
             return View();
         }
 
-        public ActionResult Detail()
+        public ActionResult Detail(int productId)
         {
-            return View();
+            ProductManagement pdtMgr = new ProductManagement(0);
+            BProduct product = pdtMgr.GetProductDetail(productId);
+            return View(product);
         }
     }
 }

@@ -69,7 +69,7 @@
                     <div class="pdtCate bgr1">
                         <div class="title">
                             <div  style="float:left;">
-                                @product.Name
+                                <a href="/Product/Detail?productId=@product.Id">@product.Name</a>
                             </div>
                             <div  style="float:right;">
                                 <a href="/My/MyProducts?type=@iType.ToString()&cate=@product.Category.Id">@product.Category.Name</a>
@@ -86,14 +86,14 @@
                         </div>
                         <div class="liitem">
                             @{ 
-                                if (product.Status == ProductStatus.CREATED) {
+                                if (product.AuditStatus == ProductStatus.CREATED) {
                                     @Html.Raw("等待审核");
                                 }
-                                else if (product.Status == ProductStatus.PASSED)
+                                else if (product.AuditStatus == ProductStatus.PASSED)
                                 {
                                     @Html.Raw("审核通过");
                                 }
-                                else if (product.Status == ProductStatus.FAILED)
+                                else if (product.AuditStatus == ProductStatus.FAILED)
                                 {
                                     @Html.Raw("审核未通过");
                                 }
@@ -104,18 +104,18 @@
                         <div>@product.RentType.Name - 费用:</div>
                         <div style="overflow:hidden;margin-top:10px;">
                             @{
-                                if (product.Status == ProductStatus.PASSED)
+                                if (product.AuditStatus == ProductStatus.PASSED)
                                 {
                                     foreach (BProductPrice price in product.ProductPrices)
                                     {
                                         <div style="float:left;padding-right:20px;padding-top:5px;padding-bottom:5px;"><span style="color:#B4B4B4;">@price.PriceCategory.Name:</span><span style="color:red;padding-left:5px;">@price.EPrice.Price/天</span></div>
                                     }
                                 }
-                                else if (product.Status == ProductStatus.CREATED)
+                                else if (product.AuditStatus == ProductStatus.CREATED)
                                 {
                                     @Html.Raw("等待审核");
                                 }
-                                else if (product.Status == ProductStatus.FAILED)
+                                else if (product.AuditStatus == ProductStatus.FAILED)
                                 {
                                     @Html.Raw("审核未通过");
                                 }

@@ -1,4 +1,6 @@
-﻿
+﻿@using MiOU.Entities;
+@using MiOU.Entities.Beans;
+@model BProduct
 @{
     ViewBag.Title = "藕品信息";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -12,28 +14,87 @@
     </div>
     <div style="float:left;width:400px;padding-left:40px;padding-right:40px;">
         <div style="padding-top:5px;padding-bottom:5px;">
-            <span>康杨轮椅00033</span><span>旅游轮椅</span>
+            <span>@Model.Name</span><span>@Model.Category.Name</span>
         </div>
         <div style="padding-top:5px;padding-bottom:5px;">
-            <span>市场价：</span><span>10000元</span>
+            <span>市场价：</span><span>@Model.Price</span>
         </div>
         <div style="padding-top:5px;padding-bottom:5px;">
             <img class="locIcon" style="width:15px;height:15px;margin-top:-3px;margin-right:5px;" src="~/Content/Images/location_icon.png" /><span >闵行-上海春城</span>
         </div>
         <div style="padding-top:2px;padding-bottom:10px;border-bottom:1px solid #F1F1F1;"> 
-            <span>就近：莘庄，麦多生活广场，新会橙</span>
+            <span>附近：@Model.Nearby</span>
         </div>
         <div style="padding-top:15px;padding-bottom:15px;">
-            <span>租赁费用：</span>
+            <span style="display:block;">租赁费用：</span>
+            <div style="">
+                @{
+                    if (Model.AuditStatus == ProductStatus.PASSED)
+                    {
+                        foreach (BProductPrice price in Model.ProductPrices)
+                        {
+                            <div style="float:left;padding-right:20px;padding-top:5px;padding-bottom:5px;"><span style="color:#B4B4B4;">@price.PriceCategory.Name:</span><span style="color:red;padding-left:5px;">@price.EPrice.Price/天</span></div>
+                        }
+                    }
+                    else if (Model.AuditStatus == ProductStatus.CREATED)
+                    {
+                        @Html.Raw("等待审核");
+                    }
+                    else if (Model.AuditStatus == ProductStatus.FAILED)
+                    {
+                        @Html.Raw("审核未通过");
+                    }
+                }
+            </div>
         </div>
         <div style="border-top:1px solid #F1F1F1;padding-top:15px;">
-            <span>藕品状态：</span><span>保养中</span>
+            <span>藕品状态：</span>
+            <span>
+             @{ 
+                 string status = "";
+                 switch(Model.Status)
+                 {
+                     case RentStatus.IDEL:
+                         status = "空闲";
+                         break;
+                     case RentStatus.BUSY:
+                         status = "租赁中";
+                         break;
+                     case RentStatus.LOCKED:
+                         status = "锁定";
+                         break;
+                     case RentStatus.MAINTAIN:
+                         status = "保养中";
+                         break;
+                 }
+
+                 if (Model.User.User.UserType == 1)
+                 {
+                     @Html.Raw(status);
+                 }
+                 else if (Model.Status != RentStatus.LOCKED)
+                 {
+                    <span>库存:</span><span style="color:red;padding-left:5px;">@(Model.Repertory)/@(Model.Repertory + Model.RentOutQuantity)</span>
+                 }
+            }
+            </span>
         </div>
         <div style="padding-top:5px;padding-bottom:5px;">
-            <span>交货方式：</span><span>附件送货</span>
+            <span>交货方式：</span><span>@Model.DeliveryType.Name</span>
         </div>
         <div style="padding-top:15px;padding-bottom:15px;">
-            <span>米藕代管：</span><span>代管客户：2142354892345784238</span>
+            <span>
+                @{ 
+                    if (Model.ManageType == 1)
+                    {
+                        @Html.Raw("自己管理");
+                    }
+                    else if (Model.ManageType == 2)
+                    {
+                        @Html.Raw("米藕代管");
+                    }
+                }
+            </span>
         </div>
         <div>
             <input type="button" class="btn btn-danger" value="立即租赁" onclick="location.href = '/Product/Rent';">

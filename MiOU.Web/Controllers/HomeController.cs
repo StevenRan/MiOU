@@ -24,5 +24,15 @@ namespace MiOU.Web.Controllers
             ViewBag.Categories = categories;
             return View();
         }
+
+        public ActionResult NotFound()
+        {            
+            return View();
+        }
+
+        public ActionResult Error()
+        {
+            return View();
+        }
     }
 }
