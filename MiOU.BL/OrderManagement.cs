@@ -290,18 +290,18 @@ namespace MiOU.BL
                 {
                     throw new MiOUException("产品不存在");
                 }
-                if(dbProduct.Locked)
+                if(dbProduct.AuditStatus==2)
                 {
-                    throw new MiOUException("此产品被锁住，不能租借");
+                    throw new MiOUException("此藕品未通过审核，不能租借");
                 }
                 if(dbProduct.Repertory<1)
                 {
-                    throw new MiOUException("此产品库存不足不能租借");
+                    throw new MiOUException("此藕品库存不足不能租借");
                 }
                 User owner = (from u in db.User where u.UserId == dbProduct.UserId select u).FirstOrDefault<User>();
                 if(owner==null)
                 {
-                    throw new MiOUException("此产品的所有人不存在");
+                    throw new MiOUException("此藕品的所有人不存在");
                 }
                 if(owner.Status==0)
                 {

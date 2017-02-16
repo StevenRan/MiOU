@@ -6,28 +6,61 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+<script type="text/javascript">
+    $(function () {
+        $('#tabs').find('li').each(function (i, item) {
+            $(item).click(function () {
+                var id = $(this).attr('id');
+                var cate = id.split('_')[1];
+                var contentId = 'content_' + cate;
+                $('#tabs').find('li').each(function (j, o) {
+                    if (id == $(o).attr('id')) {
+                        $(o).removeClass('tabNavli');
+                        $(o).addClass('tabNavliAvtive');
+                    } else {
+                        $(o).removeClass('tabNavliAvtive');
+                        $(o).addClass('tabNavli');
+                    }
+                });
+               
+                $('#product_others').find('div[id^="content_"]').each(function (j, o) {
+                    if (contentId == $(o).attr('id')) {
+                        $(o).show();
+                    } else {
+                        $(o).hide();
+                    }
+                });
+            });
+        });
+    });
+
+   
+</script>
+
 <div></div>
 
 <div id="product_body" style="overflow:hidden;padding-top:20px;">
-    <div style="float:left;width:35%;border:1px solid #F1F1F1;padding:2px 2px 2px 2px;">
-        <img style="width:400px;height:400px;" src="~/Content/Images/bg.jpg" />
+    <div style="float:left;width:406px;border:1px solid #F1F1F1;padding:2px 2px 2px 2px;">
+        <img style="width:400px;height:400px;" src="/@Model.Images[0].Image.Path" />
     </div>
     <div style="float:left;width:400px;padding-left:40px;padding-right:40px;">
         <div style="padding-top:5px;padding-bottom:5px;">
-            <span>@Model.Name</span><span>@Model.Category.Name</span>
+            <span>@Model.Name</span>
+            <span>@Model.Category.Name</span>
         </div>
         <div style="padding-top:5px;padding-bottom:5px;">
-            <span>市场价：</span><span>@Model.Price</span>
+            <span>市场价：</span>
+            <span>@Model.Price</span>
         </div>
         <div style="padding-top:5px;padding-bottom:5px;">
             <img class="locIcon" style="width:15px;height:15px;margin-top:-3px;margin-right:5px;" src="~/Content/Images/location_icon.png" /><span >闵行-上海春城</span>
         </div>
         <div style="padding-top:2px;padding-bottom:10px;border-bottom:1px solid #F1F1F1;"> 
-            <span>附近：@Model.Nearby</span>
+            <span>靠近：@Model.Nearby</span>
         </div>
         <div style="padding-top:15px;padding-bottom:15px;">
             <span style="display:block;">租赁费用：</span>
-            <div style="">
+            <div style="overflow:hidden;">
                 @{
                     if (Model.AuditStatus == ProductStatus.PASSED)
                     {
@@ -49,45 +82,45 @@
         </div>
         <div style="border-top:1px solid #F1F1F1;padding-top:15px;">
             <span>藕品状态：</span>
-            <span>
-             @{ 
-                 string status = "";
-                 switch(Model.Status)
-                 {
-                     case RentStatus.IDEL:
-                         status = "空闲";
-                         break;
-                     case RentStatus.BUSY:
-                         status = "租赁中";
-                         break;
-                     case RentStatus.LOCKED:
-                         status = "锁定";
-                         break;
-                     case RentStatus.MAINTAIN:
-                         status = "保养中";
-                         break;
-                 }
-
-                 if (Model.User.User.UserType == 1)
-                 {
-                     @Html.Raw(status);
-                 }
-                 else if (Model.Status != RentStatus.LOCKED)
-                 {
+            @{
+                string status = "";
+                switch (Model.Status)
+                {
+                    case RentStatus.IDEL:
+                        status = "空闲";
+                        break;
+                    case RentStatus.BUSY:
+                        status = "租赁中";
+                        break;
+                    case RentStatus.LOCKED:
+                        status = "锁定";
+                        break;
+                    case RentStatus.MAINTAIN:
+                        status = "保养中";
+                        break;
+                }
+                if (Model.User.User.UserType == 1)
+                {
+                    <span>@status</span>
+                }
+                else if (Model.Status != RentStatus.LOCKED)
+                {
                     <span>库存:</span><span style="color:red;padding-left:5px;">@(Model.Repertory)/@(Model.Repertory + Model.RentOutQuantity)</span>
-                 }
+                }
             }
-            </span>
+            
         </div>
         <div style="padding-top:5px;padding-bottom:5px;">
-            <span>交货方式：</span><span>@Model.DeliveryType.Name</span>
+            <span>交货方式：</span>
+            <span>@Model.DeliveryType.Name</span>
         </div>
         <div style="padding-top:15px;padding-bottom:15px;">
+            <span>管理方式：</span>
             <span>
                 @{ 
                     if (Model.ManageType == 1)
                     {
-                        @Html.Raw("自己管理");
+                        @Html.Raw("藕主自理");
                     }
                     else if (Model.ManageType == 2)
                     {
@@ -103,22 +136,42 @@
     <div style="float:right;width:330px;">
         <div style="border-bottom:1px solid #F1F1F1;padding-top:10px;padding-bottom:10px;overflow:hidden;">
             <div style="float:left;">
-                <img style="height:50px;width:50px;" src="~/Content/Images/logo.png" />
+                <img style="height:60px;width:60px;border-radius:30px;border:1px solid #F1F1F1;" src="/@Model.User.Avator.Image.Path" />
             </div>
-            <div style="float:left;">
-                <span>王小宝</span>
+            <div style="float:left;height:40px;line-height:40px;padding-left:10px;">
+                @Model.User.User.NickName
             </div>
         </div>
         <div style="border-bottom:1px solid #F1F1F1;padding-top:10px;padding-bottom:10px;overflow:hidden;">
-            <ul style="list-style:none;padding:0;margin:0;">
-                <li>他的收益：</li>
-                <li>他的收益：</li>
-                <li>他的收益：</li>
+            <div>他的收益：</div>
+            <ul style="list-style:none;padding:0;margin:0;display:block">
+                <li><span>收益：</span><span>1000元</span></li>
             </ul>
+        </div>
+        <div style="border-bottom:1px solid #F1F1F1;padding-top:10px;padding-bottom:10px;overflow:hidden;">
+           <div>他的藕品：</div>
+           <div>
+
+           </div>
         </div>
     </div>
 </div>
 
-<div id="product_others"></div>
+<div id="product_others" style="margin-top:30px;width:100%;">
+    <div style="border-bottom:3px solid #FFD03F;width:100%;">
+        <ul id="tabs" class="tabNavul">
+            <li class="tabNavliAvtive" id="tab_desc">藕品简介</li>
+            <li class="tabNavli" id="tab_schedule">藕品排期</li>
+            <li class="tabNavli" id="tab_maintenance">藕品维保</li>
+            <li class="tabNavli" id="tab_comments">藕品评价</li>
+        </ul>
+    </div>
+   <div id="content_desc" class="tabContent">
+       @Model.Description
+   </div>
+   <div id="content_schedule" class="tabContent" style="display:none;">米藕暂时没有此藕品的排期信息</div>
+   <div id="content_maintenance" class="tabContent" style="display:none;">米藕暂时没有此藕品的维护保养信息</div>
+   <div id="content_comments" class="tabContent" style="display:none;">米藕暂时没有使用评价</div>
+</div>
 
 

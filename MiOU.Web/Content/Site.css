@@ -515,4 +515,18 @@ float:left;width:82%;padding-left:10px;
 .ahmenu:hover{
     text-decoration:none;
 }
+
+.tabNavul{
+    padding:0;margin:0;list-style:none;overflow:hidden;
+}
+.tabNavliAvtive{
+    display:block;float:left;padding:10px 30px 10px 30px;background:#FFD03F;color:#FFF;border-top-right-radius:5px;border-top-left-radius:5px;
+}
+.tabNavli{
+    display:block;float:left;padding:10px 30px 10px 30px;background:#FFFFFF;border-top-right-radius:5px;border-top-left-radius:5px;cursor:pointer;
+}
+.tabContent{
+    padding:20px 20px 20px 20px;
+}
+
  

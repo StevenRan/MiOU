@@ -373,7 +373,7 @@ namespace MiOU.BL
                 throw new MiOUException("产品信息不存在");
             }
             int total = 0;
-            List<BProduct> products = SearchProducts(new int[] { }, null, 0, 0, 0, 0, 0, 0, 0, 0, null, 10, 1, true, out total);
+            List<BProduct> products = SearchProducts(new int[] { productId }, null, 0, 0, 0, 0, 0, 0, 0, 0, null, 10, 1, true, out total);
             if (total != 1)
             {
                 throw new MiOUException("产品信息不存在");
@@ -405,7 +405,7 @@ namespace MiOU.BL
                            join rtype in db.RentType on p.RentType equals rtype.Id into lrtype
                            from llrtype in lrtype.DefaultIfEmpty()
                            join owner in db.User on p.UserId equals owner.UserId into lowner
-                           from llowner in lowner.DefaultIfEmpty()                         
+                           from llowner in lowner.DefaultIfEmpty()
                            join auser in db.User on p.AuditUserId equals auser.UserId into lauser
                            from llauser in lauser.DefaultIfEmpty()
                            join level in db.EvaluatedPriceCategory on p.EvaluatedPriceCategoryId equals level.Id into llevel
@@ -413,8 +413,8 @@ namespace MiOU.BL
                            select new BProduct
                            {
                                Id = p.Id,
-                               Name = p.Name,                             
-                               Category = new BCategory { Id = p.CategoryId, Name = llcate.Name, ParentId=llcate.ParentId },
+                               Name = p.Name,
+                               Category = new BCategory { Id = p.CategoryId, Name = llcate.Name, ParentId = llcate.ParentId },
                                District = new BArea { Id = p.District, Name = lldistrict.Name },
                                Province = new BArea { Id = p.Province, Name = llprovince.Name },
                                City = new BArea { Id = p.City, Name = llcity.Name },
@@ -428,16 +428,16 @@ namespace MiOU.BL
                                DeliveryType = new BObject { Id = p.DeliveryType, Name = llshipping.Name },
                                VIPRentLevel = new BVIPLevel { Id = p.VIPLevel, Name = llvip.Name },
                                RentType = new BObject { Id = p.RentType, Name = llrtype.Name },
-                               AuditStatus = (ProductStatus)p.Status,
+                               AuditStatus = (ProductStatus)p.AuditStatus,
                                Status = (RentStatus)p.Status,
                                Created = p.Created,
                                Updated = p.Updated,
                                AuditTime = p.AuditTime,
                                AuditMessage = p.AuditMessage,
-                               AuditUser = new BUser { User= llauser },
+                               AuditUser = new BUser { User = llauser },
                                Description = p.Description,
                                Repertory = p.Repertory,
-                               RentOutQuantity= p.RentOutQuantity,
+                               RentOutQuantity = p.RentOutQuantity,
                                User = llowner != null ? new BUser() { User = llowner } : null,
                                XPlot = p.XPlot,
                                YPlot = p.YPlot,
@@ -533,6 +533,21 @@ namespace MiOU.BL
 
                 if(getDetail)
                 {
+                    int[] userIds= (from p in products select p.User.User.UserId).ToArray<int>();
+                    List<BUserAvator> avators = (from ua in db.UserAvator
+                                                 from file in db.File
+                                                 where ua .Enabled==true && ua.FileId==file.Id && userIds.Contains(ua.UserId)
+                                                 select new BUserAvator
+                                                 {
+                                                     Owner= new BUser() { Id=ua.UserId },
+                                                     Created= ua.Created,
+                                                     Enabled=ua.Enabled,
+                                                     Id=ua.Id,
+                                                     Image= new BFile() { Id= file.Id,Path= file.Path },
+                                                     Updated=ua.Updated
+                                                 }
+                                                 ).ToList<BUserAvator>();
+
                     int[] ids = (from p in products select p.Id).ToArray<int>();
                     List<BProductPrice> prices;                        
                     var tmpPrices=from price in db.ProductPrice where ids.Contains(price.ProductId) 
@@ -571,6 +586,11 @@ namespace MiOU.BL
                     {
                         p.ProductPrices = (from price in prices where price.Product.Id== p.Id select price).ToList<BProductPrice>();
                         p.Images = (from image in images where image.Product.Id == p.Id select image).ToList<BProductImage>();
+                        p.User.Avator = (from a in avators where a.Owner.Id== p.User.User.UserId select a).FirstOrDefault<BUserAvator>();
+                        if(p.User.Avator==null)
+                        {
+                            p.User.Avator = new BUserAvator() { Id = 0, Image = new BFile() { Id = 0, Path = "Content/Images/logo.png" } };
+                        }
                     }
                 }
             }

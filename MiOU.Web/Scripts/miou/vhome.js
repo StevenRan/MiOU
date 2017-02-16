@@ -117,6 +117,15 @@ function UserUtil() {
            }
        );
     }
+
+    this.CreateAddress = function (address,callback) {
+        if (address == null || address == undefined || typeof (address) != 'object') {
+            if (callback != null && callback != undefined && typeof (callback) == 'function') {
+                callback({ Status: 'ERROR', Message: '藕品地点信息不正确' });
+                return;
+            }
+        }
+    }
 }
 UserUtil.prototype = new BaseMiOU();
 

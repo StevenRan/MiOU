@@ -236,7 +236,7 @@
     <Property Name="Percentage" Type="float" Nullable="false" />
     <Property Name="Pledge" Type="float" Nullable="false" />
     <Property Name="Price" Type="float" Nullable="false" />
-    <Property Name="Status" Type="int" Nullable="false" />
+    <Property Name="AuditStatus" Type="int" Nullable="false" />
     <Property Name="AuditUserId" Type="int" Nullable="false" />
     <Property Name="AuditTime" Type="uint" Nullable="false" />
     <Property Name="AuditMessage" Type="varchar" MaxLength="100" />
@@ -256,7 +256,7 @@
     <Property Name="YPlot" Type="varchar" MaxLength="45" />
     <Property Name="Type" Type="int" Nullable="false" />
     <Property Name="Repertory" Type="int" Nullable="false" />
-    <Property Name="Locked" Type="bool" Nullable="false" />
+    <Property Name="Status" Type="int" Nullable="false" />
     <Property Name="VIPLevel" Type="int" Nullable="false" />
     <Property Name="Contact" Type="varchar" MaxLength="100" Nullable="false" />
     <Property Name="Phone" Type="varchar" MaxLength="25" Nullable="false" />

@@ -46,7 +46,13 @@
         @Html.Raw(htmlStr)
     </div>
     <div>
+       
         @{ 
+            if(products==null)
+            {
+                @Html.Raw("您还没有添加任何藕品");
+            }
+
             foreach(BProduct product in products)
             {
                 string area = "";

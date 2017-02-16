@@ -110,7 +110,7 @@ namespace MiOU.BL
             BUser user = null;
             if (string.IsNullOrEmpty(email) && string.IsNullOrEmpty(nickName) && userId<=0)
             {
-                throw new MiOUException("查询用户详细信息时，昵称，邮箱或者用户编号不能同时为空");
+                return user;
             }
             using (MiOUEntities db = new MiOUEntities())
             {
@@ -181,6 +181,12 @@ namespace MiOU.BL
                                               Image = new BFile { Created =llfile.Created, Path= llfile.Path }
                                           }
                                      ).FirstOrDefault<BUserAvator>();
+
+                    if(avator==null)
+                    {
+                        avator = new BUserAvator() {Id=0, Image= new BFile() { Id=0, Path="Content/Images/logo.png" } };
+                    }
+                    user.Avator = avator;
                 }
                
             }

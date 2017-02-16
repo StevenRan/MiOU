@@ -24,7 +24,7 @@ namespace MiOU.DAL
         public float Percentage { get; set; }
         public float Pledge { get; set; }
         public float Price { get; set; }
-        public int Status { get; set; }
+        public int AuditStatus { get; set; }
         public int AuditUserId { get; set; }
         public long AuditTime { get; set; }
         public string AuditMessage { get; set; }
@@ -44,7 +44,7 @@ namespace MiOU.DAL
         public string YPlot { get; set; }
         public int Type { get; set; }
         public int Repertory { get; set; }
-        public bool Locked { get; set; }
+        public int Status { get; set; }
         public int VIPLevel { get; set; }
         public string Contact { get; set; }
         public string Phone { get; set; }
