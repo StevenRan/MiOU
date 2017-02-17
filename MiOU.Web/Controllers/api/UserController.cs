@@ -53,7 +53,7 @@ namespace MiOU.Web.Controllers.api
         }
 
         [AcceptVerbs("POST")]
-        public ApiMessage CreateAddress()
+        public ApiMessage SaveAddress()
         {
             this.IniRequest();
             ApiMessage result = new ApiMessage();

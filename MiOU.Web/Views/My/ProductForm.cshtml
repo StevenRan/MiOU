@@ -16,6 +16,13 @@
     @Scripts.Render("~/bundles/jqueryval")
 }
 <script>
+</script>
+<div class="topNav">
+    <div class="title">@ViewBag.Title</div>
+    <div class="line"></div>
+</div>
+<script type="text/javascript">
+
     var BASE_URL = '@Url.Content("~/")';
     function showPicPreview(path) {
         $('#show_big_pic').find('#big_pic').attr('src', path);
@@ -41,12 +48,7 @@
         });
     });
 
-</script>
-<div class="topNav">
-    <div class="title">@ViewBag.Title</div>
-    <div class="line"></div>
-</div>
-<script>
+    userUtil = new UserUtil();
     var gg = [];
     function setPhoto(id) {
         found=false;
@@ -60,7 +62,7 @@
             gg.push(id);
         }
     }
-    function removePhoto(id) {       
+    function removePhoto(id) {
         found = false;
         var tmp = [];
         $(gg).each(function (i, g) {
@@ -75,12 +77,14 @@
             $('#existed_images').hide();
         }
     }
-
+    function createAddress() {
+        userUtil.CreateAddress();
+    }
     $(function(){
-
+        userUtil = new UserUtil();
         //initialize product images when editing product
         if ($('#PhotoIds').val() != '') {
-            gg = $('#PhotoIds').val().split(',');            
+            gg = $('#PhotoIds').val().split(',');
         }
         $('#submit_warning').find('button').find('span').click(function () {
             $('#submit_warning').hide();
@@ -93,13 +97,13 @@
         });
 
         $('#btn_save_product').click(function () {
-            var errorMsg = null;            
+            var errorMsg = null;
             var productName = $('#ProductForm').find('#Name').val();
             var price = $('#ProductForm').find('#Price').val();
             var contact = $('#ProductForm').find('#Contact').val();
             var phone = $('#ProductForm').find('#Phone').val();
             var repertory = $('#ProductForm').find('#Repertory').val();
-            
+
             if ($.trim(productName) == '') {
                 if (errorMsg != null) {
                     errorMsg += "<br/>藕品名称不能为空";
@@ -107,7 +111,7 @@
                     errorMsg = "藕品名称不能为空";
                 }
             }
-            
+
             if ($.trim(contact) == '') {
                 if (errorMsg != null) {
                     errorMsg += "<br/>藕品联系人不能为空";
@@ -115,7 +119,7 @@
                     errorMsg = "藕品联系人不能为空";
                 }
             }
-            
+
             if ($.trim(phone) == '') {
                 if (errorMsg != null) {
                     errorMsg += "<br/>藕品联系人电话号码不能为空";
@@ -123,7 +127,7 @@
                     errorMsg = "藕品联系人电话号码不能为空";
                 }
             }
-            
+
             if ($.trim(price) == '') {
                 if (errorMsg != null) {
                     errorMsg += "<br/>藕品原价不能为空";
@@ -145,7 +149,7 @@
                     }
                 }
             }
-            
+
             if ($.trim(repertory) == '') {
                 if (errorMsg != null) {
                     errorMsg += "<br/>藕品库存不能为空,并且不能是非整数字符";
@@ -159,7 +163,7 @@
                     } else {
                         errorMsg = "藕品库存必须为整数";
                     }
-                } else if (repertory.indexOf('.')>-1) {                    
+                } else if (repertory.indexOf('.')>-1) {
                     if (errorMsg != null) {
                         errorMsg += "<br/>藕品库存必须为整数,不能带有小数点";
                     } else {
@@ -173,7 +177,7 @@
                     }
                 }
             }
-            
+
             if (gg.length < 2) {
                 if (errorMsg != null) {
                     errorMsg += "<br/>产品图片至少2张，最多4张";
@@ -181,8 +185,8 @@
                     errorMsg = "产品图片至少2张，最多4张";
                 }
             }
-            
-            
+
+
             var picIds = "";
             if (gg.length > 0) {
                 $(gg).each(function (i, g) {
@@ -323,6 +327,7 @@
                     @Html.EditorFor(model => model.Phone, new { htmlAttributes = new { @class = "form-control input_reg" } })
                     @Html.ValidationMessageFor(model => model.Phone, "", new { @class = "text-danger" })
                 </div>
+                <a onclick="createAddress()">增加地址</a>
             </div>
             <div class="form-group">
                 @Html.LabelFor(model => model.Repertory, htmlAttributes: new { @class = "control-label col-md-2" })

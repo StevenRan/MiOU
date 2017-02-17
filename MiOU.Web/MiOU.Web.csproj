@@ -535,6 +535,7 @@
     <Content Include="Views\Product\Detail.cshtml" />
     <Content Include="Views\Home\NotFound.cshtml" />
     <Content Include="Views\Home\Error.cshtml" />
+    <Content Include="Views\My\AddressFormAjax.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
