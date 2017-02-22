@@ -14,7 +14,7 @@ namespace MiOU.Web.Controllers
             return View();
         }
 
-        public ActionResult Users()
+        public ActionResult Owner()
         {
             return View();
         }

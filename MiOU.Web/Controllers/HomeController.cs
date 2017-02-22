@@ -22,6 +22,7 @@ namespace MiOU.Web.Controllers
             UserManagement userMgr = new UserManagement(User.Identity.GetUserId<int>());
             List<BCategory> categories = pdtMgr.GetHomeProdustListByCategory(0);
             ViewBag.Categories = categories;
+            ViewBag.HotOwner = userMgr.GetTopUsers(5);
             return View();
         }
 

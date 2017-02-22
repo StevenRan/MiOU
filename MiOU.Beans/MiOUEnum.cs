@@ -16,7 +16,15 @@ namespace MiOU.Entities
         RENTTYPE,
         SHIPTYPE
     }
-   
+
+    public enum UserOrderField
+    {
+        RENTINTIMES,
+        CREATED,
+        RENTOUTTIMES,
+        MONEY,
+        CURRENCY
+    }
     public enum ApiCallStatus
     {
         OK,

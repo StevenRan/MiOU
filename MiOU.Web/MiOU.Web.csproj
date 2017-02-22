@@ -537,7 +537,7 @@
     <Content Include="Views\Home\NotFound.cshtml" />
     <Content Include="Views\Home\Error.cshtml" />
     <Content Include="Views\My\AddressFormAjax.cshtml" />
-    <Content Include="Views\User\Users.cshtml" />
+    <Content Include="Views\User\Owner.cshtml" />
     <Content Include="Views\User\Top.cshtml" />
   </ItemGroup>
   <ItemGroup>

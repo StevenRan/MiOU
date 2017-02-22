@@ -14,6 +14,7 @@ namespace MiOU.Entities.Beans
     public class BUser:BObject
     {
         public User User { get; set; }
+        public string NickName { get; set; }
         public Permissions Permission { get; set; }
         public bool IsWebMaster { get; set; }
         public bool IsSuperAdmin { get; set; }
@@ -29,5 +30,6 @@ namespace MiOU.Entities.Beans
         public int RentOutTimes { get; set; }
         public float AccountAmount { get; set; }
         public float CurrencyAmount { get; set; }
+        public long RegTime { get; set; }
     }
 }

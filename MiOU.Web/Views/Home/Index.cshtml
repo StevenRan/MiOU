@@ -90,10 +90,10 @@
     <div class="hc hmargin">
         <div class="hcp hcpc" style="overflow:hidden;">
             <div style="float:left;"><span class="title">藕主</span></div>
-            <div style="float:right;"><span class="more">查看更多>></span></div>
+            <div style="float:right;"><span class="more"><a href="/User/Owner">查看更多>></a></span></div>
         </div>
         <div class="hcpc" style="padding-top:20px;padding-bottom:20px;overflow:hidden;">
-            <div style="float:left;">
+            <div style="float:left;padding-left:20px;">
                 <p>分享健康用品，成为藕主</p>
                 <p>帮助需要的人</p>
                 <p>还能获得收益</p>
@@ -101,8 +101,20 @@
                     <input type="button" class="btn btn-info" value="添加藕品，成为藕主" onclick="location.href = '/My/AddProduct';">
                 </div>
             </div>
-            <div style="float:left;">
-
+            <div style="float:left;padding-left:20px;">
+                @if(ViewBag.HotOwner!=null)
+                {
+                    List<BUser> users = ViewBag.HotOwner as List<BUser>;
+                    foreach(BUser u in users)
+                    {
+                        <div style="float:left;padding-right:10px;width:80px;">
+                            <div><a href="/User/Info?userId=@u.Id"><img style="height:80px;width:80px;border-radius:40px;border:1px solid #F1F1F1;" src="/@u.Avator.Image.Path" /></a></div>
+                            <div style="padding-top:10px;width:80px;text-align:center;">
+                                <a href="/User/Info?userId=@u.Id">@u.NickName</a>
+</div>                           
+                        </div>
+                    }
+                }
             </div>
         </div>        
     </div>   
@@ -183,7 +195,7 @@
                                         }
                                         <a href="/Product/Detail?productId=@tmp.Id" target="_blank"><img src="@Html.Raw(photo)" style="width:100%;height:200px;" /></a>
 
-</div>
+                                    </div>
                                     <div style="border-bottom:1px solid #DFDFDF;overflow:hidden;padding-bottom:10px;padding-top:10px;">
                                         <div style="overflow:hidden;">
                                             <div class="dlit" style="float:left;">

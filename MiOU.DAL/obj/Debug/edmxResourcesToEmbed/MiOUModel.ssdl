@@ -348,6 +348,8 @@
     <Property Name="Phone" Type="varchar" MaxLength="45" />
     <Property Name="CurrencyAmount" Type="float" Nullable="false" />
     <Property Name="AccountAmount" Type="float" Nullable="false" />
+    <Property Name="RentOutTimes" Type="int" Nullable="false" />
+    <Property Name="RentInTimes" Type="int" Nullable="false" />
   </EntityType>
   <EntityType Name="UserAvator">
     <Key>

@@ -267,34 +267,6 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="User">
-      <EntityTypeMapping TypeName="MiOU.DAL.User">
-        <MappingFragment StoreEntitySet="User">
-          <ScalarProperty Name="UserId" ColumnName="UserId" />
-          <ScalarProperty Name="Name" ColumnName="Name" />
-          <ScalarProperty Name="NickName" ColumnName="NickName" />
-          <ScalarProperty Name="Email" ColumnName="Email" />
-          <ScalarProperty Name="ExternalUserType" ColumnName="ExternalUserType" />
-          <ScalarProperty Name="ExternalUserId" ColumnName="ExternalUserId" />
-          <ScalarProperty Name="Password" ColumnName="Password" />
-          <ScalarProperty Name="Gendar" ColumnName="Gendar" />
-          <ScalarProperty Name="RegTime" ColumnName="RegTime" />
-          <ScalarProperty Name="Updated" ColumnName="Updated" />
-          <ScalarProperty Name="UserType" ColumnName="UserType" />
-          <ScalarProperty Name="VipLevel" ColumnName="VipLevel" />
-          <ScalarProperty Name="Province" ColumnName="Province" />
-          <ScalarProperty Name="City" ColumnName="City" />
-          <ScalarProperty Name="District" ColumnName="District" />
-          <ScalarProperty Name="Address" ColumnName="Address" />
-          <ScalarProperty Name="XPlot" ColumnName="XPlot" />
-          <ScalarProperty Name="YPlot" ColumnName="YPlot" />
-          <ScalarProperty Name="Status" ColumnName="Status" />
-          <ScalarProperty Name="Phone" ColumnName="Phone" />
-          <ScalarProperty Name="CurrencyAmount" ColumnName="CurrencyAmount" />
-          <ScalarProperty Name="AccountAmount" ColumnName="AccountAmount" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
     <EntitySetMapping Name="UserType">
       <EntityTypeMapping TypeName="MiOU.DAL.UserType">
         <MappingFragment StoreEntitySet="UserType">
@@ -434,6 +406,36 @@
           <ScalarProperty Name="UserId" ColumnName="UserId" />
           <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
           <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="User">
+      <EntityTypeMapping TypeName="MiOU.DAL.User">
+        <MappingFragment StoreEntitySet="User">
+          <ScalarProperty Name="RentInTimes" ColumnName="RentInTimes" />
+          <ScalarProperty Name="RentOutTimes" ColumnName="RentOutTimes" />
+          <ScalarProperty Name="AccountAmount" ColumnName="AccountAmount" />
+          <ScalarProperty Name="CurrencyAmount" ColumnName="CurrencyAmount" />
+          <ScalarProperty Name="Phone" ColumnName="Phone" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="YPlot" ColumnName="YPlot" />
+          <ScalarProperty Name="XPlot" ColumnName="XPlot" />
+          <ScalarProperty Name="Address" ColumnName="Address" />
+          <ScalarProperty Name="District" ColumnName="District" />
+          <ScalarProperty Name="City" ColumnName="City" />
+          <ScalarProperty Name="Province" ColumnName="Province" />
+          <ScalarProperty Name="VipLevel" ColumnName="VipLevel" />
+          <ScalarProperty Name="UserType" ColumnName="UserType" />
+          <ScalarProperty Name="Updated" ColumnName="Updated" />
+          <ScalarProperty Name="RegTime" ColumnName="RegTime" />
+          <ScalarProperty Name="Gendar" ColumnName="Gendar" />
+          <ScalarProperty Name="Password" ColumnName="Password" />
+          <ScalarProperty Name="ExternalUserId" ColumnName="ExternalUserId" />
+          <ScalarProperty Name="ExternalUserType" ColumnName="ExternalUserType" />
+          <ScalarProperty Name="Email" ColumnName="Email" />
+          <ScalarProperty Name="NickName" ColumnName="NickName" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="UserId" ColumnName="UserId" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

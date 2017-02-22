@@ -688,17 +688,19 @@ namespace MiOU.BL
         public List<BUser> GetTopUsers(int top)
         {
             List<BUser> users = new List<BUser>();
-
+            int total = 0;
+            users = SearchUsers(null, null, null, null, null, null, null, 1, top, 0, 0, out total, UserOrderField.RENTOUTTIMES);
             return users;
         }
 
-        public List<BUser> SearchUsers(int[] userIds,int[] types,int[] provinces,int[] cities,int[] districts)
+        public List<BUser> SearchUsers(int[] userIds,int[] types,int[] provinces,int[] cities,int[] districts,string nickName,string name,int page,int pageSize,long startRegTime,long endRegTime, out int total,UserOrderField order = UserOrderField.RENTOUTTIMES)
         {
+            total = 0;
             List<BUser> users = new List<BUser>();
             MiOUEntities db = new MiOUEntities();
             try
             {
-                var tmp = from u in db.User
+                var tmp = from u in db.User                          
                           join prov in db.Area on u.Province equals prov.Id into lprov
                           from llprov in lprov.DefaultIfEmpty()
                           join city in db.Area on u.Province equals city.Id into lcity
@@ -712,6 +714,7 @@ namespace MiOU.BL
                           select new BUser
                           {
                               User = u,
+                              NickName=u.NickName,
                               Province = new BArea { Id = u.Province, Name = llprov.Name },
                               City = new BArea { Id = u.City, Name = llcity.Name },
                               District = new BArea { Id = u.District, Name = lldist.Name },
@@ -722,14 +725,101 @@ namespace MiOU.BL
                               Id = u.UserId,
                               RentInTimes = u.RentInTimes,
                               RentOutTimes = u.RentOutTimes,
-                               UserType=new BUserType { Id = u.UserType,Name= llutype.Name },
-                               VIPLevel=new BVIPLevel { },
+                              UserType = new BUserType { Id = u.UserType, Name = llutype.Name },
+                              VIPLevel = new BVIPLevel { Id = u.VipLevel, Name = llvip.Name },
+                              RegTime=u.RegTime
                           };
+
+                if (userIds != null)
+                {
+                    tmp = tmp.Where(a=>userIds.Contains(a.Id));
+                }
+                if(types!=null)
+                {
+                    tmp = tmp.Where(a=>types.Contains(a.UserType.Id));
+                }
+                if(provinces!=null)
+                {
+                    tmp = tmp.Where(a=>provinces.Contains(a.Province.Id));
+                }
+                if(cities!=null)
+                {
+                    tmp = tmp.Where(a=>cities.Contains(a.City.Id));
+                }
+                if(districts!=null)
+                {
+                    tmp = tmp.Where(a=>districts.Contains(a.District.Id));
+                }
+                if(!string.IsNullOrEmpty(nickName))
+                {
+                    tmp = tmp.Where(a=>a.NickName.Contains(nickName));
+                }
+                if(!string.IsNullOrEmpty(name))
+                {
+                    tmp = tmp.Where(a=>a.Name.Contains(name));
+                }
+                if (startRegTime > 0)
+                {
+                    tmp = tmp.Where(a=>a.RegTime>startRegTime);
+                }
+                if (endRegTime > 0)
+                {
+                    tmp = tmp.Where(a => a.RegTime <= endRegTime);
+                }
+
+                switch(order)
+                {
+                    case UserOrderField.CREATED:
+                        tmp = tmp.OrderByDescending(a=>a.RegTime);
+                        break;
+                    case UserOrderField.CURRENCY:
+                        tmp = tmp.OrderByDescending(a => a.CurrencyAmount);
+                        break;
+                    case UserOrderField.MONEY:
+                        tmp = tmp.OrderByDescending(a => a.AccountAmount);
+                        break;
+                    case UserOrderField.RENTINTIMES:
+                        tmp = tmp.OrderByDescending(a => a.RentInTimes);
+                        break;
+                    case UserOrderField.RENTOUTTIMES:
+                        tmp = tmp.OrderByDescending(a => a.RentOutTimes);
+                        break;
+                }
+
+                total = tmp.Count();
+                users = tmp.Take(pageSize).Skip((page - 1) * pageSize).ToList<BUser>();
+
+                int[] ids = (from usr in users select usr.Id).ToArray<int>();
+                List<BUserAvator> avators = (from ua in db.UserAvator
+                                             from file in db.File
+                                             where ua.Enabled == true && ua.FileId == file.Id && ids.Contains(ua.UserId)
+                                             select new BUserAvator
+                                             {
+                                                 Owner = new BUser() { Id = ua.UserId },
+                                                 Created = ua.Created,
+                                                 Enabled = ua.Enabled,
+                                                 Id = ua.Id,
+                                                 Image = new BFile() { Id = file.Id, Path = file.Path },
+                                                 Updated = ua.Updated
+                                             }
+                                             ).ToList<BUserAvator>();
+
+                foreach(BUser u in users)
+                {
+                    if(avators!=null)
+                    {
+                        u.Avator = (from av in avators where av.Owner.Id == u.Id select av).FirstOrDefault<BUserAvator>();
+                    }
+
+                    if (u.Avator == null)
+                    {
+                        u.Avator = new BUserAvator() { Id = 0, Image = new BFile() { Id = 0, Path = "Content/Images/logo.png" } };
+                    }
+                }
+                    
+                return users;
             }
-            catch(MiOUException ex)
-            {
-                throw ex;
-            }
+            
             catch(Exception ex)
             {
                 logger.Fatal(ex);
