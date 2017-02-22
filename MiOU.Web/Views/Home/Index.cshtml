@@ -20,9 +20,9 @@
             {categoryId:postCate},
             function(data){
                 if(data.Status=='OK'){
-                    var productDiv = $('#products_' + parent);                   
-                    if (data.Result != 'undefined' && data.Result != null && data.Result.length > 0) { 
-                        
+                    var productDiv = $('#products_' + parent);
+                    if (data.Result != 'undefined' && data.Result != null && data.Result.length > 0) {
+
                         //change children background
                         var pcate=$('#cate_'+parent);
                         var categoryListUL=$(pcate).find('.categoryList').find("ul");
@@ -50,7 +50,7 @@
                             if(mod!=0){
                                 style="nhp";
                             }
-                           
+
                             var pitem=$('<div class="spdt pw '+style+'"></div>').appendTo(productDiv);
                             var pImage= $('<div class="" style="border-bottom:1px solid #DFDFDF;width:100%;padding-bottom:10px;"></div>').appendTo(pitem);
                             var photo = "/Content/Images/logo.png";
@@ -62,20 +62,20 @@
                                     }
                                 });
                             }
-                            $('<img style="height:200px;width:100%;" src="' + photo + '"/>').appendTo(pImage);
-                            var pMiddle = $('<div style="border-bottom:1px solid #DFDFDF;overflow:hidden;"></div>').appendTo(pitem);
+                            $('<a href="/Product/Detail?productId='+item.Id+'" target="_blank"><img style="height:200px;width:100%;" src="' + photo + '"/></a>').appendTo(pImage);
+                            var pMiddle = $('<div style="border-bottom:1px solid #DFDFDF;overflow:hidden;padding-top:10px;padding-bottom:10px;"></div>').appendTo(pitem);
                             var piMiddle1 = $('<div style="overflow:hidden;"></div>').appendTo(pMiddle);
-                            $('<div class="dlit" style="float:left;">' + item.Name + '</div>').appendTo(piMiddle1);
+                            $('<div class="dlit" style="float:left;"><a href="/Product/Detail?productId=' + item.Id + '" target="_blank">' + item.Name + '</a></div>').appendTo(piMiddle1);
                             $('<div class="dlit" style="float:right;">' + item.Category.Name + '</div>').appendTo(piMiddle1);
-                            $('<div class="dli" style="overflow:hidden;">...</div>').appendTo(pMiddle);
-                            $('<div class="dli" style="overflow:hidden;">...</div>').appendTo(pMiddle);
-                            var mtype="自己管理";
+                            $('<div class="dli" style="overflow:hidden;"><img class="locIcon" style="width:15px;height:15px;margin-top:-3px;margin-right:5px;" src="/Content/Images/location_icon.png" /><span>' + item.City.Name + ' ' + item.District.Name + ' - ' + item.Addresso.Apartment + '</span></div>').appendTo(pMiddle);
+                            $('<div class="dli" style="overflow:hidden;">靠近：' + item.Addresso.NearBy + '</div>').appendTo(pMiddle);
+                            var mtype = "藕主自管";
                             if(item.ManageType=="2" || item.ManageType==2){
                                 mtype="米藕代管"
                             }
-                            var htmlBottom = '<div class="dlit" style="padding-top:10px;">' + mtype + '</div>';
-                            
-                            $(htmlBottom).appendTo(pitem);
+                            var htmlBottom = $('<div class="dlit" style="padding-top:10px;height:auto;"></div>').appendTo(pitem);
+                            $('<div style="color:#666;">' + mtype + '</div>').appendTo(htmlBottom);                            
+                            $('<div style="color:red;">' + item.ProductPrices[0].EPrice.Price + ' 元/天</div>').appendTo(htmlBottom);
                         });
                     }
                 }
@@ -98,7 +98,7 @@
                 <p>帮助需要的人</p>
                 <p>还能获得收益</p>
                 <div>
-                    <input type="button" class="btn btn-info" value="添加藕品，成为藕主" onclick="location.href = '/Product/Add';">
+                    <input type="button" class="btn btn-info" value="添加藕品，成为藕主" onclick="location.href = '/My/AddProduct';">
                 </div>
             </div>
             <div style="float:left;">
@@ -181,28 +181,41 @@
                                                 }
                                             }
                                         }
-                                        <img src="@Html.Raw(photo)" style="width:100%;height:200px;" />
+                                        <a href="/Product/Detail?productId=@tmp.Id" target="_blank"><img src="@Html.Raw(photo)" style="width:100%;height:200px;" /></a>
 
-                                    </div>
-                                    <div style="border-bottom:1px solid #DFDFDF;overflow:hidden;">
+</div>
+                                    <div style="border-bottom:1px solid #DFDFDF;overflow:hidden;padding-bottom:10px;padding-top:10px;">
                                         <div style="overflow:hidden;">
                                             <div class="dlit" style="float:left;">
-                                                @tmp.Name
+                                                <a href="/Product/Detail?productId=@tmp.Id" target="_blank">@tmp.Name</a>
                                             </div>
                                             <div class="dli" style="float:right;">
                                                 @tmp.Category.Name
                                             </div>
                                         </div>
                                         <div class="dli" style="overflow:hidden;">
-                                           ... 
+                                            <img class="locIcon" style="width:15px;height:15px;margin-top:-3px;margin-right:5px;" src="~/Content/Images/location_icon.png" /><span>@Html.Raw(tmp.City.Name + " " + tmp.District.Name + " - " + tmp.Addresso.Apartment)</span>
                                         </div>
                                         <div class="dli" style="overflow:hidden;">
-                                            ...
+                                            <span>靠近：@tmp.Addresso.NearBy</span>
                                         </div>
                                     </div>
-                                    <div class="dlit" style="padding-top:10px;">
-                                        米藕代管
-                                        30元/天
+                                    <div class="dlit" style="padding-top:10px;height:auto;">                                       
+                                        <div style="color:#666;">
+                                            @{
+                                                if (tmp.ManageType == 1)
+                                                {
+                                                    @Html.Raw("藕主自管");
+                                                }
+                                                else if (tmp.ManageType == 2)
+                                                {
+                                                    @Html.Raw("米藕代管");
+                                                }
+                                            }
+                                        </div>
+                                        <div style="color:red;">
+                                            @Html.Raw(tmp.ProductPrices[0].EPrice.Price+" 元/天")
+                                        </div>
                                     </div>
                                 </div>
                             }

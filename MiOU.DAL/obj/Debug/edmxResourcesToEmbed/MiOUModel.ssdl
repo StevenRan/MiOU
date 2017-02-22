@@ -17,6 +17,8 @@
     <Property Name="Created" Type="uint" Nullable="false" />
     <Property Name="Updated" Type="uint" Nullable="false" />
     <Property Name="Default" Type="bool" Nullable="false" />
+    <Property Name="X" Type="varchar" MaxLength="45" />
+    <Property Name="Y" Type="varchar" MaxLength="45" />
   </EntityType>
   <EntityType Name="Admin_Actions">
     <Key>

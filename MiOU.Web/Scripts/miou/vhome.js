@@ -120,9 +120,9 @@ function UserUtil() {
 
     this.CreateAddress = function (callback) {
         var _this = this;
-        var url = "/My/AddAddress";
-
-        function VerifyInputs(parent) {
+        var url = "/My/AddressForm";
+        $('#address_book_ajax_modal').remove();
+       function VerifyInputs(parent) {
             var msg = null;
             var province = $(parent).find('#Province').val();
             var city = $(parent).find('#City').val();
@@ -187,15 +187,16 @@ function UserUtil() {
         $.get(
             url,
             function (res, status) {
-                if (res != null && res != "undefined") {
-                    var modal = $('<div class="modal fade" id="editRuoteModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"></div>').appendTo($('body'));
+                if (res != null && res != "undefined") {                   
+                    var modal = $('<div class="modal fade" id="address_book_ajax_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"></div>').appendTo($('body'));
                     var modalDiv = $('<div class="modal-dialog" role="document"></div>').appendTo($(modal));
                     var modalContent = $('<div class="modal-content"></div>').appendTo($(modalDiv));
-                    var modalBody = $('<div class="modal-body"></div>').appendTo($(modalContent)).html(res);
-                    $(modalBody).find('#btn_save_address').unbind('click');                    
-                    $(modalBody).find('#btn_save_address').click(function () {                       
+                    var modalBody = $('<div class="modal-body"></div>').appendTo($(modalContent));
+                    $(modalBody).html(res);
+                    $(modalBody).find('#btn_save_address').unbind('click');
+                    $(modalBody).find('#btn_save_address').click(function () {                        
                         var message = VerifyInputs(modalBody);
-                        if (message != null) {
+                        if (message != null) {                            
                             $(modalBody).find('#submit_warning').find('p').html(message);
                             $(modalBody).find('#submit_warning').show();
                             $(modalBody).find('#submit_warning').find('button').find('span').unbind('click');                            
@@ -204,15 +205,18 @@ function UserUtil() {
                             });
                             return;
                         }
-                        var addressObj = {   };
-                        addressObj.Procince = $(modalBody).find('#Province').val();
-                        addressObj.City = $(modalBody).find('#City').val();
-                        addressObj.District = $(modalBody).find('#District').val
-                        addressObj.Phone = $(modalBody).find('#Phone').val();
-                        addressObj.Contact = $(modalBody).find('#Contact').val();
-                        addressObj.Apartment = $(modalBody).find('#Apartment').val();
-                        addressObj.Nearby = $(modalBody).find('#NearBy').val();
-                        _this.SaveAddress(addressObj, callback);
+                        $(modalBody).find('#submit_warning').hide();
+                        var addressObj = {};                       
+                        addressObj.AddressId = $('#AddressForm').find('#Id').val();
+                        addressObj.Province = $('#AddressForm').find('#Province').val();
+                        addressObj.City = $('#AddressForm').find('#City').val();
+                        addressObj.District = $('#AddressForm').find('#District').val();
+                        addressObj.Phone = $('#AddressForm').find('#Phone').val();
+                        addressObj.Contact = $('#AddressForm').find('#Contact').val();
+                        addressObj.Apartment = $('#AddressForm').find('#Apartment').val();
+                        addressObj.Nearby = $('#AddressForm').find('#NearBy').val();                        
+                        SaveAddress(addressObj, callback, modal);
+                        
                     });
                     $(modal).modal();
                 }
@@ -220,17 +224,18 @@ function UserUtil() {
         );
     }
 
-    this.SaveAddress = function (address,callback) {
-        if (address == null || address == undefined || typeof (address) != 'object') {
-            if (callback != null && callback != undefined && typeof (callback) == 'function') {
+    function SaveAddress(address, callback, modal) {
+        if (address == null || address == 'undefined' || typeof (address) != 'object') {
+           if (callback != null && callback != undefined && typeof (callback) == 'function') {
                 callback({ Status: 'ERROR', Message: '藕品地点信息不正确' });
                 return;
             }
-        }
+        }        
         $.post(
             '/api/User/SaveAddress',
-            address,
+            { AddressId: address.AddressId, Province: address.Province, City: address.City, District: address.District, Phone: address.Phone, Contact: address.Contact, Apartment: address.Apartment, NearBy: address.Nearby },
             function (res) {
+                $(modal).modal('hide').data('bs.modal', null);
                 if (callback != null && callback != undefined && typeof (callback) == 'function') {
                     callback(res);
                     return;

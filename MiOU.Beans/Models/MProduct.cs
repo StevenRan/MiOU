@@ -21,11 +21,11 @@ namespace MiOU.Entities.Models
         [Display(Name = "名称")]
         public string Name { get; set; }
 
-        [Required(ErrorMessage = "联系人不能为空")]
+       
         [Display(Name = "联系人")]
         public string Contact { get; set; }
 
-        [Required(ErrorMessage = "电话不能为空")]
+       
         [Display(Name = "电话")]
         public string Phone { get; set; }
 
@@ -71,5 +71,9 @@ namespace MiOU.Entities.Models
 
         [Display(Name = "托管方式")]
         public int ManageType { get; set; }
+
+        [Display(Name = "藕品地点")]
+        [Required(ErrorMessage = "藕品地点不能为空")]
+        public int AddressId { get; set; }
     }
 }

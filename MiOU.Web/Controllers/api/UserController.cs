@@ -61,59 +61,70 @@ namespace MiOU.Web.Controllers.api
             int provinceId = 0;
             int cityId = 0;
             int districtId = 0;
-            string phone = null;
-            string contact = null;
-            string apartment = null;
-            string nearBy = null;
-            string address = null;
-            int.TryParse(request["addressId"], out addressId);
-            if (addressId <= 0)
+            string phone = request["Phone"];
+            string contact = request["Contact"];
+            string apartment = request["Apartment"];
+            string nearBy = request["NearBy"];
+            string address = request["Address"];
+            int.TryParse(request["AddressId"], out addressId);
+            int.TryParse(request["Province"], out provinceId);
+            int.TryParse(request["City"], out cityId);
+            int.TryParse(request["District"], out districtId);
+            if (addressId < 0)
             {
                 result.Message = "POST的参数有误";
                 result.Result = null;
                 result.Status = ApiCallStatus.ERROR.ToString();
+                return result;
             }
 
             if (provinceId <= 0) {
-                result.Message = "服务不可用，请稍后在试";
+                result.Message = "省份不能为空";
                 result.Result = null;
                 result.Status = ApiCallStatus.ERROR.ToString();
+                return result;
             }
             if (cityId <= 0)
             {
-                result.Message = "服务不可用，请稍后在试";
+                result.Message = "城市不能为空";
                 result.Result = null;
                 result.Status = ApiCallStatus.ERROR.ToString();
+                return result;
             }
             if (districtId <= 0)
             {
-                result.Message = "服务不可用，请稍后在试";
+                result.Message = "区不能为空";
                 result.Result = null;
                 result.Status = ApiCallStatus.ERROR.ToString();
+                return result;
             }
             if (string.IsNullOrEmpty(contact))
             {
-                result.Message = "服务不可用，请稍后在试";
+                result.Message = "联系方式不能为空";
                 result.Result = null;
                 result.Status = ApiCallStatus.ERROR.ToString();
+                return result;
             }
             if (string.IsNullOrEmpty(phone))
             {
-                result.Message = "服务不可用，请稍后在试";
+                result.Message = "电话不能为空";
                 result.Result = null;
                 result.Status = ApiCallStatus.ERROR.ToString();
+                return result;
             }
             if (string.IsNullOrEmpty(apartment))
             {
-                result.Message = "服务不可用，请稍后在试";
+                result.Message = "小区社区不能为空";
                 result.Result = null;
                 result.Status = ApiCallStatus.ERROR.ToString();
+                return result;
             }
             if (string.IsNullOrEmpty(nearBy))
             {
-                result.Message = "服务不可用，请稍后在试";
+                result.Message = "靠近不能为空";
                 result.Result = null;
                 result.Status = ApiCallStatus.ERROR.ToString();
+                return result;
             }
             UserManagement userMgr = new UserManagement(User.Identity.Name);
             MAddress addressModel = new MAddress();
@@ -131,7 +142,7 @@ namespace MiOU.Web.Controllers.api
             try
             {
                 userMgr.SaveAddress(addressModel);
-                result.Result = null;
+                result.Result = userMgr.GetAddress(addressModel.Id);
                 result.Status = ApiCallStatus.OK.ToString();
                 result.Message = "藕品地点创建成功";
             }

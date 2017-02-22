@@ -410,6 +410,8 @@ namespace MiOU.BL
                            from llauser in lauser.DefaultIfEmpty()
                            join level in db.EvaluatedPriceCategory on p.EvaluatedPriceCategoryId equals level.Id into llevel
                            from lllevel in llevel.DefaultIfEmpty()
+                           join address in db.AddressBook on p.AddressId equals address.Id into laddress
+                           from lladdress in laddress.DefaultIfEmpty()
                            select new BProduct
                            {
                                Id = p.Id,
@@ -417,12 +419,7 @@ namespace MiOU.BL
                                Category = new BCategory { Id = p.CategoryId, Name = llcate.Name, ParentId = llcate.ParentId },
                                District = new BArea { Id = p.District, Name = lldistrict.Name },
                                Province = new BArea { Id = p.Province, Name = llprovince.Name },
-                               City = new BArea { Id = p.City, Name = llcity.Name },
-                               Address = p.Address,
-                               Nearby = p.NearBy,
-                               Apartment = p.Apartment,
-                               Contact = p.Contact,
-                               Phone = p.Phone,
+                               City = new BArea { Id = p.City, Name = llcity.Name },                              
                                Price = p.Price,
                                Percentage = p.Percentage,
                                DeliveryType = new BObject { Id = p.DeliveryType, Name = llshipping.Name },
@@ -443,7 +440,9 @@ namespace MiOU.BL
                                YPlot = p.YPlot,
                                RentTimes= p.RentTimes,
                                ManageType=p.ManageType,
+                               Addresso = new BAddress() { Id =p.AddressId, Apartment= lladdress.Apartment,NearBy=lladdress.NearBy },
                                ProductLevel= lllevel!=null?new BProductLevel { Name= lllevel.Name,Id= lllevel.Id,StartPrice= lllevel.StartPrice,EndPrice= lllevel.EndPrice } :null
+                              
                            };
                 if(productIds!=null && productIds.Length>0)
                 {
@@ -712,7 +711,7 @@ namespace MiOU.BL
                 {
                     throw new MiOUException("产品信息不存在");
                 }
-                if (product.Status == status && status != 0)
+                if (product.AuditStatus == status && status != 0)
                 {
                     return true;
                 }
@@ -721,7 +720,7 @@ namespace MiOU.BL
                     throw new MiOUException("藕品等级已经设置过，不能重复审核藕品");
                 }
 
-                product.Status = status;
+                product.AuditStatus = status;
                 product.AuditMessage = message;
                 product.AuditTime = DateTimeUtil.ConvertDateTimeToInt(DateTime.Now);
                 product.AuditUserId = CurrentLoginUser.User.UserId;
@@ -919,6 +918,17 @@ namespace MiOU.BL
                     dbProduct.DeliveryType = product.DeliveryType;
                     dbProduct.RentType = product.RentType;
                     dbProduct.Description = product.Description;
+                    if(dbProduct.AddressId!=product.AddressId)
+                    {
+                        AddressBook addressBook = (from a in db.AddressBook where a.Id == product.AddressId select a).FirstOrDefault<AddressBook>();
+                        if (addressBook == null)
+                        {
+                            throw new MiOUException("所选择的藕品地点不存在");
+                        }
+                        dbProduct.Province = addressBook.Province;
+                        dbProduct.City = addressBook.City;
+                        dbProduct.District = addressBook.District;
+                    }
                     db.SaveChanges();
                 }
 
@@ -1020,6 +1030,7 @@ namespace MiOU.BL
             model.Category = new BCategory() { Id = product.ChildCategoryId };
             model.PCategory = new BCategory() { Id = product.CategoryId };
             model.ManageType = product.ManageType;
+            model.Addresso = new BAddress { Id= product.AddressId };
             if(!string.IsNullOrEmpty(product.PhotoIds))
             {
                 string[] files = product.PhotoIds.Split(',');
@@ -1124,11 +1135,11 @@ namespace MiOU.BL
             {
                 throw new MiOUException("城市份不能为空");
             }
-            //if (model.District== null || model.District.Id <= 0)
-            //{
-            //    throw new MiOUException("区县不能为空");
-            //}
-            if(model.Percentage==0)
+            if (model.Addresso==null || model.Addresso.Id<=0)
+            {
+                throw new MiOUException("藕品地点不能为空");
+            }
+            if (model.Percentage==0)
             {
                 throw new MiOUException("藕品成色不能为空");
             }
@@ -1182,8 +1193,18 @@ namespace MiOU.BL
                     VIPLevel= model.VIPRentLevel!=null?model.VIPRentLevel.Id:0,
                     Contact= model.Contact!=null?model.Contact:"",
                     Phone= model.Phone!=null?model.Phone:"",
-                    ManageType= model.ManageType
+                    ManageType= model.ManageType,
+                    AddressId= model.Addresso.Id
                 };
+
+                AddressBook addressBook = (from a in db.AddressBook where a.Id==model.Addresso.Id select a).FirstOrDefault<AddressBook>();
+                if(addressBook==null)
+                {
+                    throw new MiOUException("所选择的藕品地点不存在");
+                }
+                product.Province = addressBook.Province;
+                product.City = addressBook.City;
+                product.District = addressBook.District;
                 db.Product.Add(product);
                 db.SaveChanges();
                 model.Id = product.Id;

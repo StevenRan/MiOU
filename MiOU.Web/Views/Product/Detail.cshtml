@@ -38,10 +38,23 @@
 </script>
 
 <div></div>
+@{
 
+    string photo = "~/Content/Images/logo.png";
+    if (Model.Images != null && Model.Images.Count > 0)
+    {
+        foreach (BProductImage pImage in Model.Images)
+        {
+            if (pImage.Image != null && pImage.IsMain)
+            {
+                photo = "/" + pImage.Image.Path;
+            }
+        }
+    }
+}
 <div id="product_body" style="overflow:hidden;padding-top:20px;">
     <div style="float:left;width:406px;border:1px solid #F1F1F1;padding:2px 2px 2px 2px;">
-        <img style="width:400px;height:400px;" src="/@Model.Images[0].Image.Path" />
+        <img style="width:400px;height:400px;" src="@photo" />
     </div>
     <div style="float:left;width:400px;padding-left:40px;padding-right:40px;">
         <div style="padding-top:5px;padding-bottom:5px;">
@@ -53,10 +66,10 @@
             <span>@Model.Price</span>
         </div>
         <div style="padding-top:5px;padding-bottom:5px;">
-            <img class="locIcon" style="width:15px;height:15px;margin-top:-3px;margin-right:5px;" src="~/Content/Images/location_icon.png" /><span >闵行-上海春城</span>
+            <img class="locIcon" style="width:15px;height:15px;margin-top:-3px;margin-right:5px;" src="~/Content/Images/location_icon.png" /><span >@Html.Raw(Model.City.Name +" "+Model.District.Name+" - "+Model.Addresso.Apartment)</span>
         </div>
         <div style="padding-top:2px;padding-bottom:10px;border-bottom:1px solid #F1F1F1;"> 
-            <span>靠近：@Model.Nearby</span>
+            <span>靠近：@Model.Addresso.NearBy</span>
         </div>
         <div style="padding-top:15px;padding-bottom:15px;">
             <span style="display:block;">租赁费用：</span>
@@ -142,7 +155,7 @@
                 @Model.User.User.NickName
             </div>
         </div>
-        <div style="border-bottom:1px solid #F1F1F1;padding-top:10px;padding-bottom:10px;overflow:hidden;">
+        @*<div style="border-bottom:1px solid #F1F1F1;padding-top:10px;padding-bottom:10px;overflow:hidden;">
             <div>他的收益：</div>
             <ul style="list-style:none;padding:0;margin:0;display:block">
                 <li><span>收益：</span><span>1000元</span></li>
@@ -153,7 +166,7 @@
            <div>
 
            </div>
-        </div>
+        </div>*@
     </div>
 </div>
 

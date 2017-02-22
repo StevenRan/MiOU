@@ -161,10 +161,10 @@ namespace MiOU.BL
                 else
                 {
                     user.Permission = new Permissions();
-                    System.Reflection.FieldInfo[] fields = typeof(Permissions).GetFields();
-                    foreach (System.Reflection.FieldInfo field in fields)
+                    System.Reflection.PropertyInfo[] fields = typeof(Permissions).GetProperties();
+                    foreach (System.Reflection.PropertyInfo field in fields)
                     {
-                        field.SetValue(user.Permission, 1);
+                        field.SetValue(user.Permission, true);
                     }
                 }
                 if(user!=null && user.User!=null)

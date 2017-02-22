@@ -27,5 +27,7 @@ namespace MiOU.DAL
         public long Created { get; set; }
         public long Updated { get; set; }
         public bool Default { get; set; }
+        public string X { get; set; }
+        public string Y { get; set; }
     }
 }

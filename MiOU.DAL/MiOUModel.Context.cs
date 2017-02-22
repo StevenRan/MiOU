@@ -46,7 +46,6 @@ namespace MiOU.DAL
         public DbSet<ProductMaintenance> ProductMaintenance { get; set; }
         public DbSet<RentType> RentType { get; set; }
         public DbSet<UseCurrencyHistory> UseCurrencyHistory { get; set; }
-        public DbSet<User> User { get; set; }
         public DbSet<UserType> UserType { get; set; }
         public DbSet<UserVip> UserVip { get; set; }
         public DbSet<VipLevel> VipLevel { get; set; }
@@ -55,5 +54,6 @@ namespace MiOU.DAL
         public DbSet<UserLogin> UserLogin { get; set; }
         public DbSet<UserAvator> UserAvator { get; set; }
         public DbSet<Product> Product { get; set; }
+        public DbSet<User> User { get; set; }
     }
 }

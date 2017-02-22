@@ -337,6 +337,8 @@
     <EntitySetMapping Name="AddressBook">
       <EntityTypeMapping TypeName="MiOU.DAL.AddressBook">
         <MappingFragment StoreEntitySet="AddressBook">
+          <ScalarProperty Name="Y" ColumnName="Y" />
+          <ScalarProperty Name="X" ColumnName="X" />
           <ScalarProperty Name="Default" ColumnName="Default" />
           <ScalarProperty Name="Updated" ColumnName="Updated" />
           <ScalarProperty Name="Created" ColumnName="Created" />

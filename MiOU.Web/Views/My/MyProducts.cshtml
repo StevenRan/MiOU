@@ -64,9 +64,9 @@
                 {
                     area += " "+product.District.Name;
                 }
-                if(!string.IsNullOrEmpty(product.Apartment))
+                if(product.Addresso!=null && !string.IsNullOrEmpty(product.Addresso.Apartment))
                 {
-                    area += " - " + product.Apartment;
+                    area += " - " + product.Addresso.Apartment;
                 }
                 <div class="myrightItem">
                     <div class="pdtImg">
@@ -85,7 +85,7 @@
                             <img class="locIcon" style="" src="~/Content/Images/location_icon.png"/><span style="color:#B4B4B4;">@area</span>
                         </div>
                         <div class="liitem">
-                            近：外滩，人民广场
+                            近：@product.Addresso.NearBy
                         </div>
                         <div class="liitem">
                             @product.DeliveryType.Name

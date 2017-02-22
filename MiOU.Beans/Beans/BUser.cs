@@ -25,5 +25,9 @@ namespace MiOU.Entities.Beans
         public BObject Gendar { get; set; }
         public BVIPLevel VIPLevel { get; set; }
         public BUserAvator Avator { get; set; }
+        public int RentInTimes { get; set; }
+        public int RentOutTimes { get; set; }
+        public float AccountAmount { get; set; }
+        public float CurrencyAmount { get; set; }
     }
 }

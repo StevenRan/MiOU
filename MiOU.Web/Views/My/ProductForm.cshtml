@@ -78,7 +78,14 @@
         }
     }
     function createAddress() {
-        userUtil.CreateAddress();
+        userUtil.CreateAddress(function (res) {          
+            if (res.Status == 'OK') {
+                $(res.Result).each(function (i, item) {
+                    alert(item.Name);
+                    $('<option selected value="' + item.Id + '">' + item.Name + '</option>').appendTo($('#ProductForm').find('#AddressId'));
+                });
+            }
+        });
     }
     $(function(){
         userUtil = new UserUtil();
@@ -103,6 +110,7 @@
             var contact = $('#ProductForm').find('#Contact').val();
             var phone = $('#ProductForm').find('#Phone').val();
             var repertory = $('#ProductForm').find('#Repertory').val();
+            var addressId = $('#ProductForm').find('#AddressId').val();
 
             if ($.trim(productName) == '') {
                 if (errorMsg != null) {
@@ -111,23 +119,6 @@
                     errorMsg = "藕品名称不能为空";
                 }
             }
-
-            if ($.trim(contact) == '') {
-                if (errorMsg != null) {
-                    errorMsg += "<br/>藕品联系人不能为空";
-                } else {
-                    errorMsg = "藕品联系人不能为空";
-                }
-            }
-
-            if ($.trim(phone) == '') {
-                if (errorMsg != null) {
-                    errorMsg += "<br/>藕品联系人电话号码不能为空";
-                } else {
-                    errorMsg = "藕品联系人电话号码不能为空";
-                }
-            }
-
             if ($.trim(price) == '') {
                 if (errorMsg != null) {
                     errorMsg += "<br/>藕品原价不能为空";
@@ -177,7 +168,9 @@
                     }
                 }
             }
-
+            if (addressId=='undefined' || addressId == '' || addressId == '0') {
+                errorMsg = "藕品地点不能为空";
+            }
             if (gg.length < 2) {
                 if (errorMsg != null) {
                     errorMsg += "<br/>产品图片至少2张，最多4张";
@@ -275,64 +268,58 @@
             <div class="form-group">
                 @Html.LabelFor(model => model.ManageType, htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-8">
-                    @Html.DropDownListFor(model => model.ManageType, (SelectList)ViewBag.ManageTypes, new { @class = "form-control input_reg" })
+                    @Html.DropDownListFor(model => model.ManageType, (SelectList)ViewBag.ManageTypes, new { @class = "form-control " })
                     @Html.ValidationMessageFor(model => model.ManageType, "", new { @class = "text-danger" })
                 </div>
             </div>
             <div class="form-group">
                 @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-8">
-                    @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control input_reg" } })
+                    @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control " } })
                     @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
                 </div>
             </div>
             <div class="form-group">
                 @Html.LabelFor(model => model.Percentage, htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-8">
-                    @Html.DropDownListFor(model => model.Percentage, (SelectList)ViewBag.Percentages, htmlAttributes: new { @class = "form-control input_reg" })
+                    @Html.DropDownListFor(model => model.Percentage, (SelectList)ViewBag.Percentages, htmlAttributes: new { @class = "form-control " })
                     @Html.ValidationMessageFor(model => model.Percentage, "", new { @class = "text-danger" })
                 </div>
             </div>
             <div class="form-group">
                 @Html.LabelFor(model => model.Price, htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-8">
-                    @Html.EditorFor(model => model.Price, new { htmlAttributes = new { @class = "form-control input_reg" } })
+                    @Html.EditorFor(model => model.Price, new { htmlAttributes = new { @class = "form-control " } })
                     @Html.ValidationMessageFor(model => model.Price, "", new { @class = "text-danger" })
                 </div>
             </div>
     <div class="form-group">
         @Html.LabelFor(model => model.RentType, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-8">
-            @Html.DropDownListFor(model => model.RentType, (SelectList)ViewBag.rTypes, new { @class = "form-control input_reg" })
+            @Html.DropDownListFor(model => model.RentType, (SelectList)ViewBag.rTypes, new { @class = "form-control " })
             @Html.ValidationMessageFor(model => model.RentType, "", new { @class = "text-danger" })
         </div>
     </div>
             <div class="form-group">
                 @Html.LabelFor(model => model.DeliveryType, htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-8">
-                    @Html.DropDownListFor(model => model.DeliveryType, (SelectList)ViewBag.sTypes, new { @class = "form-control input_reg" })
+                    @Html.DropDownListFor(model => model.DeliveryType, (SelectList)ViewBag.sTypes, new { @class = "form-control " })
                     @Html.ValidationMessageFor(model => model.DeliveryType, "", new { @class = "text-danger" })
                 </div>
             </div>
+          
             <div class="form-group">
-                @Html.LabelFor(model => model.Contact, htmlAttributes: new { @class = "control-label col-md-2" })
+                @Html.LabelFor(model => model.AddressId, htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-8">
-                    @Html.EditorFor(model => model.Contact, new { htmlAttributes = new { @class = "form-control input_reg" } })
-                    @Html.ValidationMessageFor(model => model.Contact, "", new { @class = "text-danger" })
-                </div>
-            </div>
-            <div class="form-group">
-                @Html.LabelFor(model => model.Phone, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-8">
-                    @Html.EditorFor(model => model.Phone, new { htmlAttributes = new { @class = "form-control input_reg" } })
-                    @Html.ValidationMessageFor(model => model.Phone, "", new { @class = "text-danger" })
+                    @Html.DropDownListFor(model => model.AddressId, (SelectList)ViewBag.Addresses, new { @class = "form-control " })
+                    @Html.ValidationMessageFor(model => model.AddressId, "", new { @class = "text-danger" })
                 </div>
                 <a onclick="createAddress()">增加地址</a>
             </div>
             <div class="form-group">
                 @Html.LabelFor(model => model.Repertory, htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-8">
-                    @Html.EditorFor(model => model.Repertory, new { htmlAttributes = new { @class = "form-control input_reg" } })
+                    @Html.EditorFor(model => model.Repertory, new { htmlAttributes = new { @class = "form-control " } })
                     @Html.ValidationMessageFor(model => model.Repertory, "", new { @class = "text-danger" })
                 </div>
             </div>

@@ -244,6 +244,7 @@
     <Compile Include="Controllers\MeController.cs" />
     <Compile Include="Controllers\MyController.cs" />
     <Compile Include="Controllers\ProductController.cs" />
+    <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Controllers\v\VHomeController.cs" />
     <Compile Include="Controllers\v\VProductController.cs" />
     <Compile Include="Global.asax.cs">
@@ -536,6 +537,8 @@
     <Content Include="Views\Home\NotFound.cshtml" />
     <Content Include="Views\Home\Error.cshtml" />
     <Content Include="Views\My\AddressFormAjax.cshtml" />
+    <Content Include="Views\User\Users.cshtml" />
+    <Content Include="Views\User\Top.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

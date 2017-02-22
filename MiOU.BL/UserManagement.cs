@@ -408,8 +408,19 @@ namespace MiOU.BL
                 db.SaveChanges();
             }
         }
+        public void ConvertAddresses( ref List<BAddress> addresses)
+        {
+            if(addresses==null)
+            {
+                return;
+            }
 
-        public List<BAddress> GetAddresses(int userId=0,int addressId=0)
+            foreach(BAddress address in addresses)
+            {
+                address.Name = address.Province.Name + " " + address.City.Name + " " + address.Apartment;
+            }
+        }
+        public List<BAddress> GetAddresses(int userId=0,int addressId=0,int provinceId=0,int cityId=0,int districtId=0)
         {
             List<BAddress> addresses = null;
             using (MiOUEntities db = new MiOUEntities())
@@ -434,6 +445,7 @@ namespace MiOU.BL
                         City = new BArea { Id = a.City, Name = llac.Name, IsDirect = llac.IsDirect },
                         Province = new BArea { Id = a.Province, Name = llap.Name, IsDirect = llap.IsDirect },
                         District = new BArea { Id = a.District, Name = llad.Name, IsDirect = llad.IsDirect },
+                        Name = llap.Name + " " +llac.Name+" "+a.Apartment,
                         Contact = a.Contact,
                         Phone = a.Phone,
                         Created = a.Created,
@@ -450,6 +462,18 @@ namespace MiOU.BL
                 if (userId > 0)
                 {
                     tmp = tmp.Where(a => a.User.User.UserId == userId);
+                }
+                if (provinceId > 0)
+                {
+                    tmp = tmp.Where(a => a.Province.Id == provinceId);
+                }
+                if (cityId > 0)
+                {
+                    tmp = tmp.Where(a => a.City.Id == cityId);
+                }
+                if (districtId > 0)
+                {
+                    tmp = tmp.Where(a => a.District.Id == districtId);
                 }
                 addresses = tmp.ToList<BAddress>();
             }
@@ -575,8 +599,14 @@ namespace MiOU.BL
             using (MiOUEntities db = new MiOUEntities())
             {
                 AddressBook dbAddress = null;
+                bool isEdit = false;
                 if (address.Id == 0)
                 {
+                    dbAddress = (from a in db.AddressBook where a.UserId== CurrentLoginUser.User.UserId && a.Province==address.Province && a.City==address.City && a.District== address.District && a.Apartment==address.Apartment select a).FirstOrDefault<AddressBook>();
+                    if(dbAddress!=null)
+                    {
+                        throw new MiOUException("此藕品地点已经添加过，不能重复添加");
+                    }
                     dbAddress = new AddressBook();
                     dbAddress.Created = DateTimeUtil.ConvertDateTimeToInt(DateTime.Now);
                     dbAddress.UserId = address.User>0?address.User: CurrentLoginUser.User.UserId;
@@ -594,6 +624,7 @@ namespace MiOU.BL
                         throw new MiOUException("当前编辑的藕品地点不属于您，请不要尝试修改别人的数据");
                     }
                     dbAddress.Updated = DateTimeUtil.ConvertDateTimeToInt(DateTime.Now);
+                    isEdit = true;
                 }                
                 
                 dbAddress.NearBy = address.NearBy;
@@ -605,11 +636,112 @@ namespace MiOU.BL
                 dbAddress.Phone = address.Phone;
                 dbAddress.Address = address.Address;
                 dbAddress.Default = address.Default;
-                dbAddress.Apartment = address.Apartment;                
+                dbAddress.Apartment = address.Apartment;
+                address.Id = dbAddress.Id;          
                 db.SaveChanges();
+                if(isEdit)
+                {
+                    UpdateProductCity(dbAddress);
+                }
                 ret = true;
             }
             return ret;
+        }
+
+        private void UpdateProductCity(AddressBook address)
+        {
+            if(address==null || address.Id<=0)
+            {
+                return;
+            }
+            using (MiOUEntities db = new MiOUEntities())
+            {
+                bool isChanged = false;
+                List<Product> products = (from p in db.Product where p.AddressId == address.Id select p).ToList<Product>();
+                foreach(Product p in products)
+                {
+                    isChanged = false;
+                    if (p.Province!=address.Province)
+                    {
+                        p.Province = address.Province;
+                        isChanged = true;
+                    }
+                    if (p.City != address.City)
+                    {
+                        p.City = address.City;
+                        isChanged = true;
+                    }
+                    if (p.District != address.District)
+                    {
+                        p.District = address.District;
+                        isChanged = true;
+                    }
+                }
+
+                if(isChanged)
+                {
+                    db.SaveChanges();
+                }
+            }
+        }
+
+        public List<BUser> GetTopUsers(int top)
+        {
+            List<BUser> users = new List<BUser>();
+
+            return users;
+        }
+
+        public List<BUser> SearchUsers(int[] userIds,int[] types,int[] provinces,int[] cities,int[] districts)
+        {
+            List<BUser> users = new List<BUser>();
+            MiOUEntities db = new MiOUEntities();
+            try
+            {
+                var tmp = from u in db.User
+                          join prov in db.Area on u.Province equals prov.Id into lprov
+                          from llprov in lprov.DefaultIfEmpty()
+                          join city in db.Area on u.Province equals city.Id into lcity
+                          from llcity in lprov.DefaultIfEmpty()
+                          join dist in db.Area on u.Province equals dist.Id into ldist
+                          from lldist in ldist.DefaultIfEmpty()
+                          join utype in db.UserType on u.UserType equals utype.Id into lutype
+                          from llutype in lutype.DefaultIfEmpty()
+                          join vip in db.VipLevel on u.VipLevel equals vip.Id into lvip
+                          from llvip in lvip.DefaultIfEmpty()
+                          select new BUser
+                          {
+                              User = u,
+                              Province = new BArea { Id = u.Province, Name = llprov.Name },
+                              City = new BArea { Id = u.City, Name = llcity.Name },
+                              District = new BArea { Id = u.District, Name = lldist.Name },
+                              AccountAmount = u.AccountAmount,
+                              Created = u.RegTime,
+                              CurrencyAmount = u.CurrencyAmount,
+                              Name = u.Name,
+                              Id = u.UserId,
+                              RentInTimes = u.RentInTimes,
+                              RentOutTimes = u.RentOutTimes,
+                               UserType=new BUserType { Id = u.UserType,Name= llutype.Name },
+                               VIPLevel=new BVIPLevel { },
+                          };
+            }
+            catch(MiOUException ex)
+            {
+                throw ex;
+            }
+            catch(Exception ex)
+            {
+                logger.Fatal(ex);
+            }
+            finally
+            {
+                if(db!=null)
+                {
+                    db.Dispose();
+                }
+            }
+            return users;
         }
 
         public List<BUserAvator> GetAvtors(int userId)

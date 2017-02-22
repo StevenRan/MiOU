@@ -97,6 +97,7 @@ namespace MiOU.Web.Controllers
         public ActionResult AddProduct()
         {
             ProductManagement pdtMgr = new ProductManagement(User.Identity.GetUserId<int>());
+            UserManagement userMgr = new UserManagement(pdtMgr.CurrentLoginUser);
             List<BObject> rentTypes = pdtMgr.GetRentTypes();
             List<BSelType> shippingTypes = pdtMgr.GetDeliveryTypes();
             List<BCategory> cates = pdtMgr.GetCategories(0, false);
@@ -104,15 +105,27 @@ namespace MiOU.Web.Controllers
             ViewBag.sTypes = new SelectList(shippingTypes, "Id", "Name");
             ViewBag.Cates = new SelectList(cates, "Id", "Name");
             ViewBag.cCates = new SelectList(pdtMgr.GetCategories(cates[0].Id), "Id", "Name");
-            ViewBag.cPriceCates = pdtMgr.GetPriceCategories();
+            ViewBag.cPriceCates = pdtMgr.GetPriceCategories();           
             ViewBag.Percentages = new SelectList(pdtMgr.GetPercentages(), "Id", "Name");
             ViewBag.ManageTypes = new SelectList(pdtMgr.GetManageTypes(), "Id", "Name");
             MProduct model = new MProduct() { Phone = pdtMgr.CurrentLoginUser.User.Phone, Contact = pdtMgr.CurrentLoginUser.User.Phone };
+
+            List<BAddress> userAddresses = userMgr.GetAddresses(userMgr.CurrentLoginUser.User.UserId);
+            ViewBag.Addresses = new SelectList(userAddresses, "Id", "Name"); ;
+            if (ViewBag.Addresses!=null)
+            {
+                int id = (from a in userAddresses where a.IsDefault==true select a.Id).FirstOrDefault<int>();
+                if(id!=0)
+                {
+                    model.AddressId = id;
+                }
+            }
             return View("ProductForm", model);
         }
         public ActionResult EditProduct(int? productId)
         {
             ProductManagement pdtMgr = new ProductManagement(User.Identity.GetUserId<int>());
+            UserManagement userMgr = new UserManagement(pdtMgr.CurrentLoginUser);
             List<BObject> rentTypes = pdtMgr.GetRentTypes();
             List<BSelType> shippingTypes = pdtMgr.GetDeliveryTypes();
             List<BCategory> cates = pdtMgr.GetCategories(0, false);
@@ -124,8 +137,9 @@ namespace MiOU.Web.Controllers
             ViewBag.Percentages = new SelectList(pdtMgr.GetPercentages(), "Id", "Name");
             ViewBag.ManageTypes = new SelectList(pdtMgr.GetManageTypes(), "Id", "Name");
             MProduct model = new MProduct() { Phone = pdtMgr.CurrentLoginUser.User.Phone, Contact = pdtMgr.CurrentLoginUser.User.Phone };
-            
-            if(productId!=null)
+            List<BAddress> userAddresses = userMgr.GetAddresses(userMgr.CurrentLoginUser.User.UserId);
+            ViewBag.Addresses = new SelectList(userAddresses, "Id", "Name"); ;
+            if (productId!=null)
             {
                 int total = 0;
                 List<BProduct> products = pdtMgr.SearchProducts(new int[] { (int)productId }, null, 0, 0, 0, 0, 0, 0, 0, 0, null, 1, 1, true, out total);
@@ -148,7 +162,7 @@ namespace MiOU.Web.Controllers
                 model.Contact = product.Contact;
                 model.Description = product.Description;
                 model.Repertory = product.Repertory;
-
+                model.AddressId = product.Addresso!=null? product.Addresso.Id:0;
                 foreach(BProductImage image in product.Images)
                 {
                     if (string.IsNullOrEmpty(model.PhotoIds))
@@ -194,6 +208,9 @@ namespace MiOU.Web.Controllers
             {
                 if(ModelState.IsValid)
                 {
+                    UserManagement userMgr = new UserManagement(pdtMgr.CurrentLoginUser);
+                    List<BAddress> userAddresses = userMgr.GetAddresses(userMgr.CurrentLoginUser.User.UserId);
+                    ViewBag.Addresses = new SelectList(userAddresses, "Id", "Name"); ;
                     model.Percentage = model.Percentage / 100;
                     model.PriceCotegories = Request["PriceCotegories"];
                     if (model.Id==0)
@@ -319,6 +336,32 @@ namespace MiOU.Web.Controllers
                 }
             }
             return View("AddressForm", model);
+        }
+
+        public ActionResult AddressForm()
+        {
+            UserManagement userMgr = new UserManagement(User.Identity.GetUserId<int>());
+            List<BArea> ares = userMgr.GetAreas(0);
+            ViewBag.Provinces = new SelectList(ares, "Id", "Name");
+            ViewBag.Cities = new SelectList(new List<BArea>(), "Id", "Name");
+            ViewBag.Districts = new SelectList(new List<BArea>(), "Id", "Name");
+            MAddress model = new MAddress() { Province = userMgr.CurrentLoginUser.User.Province, City = userMgr.CurrentLoginUser.User.City, District = userMgr.CurrentLoginUser.User.District };
+            if (model.Province > 0)
+            {
+                BArea province = userMgr.GetAreaByIdWithChildren(model.Province);
+                if (province.IsDirect)
+                {
+                    List<BArea> tmpCities = new List<BArea>();
+                    tmpCities.Add(new BArea() { Id = province.Id, Name = province.Name });
+                    ViewBag.Cities = new SelectList(tmpCities, "Id", "Name");
+                    ViewBag.Districts = new SelectList(province.Chindren, "Id", "Name");
+                }
+                else
+                {
+                    ViewBag.Cities = new SelectList(province.Chindren, "Id", "Name");
+                }
+            }
+            return View("AddressFormAjax", model);
         }
 
         public ActionResult EditAddress(int? addressId)

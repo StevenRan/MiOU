@@ -186,10 +186,10 @@
     columns.Add(c => c.Name).Titled("名称").Filterable(false).SetWidth("15%").Encoded(false)
       .Sanitized(false).RenderValueAs(c=> Html.Raw("<a target=\"_blank\" href=\"/Admin/ProductDetail?productId=" + c.Id + "\">"+c.Name+"</a>"));
     columns.Add().Titled("类别").Filterable(false).RenderValueAs(c => c.PCategory.Name + " - " + c.Category.Name).SetWidth("10%");
-    columns.Add().Titled("等级").Filterable(false).RenderValueAs(c => c.ProductLevel.Name+" ("+c.ProductLevel.StartPrice+"元 - "+c.ProductLevel.EndPrice+"元)").SetWidth("12%");
+    columns.Add().Titled("等级").Filterable(false).RenderValueAs(c => c.ProductLevel!=null?( c.ProductLevel.Name+" ("+c.ProductLevel.StartPrice+"元 - "+c.ProductLevel.EndPrice+"元)"):"未审核，暂无等级").SetWidth("12%");
 
-    columns.Add().Titled("审核状态").Filterable(false).RenderValueAs(c => Html.Raw(c.Status == ProductStatus.CREATED ? "待审核" : c.Status == ProductStatus.FAILED ? "失败" : c.Status == ProductStatus.PASSED ? "通过" : "")).SetWidth("5%");
-    columns.Add().Titled("审核时间").SetWidth("8%").Filterable(false).RenderValueAs(c => Html.Raw(DateTimeUtil.ConvertToDateTime(c.AuditTime).ToString("yyyy-MM-dd HH:mm")));
+    columns.Add().Titled("审核状态").Filterable(false).RenderValueAs(c => Html.Raw(c.AuditStatus == ProductStatus.CREATED ? "待审核" : c.AuditStatus == ProductStatus.FAILED ? "失败" : c.AuditStatus == ProductStatus.PASSED ? "通过" : "")).SetWidth("5%");
+    columns.Add().Titled("审核时间").SetWidth("8%").Filterable(false).RenderValueAs(c => c.AuditTime>0? DateTimeUtil.ConvertToDateTime(c.AuditTime).ToString("yyyy-MM-dd HH:mm"):"");
 
 
 }).Sortable(false)

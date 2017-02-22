@@ -77,8 +77,6 @@
             return msg;
         }
 
-       
-
         $('#submit_warning').find('button').find('span').click(function () {
             $('#submit_warning').hide();
         });
@@ -139,22 +137,12 @@
     });
 </script>
 <div class="topNav">
-    <div class="title">@ViewBag.Title</div>
-    <div class="line"></div>
+    <div class="title" style="width:100%;">@ViewBag.Title</div>
 </div>
 
 @using (Html.BeginForm("", "", FormMethod.Post, new { @class = "form-horizontal", role = "form", id = "AddressForm" }))
 {
     @Html.HiddenFor(m => m.Id)
-    <div id="response_success" class="alert alert-success alert-dismissible" role="alert">
-        <button type="button" class="close"><span aria-hidden="true">&times;</span></button>
-        <p>@ViewBag.Message</p>
-    </div>
-    <div id="response_warning" class="alert alert-danger alert-dismissible" role="alert">
-        <button type="button" class="close"><span aria-hidden="true">&times;</span></button>
-        <p>@ViewBag.Error</p>
-    </div>
-  
     <div class="form-group">
         @Html.LabelFor(model => model.Province, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-8">
