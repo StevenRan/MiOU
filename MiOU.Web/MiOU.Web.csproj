@@ -539,6 +539,7 @@
     <Content Include="Views\My\AddressFormAjax.cshtml" />
     <Content Include="Views\User\Owner.cshtml" />
     <Content Include="Views\User\Top.cshtml" />
+    <Content Include="Views\User\Product.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -31,5 +31,6 @@ namespace MiOU.Entities.Beans
         public float AccountAmount { get; set; }
         public float CurrencyAmount { get; set; }
         public long RegTime { get; set; }
+        public int TotalProductAmount { get; set; }
     }
 }

@@ -1,7 +1,10 @@
-﻿
+﻿@using MiOU.Entities;
+@using MiOU.Entities.Beans;
+@using MiOU.BL;
 @{
     ViewBag.Title = "藕主";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    List<BUser> users = ViewBag.Users as List<BUser>;
 }
 
 <div class="hmain">
@@ -12,35 +15,41 @@
     </div>
     <div class="hc">
         <div class="hcate" style="overflow:hidden;padding-top:0;">
-            <div class="spdt pw nb">
-                <div style="border-bottom:1px solid #DFDFDF;width:100%;padding-bottom:10px;">
-                    <a href="/Product/Detail?productId=9" target="_blank"><img src="/upload/2017/2/22/71dd6b91-4db3-42d3-8291-9147db9b7c52.jpg" style="width:100%;height:200px;"></a>
-                </div>
-                <div style="border-bottom:1px solid #DFDFDF;overflow:hidden;padding-bottom:10px;padding-top:10px;">
-                    <div style="overflow:hidden;">
-                        <div class="dlit" style="float:left;">
-                            <a href="/Product/Detail?productId=9" target="_blank">轮椅测试001</a>
+            @if (users != null)
+            {
+                foreach (BUser user in users)
+                {
+                    <div class="spdt pw nb">
+                        <div style="border-bottom:1px solid #DFDFDF;width:100%;padding-bottom:10px;">
+                            <a href="/User/Product?userId=@user.Id" target="_blank"><img src="/@user.Avator.Image.Path" style="width:100%;height:200px;"></a>
                         </div>
-                        <div class="dli" style="float:right;">
-                            轮椅
+                        <div style="border-bottom:1px solid #DFDFDF;overflow:hidden;padding-bottom:10px;padding-top:10px;">
+                            <div style="overflow:hidden;">
+                                <div class="dlit" style="float:left;">
+                                    <a href="/User/Product?userId=@user.Id" target="_blank">@user.NickName</a>
+                                </div>
+                                <div class="dli" style="float:right;">
+                                    
+                                </div>
+                            </div>
+                            <div class="dli" style="overflow:hidden;">
+                                <img class="locIcon" style="width:15px;height:15px;margin-top:-3px;margin-right:5px;" src="/Content/Images/location_icon.png"><span>@Html.Raw(user.City.Name+" "+user.District.Name)</span>
+                            </div>
+                            @*<div class="dli" style="overflow:hidden;">
+                                <span>靠近：莘庄，莲花南路春申路</span>
+                            </div>*@
+                        </div>
+                        <div class="dlit" style="padding-top:10px;height:auto;">
+                            <div style="color:#666;">
+                                <span>@user.TotalProductAmount</span> 件藕品
+                            </div>
+                            <div style="color:red;">
+                                
+                            </div>
                         </div>
                     </div>
-                    <div class="dli" style="overflow:hidden;">
-                        <img class="locIcon" style="width:15px;height:15px;margin-top:-3px;margin-right:5px;" src="/Content/Images/location_icon.png"><span>上海市 闵行区 - 上海春城</span>
-                    </div>
-                    <div class="dli" style="overflow:hidden;">
-                        <span>靠近：莘庄，莲花南路春申路</span>
-                    </div>
-                </div>
-                <div class="dlit" style="padding-top:10px;height:auto;">
-                    <div style="color:#666;">
-                        藕主自管
-                    </div>
-                    <div style="color:red;">
-                        45 元/天
-                    </div>
-                </div>
-            </div>
+                }
+            }           
         </div>
     </div>
 

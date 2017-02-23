@@ -815,6 +815,8 @@ namespace MiOU.BL
                     {
                         u.Avator = new BUserAvator() { Id = 0, Image = new BFile() { Id = 0, Path = "Content/Images/logo.png" } };
                     }
+
+                    u.TotalProductAmount = (from p in db.Product where p.UserId == u.Id select p.Id).Count();
                 }
                     
                 return users;
