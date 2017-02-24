@@ -247,6 +247,7 @@
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Controllers\v\VHomeController.cs" />
     <Compile Include="Controllers\v\VProductController.cs" />
+    <Compile Include="Filters\AdminFilter.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -540,6 +541,7 @@
     <Content Include="Views\User\Owner.cshtml" />
     <Content Include="Views\User\Top.cshtml" />
     <Content Include="Views\User\Product.cshtml" />
+    <Content Include="Views\Account\Error.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

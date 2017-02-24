@@ -58,6 +58,13 @@ namespace MiOU.Web.Controllers
             }
         }
 
+        [AllowAnonymous]
+        public ActionResult LoginError(string message)
+        {
+            ViewBag.Message = message;
+            return View("Error");
+        }
+
         // The Authorize Action is the end point which gets called when you access any
         // protected Web API. If the user is not logged in then they will be redirected to 
         // the Login page. After a successful login you can call a Web API.

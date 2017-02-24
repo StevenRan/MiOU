@@ -13,9 +13,11 @@ using GridMvc.DBGrid;
 using MiOU.Web.Models;
 using MiOU.Util;
 using log4net;
+using MiOU.Web.Filters;
 namespace MiOU.Web.Controllers
 {
     [Authorize]
+    [AdminFilter(Message = "非管理员账户请不要试图访问管理员后台界面，多次尝试，系统将自动锁定账户")]
     public class AdminController : Controller
     {
         ILog logger = null;
