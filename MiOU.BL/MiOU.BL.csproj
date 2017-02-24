@@ -94,10 +94,6 @@
     <Compile Include="UserManagement.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\kuanmai\KMBit\WeiChat.Payment.Wrapper\WeChat.Adapter.csproj">
-      <Project>{a47abb57-ecac-47ed-8657-cbf157c2313c}</Project>
-      <Name>WeChat.Adapter</Name>
-    </ProjectReference>
     <ProjectReference Include="..\MiOU.Beans\MiOU.Entities.csproj">
       <Project>{0d282c96-7453-49a5-881b-d1b71b42bd0f}</Project>
       <Name>MiOU.Entities</Name>
