@@ -12,7 +12,7 @@ namespace MiOU.Web.Controllers
     public class ProductController : Controller
     {
         // GET: Product
-        public ActionResult Index()
+        public ActionResult List()
         {
             return View();
         }

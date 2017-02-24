@@ -1,5 +1,6 @@
 ﻿@using Microsoft.AspNet.Identity
 @using MiOU.Web.Models
+@using MiOU.Web.Util
 @{ 
     string currentUrl = Request.Url.AbsoluteUri.ToString();
 }
@@ -9,6 +10,12 @@
         <li>
             @Html.ActionLink("我的米藕", "Index", "My", routeValues: new { area = "" }, htmlAttributes: new { title = "我的米藕" })
         </li>
+        @if (UserUtil.IsAdmin(User.Identity.GetUserName()))
+        {
+            <li>
+                @Html.ActionLink("后台管理", "Index", "Admin", routeValues: new { area = "" }, htmlAttributes: new { title = "后台管理" })
+            </li>
+        }
         <li><a href="/Account/LogOff">退出</a></li>
         @*<li><a href="javascript:sessionStorage.removeItem('accessToken');$('#logoutForm').submit();">退出</a></li>*@
     </ul>

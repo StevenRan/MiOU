@@ -53,7 +53,7 @@
 
                             var pitem=$('<div class="spdt pw '+style+'"></div>').appendTo(productDiv);
                             var pImage= $('<div class="" style="border-bottom:1px solid #DFDFDF;width:100%;padding-bottom:10px;"></div>').appendTo(pitem);
-                            var photo = "/Content/Images/logo.png";
+                            var photo = null;
                             if (item.Images != 'undefined' && item.Images != null && item.Images.length > 0) {
                                 $(item.Images).each(function (im, image) {
                                     if (image.Image != null && image.IsMain == true) {
@@ -62,6 +62,10 @@
                                     }
                                 });
                             }
+                            if(photo==null){
+                                photo = "/" + item.Images[0].Image.Path;
+                            }
+
                             $('<a href="/Product/Detail?productId='+item.Id+'" target="_blank"><img style="height:200px;width:100%;" src="' + photo + '"/></a>').appendTo(pImage);
                             var pMiddle = $('<div style="border-bottom:1px solid #DFDFDF;overflow:hidden;padding-top:10px;padding-bottom:10px;"></div>').appendTo(pitem);
                             var piMiddle1 = $('<div style="overflow:hidden;"></div>').appendTo(pMiddle);
@@ -179,7 +183,7 @@
                                 {
                                     style = "nhp";
                                 }
-                                string photo = "~/Content/Images/logo.png";
+                                string photo = null;
                                 <div class="spdt pw @Html.Raw(style)">
                                     <div style="border-bottom:1px solid #DFDFDF;width:100%;padding-bottom:10px;">                                        
                                         
@@ -191,6 +195,11 @@
                                                 {
                                                     photo = "/"+pImage.Image.Path;
                                                 }
+                                            }
+
+                                            if(photo==null)
+                                            {
+                                                photo = "/" + tmp.Images[0].Image.Path;
                                             }
                                         }
                                         <a href="/Product/Detail?productId=@tmp.Id" target="_blank"><img src="@Html.Raw(photo)" style="width:100%;height:200px;" /></a>
