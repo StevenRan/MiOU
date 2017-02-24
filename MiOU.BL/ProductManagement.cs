@@ -194,6 +194,9 @@ namespace MiOU.BL
                 }
 
                 db.SaveChanges();
+                epcate.Updated = DateTimeUtil.ConvertDateTimeToInt(DateTime.Now);
+                epcate.UpdatedBy = CurrentLoginUser.User.UserId;
+                db.SaveChanges();
                 result = true;
             }
             return result;
@@ -967,7 +970,7 @@ namespace MiOU.BL
                         {
                             EvaluatedPrice ePrice = (from ep in db.EvaluatedPrice where ep.EvaluatedPriceCategory == existedProduct.ProductLevel.Id && ep.PriceCategory == pcateId select ep).FirstOrDefault<EvaluatedPrice>();
                             int ePriceId = ePrice!=null?ePrice.Id:0;
-                            ProductPrice tmpPrice = new ProductPrice { Created = DateTimeUtil.ConvertDateTimeToInt(DateTime.Now), EvaluatedPriceId = ePriceId, PriceCategory = pcateId, ProductCategoryId = product.ChildCategoryId, ProductId = product.Id, UserId = CurrentLoginUser.User.UserId };
+                            ProductPrice tmpPrice = new ProductPrice { Created = DateTimeUtil.ConvertDateTimeToInt(DateTime.Now), EvaluatedPriceId = ePriceId, PriceCategory = pcateId, ProductCategoryId = product.ChildCategoryId, ProductId = product.Id, UserId = CurrentLoginUser.User.UserId };                          
                             newAdded.Add(tmpPrice);
                             db.ProductPrice.Add(tmpPrice);
                         }
@@ -981,7 +984,7 @@ namespace MiOU.BL
                         }
                     }                    
                 }
-
+                db.SaveChanges();
                 //handle removed rent price category
                 List<ProductPrice> productPrices = (from pp in db.ProductPrice where pp.ProductId== product.Id select pp).ToList<ProductPrice>();
                 foreach(ProductPrice price in productPrices)
@@ -1262,7 +1265,8 @@ namespace MiOU.BL
                             ProductCategoryId = price.Category.Id,
                             PriceCategory = price.PriceCategory.Id,
                             ProductId = product.Id,
-                            UserId = CurrentLoginUser.User.UserId
+                            UserId = CurrentLoginUser.User.UserId,
+                            Enabled = true
 
                         };
                         db.ProductPrice.Add(pPrice);
