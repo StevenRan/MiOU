@@ -122,7 +122,7 @@ namespace MiOU.Web.Controllers
             {
                 pageSize = 20;
             }
-            List<BProduct> products = pdtMgr.SearchProducts(null,null, User.Identity.GetUserId<int>(),0, 0, 0, 0, 0, 0, 0, null, pageSize, page, false, out total);
+            List<BProduct> products = pdtMgr.SearchProducts(null,null, new int[] { User.Identity.GetUserId<int>() },0, 0, 0, 0, 0, 0, 0, null, pageSize, page, false, out total);
             PageItemsResult<BProduct> result = new PageItemsResult<BProduct>() { CurrentPage=page,PageSize= pageSize, EnablePaging=true, Items=products, TotalRecords=total };
             DBGrid<BProduct> grid = new DBGrid<BProduct>(result);
             return View("MyProducts",grid);
@@ -143,7 +143,7 @@ namespace MiOU.Web.Controllers
             {
                 pageSize = 20;
             }
-            List<BProduct> products = pdtMgr.SearchProducts(null,null,0, User.Identity.GetUserId<int>(), 0, 0, 0, 0, 0, 0, null, pageSize, page, false, out total);
+            List<BProduct> products = pdtMgr.SearchProducts(null,null,null, User.Identity.GetUserId<int>(), 0, 0, 0, 0, 0, 0, null, pageSize, page, false, out total);
             PageItemsResult<BProduct> result = new PageItemsResult<BProduct>() { CurrentPage = page, PageSize = pageSize, EnablePaging = true, Items = products, TotalRecords = total };
             DBGrid<BProduct> grid = new DBGrid<BProduct>(result);
             return View(grid);
@@ -165,7 +165,7 @@ namespace MiOU.Web.Controllers
             {
                 pageSize = 20;
             }
-            List<BProduct> products = pdtMgr.SearchProducts(null,new int[] { 0}, 0, 0, 0, 0, 0, 0, 0, 0, null, pageSize, page, false, out total);
+            List<BProduct> products = pdtMgr.SearchProducts(null,new int[] { 0}, null, 0, 0, 0, 0, 0, 0, 0, null, pageSize, page, false, out total);
             PageItemsResult<BProduct> result = new PageItemsResult<BProduct>() { CurrentPage = page, PageSize = pageSize, EnablePaging = true, Items = products, TotalRecords = total };
             DBGrid<BProduct> grid = new DBGrid<BProduct>(result);
             return View("PendingAuditProducts", grid);
@@ -229,7 +229,7 @@ namespace MiOU.Web.Controllers
             }
             int total = 0;
 
-            List<BProduct> products = pdtMgr.SearchProducts(null, null, 0, 0, searchModel.Category != null ? (int)searchModel.Category : 0,
+            List<BProduct> products = pdtMgr.SearchProducts(null, null, null, 0, searchModel.Category != null ? (int)searchModel.Category : 0,
                                                             searchModel.ChildCategory!=null?(int)searchModel.ChildCategory:0,searchModel.RentType!=null?(int)searchModel.RentType:0,
                                                             searchModel.Province!=null?(int)searchModel.Province:0,searchModel.City!=null?(int)searchModel.City:0,searchModel.District!=null?(int)searchModel.District:0,
                                                             searchModel.Keyword,pageSize,page,false,out total);
@@ -285,7 +285,7 @@ namespace MiOU.Web.Controllers
             }
             ProductManagement pdtMgr = new ProductManagement(User.Identity.GetUserId<int>());
             int total = 0;
-            List<BProduct> products = pdtMgr.SearchProducts(new int[] { id }, null, User.Identity.GetUserId<int>(), 0, 0, 0, 0, 0, 0, 0, null, 1, 1, true, out total);
+            List<BProduct> products = pdtMgr.SearchProducts(new int[] { id }, null,new int[] { User.Identity.GetUserId<int>() }, 0, 0, 0, 0, 0, 0, 0, null, 1, 1, true, out total);
             if (products.Count == 0)
             {
                 return ShowError(string.Format("编号为{0}的产品不存在", productId));
@@ -304,7 +304,7 @@ namespace MiOU.Web.Controllers
             }
             ProductManagement pdtMgr = new ProductManagement(User.Identity.GetUserId<int>());
             int total = 0;
-            List<BProduct> products = pdtMgr.SearchProducts(new int[] { productId}, null, User.Identity.GetUserId<int>(), 0, 0, 0, 0, 0, 0, 0, null, 1, 1, true, out total);
+            List<BProduct> products = pdtMgr.SearchProducts(new int[] { productId}, null,new int[] { User.Identity.GetUserId<int>() }, 0, 0, 0, 0, 0, 0, 0, null, 1, 1, true, out total);
             if(products.Count==0)
             {
                 return ShowError(string.Format("编号为{0}的产品不存在",productId));

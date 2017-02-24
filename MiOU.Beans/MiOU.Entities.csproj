@@ -69,6 +69,7 @@
     <Compile Include="Beans\BSelType.cs" />
     <Compile Include="Beans\BUser.cs" />
     <Compile Include="Beans\BUserAvator.cs" />
+    <Compile Include="Beans\BUserProductStatistic.cs" />
     <Compile Include="Beans\BUserType.cs" />
     <Compile Include="Beans\BVIPLevel.cs" />
     <Compile Include="Beans\Permission.cs" />

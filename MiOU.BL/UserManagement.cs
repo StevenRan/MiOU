@@ -804,7 +804,15 @@ namespace MiOU.BL
                                              }
                                              ).ToList<BUserAvator>();
 
-                foreach(BUser u in users)
+                List<BUserProductStatistic> statistics = null;
+                if (ids != null && ids.Length > 0)
+                {
+                    ProductManagement pdtMgr = new ProductManagement(CurrentLoginUser);
+                    statistics = pdtMgr.GetUserProductStatistic(ids);
+                    
+                }
+
+                foreach (BUser u in users)
                 {
                     if(avators!=null)
                     {
@@ -817,6 +825,11 @@ namespace MiOU.BL
                     }
 
                     u.TotalProductAmount = (from p in db.Product where p.UserId == u.Id select p.Id).Count();
+
+                    if (statistics != null)
+                    {
+                        u.ProductStatistic = (from up in statistics where up.UserId == u.Id select up).ToList<BUserProductStatistic>();
+                    }
                 }
                     
                 return users;

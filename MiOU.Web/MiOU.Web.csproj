@@ -550,6 +550,14 @@
     <None Include="Project_Readme.html" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\GridMvc\GridMvc\GridMvc.csproj">
+      <Project>{742ca5dd-16db-464a-a267-a1f4e422733b}</Project>
+      <Name>GridMvc</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\WeiChat.Payment.Wrapper\WeChat.Adapter.csproj">
+      <Project>{a47abb57-ecac-47ed-8657-cbf157c2313c}</Project>
+      <Name>WeChat.Adapter</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Microsoft.Owin.Security.WeChat\Microsoft.Owin.Security.WeChat.csproj">
       <Project>{a9a0ba07-5273-4d93-a398-e5f94177cc38}</Project>
       <Name>Microsoft.Owin.Security.WeChat</Name>

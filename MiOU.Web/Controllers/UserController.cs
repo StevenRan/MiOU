@@ -36,7 +36,7 @@ namespace MiOU.Web.Controllers
             int page = 1;
             int pageSize = 30;
             List<BUser> users = userMgr.SearchUsers(userIds, null, null, null, null, null, null, 1, 1, 0, 0, out total, UserOrderField.RENTOUTTIMES);
-            List<BProduct> products = pdtMgr.SearchProducts(null, null, userId, 0, categoryId, childCategoryId, 0, 0, 0, 0, null, pageSize, page, true, out total, ProductOrderField.RENTTIMES);
+            List<BProduct> products = pdtMgr.SearchProducts(null, null, new int[] { userId }, 0, categoryId, childCategoryId, 0, 0, 0, 0, null, pageSize, page, true, out total, ProductOrderField.RENTTIMES);
             BUser user = users[0];
             ViewBag.User = user;
             ViewBag.Products = products;

@@ -90,7 +90,7 @@ namespace MiOU.Web.Controllers
                     page = 1;
                 }
             }
-            List<BProduct> products = pdt.SearchProducts(null, null, User.Identity.GetUserId<int>(), 0, 0, cate, iType, 0, 0, 0, null, pageSize, page, true, out total, Entities.ProductOrderField.RENTTIMES);
+            List<BProduct> products = pdt.SearchProducts(null, null, new int[] { User.Identity.GetUserId<int>() }, 0, 0, cate, iType, 0, 0, 0, null, pageSize, page, true, out total, Entities.ProductOrderField.RENTTIMES);
             return View(products);
         }
 
@@ -142,7 +142,7 @@ namespace MiOU.Web.Controllers
             if (productId!=null)
             {
                 int total = 0;
-                List<BProduct> products = pdtMgr.SearchProducts(new int[] { (int)productId }, null, 0, 0, 0, 0, 0, 0, 0, 0, null, 1, 1, true, out total);
+                List<BProduct> products = pdtMgr.SearchProducts(new int[] { (int)productId }, null, null, 0, 0, 0, 0, 0, 0, 0, null, 1, 1, true, out total);
                 if(products.Count==0)
                 {
                     return ShowError("此藕品不存在");
@@ -250,7 +250,7 @@ namespace MiOU.Web.Controllers
             if(model.Id>0)
             {
                 int total = 0;
-                List<BProduct> products = pdtMgr.SearchProducts(new int[] { model.Id }, null, 0, 0, 0, 0, 0, 0, 0, 0, null, 1, 1, true, out total);
+                List<BProduct> products = pdtMgr.SearchProducts(new int[] { model.Id }, null, null, 0, 0, 0, 0, 0, 0, 0, null, 1, 1, true, out total);
                 if (products.Count == 1)
                 {
                     ViewBag.Product = products[0];

@@ -29,7 +29,7 @@ namespace MiOU.BL
                     foreach (BCategory category in categories)
                     {
                         int total = 0;
-                        List<BProduct> products = SearchProducts(null, new int[] { 1}, 0, 0, category.Id,0, 0,province,  0, 0,null, 10, 1, true, out total, ProductOrderField.RENTTIMES);
+                        List<BProduct> products = SearchProducts(null, new int[] { 1}, null, 0, category.Id,0, 0,province,  0, 0,null, 10, 1, true, out total, ProductOrderField.RENTTIMES);
                         category.HotProducts = products;
                     }
                 }                    
@@ -48,10 +48,10 @@ namespace MiOU.BL
                     List<BProduct> products = null;
                     if(category.ParentId>0)
                     {
-                        products = SearchProducts(null, new int[] { 1 }, 0, 0, 0, category.Id, 0, province, 0, 0, null, 10, 1, true, out total, ProductOrderField.RENTTIMES);
+                        products = SearchProducts(null, new int[] { 1 }, null, 0, 0, category.Id, 0, province, 0, 0, null, 10, 1, true, out total, ProductOrderField.RENTTIMES);
                     }else
                     {
-                        products = SearchProducts(null, new int[] { 1 }, 0, 0,category.Id,0, 0, province, 0, 0, null, 10, 1, true, out total, ProductOrderField.RENTTIMES);
+                        products = SearchProducts(null, new int[] { 1 }, null, 0,category.Id,0, 0, province, 0, 0, null, 10, 1, true, out total, ProductOrderField.RENTTIMES);
                     }                   
                     category.HotProducts = products;
                 }
@@ -373,7 +373,7 @@ namespace MiOU.BL
                 throw new MiOUException("产品信息不存在");
             }
             int total = 0;
-            List<BProduct> products = SearchProducts(new int[] { productId }, null, 0, 0, 0, 0, 0, 0, 0, 0, null, 10, 1, true, out total);
+            List<BProduct> products = SearchProducts(new int[] { productId }, null, null, 0, 0, 0, 0, 0, 0, 0, null, 10, 1, true, out total);
             if (total != 1)
             {
                 throw new MiOUException("产品信息不存在");
@@ -381,7 +381,25 @@ namespace MiOU.BL
             product = products[0];
             return product;
         }
-        public List<BProduct> SearchProducts(int[] productIds,int[] states,int userId,int auditUserId, int pId,int cId,int rentType,int provinceId,int cityId,int districtId,string keyword,int pageSize,int page,bool getDetail,out int total, ProductOrderField pOrder= ProductOrderField.RENTTIMES,int manageType=1)
+
+        public List<BUserProductStatistic> GetUserProductStatistic(int[] users)
+        {
+            List<BUserProductStatistic> statistics = null;
+            using (MiOUEntities db = new MiOUEntities())
+            {
+                var tmp = from p in db.Product
+                          join cate in db.Category on p.CategoryId equals cate.Id into lcate
+                          from llcate in lcate.DefaultIfEmpty()
+                          where users.Contains(p.UserId)
+                          group new { p.UserId, p.CategoryId, llcate.Name } by new { p.UserId, p.CategoryId, llcate.Name } into g
+                          select new BUserProductStatistic { UserId = g.Key.UserId, Category = new BCategory { Id = g.Key.CategoryId,Name=g.Key.Name } , Amount=g.Count()};
+
+                statistics = tmp.ToList<BUserProductStatistic>();
+            }
+            return statistics;
+        }
+
+        public List<BProduct> SearchProducts(int[] productIds,int[] states,int[] userId,int auditUserId, int pId,int cId,int rentType,int provinceId,int cityId,int districtId,string keyword,int pageSize,int page,bool getDetail,out int total, ProductOrderField pOrder= ProductOrderField.RENTTIMES,int manageType=1)
         {
             List<BProduct> products = null;
             MiOUEntities db = null;
@@ -435,7 +453,7 @@ namespace MiOU.BL
                                Description = p.Description,
                                Repertory = p.Repertory,
                                RentOutQuantity = p.RentOutQuantity,
-                               User = llowner != null ? new BUser() { User = llowner } : null,
+                               User = llowner != null ? new BUser() { User = llowner,Id=p.UserId } : null,
                                XPlot = p.XPlot,
                                YPlot = p.YPlot,
                                RentTimes= p.RentTimes,
@@ -448,9 +466,9 @@ namespace MiOU.BL
                 {
                     linq = linq.Where(o=>productIds.Contains(o.Id));
                 }
-                if(userId>0)
+                if(userId!=null && userId.Length>0)
                 {
-                    linq = linq.Where(a=>a.User.User.UserId==userId);
+                    linq = linq.Where(a=>userId.Contains(a.User.Id));
                 }
                 if (auditUserId > 0)
                 {
@@ -832,7 +850,7 @@ namespace MiOU.BL
                 throw new MiOUException("藕品数据不存在");
             }
             int total = 0;
-            List<BProduct> products = SearchProducts(new int[] { product.Id }, null, 0, 0, 0, 0, 0, 0, 0, 0, null, 1, 1, true, out total);
+            List<BProduct> products = SearchProducts(new int[] { product.Id }, null, null, 0, 0, 0, 0, 0, 0, 0, null, 1, 1, true, out total);
             if(products.Count==0)
             {
                 throw new MiOUException(string.Format("Id为{0}的藕品数据不存在"));
