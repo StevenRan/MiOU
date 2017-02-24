@@ -13,3 +13,4 @@ C:\Users\Danny\Documents\GitHub\MiOU\MiOU.DAL\bin\Debug\EntityFramework.xml
 C:\Users\Danny\Documents\GitHub\MiOU\MiOU.DAL\obj\Debug\MiOU.DAL.csprojResolveAssemblyReference.cache
 C:\Users\Danny\Documents\GitHub\MiOU\MiOU.DAL\obj\Debug\MiOU.DAL.dll
 C:\Users\Danny\Documents\GitHub\MiOU\MiOU.DAL\obj\Debug\MiOU.DAL.pdb
+C:\Users\boling\Documents\GitHub\MiOU\MiOU.DAL\obj\Debug\MiOU.DAL.csprojResolveAssemblyReference.cache

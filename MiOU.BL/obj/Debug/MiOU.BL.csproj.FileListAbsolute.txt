@@ -33,7 +33,6 @@ C:\Users\boling\Documents\GitHub\MiOU\MiOU.BL\bin\Debug\ThoughtWorks.QRCode.dll
 C:\Users\boling\Documents\GitHub\MiOU\MiOU.BL\bin\Debug\WeChat.Adapter.pdb
 C:\Users\boling\Documents\GitHub\MiOU\MiOU.BL\bin\Debug\MiOU.Util.pdb
 C:\Users\boling\Documents\GitHub\MiOU\MiOU.BL\bin\Debug\log4net.xml
-C:\Users\boling\Documents\GitHub\MiOU\MiOU.BL\bin\Debug\Newtonsoft.Json.xml
 C:\Users\boling\Documents\GitHub\MiOU\MiOU.BL\bin\Debug\FoolproofValidation.dll
 C:\Users\Danny\Documents\GitHub\MiOU\MiOU.BL\bin\Debug\WeChatPayConfig.xml
 C:\Users\Danny\Documents\GitHub\MiOU\MiOU.BL\bin\Debug\MiOU.BL.dll

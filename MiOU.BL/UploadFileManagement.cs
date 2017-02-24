@@ -89,9 +89,10 @@ namespace MiOU.BL
             foreach (HttpPostedFileBase file in files) {
                 byte[] bytes = FileUtil.StreamToBytes(file.InputStream);
                 Bitmap bitmap = ImageUtil.BytesToBitmap(bytes);
-                Bitmap tmp = ImageUtil.GetThumbnail(bitmap, 1024, 1000);
+                //Bitmap tmp = ImageUtil.GetThumbnail(bitmap, 1024, 1000);
+                //need to improve the ImageUtil.GetThumbnail
                 string absPath2 = absPath + "\\" + fileName + fileExt;
-                bool ret=FileUtil.SaveBitmap(tmp,Path.Combine(directory,absPath2));
+                bool ret=FileUtil.SaveBitmap(bitmap, Path.Combine(directory,absPath2));
                 if(ret)
                 {
                     if (savedFiles == null) { savedFiles = new List<BFile>(); }
@@ -102,7 +103,7 @@ namespace MiOU.BL
                     }
                 }
                 bitmap.Dispose();
-                tmp.Dispose();
+                //tmp.Dispose();
             }
             return savedFiles;
         }

@@ -291,24 +291,39 @@ namespace MiOU.BL
                 parentId = 0;
             }
             List<BCategory> categories = null;
-            using (MiOUEntities db = new MiOUEntities())
+            MiOUEntities db = null;
+            try
             {
-                var tmp = from c in db.Category where c.ParentId==parentId orderby c.Order select new BCategory { Id = c.Id, Name = c.Name, Order = c.Order != null ? (int)c.Order : 0, IconPhotoMobile=c.PhotoMobile,IconPhotoPC=c.PhotoPC };
+                db = new MiOUEntities();
+                var tmp = from c in db.Category where c.ParentId == parentId orderby c.Order select new BCategory { Id = c.Id, Name = c.Name, Order = c.Order != null ? (int)c.Order : 0, IconPhotoMobile = c.PhotoMobile, IconPhotoPC = c.PhotoPC };
                 categories = tmp.ToList<BCategory>();
                 int[] ids = null;
-                if(withChildren && categories.Count>0)
+                if (withChildren && categories.Count > 0)
                 {
                     ids = (from c in categories select c.Id).ToArray<int>();
-                    List<BCategory> children = (from c in db.Category where ids.Contains(c.ParentId) orderby c.Order select new BCategory { Id = c.Id, Name = c.Name, ParentId= c.ParentId,Order = c.Order != null ? (int)c.Order : 0, IconPhotoMobile = c.PhotoMobile, IconPhotoPC = c.PhotoPC }).ToList<BCategory>();
-                    if(children.Count>0)
+                    List<BCategory> children = (from c in db.Category where ids.Contains(c.ParentId) orderby c.Order select new BCategory { Id = c.Id, Name = c.Name, ParentId = c.ParentId, Order = c.Order != null ? (int)c.Order : 0, IconPhotoMobile = c.PhotoMobile, IconPhotoPC = c.PhotoPC }).ToList<BCategory>();
+                    if (children.Count > 0)
                     {
-                        foreach(BCategory parent in categories)
+                        foreach (BCategory parent in categories)
                         {
-                            parent.ChildRen = (from c in children where c.ParentId==parent.Id select c).ToList<BCategory>();
+                            parent.ChildRen = (from c in children where c.ParentId == parent.Id select c).ToList<BCategory>();
                         }
                     }
                 }
+
             }
+            catch (Exception ex)
+            {
+                logger.Fatal(ex);
+            }
+            finally
+            {
+                if (db != null)
+                {
+                    db.Dispose();
+                }
+            }
+           
             return categories;
         }
         public List<BPriceCategory> GetPriceCategories()

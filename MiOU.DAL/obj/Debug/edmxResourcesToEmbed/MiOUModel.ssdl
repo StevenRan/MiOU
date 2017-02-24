@@ -260,8 +260,8 @@
     <Property Name="Repertory" Type="int" Nullable="false" />
     <Property Name="Status" Type="int" Nullable="false" />
     <Property Name="VIPLevel" Type="int" Nullable="false" />
-    <Property Name="Contact" Type="varchar" MaxLength="100" Nullable="false" />
-    <Property Name="Phone" Type="varchar" MaxLength="25" Nullable="false" />
+    <Property Name="Contact" Type="varchar" MaxLength="100" />
+    <Property Name="Phone" Type="varchar" MaxLength="25" />
     <Property Name="RentTimes" Type="int" Nullable="false" />
     <Property Name="ManageType" Type="int" Nullable="false" />
     <Property Name="RentOutQuantity" Type="int" Nullable="false" />

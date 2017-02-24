@@ -23,7 +23,6 @@ C:\Users\boling\Documents\GitHub\MiOU\MiOU\bin\Debug\MiOU.BL.pdb
 C:\Users\boling\Documents\GitHub\MiOU\MiOU\bin\Debug\MiOU.DAL.pdb
 C:\Users\boling\Documents\GitHub\MiOU\MiOU\bin\Debug\MiOU.Util.pdb
 C:\Users\boling\Documents\GitHub\MiOU\MiOU\bin\Debug\log4net.xml
-C:\Users\boling\Documents\GitHub\MiOU\MiOU\bin\Debug\Newtonsoft.Json.xml
 C:\Users\boling\Documents\GitHub\MiOU\MiOU\bin\Debug\Microsoft.AspNet.Identity.Core.xml
 C:\Users\boling\Documents\GitHub\MiOU\MiOU\bin\Debug\Microsoft.AspNet.Identity.Owin.xml
 C:\Users\boling\Documents\GitHub\MiOU\MiOU\bin\Debug\Microsoft.Owin.xml
@@ -36,3 +35,7 @@ C:\Users\boling\Documents\GitHub\MiOU\MiOU\bin\Debug\MySql.Data.Entity.EF5.dll
 C:\Users\boling\Documents\GitHub\MiOU\MiOU\bin\Debug\MySql.Data.Entity.EF6.dll
 C:\Users\boling\Documents\GitHub\MiOU\MiOU\bin\Debug\EntityFramework.SqlServer.dll
 C:\Users\boling\Documents\GitHub\MiOU\MiOU\bin\Debug\EntityFramework.SqlServer.xml
+C:\Users\boling\Documents\GitHub\MiOU\MiOU\bin\Debug\FoolproofValidation.dll
+C:\Users\boling\Documents\GitHub\MiOU\MiOU\bin\Debug\MySql.Data.xml
+C:\Users\boling\Documents\GitHub\MiOU\MiOU\bin\Debug\MySql.Data.Entity.EF5.xml
+C:\Users\boling\Documents\GitHub\MiOU\MiOU\bin\Debug\MySql.Data.Entity.EF6.xml

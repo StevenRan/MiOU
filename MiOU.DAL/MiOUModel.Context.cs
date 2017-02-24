@@ -25,6 +25,7 @@ namespace MiOU.DAL
             throw new UnintentionalCodeFirstException();
         }
     
+        public DbSet<AddressBook> AddressBook { get; set; }
         public DbSet<Admin_Actions> Admin_Actions { get; set; }
         public DbSet<Admin_Categories> Admin_Categories { get; set; }
         public DbSet<Admin_Users> Admin_Users { get; set; }
@@ -44,16 +45,15 @@ namespace MiOU.DAL
         public DbSet<PriceCategory> PriceCategory { get; set; }
         public DbSet<ProductImage> ProductImage { get; set; }
         public DbSet<ProductMaintenance> ProductMaintenance { get; set; }
+        public DbSet<ProductPrice> ProductPrice { get; set; }
         public DbSet<RentType> RentType { get; set; }
         public DbSet<UseCurrencyHistory> UseCurrencyHistory { get; set; }
+        public DbSet<User> User { get; set; }
+        public DbSet<UserAvator> UserAvator { get; set; }
+        public DbSet<UserLogin> UserLogin { get; set; }
         public DbSet<UserType> UserType { get; set; }
         public DbSet<UserVip> UserVip { get; set; }
         public DbSet<VipLevel> VipLevel { get; set; }
-        public DbSet<AddressBook> AddressBook { get; set; }
-        public DbSet<ProductPrice> ProductPrice { get; set; }
-        public DbSet<UserLogin> UserLogin { get; set; }
-        public DbSet<UserAvator> UserAvator { get; set; }
         public DbSet<Product> Product { get; set; }
-        public DbSet<User> User { get; set; }
     }
 }

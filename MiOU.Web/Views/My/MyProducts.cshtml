@@ -42,32 +42,33 @@
         <div class="line"></div>
     </div>
     
-    <div>
+    @*<div>
         @Html.Raw(htmlStr)
-    </div>
+    </div>*@
     <div>
        
         @{ 
-            if(products==null)
+            if (products == null)
             {
                 @Html.Raw("您还没有添加任何藕品");
             }
-
-            foreach(BProduct product in products)
+            else
             {
-                string area = "";
-                if (product.City != null)
+                foreach (BProduct product in products)
                 {
-                    area += product.City.Name;
-                }
-                if(product.District!=null)
-                {
-                    area += " "+product.District.Name;
-                }
-                if(product.Addresso!=null && !string.IsNullOrEmpty(product.Addresso.Apartment))
-                {
-                    area += " - " + product.Addresso.Apartment;
-                }
+                    string area = "";
+                    if (product.City != null)
+                    {
+                        area += product.City.Name;
+                    }
+                    if (product.District != null)
+                    {
+                        area += " " + product.District.Name;
+                    }
+                    if (product.Addresso != null && !string.IsNullOrEmpty(product.Addresso.Apartment))
+                    {
+                        area += " - " + product.Addresso.Apartment;
+                    }
                 <div class="myrightItem">
                     <div class="pdtImg">
                         <img style="width:138px;height:138px;" src="/@Html.Raw(product.Images[0].Image.Path)"/>
@@ -92,7 +93,8 @@
                         </div>
                         <div class="liitem">
                             @{ 
-                                if (product.AuditStatus == ProductStatus.CREATED) {
+                                if (product.AuditStatus == ProductStatus.CREATED)
+                                {
                                     @Html.Raw("等待审核");
                                 }
                                 else if (product.AuditStatus == ProductStatus.PASSED)
@@ -135,7 +137,7 @@
                                 }
                                 else
                                 {
-                                    <span>库存:</span><span style="color:red;padding-left:5px;">@(product.Repertory)/@(product.Repertory+product.RentOutQuantity)</span>
+                                    <span>库存:</span><span style="color:red;padding-left:5px;">@(product.Repertory)/@(product.Repertory + product.RentOutQuantity)</span>
                                 }
                             }
                         </div>
@@ -148,8 +150,9 @@
                         </ul>
                     </div>
                 </div>
-            }
-        }
+      }
+   }
+}
     </div>
 </div>
 

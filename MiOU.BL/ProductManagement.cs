@@ -16,6 +16,7 @@ namespace MiOU.BL
         private static object obj = new object();
         public ProductManagement(int userId) : base(userId)
         {
+            
         }
 
         public List<BCategory> GetHomeProdustListByCategory(int province)
@@ -453,7 +454,7 @@ namespace MiOU.BL
                                Description = p.Description,
                                Repertory = p.Repertory,
                                RentOutQuantity = p.RentOutQuantity,
-                               User = llowner != null ? new BUser() { User = llowner,Id=p.UserId } : null,
+                               User = llowner != null ? new BUser() { User = llowner } : null,
                                XPlot = p.XPlot,
                                YPlot = p.YPlot,
                                RentTimes= p.RentTimes,
@@ -468,7 +469,7 @@ namespace MiOU.BL
                 }
                 if(userId!=null && userId.Length>0)
                 {
-                    linq = linq.Where(a=>userId.Contains(a.User.Id));
+                    linq = linq.Where(a=>userId.Contains(a.User.User.UserId));
                 }
                 if (auditUserId > 0)
                 {
@@ -936,6 +937,7 @@ namespace MiOU.BL
                     dbProduct.DeliveryType = product.DeliveryType;
                     dbProduct.RentType = product.RentType;
                     dbProduct.Description = product.Description;
+                    dbProduct.CategoryId = product.ChildCategoryId;
                     if(dbProduct.AddressId!=product.AddressId)
                     {
                         AddressBook addressBook = (from a in db.AddressBook where a.Id == product.AddressId select a).FirstOrDefault<AddressBook>();

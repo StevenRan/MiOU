@@ -265,8 +265,8 @@
           <Property Name="Repertory" Type="int" Nullable="false" />
           <Property Name="Status" Type="int" Nullable="false" />
           <Property Name="VIPLevel" Type="int" Nullable="false" />
-          <Property Name="Contact" Type="varchar" MaxLength="100" Nullable="false" />
-          <Property Name="Phone" Type="varchar" MaxLength="25" Nullable="false" />
+          <Property Name="Contact" Type="varchar" MaxLength="100" />
+          <Property Name="Phone" Type="varchar" MaxLength="25" />
           <Property Name="RentTimes" Type="int" Nullable="false" />
           <Property Name="ManageType" Type="int" Nullable="false" />
           <Property Name="RentOutQuantity" Type="int" Nullable="false" />
@@ -450,6 +450,26 @@
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="MiOU.DAL" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="AddressBook">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="Contact" Type="String" MaxLength="45" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Phone" Type="String" MaxLength="45" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Province" Type="Int32" Nullable="false" />
+          <Property Name="City" Type="Int32" Nullable="false" />
+          <Property Name="District" Type="Int32" Nullable="false" />
+          <Property Name="Apartment" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+          <Property Name="NearBy" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="Address" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+          <Property Name="Created" Type="Int64" Nullable="false" />
+          <Property Name="Updated" Type="Int64" Nullable="false" />
+          <Property Name="Default" Type="Boolean" Nullable="false" />
+          <Property Name="X" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+          <Property Name="Y" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+        </EntityType>
         <EntityType Name="Admin_Actions">
           <Key>
             <PropertyRef Name="Id" />
@@ -675,6 +695,20 @@
           <Property Name="Finished" Type="Int64" Nullable="false" />
           <Property Name="Updated" Type="Int64" Nullable="false" />
         </EntityType>
+        <EntityType Name="ProductPrice">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ProductId" Type="Int32" Nullable="false" />
+          <Property Name="PriceCategory" Type="Int32" Nullable="false" />
+          <Property Name="ProductCategoryId" Type="Int32" Nullable="false" />
+          <Property Name="EvaluatedPriceId" Type="Int32" Nullable="false" />
+          <Property Name="Price" Type="Single" Nullable="false" />
+          <Property Name="Created" Type="Int64" Nullable="false" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="Enabled" Type="Boolean" Nullable="false" />
+        </EntityType>
         <EntityType Name="RentType">
           <Key>
             <PropertyRef Name="Id" />
@@ -695,6 +729,57 @@
           <Property Name="CreatedBy" Type="Int32" Nullable="false" />
           <Property Name="Updated" Type="Int32" Nullable="false" />
           <Property Name="UpdatedBy" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="UserId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+          <Property Name="NickName" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+          <Property Name="Email" Type="String" MaxLength="45" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ExternalUserType" Type="Int32" Nullable="false" />
+          <Property Name="ExternalUserId" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Gendar" Type="Int32" Nullable="false" />
+          <Property Name="RegTime" Type="Int64" Nullable="false" />
+          <Property Name="Updated" Type="Int64" Nullable="false" />
+          <Property Name="UserType" Type="Int32" Nullable="false" />
+          <Property Name="VipLevel" Type="Int32" Nullable="false" />
+          <Property Name="Province" Type="Int32" Nullable="false" />
+          <Property Name="City" Type="Int32" Nullable="false" />
+          <Property Name="District" Type="Int32" Nullable="false" />
+          <Property Name="Address" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="XPlot" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+          <Property Name="YPlot" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+          <Property Name="Status" Type="Int32" Nullable="false" />
+          <Property Name="Phone" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+          <Property Name="CurrencyAmount" Type="Single" Nullable="false" />
+          <Property Name="AccountAmount" Type="Single" Nullable="false" />
+          <Property Name="RentOutTimes" Type="Int32" Nullable="false" />
+          <Property Name="RentInTimes" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="UserAvator">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="FileId" Type="Int32" Nullable="false" />
+          <Property Name="Enabled" Type="Boolean" Nullable="false" />
+          <Property Name="Created" Type="Int64" Nullable="false" />
+          <Property Name="Updated" Type="Int64" Nullable="false" />
+          <Property Name="UpdatedBy" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="UserLogin">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="IP" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Created" Type="Int64" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="UserType">
           <Key>
@@ -733,6 +818,7 @@
           <Property Name="YajinPercentage" Type="Single" Nullable="false" />
         </EntityType>
         <EntityContainer Name="MiOUEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="AddressBook" EntityType="Self.AddressBook" />
           <EntitySet Name="Admin_Actions" EntityType="Self.Admin_Actions" />
           <EntitySet Name="Admin_Categories" EntityType="Self.Admin_Categories" />
           <EntitySet Name="Admin_Users" EntityType="Self.Admin_Users" />
@@ -752,74 +838,17 @@
           <EntitySet Name="PriceCategory" EntityType="Self.PriceCategory" />
           <EntitySet Name="ProductImage" EntityType="Self.ProductImage" />
           <EntitySet Name="ProductMaintenance" EntityType="Self.ProductMaintenance" />
+          <EntitySet Name="ProductPrice" EntityType="Self.ProductPrice" />
           <EntitySet Name="RentType" EntityType="Self.RentType" />
           <EntitySet Name="UseCurrencyHistory" EntityType="Self.UseCurrencyHistory" />
+          <EntitySet Name="User" EntityType="Self.User" />
+          <EntitySet Name="UserAvator" EntityType="Self.UserAvator" />
+          <EntitySet Name="UserLogin" EntityType="Self.UserLogin" />
           <EntitySet Name="UserType" EntityType="Self.UserType" />
           <EntitySet Name="UserVip" EntityType="Self.UserVip" />
           <EntitySet Name="VipLevel" EntityType="Self.VipLevel" />
-          <EntitySet Name="AddressBook" EntityType="MiOU.DAL.AddressBook" />
-          <EntitySet Name="ProductPrice" EntityType="MiOU.DAL.ProductPrice" />
-          <EntitySet Name="UserLogin" EntityType="MiOU.DAL.UserLogin" />
-          <EntitySet Name="UserAvator" EntityType="MiOU.DAL.UserAvator" />
           <EntitySet Name="Product" EntityType="MiOU.DAL.Product" />
-          <EntitySet Name="User" EntityType="MiOU.DAL.User" />
         </EntityContainer>
-        <EntityType Name="AddressBook">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="UserId" Type="Int32" Nullable="false" />
-          <Property Name="Contact" Type="String" Nullable="false" MaxLength="45" FixedLength="false" Unicode="false" />
-          <Property Name="Phone" Type="String" Nullable="false" MaxLength="45" FixedLength="false" Unicode="false" />
-          <Property Name="Province" Type="Int32" Nullable="false" />
-          <Property Name="City" Type="Int32" Nullable="false" />
-          <Property Name="District" Type="Int32" Nullable="false" />
-          <Property Name="Apartment" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
-          <Property Name="NearBy" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
-          <Property Name="Address" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
-          <Property Name="Created" Type="Int64" Nullable="false" />
-          <Property Name="Updated" Type="Int64" Nullable="false" />
-          <Property Name="Default" Type="Boolean" Nullable="false" />
-          <Property Name="X" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
-          <Property Name="Y" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
-        </EntityType>
-        <EntityType Name="ProductPrice">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="ProductId" Type="Int32" Nullable="false" />
-          <Property Name="PriceCategory" Type="Int32" Nullable="false" />
-          <Property Name="ProductCategoryId" Type="Int32" Nullable="false" />
-          <Property Name="EvaluatedPriceId" Type="Int32" Nullable="false" />
-          <Property Name="Price" Type="Single" Nullable="false" />
-          <Property Name="Created" Type="Int64" Nullable="false" />
-          <Property Name="UserId" Type="Int32" Nullable="false" />
-          <Property Name="Enabled" Type="Boolean" Nullable="false" />
-        </EntityType>
-        <EntityType Name="UserLogin">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="UserId" Type="Int32" Nullable="false" />
-          <Property Name="IP" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="Created" Type="Int64" Nullable="false" />
-          <Property Name="Description" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
-        </EntityType>
-        <EntityType Name="UserAvator">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="UserId" Type="Int32" Nullable="false" />
-          <Property Name="FileId" Type="Int32" Nullable="false" />
-          <Property Name="Enabled" Type="Boolean" Nullable="false" />
-          <Property Name="Created" Type="Int64" Nullable="false" />
-          <Property Name="Updated" Type="Int64" Nullable="false" />
-          <Property Name="UpdatedBy" Type="Int32" Nullable="false" />
-        </EntityType>
         <EntityType Name="Product">
           <Key>
             <PropertyRef Name="Id" />
@@ -856,40 +885,11 @@
           <Property Name="Repertory" Type="Int32" Nullable="false" />
           <Property Name="Status" Type="Int32" Nullable="false" />
           <Property Name="VIPLevel" Type="Int32" Nullable="false" />
-          <Property Name="Contact" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="Phone" Type="String" Nullable="false" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Name="Contact" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Phone" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
           <Property Name="RentTimes" Type="Int32" Nullable="false" />
           <Property Name="ManageType" Type="Int32" Nullable="false" />
           <Property Name="RentOutQuantity" Type="Int32" Nullable="false" />
-        </EntityType>
-        <EntityType Name="User">
-          <Key>
-            <PropertyRef Name="UserId" />
-          </Key>
-          <Property Name="UserId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
-          <Property Name="NickName" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
-          <Property Name="Email" Type="String" Nullable="false" MaxLength="45" FixedLength="false" Unicode="false" />
-          <Property Name="ExternalUserType" Type="Int32" Nullable="false" />
-          <Property Name="ExternalUserId" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="Password" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="Gendar" Type="Int32" Nullable="false" />
-          <Property Name="RegTime" Type="Int64" Nullable="false" />
-          <Property Name="Updated" Type="Int64" Nullable="false" />
-          <Property Name="UserType" Type="Int32" Nullable="false" />
-          <Property Name="VipLevel" Type="Int32" Nullable="false" />
-          <Property Name="Province" Type="Int32" Nullable="false" />
-          <Property Name="City" Type="Int32" Nullable="false" />
-          <Property Name="District" Type="Int32" Nullable="false" />
-          <Property Name="Address" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="XPlot" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
-          <Property Name="YPlot" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
-          <Property Name="Status" Type="Int32" Nullable="false" />
-          <Property Name="Phone" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
-          <Property Name="CurrencyAmount" Type="Single" Nullable="false" />
-          <Property Name="AccountAmount" Type="Single" Nullable="false" />
-          <Property Name="RentOutTimes" Type="Int32" Nullable="false" />
-          <Property Name="RentInTimes" Type="Int32" Nullable="false" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -897,6 +897,27 @@
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="MiOUDALStoreContainer" CdmEntityContainer="MiOUEntities">
+          <EntitySetMapping Name="AddressBook">
+            <EntityTypeMapping TypeName="MiOU.DAL.AddressBook">
+              <MappingFragment StoreEntitySet="AddressBook">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Contact" ColumnName="Contact" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="Province" ColumnName="Province" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="District" ColumnName="District" />
+                <ScalarProperty Name="Apartment" ColumnName="Apartment" />
+                <ScalarProperty Name="NearBy" ColumnName="NearBy" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="Created" ColumnName="Created" />
+                <ScalarProperty Name="Updated" ColumnName="Updated" />
+                <ScalarProperty Name="Default" ColumnName="Default" />
+                <ScalarProperty Name="X" ColumnName="X" />
+                <ScalarProperty Name="Y" ColumnName="Y" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="Admin_Actions">
             <EntityTypeMapping TypeName="MiOU.DAL.Admin_Actions">
               <MappingFragment StoreEntitySet="Admin_Actions">
@@ -1140,6 +1161,21 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="ProductPrice">
+            <EntityTypeMapping TypeName="MiOU.DAL.ProductPrice">
+              <MappingFragment StoreEntitySet="ProductPrice">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="ProductId" ColumnName="ProductId" />
+                <ScalarProperty Name="PriceCategory" ColumnName="PriceCategory" />
+                <ScalarProperty Name="ProductCategoryId" ColumnName="ProductCategoryId" />
+                <ScalarProperty Name="EvaluatedPriceId" ColumnName="EvaluatedPriceId" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
+                <ScalarProperty Name="Created" ColumnName="Created" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Enabled" ColumnName="Enabled" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="RentType">
             <EntityTypeMapping TypeName="MiOU.DAL.RentType">
               <MappingFragment StoreEntitySet="RentType">
@@ -1160,6 +1196,60 @@
                 <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
                 <ScalarProperty Name="Updated" ColumnName="Updated" />
                 <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="User">
+            <EntityTypeMapping TypeName="MiOU.DAL.User">
+              <MappingFragment StoreEntitySet="User">
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="NickName" ColumnName="NickName" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="ExternalUserType" ColumnName="ExternalUserType" />
+                <ScalarProperty Name="ExternalUserId" ColumnName="ExternalUserId" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="Gendar" ColumnName="Gendar" />
+                <ScalarProperty Name="RegTime" ColumnName="RegTime" />
+                <ScalarProperty Name="Updated" ColumnName="Updated" />
+                <ScalarProperty Name="UserType" ColumnName="UserType" />
+                <ScalarProperty Name="VipLevel" ColumnName="VipLevel" />
+                <ScalarProperty Name="Province" ColumnName="Province" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="District" ColumnName="District" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="XPlot" ColumnName="XPlot" />
+                <ScalarProperty Name="YPlot" ColumnName="YPlot" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="CurrencyAmount" ColumnName="CurrencyAmount" />
+                <ScalarProperty Name="AccountAmount" ColumnName="AccountAmount" />
+                <ScalarProperty Name="RentOutTimes" ColumnName="RentOutTimes" />
+                <ScalarProperty Name="RentInTimes" ColumnName="RentInTimes" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserAvator">
+            <EntityTypeMapping TypeName="MiOU.DAL.UserAvator">
+              <MappingFragment StoreEntitySet="UserAvator">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="FileId" ColumnName="FileId" />
+                <ScalarProperty Name="Enabled" ColumnName="Enabled" />
+                <ScalarProperty Name="Created" ColumnName="Created" />
+                <ScalarProperty Name="Updated" ColumnName="Updated" />
+                <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserLogin">
+            <EntityTypeMapping TypeName="MiOU.DAL.UserLogin">
+              <MappingFragment StoreEntitySet="UserLogin">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="IP" ColumnName="IP" />
+                <ScalarProperty Name="Created" ColumnName="Created" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1199,66 +1289,6 @@
                 <ScalarProperty Name="CurrencyAmount" ColumnName="CurrencyAmount" />
                 <ScalarProperty Name="Expired" ColumnName="Expired" />
                 <ScalarProperty Name="YajinPercentage" ColumnName="YajinPercentage" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="AddressBook">
-            <EntityTypeMapping TypeName="MiOU.DAL.AddressBook">
-              <MappingFragment StoreEntitySet="AddressBook">
-                <ScalarProperty Name="Y" ColumnName="Y" />
-                <ScalarProperty Name="X" ColumnName="X" />
-                <ScalarProperty Name="Default" ColumnName="Default" />
-                <ScalarProperty Name="Updated" ColumnName="Updated" />
-                <ScalarProperty Name="Created" ColumnName="Created" />
-                <ScalarProperty Name="Address" ColumnName="Address" />
-                <ScalarProperty Name="NearBy" ColumnName="NearBy" />
-                <ScalarProperty Name="Apartment" ColumnName="Apartment" />
-                <ScalarProperty Name="District" ColumnName="District" />
-                <ScalarProperty Name="City" ColumnName="City" />
-                <ScalarProperty Name="Province" ColumnName="Province" />
-                <ScalarProperty Name="Phone" ColumnName="Phone" />
-                <ScalarProperty Name="Contact" ColumnName="Contact" />
-                <ScalarProperty Name="UserId" ColumnName="UserId" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="ProductPrice">
-            <EntityTypeMapping TypeName="MiOU.DAL.ProductPrice">
-              <MappingFragment StoreEntitySet="ProductPrice">
-                <ScalarProperty Name="Enabled" ColumnName="Enabled" />
-                <ScalarProperty Name="UserId" ColumnName="UserId" />
-                <ScalarProperty Name="Created" ColumnName="Created" />
-                <ScalarProperty Name="Price" ColumnName="Price" />
-                <ScalarProperty Name="EvaluatedPriceId" ColumnName="EvaluatedPriceId" />
-                <ScalarProperty Name="ProductCategoryId" ColumnName="ProductCategoryId" />
-                <ScalarProperty Name="PriceCategory" ColumnName="PriceCategory" />
-                <ScalarProperty Name="ProductId" ColumnName="ProductId" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="UserLogin">
-            <EntityTypeMapping TypeName="MiOU.DAL.UserLogin">
-              <MappingFragment StoreEntitySet="UserLogin">
-                <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="Created" ColumnName="Created" />
-                <ScalarProperty Name="IP" ColumnName="IP" />
-                <ScalarProperty Name="UserId" ColumnName="UserId" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="UserAvator">
-            <EntityTypeMapping TypeName="MiOU.DAL.UserAvator">
-              <MappingFragment StoreEntitySet="UserAvator">
-                <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
-                <ScalarProperty Name="Updated" ColumnName="Updated" />
-                <ScalarProperty Name="Created" ColumnName="Created" />
-                <ScalarProperty Name="Enabled" ColumnName="Enabled" />
-                <ScalarProperty Name="FileId" ColumnName="FileId" />
-                <ScalarProperty Name="UserId" ColumnName="UserId" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1302,36 +1332,6 @@
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
                 <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="User">
-            <EntityTypeMapping TypeName="MiOU.DAL.User">
-              <MappingFragment StoreEntitySet="User">
-                <ScalarProperty Name="RentInTimes" ColumnName="RentInTimes" />
-                <ScalarProperty Name="RentOutTimes" ColumnName="RentOutTimes" />
-                <ScalarProperty Name="AccountAmount" ColumnName="AccountAmount" />
-                <ScalarProperty Name="CurrencyAmount" ColumnName="CurrencyAmount" />
-                <ScalarProperty Name="Phone" ColumnName="Phone" />
-                <ScalarProperty Name="Status" ColumnName="Status" />
-                <ScalarProperty Name="YPlot" ColumnName="YPlot" />
-                <ScalarProperty Name="XPlot" ColumnName="XPlot" />
-                <ScalarProperty Name="Address" ColumnName="Address" />
-                <ScalarProperty Name="District" ColumnName="District" />
-                <ScalarProperty Name="City" ColumnName="City" />
-                <ScalarProperty Name="Province" ColumnName="Province" />
-                <ScalarProperty Name="VipLevel" ColumnName="VipLevel" />
-                <ScalarProperty Name="UserType" ColumnName="UserType" />
-                <ScalarProperty Name="Updated" ColumnName="Updated" />
-                <ScalarProperty Name="RegTime" ColumnName="RegTime" />
-                <ScalarProperty Name="Gendar" ColumnName="Gendar" />
-                <ScalarProperty Name="Password" ColumnName="Password" />
-                <ScalarProperty Name="ExternalUserId" ColumnName="ExternalUserId" />
-                <ScalarProperty Name="ExternalUserType" ColumnName="ExternalUserType" />
-                <ScalarProperty Name="Email" ColumnName="Email" />
-                <ScalarProperty Name="NickName" ColumnName="NickName" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="UserId" ColumnName="UserId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
