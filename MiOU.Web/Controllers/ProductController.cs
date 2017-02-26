@@ -6,6 +6,7 @@ using System.Web.Mvc;
 
 using MiOU.BL;
 using MiOU.Entities.Beans;
+using MiOU.Entities.Models;
 using MiOU.Entities.Exceptions;
 namespace MiOU.Web.Controllers
 {
@@ -14,7 +15,27 @@ namespace MiOU.Web.Controllers
         // GET: Product
         public ActionResult List()
         {
-            return View();
+            int category = 0;
+            int childCategory = 0;
+            int deliverType = 0;
+            int rentType = 0;
+            int level = 0;
+            string keywork = Request["keyword"];
+            int.TryParse(Request["category"], out category);
+            int.TryParse(Request["childCategory"], out childCategory);
+            int.TryParse(Request["deliverType"], out deliverType);
+            int.TryParse(Request["rentType"], out rentType);
+            int.TryParse(Request["level"], out level);
+
+            ProductManagement pdtMgr = new ProductManagement(0);
+            List<BCategory> categories=pdtMgr.GetCategories(0, true);
+            ViewBag.Categories = categories;
+            ViewBag.DeliveryTypes = pdtMgr.GetDeliveryTypes();
+            ViewBag.RentTypes = pdtMgr.GetRentTypes();
+            ViewBag.Levels = pdtMgr.GetProductLevels(0,0,0,null);
+            MSearchProduct model = new MSearchProduct() { Category = category, ChildCategory = childCategory, DeliverType = deliverType, RentType = rentType, Keyword = keywork };
+
+            return View(model);
         }
 
         public ActionResult Detail(int productId)

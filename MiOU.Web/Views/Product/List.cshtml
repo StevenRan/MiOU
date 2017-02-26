@@ -1,8 +1,137 @@
-﻿
+﻿@using MiOU.Entities.Beans;
+@using MiOU.Entities.Models;
+@using MiOU.BL;
+@model MSearchProduct
 @{
     ViewBag.Title = "藕品";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    List<BCategory> categories = ViewBag.Categories as List<BCategory>;
+    List<BSelType> dTypes = ViewBag.DeliveryTypes as List<BSelType>;
+    List<BObject> rTypes = ViewBag.RentTypes as List<BObject>;
+    List<BProductLevel> levels = ViewBag.Levels as List<BProductLevel>;
+    int category = Model.Category!=null?(int)Model.Category:0;
+    int childCategory = Model.ChildCategory != null ? (int)Model.ChildCategory : 0;
+    int deliverType = Model.DeliverType != null ? (int)Model.DeliverType : 0;
+    int rentType = Model.RentType != null ? (int)Model.RentType : 0; ;
+    int level = Model.ProductLevel != null ? (int)Model.ProductLevel : 0;
+    string searchUrl = "/Product/List?category={0}&childCategory={1}&deliverType={2}&rentType={3}&level={4}";
+    string linkUrl = string.Format("/Product/List?category={0}&childCategory={1}&deliverType={2}&rentType={3}&level={4}",category,childCategory,deliverType,rentType,level);
 }
 
-<h2>@ViewBag.Title</h2>
+
+<div style="padding:10px 20px 10px 20px;">全部分类</div>
+<div style="padding:0 0 0 0;border:1px solid #DFDFDF;">
+    <div style="overflow:hidden;width:100%;padding:10px 20px 10px 20px;">
+        <div style="float:left;width:8%;">
+            类别
+        </div>
+        <div style="float:left;width:92%;">
+            @if (categories != null)
+            {
+                <ul style="display:block;height:100%;list-style:none;padding:0;margin:0;width:100%;">
+                    @foreach(BCategory cate in categories)
+                    {
+                        <li style="display:block;float:left;height:100%;padding-left:10px;padding-right:10px;color:#333;">
+                            <a style="color:#000;" href="@string.Format(searchUrl,cate.Id,0,deliverType,rentType,level)">@cate.Name</a>
+                        </li>
+                    }
+                </ul>
+            }
+        </div>
+    </div>
+    <div style="overflow:hidden;width:100%;padding:10px 20px 10px 20px;border-bottom:1px solid #DFDFDF;">
+        <div style="float:left;width:8%;">
+            &nbsp;
+        </div>
+        <div style="float:left;width:92%;">
+            @if (categories != null)
+            {
+                BCategory selectedCate =(from c in categories where c.Id== category select c).FirstOrDefault<BCategory>();
+                if (selectedCate != null && selectedCate.ChildRen != null)
+                {
+                    <ul style="display:block;height:100%;list-style:none;padding:0;margin:0;width:100%;">
+                        @foreach (BCategory cate in selectedCate.ChildRen)
+                        {
+                            <li style="display:block;float:left;height:100%;padding-left:10px;padding-right:10px;">
+                                @if (cate.Id != childCategory)
+                                {
+                                    <a style="color:#333;" href="@string.Format(searchUrl, category, cate.Id, deliverType, rentType, level)">@cate.Name</a>
+                                }
+                                else
+                                {
+                                    <span>@cate.Name</span>
+                                }
+
+                            </li>
+                        }
+                    </ul>
+                }
+            }
+        </div>
+    </div>
+    <div style="overflow:hidden;width:100%;padding:10px 20px 10px 20px;border-bottom:1px solid #DFDFDF;">
+        <div style="float:left;width:8%;">
+            藕品级别
+        </div>
+        <div style="float:left;">
+            @if (levels != null)
+            {               
+                <ul style="display:block;height:100%;list-style:none;padding:0;margin:0;width:100%;">
+                    @foreach (BProductLevel tmpLevel in levels)
+                    {
+                        <li style="display:block;float:left;height:100%;padding-left:10px;padding-right:10px;">
+                            <a style="color:#333;" href="@string.Format(searchUrl,category,childCategory,deliverType,rentType,tmpLevel.Id)">@Html.Raw(tmpLevel.StartPrice+" - "+tmpLevel.EndPrice +" 元")</a>
+                        </li>
+                    }
+                </ul>
+            }
+        </div>
+    </div>
+    <div style="overflow:hidden;width:100%;padding:10px 20px 10px 20px;border-bottom:1px solid #DFDFDF;">
+        <div style="float:left;width:8%;">
+            送货方式
+        </div>
+        <div style="float:left;width:92%;">
+            @if (dTypes != null)
+            {
+                <ul style="display:block;height:100%;list-style:none;padding:0;margin:0;width:100%;">
+                    @foreach (BSelType delivery in dTypes)
+                    {
+                        <li style="display:block;float:left;height:100%;padding-left:10px;padding-right:10px;">
+                            <a style="color:#333;" href="@string.Format(searchUrl,category,childCategory,delivery.Id,rentType,level)">@delivery.Name</a>
+                        </li>
+                    }
+                </ul>
+            }
+        </div>
+    </div>
+    <div style="overflow:hidden;width:100%;padding:10px 20px 10px 20px;border-bottom:1px solid #DFDFDF;">
+        <div style="float:left;width:8%;">
+            租借方式
+        </div>
+        <div style="float:left;width:92%;">
+            @if (rTypes != null)
+            {
+                <ul style="display:block;height:100%;list-style:none;padding:0;margin:0;width:100%;">
+                    @foreach (BObject rType in rTypes)
+                    {
+                        <li style="display:block;float:left;height:100%;padding-left:10px;padding-right:10px;">
+                            <a style="color:#333;" href="@string.Format(searchUrl,category,childCategory,deliverType,rType.Id,level)">@rType.Name</a>
+                        </li>
+                    }
+                </ul>
+            }
+        </div>
+    </div>
+    <div style="overflow:hidden;width:100%;padding:10px 20px 10px 20px;">
+        <div style="float:left;width:8%;">
+            条件
+        </div>
+        <div style="float:left;width:92%;">
+            
+        </div>
+    </div>
+</div>
+
+
 

@@ -40,7 +40,7 @@
 <div></div>
 @{
 
-    string photo = "~/Content/Images/logo.png";
+    string photo = null;
     if (Model.Images != null && Model.Images.Count > 0)
     {
         foreach (BProductImage pImage in Model.Images)
@@ -49,6 +49,10 @@
             {
                 photo = "/" + pImage.Image.Path;
             }
+        }
+        if(photo==null)
+        {
+            photo = "/" + Model.Images[0].Image.Path;
         }
     }
 }

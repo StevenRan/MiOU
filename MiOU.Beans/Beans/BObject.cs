@@ -21,5 +21,6 @@ namespace MiOU.Entities.Beans
 
         [Display(Name = "更新时间")]
         public long Updated { get; set; }
+        public bool Enabled { get; set; }
     }
 }
