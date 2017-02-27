@@ -532,4 +532,50 @@ float:left;width:82%;padding-left:10px;
     padding:20px 20px 20px 20px;
 }
 
+
+.cateRow {
+    overflow:hidden;width:100%;padding:10px 20px 10px 20px;
+}
+.borderBottomNormal{
+    border-bottom:1px solid #DFDFDF;
+}
+.cateLeft {
+    float:left;width:8%;
+}
+.borderNormal {
+    border:1px solid #DFDFDF;
+}
+
+.cateC {
+    float:left;width:92%;
+}
+.ulhlist{
+    display:block;height:100%;list-style:none;padding:0;margin:0;width:100%;
+}
+.ulhlist li{
+    display:block;float:left;height:100%;padding-left:10px;padding-right:10px;color:#333;
+    padding-left:5px;
+    padding-right:5px;
+}
+.amenunormal {
+    color:#333;
+    background:#FFF;
+    display:block;float:left;
+     padding-left:10px;
+    padding-right:10px;
+}
+
+.amenunormal:hover{
+    background:#FFF;
+    display:block;float:left;
+     padding-left:10px;
+    padding-right:10px;
+}
+.menuactive{
+    background:#FFD03F;color:#FFF;
+    display:block;float:left;
+    padding-left:10px;
+    padding-right:10px;
+}
+
  

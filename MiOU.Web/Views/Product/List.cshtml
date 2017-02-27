@@ -20,30 +20,38 @@
 
 
 <div style="padding:10px 20px 10px 20px;">全部分类</div>
-<div style="padding:0 0 0 0;border:1px solid #DFDFDF;">
-    <div style="overflow:hidden;width:100%;padding:10px 20px 10px 20px;">
-        <div style="float:left;width:8%;">
+<div class="borderNormal">
+    <div class="cateRow">
+        <div class="cateLeft">
             类别
         </div>
-        <div style="float:left;width:92%;">
+        <div class="cateC">
             @if (categories != null)
             {
-                <ul style="display:block;height:100%;list-style:none;padding:0;margin:0;width:100%;">
+                <ul class="ulhlist">
                     @foreach(BCategory cate in categories)
                     {
-                        <li style="display:block;float:left;height:100%;padding-left:10px;padding-right:10px;color:#333;">
-                            <a style="color:#000;" href="@string.Format(searchUrl,cate.Id,0,deliverType,rentType,level)">@cate.Name</a>
+                        <li>
+                            @if (cate.Id == category)
+                            {
+                                <span class="menuactive">@cate.Name</span>
+                            }
+                            else
+                            {
+                                <a class="amenunormal" href="@string.Format(searchUrl,cate.Id,0,deliverType,rentType,level)">@cate.Name</a>
+                            }
+                            
                         </li>
                     }
                 </ul>
             }
         </div>
     </div>
-    <div style="overflow:hidden;width:100%;padding:10px 20px 10px 20px;border-bottom:1px solid #DFDFDF;">
-        <div style="float:left;width:8%;">
+    <div class="cateRow borderBottomNormal">
+        <div class="cateLeft">
             &nbsp;
         </div>
-        <div style="float:left;width:92%;">
+        <div class="cateC">
             @if (categories != null)
             {
                 BCategory selectedCate =(from c in categories where c.Id== category select c).FirstOrDefault<BCategory>();
@@ -55,11 +63,11 @@
                             <li style="display:block;float:left;height:100%;padding-left:10px;padding-right:10px;">
                                 @if (cate.Id != childCategory)
                                 {
-                                    <a style="color:#333;" href="@string.Format(searchUrl, category, cate.Id, deliverType, rentType, level)">@cate.Name</a>
+                                    <a  class="amenunormal" href="@string.Format(searchUrl, category, cate.Id, deliverType, rentType, level)">@cate.Name</a>
                                 }
                                 else
                                 {
-                                    <span>@cate.Name</span>
+                                    <span class="menuactive">@cate.Name</span>
                                 }
 
                             </li>
@@ -69,11 +77,11 @@
             }
         </div>
     </div>
-    <div style="overflow:hidden;width:100%;padding:10px 20px 10px 20px;border-bottom:1px solid #DFDFDF;">
-        <div style="float:left;width:8%;">
+    <div class="cateRow borderBottomNormal">
+        <div class="cateLeft">
             藕品级别
         </div>
-        <div style="float:left;">
+        <div class="cateC">
             @if (levels != null)
             {               
                 <ul style="display:block;height:100%;list-style:none;padding:0;margin:0;width:100%;">
@@ -87,11 +95,11 @@
             }
         </div>
     </div>
-    <div style="overflow:hidden;width:100%;padding:10px 20px 10px 20px;border-bottom:1px solid #DFDFDF;">
-        <div style="float:left;width:8%;">
+    <div class="cateRow borderBottomNormal">
+        <div class="cateLeft">
             送货方式
         </div>
-        <div style="float:left;width:92%;">
+        <div class="cateC">
             @if (dTypes != null)
             {
                 <ul style="display:block;height:100%;list-style:none;padding:0;margin:0;width:100%;">
@@ -105,11 +113,11 @@
             }
         </div>
     </div>
-    <div style="overflow:hidden;width:100%;padding:10px 20px 10px 20px;border-bottom:1px solid #DFDFDF;">
-        <div style="float:left;width:8%;">
+    <div class="cateRow borderBottomNormal">
+        <div class="cateLeft">
             租借方式
         </div>
-        <div style="float:left;width:92%;">
+        <div class="cateC">
             @if (rTypes != null)
             {
                 <ul style="display:block;height:100%;list-style:none;padding:0;margin:0;width:100%;">
@@ -123,11 +131,11 @@
             }
         </div>
     </div>
-    <div style="overflow:hidden;width:100%;padding:10px 20px 10px 20px;">
-        <div style="float:left;width:8%;">
+    <div class="cateRow">
+        <div class="cateLeft">
             条件
         </div>
-        <div style="float:left;width:92%;">
+        <div class="cateC">
             
         </div>
     </div>
